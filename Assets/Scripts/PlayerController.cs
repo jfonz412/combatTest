@@ -148,6 +148,5 @@ public class PlayerController : MonoBehaviour {
 		myWeapon = Instantiate(equippedWeapon) as GameObject;
 		myWeapon.transform.SetParent(weaponParent.transform);
 	}
-
 }
 
