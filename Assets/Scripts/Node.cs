@@ -6,9 +6,25 @@ public class Node {
 	public bool walkable;
 	public Vector3 worldPos; //might change to Vector2?
 	
-	//structure
-	public Node(bool _walkable, Vector3 _worldPos){
+	//Node's x and y position on the grid
+	public int x; 
+	public int y;
+	
+	public int gCost;
+	public int hCost;
+	public Node parent;
+	
+	public Node(bool _walkable, Vector3 _worldPos, int _x, int _y){
 		walkable = _walkable;
 		worldPos = _worldPos;
+		x = _x;
+		y = _y;
+	}
+	
+	//simple 'getter' (?) so you don't need a third var. Works just the same
+	public int fCost {
+		get {
+			return gCost + hCost;
+		}
 	}
 }
