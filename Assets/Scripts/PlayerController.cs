@@ -48,16 +48,28 @@ public class PlayerController : MonoBehaviour {
 	void MovePlayer(){
 		if (Input.GetMouseButtonDown(0)) {
 			startPos = transform.position;
-			mousePos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
+			mousePos = (Camera.main.ScreenToWorldPoint(Input.mousePosition)); // PASS THIS TO PATHFINDING SCRIPT
 			mousePos.z = transform.position.z; //to always keep z at 0		
 			ProccessClick(); //must be called after mousePos is set
 		}
 		
+		// GET THE LIST OF NODES (PATH) FROM THE GRID SCRIPT
+		// LOOP THROUGH LIST, SETTING EACH NODE'S WORLDPOS TO 'currentTarget'
+		
+		//for i=0; i<path.Count; i++
+		//   while transform.position != currentTargetNode 
+		//      MoveTowards currentTargetNode
+		
+		//   currentTargetNode = path[x]
+		
 		// If there is a target, don't actually call for movement here
-		if(!target){
-			transform.position = Vector3.MoveTowards(transform.position, mousePos, speed * Time.deltaTime);
+		if(!target){												    //nextNodePos
+			transform.position = Vector3.MoveTowards(transform.position,  mousePos   , speed * Time.deltaTime);
 		}
 	}
+	
+	
+// JUST FOCUS ON ABOVE FOR NOW
 	
 	
 	void ChaseTarget(){

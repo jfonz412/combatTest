@@ -16,25 +16,16 @@ public class Pathfinding : MonoBehaviour {
 	}
 
 	void FindPath(Vector3 startPos, Vector3 endPos){
-		Node startNode = grid.NodeFromWorldPoint(startPos);
-		Node endNode = grid.NodeFromWorldPoint(endPos);
+		Node startNode = grid.NodeAtWorldPosition(startPos);
+		Node endNode = grid.NodeAtWorldPosition(endPos);
 		
-		//difference between the two types?
-		List<Node> openNodes = new List<Node>(); 
-		HashSet<Node> closeNodes = new HashSet<Node>();
+		Heap<Node> openNodes = new Heap<Node>(grid.MaxSize); 		// Can sort of treat this like a dynamic array...arrays cannot normally be resized
+		HashSet<Node> closeNodes = new HashSet<Node>(); // HashSet is a faster list that does not preserve order
 		
 		openNodes.Add(startNode);
 		
 		while (openNodes.Count > 0){
-			Node currentNode = openNodes[0];
-			//start with i = 1 so we skip openNode[0] aka our startNode
-			for (int i = 1; i < openNodes.Count; i++){
-				if(openNodes[i].fCost < currentNode.fCost || openNodes[i].fCost == currentNode.fCost && openNodes[i].hCost < currentNode.hCost) {
-					currentNode = openNodes[i];
-				}
-			}
-			
-			openNodes.Remove(currentNode);
+			Node currentNode = openNodes.RemoveFirst();
 			closeNodes.Add (currentNode);
 			
 			if (currentNode == endNode){
@@ -47,6 +38,7 @@ public class Pathfinding : MonoBehaviour {
 					continue; //skip the rest of this loop
 				}
 				
+				// This is where we set the gCost and hCost
 				int newMovementCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor);
 				if(newMovementCostToNeighbor < neighbor.gCost || !openNodes.Contains(neighbor)){
 					neighbor.gCost = newMovementCostToNeighbor;
@@ -55,7 +47,9 @@ public class Pathfinding : MonoBehaviour {
 					
 					if(!openNodes.Contains(neighbor)){
 						openNodes.Add(neighbor);
-					}
+					}else{
+						openNodes.UpdateItem(neighbor);
+					}	
 				}
 			}
 		}
