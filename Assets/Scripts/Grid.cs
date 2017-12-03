@@ -8,14 +8,13 @@ public class Grid : MonoBehaviour {
 	public LayerMask unwalkableMask;
 	public Vector2 gridWorldSize; //wire box
 	public float nodeRadius;
-	
-	public List<Node> path;
+	public bool displayGridGizmos;
 	Node[,] grid; //2D array of nodes
 	
 	float nodeDiameter;
 	int nodeCountX, nodeCountY; // # of nodes on x and y axis
 	
-	void Start(){
+	void Awake(){
 		nodeDiameter = nodeRadius*2;
 		// gets us how many nodes we can fit into grid's x and y
 		nodeCountX = Mathf.RoundToInt(gridWorldSize.x/nodeDiameter); //rounding to Int prevents partial-nodes
@@ -83,15 +82,10 @@ public class Grid : MonoBehaviour {
 	
 	void OnDrawGizmos(){
 		Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, gridWorldSize.y, 1));
-		if (grid != null){
+		if (grid != null && displayGridGizmos){
 			//Node playerNode = NodeAtWorldPosition(player.position); //get player's node position thru it's world pos
 			foreach(Node n in grid){
 				Gizmos.color = (n.walkable) ? Color.white : Color.red;
-				if(path != null){
-					if(path.Contains(n)){
-						Gizmos.color = Color.black;
-					}
-				}
 				Gizmos.DrawCube(n.worldPos, Vector3.one * (nodeDiameter - .1f));
 			}
 		}
