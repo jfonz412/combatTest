@@ -33,4 +33,19 @@ public class Unit : MonoBehaviour {
 			yield return null;
 		}
 	}
+	
+	public void OnDrawGizmos(){
+		if(path != null){
+			for(int i = targetIndex; i < path.Length; i++){
+				Gizmos.color = Color.black;
+				Gizmos.DrawCube(path[i], Vector3.one);
+				
+				if(i == targetIndex){
+					Gizmos.DrawLine(transform.position, path[i]);
+				}else{
+					Gizmos.DrawLine(path[i-1],path[i]);
+				}
+			}
+		}
+	}
 }

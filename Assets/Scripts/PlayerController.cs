@@ -35,9 +35,9 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void Update () {
-		MovePlayer();
+		//MovePlayer();
 		if (target){
-			ChaseTarget();
+			//ChaseTarget();
 		}
 		SetAnimationDirections();
 	}
@@ -53,17 +53,7 @@ public class PlayerController : MonoBehaviour {
 			ProccessClick(); //must be called after mousePos is set
 		}
 		
-		// GET THE LIST OF NODES (PATH) FROM THE GRID SCRIPT
-		// LOOP THROUGH LIST, SETTING EACH NODE'S WORLDPOS TO 'currentTarget'
-		
-		//for i=0; i<path.Count; i++
-		//   while transform.position != currentTargetNode 
-		//      MoveTowards currentTargetNode
-		
-		//   currentTargetNode = path[x]
-		
-		// If there is a target, don't actually call for movement here
-		if(!target){												    //nextNodePos
+		if(!target){											
 			transform.position = Vector3.MoveTowards(transform.position,  mousePos   , speed * Time.deltaTime);
 		}
 	}
