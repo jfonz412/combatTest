@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class DumMove : MonoBehaviour {
-	Vector3 moveSpot = new Vector3(3f,3f,0f);
 
 	// Use this for initialization
 	void Start () {
@@ -12,15 +11,17 @@ public class DumMove : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		if(Input.GetKeyDown(KeyCode.F)){
-			transform.position = moveSpot;
+		//if(Input.GetKeyDown(KeyCode.F)){
+			
 			ChangeMoveSpot();
-		}
+		//}
 	
 	}
 	
 	void ChangeMoveSpot(){
-		moveSpot.x += 2;
-		moveSpot.y -=2;
+		Vector3 moveSpot = transform.position;
+		moveSpot.x += .02f;
+		moveSpot.y += .02f;
+		transform.position = moveSpot;
 	}
 }

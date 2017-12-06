@@ -2,10 +2,15 @@
 using System.Collections;
 
 public class UnitController : MonoBehaviour {
-	float speed = 1f;
+	Animator anim;
 	Vector3[] path;
 	int targetIndex;
-	Animator anim;
+	
+	GameObject targetEntity;
+	Vector3 targetEntityPos;
+	bool chasingEntity = false;
+	
+	float speed = 1f;
 		
 	void Start(){
 		anim = GetComponent<Animator>();
@@ -13,6 +18,10 @@ public class UnitController : MonoBehaviour {
 	
 	void Update(){
 		MovePlayer();
+		
+		if (chasingEntity){
+			FollowEntity();
+		}
 	}
 	
 	
@@ -21,8 +30,40 @@ public class UnitController : MonoBehaviour {
 		
 		if (Input.GetMouseButtonDown(0)) {
 			targetPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-			targetPos.z = transform.position.z; //to always keep z at 0		
+			targetPos.z = transform.position.z; //to always keep z at 0
+			ProcessClick(targetPos);			
+		}
+	}
+	
+	void ProcessClick(Vector3 targetPos){
+		RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector2.zero); //Vector2.zero == (0,0)
+		
+		if (hit.collider != null) {
+			targetEntity = hit.collider.gameObject;
+			Debug.Log("Clicked a collider");
+			// move player towards enemy
+			if(targetEntity.gameObject.GetComponent<Enemy>()){ //or anything other than this gameObject
+				chasingEntity = true;
+				targetEntityPos = targetEntity.transform.position;
+				PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
+				Debug.Log("The collider was an enemy");
+			}else{
+				PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
+				chasingEntity = false;
+				Debug.Log("The collider was NOT an enemy");
+			}
+		}else{
 			PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
+			chasingEntity = false;
+			Debug.Log("Did not click a collider");
+		}
+	
+	}
+	
+	void FollowEntity(){
+		if (targetEntity.transform.position != targetEntityPos){
+			targetEntityPos = targetEntity.transform.position;
+			PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
 		}
 	}
 	
