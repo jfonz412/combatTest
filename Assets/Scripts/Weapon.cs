@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Weapon : MonoBehaviour {
 	public float weaponAttackDamage;
-	public float range = 0.5f;
+	public float range = 1.5f;
 	GameObject myOwner;
 	Animator anim;
 	
@@ -19,8 +19,8 @@ public class Weapon : MonoBehaviour {
 	
 	void SetAnimationAndPosition(){
 		transform.position = myOwner.transform.position;
-		float x = myOwner.GetComponent<PlayerController>().inputX;
-		float y = myOwner.GetComponent<PlayerController>().inputY;
+		float x = myOwner.GetComponent<UnitController>().inputX;
+		float y = myOwner.GetComponent<UnitController>().inputY;
 		anim.SetFloat("x", x);
 		anim.SetFloat ("y", y);
 	}

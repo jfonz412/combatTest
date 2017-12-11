@@ -7,13 +7,20 @@ public class UnitController : MonoBehaviour {
 	int targetIndex;
 	
 	GameObject targetEntity;
-	Vector3 targetEntityPos;
+	Vector3 targetEntityPos; //track target's last position
 	bool chasingEntity = false;
 	
-	float speed = 1f;
+	//for blend tree params
+	public float inputX;
+	public float inputY;
+	
+	Weapon equippedWeapon;
+	float speed = 2f;
 		
 	void Start(){
 		anim = GetComponent<Animator>();
+		equippedWeapon = GetComponent<AttackController>().equippedWeapon.GetComponent<Weapon>();
+		Debug.Log("Weapon Range is: " + equippedWeapon.range);
 	}
 	
 	void Update(){
@@ -40,30 +47,39 @@ public class UnitController : MonoBehaviour {
 		
 		if (hit.collider != null) {
 			targetEntity = hit.collider.gameObject;
-			Debug.Log("Clicked a collider");
+			//Debug.Log("Clicked a collider");
 			// move player towards enemy
 			if(targetEntity.gameObject.GetComponent<Enemy>()){ //or anything other than this gameObject
 				chasingEntity = true;
 				targetEntityPos = targetEntity.transform.position;
 				PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
-				Debug.Log("The collider was an enemy");
+				//Debug.Log("The collider was an enemy");
 			}else{
-				PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
 				chasingEntity = false;
-				Debug.Log("The collider was NOT an enemy");
+				PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
+				//Debug.Log("The collider was NOT an enemy");
 			}
 		}else{
-			PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
 			chasingEntity = false;
-			Debug.Log("Did not click a collider");
+			PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
+			//Debug.Log("Did not click a collider");
 		}
 	
 	}
 	
+	
 	void FollowEntity(){
-		if (targetEntity.transform.position != targetEntityPos){
+		//check if target has moved since we last saved it's pos
+		if (targetEntityPos != targetEntity.transform.position){
 			targetEntityPos = targetEntity.transform.position;
-			PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
+			PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound); 
+		}
+		// Attack when in range
+		Debug.Log (Vector3.Distance(transform.position,targetEntityPos)); 
+		// From east and west the player is too far, might have to do with node spacing or the disctance between
+		// transforms from this angle
+		if (Vector3.Distance(transform.position,targetEntityPos) < equippedWeapon.range){
+			GetComponent<AttackController>().Attack(targetEntity);
 		}
 	}
 	
@@ -71,8 +87,8 @@ public class UnitController : MonoBehaviour {
 	// not setting proper x and y values to get correct walking direction
 	void SetWalkAngle(Vector2 startPos, Vector2 endPos){
 		Vector2 relativePos =  endPos - startPos;
-		float inputX = relativePos.x;
-		float inputY = relativePos.y;
+		inputX = relativePos.x;
+		inputY = relativePos.y;
 		
 		anim.SetBool("isWalking", true);
 		anim.SetFloat("x", inputX);

@@ -20,8 +20,8 @@ public class DumMove : MonoBehaviour {
 	
 	void ChangeMoveSpot(){
 		Vector3 moveSpot = transform.position;
-		moveSpot.x += .02f;
-		moveSpot.y += .02f;
+		moveSpot.x += .005f;
+		moveSpot.y += .005f;
 		transform.position = moveSpot;
 	}
 }

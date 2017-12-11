@@ -34,11 +34,12 @@ public class PathfindingManager : MonoBehaviour {
 	}
 	
 	public void FinishedProcessingPath(Vector3[] path, bool success){
-		currentPathRequest.callback(path, success);
+		currentPathRequest.callback(path, success); //this is where we pass along the finished path to the currentPathRequest
 		isProcessingPath = false;
 		TryProcessNext();
 	}
 	
+	// this is called in our unit controllers
 	struct PathRequest {
 		public Vector3 pathStart;
 		public Vector3 pathEnd;
