@@ -69,6 +69,17 @@ public class UnitController : MonoBehaviour {
 	
 	
 	void FollowEntity(){
+	
+		//check if target has moved since we last saved it's pos
+		if(targetEntity != null ){
+		if (Vector3.Distance(targetEntityPos, targetEntity.transform.position) > 1f){
+			targetEntityPos = targetEntity.transform.position;
+			PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound); 
+		}else if((Vector3.Distance(transform.position,targetEntityPos) < equippedWeapon.range)){
+			GetComponent<AttackController>().Attack(targetEntity);
+		}
+		}
+		/*
 		//check if target has moved since we last saved it's pos
 		if (targetEntityPos != targetEntity.transform.position){
 			targetEntityPos = targetEntity.transform.position;
@@ -81,6 +92,7 @@ public class UnitController : MonoBehaviour {
 		if (Vector3.Distance(transform.position,targetEntityPos) < equippedWeapon.range){
 			GetComponent<AttackController>().Attack(targetEntity);
 		}
+		*/
 	}
 	
 	

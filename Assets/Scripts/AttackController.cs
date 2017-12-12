@@ -16,8 +16,9 @@ public class AttackController : MonoBehaviour {
 	// Get these from stats? or Stats --> Unit? Probably just stats, stats can take care of the calculations
 	//float attack;
 	//float defense;
-	
-	float timer = 1.5f; //replace with weapon speed
+
+	//public so that i can watch if for debugging	
+	public float timer = 1.5f; //replace with weapon speed
 	bool coolingDown = false;
 	
 	
@@ -27,6 +28,7 @@ public class AttackController : MonoBehaviour {
 			SpawnWeapon();
 		}
 	}
+	
 	
 	public void Attack(GameObject target){
 		if (!coolingDown) {
