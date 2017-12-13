@@ -72,27 +72,16 @@ public class UnitController : MonoBehaviour {
 	
 		//check if target has moved since we last saved it's pos
 		if(targetEntity != null ){
-		if (Vector3.Distance(targetEntityPos, targetEntity.transform.position) > 1f){
-			targetEntityPos = targetEntity.transform.position;
-			PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound); 
-		}else if((Vector3.Distance(transform.position,targetEntityPos) < equippedWeapon.range)){
-			GetComponent<AttackController>().Attack(targetEntity);
+			float distanceFromTarget = Vector3.Distance(targetEntityPos, targetEntity.transform.position);
+			if (distanceFromTarget > 1f || distanceFromTarget > equippedWeapon.range){
+				Debug.Log("Distance to target while chasing is: " + distanceFromTarget);
+				targetEntityPos = targetEntity.transform.position;
+				PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound); 
+			}else if((Vector3.Distance(transform.position,targetEntityPos) < equippedWeapon.range)){
+				GetComponent<AttackController>().Attack(targetEntity);
+				Debug.Log("Distance to target while attacking is: " + distanceFromTarget);
+			}
 		}
-		}
-		/*
-		//check if target has moved since we last saved it's pos
-		if (targetEntityPos != targetEntity.transform.position){
-			targetEntityPos = targetEntity.transform.position;
-			PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound); 
-		}
-		// Attack when in range
-		Debug.Log (Vector3.Distance(transform.position,targetEntityPos)); 
-		// From east and west the player is too far, might have to do with node spacing or the disctance between
-		// transforms from this angle
-		if (Vector3.Distance(transform.position,targetEntityPos) < equippedWeapon.range){
-			GetComponent<AttackController>().Attack(targetEntity);
-		}
-		*/
 	}
 	
 	
@@ -109,6 +98,7 @@ public class UnitController : MonoBehaviour {
 	
 	public void OnPathFound(Vector3[] newPath, bool pathSuccessful){
 		if(pathSuccessful){
+			Debug.Log(this + " is Starting new path");
 			targetIndex = 0;
 			path = newPath;
 			StopCoroutine("FollowPath"); 
