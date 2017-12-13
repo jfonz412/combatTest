@@ -47,39 +47,59 @@ public class UnitController : MonoBehaviour {
 		
 		if (hit.collider != null) {
 			targetEntity = hit.collider.gameObject;
-			//Debug.Log("Clicked a collider");
+			Debug.Log("Clicked a collider");
 			// move player towards enemy
 			if(targetEntity.gameObject.GetComponent<Enemy>()){ //or anything other than this gameObject
 				chasingEntity = true;
 				targetEntityPos = targetEntity.transform.position;
 				PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
-				//Debug.Log("The collider was an enemy");
+				Debug.Log("The collider was an enemy");
 			}else{
 				chasingEntity = false;
 				PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
-				//Debug.Log("The collider was NOT an enemy");
+				Debug.Log("The collider was NOT an enemy");
 			}
 		}else{
 			chasingEntity = false;
 			PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
-			//Debug.Log("Did not click a collider");
+			Debug.Log("Did not click a collider");
 		}
 	
 	}
 	
 	
-	void FollowEntity(){
-	
+	void FollowEntity(){	
 		//check if target has moved since we last saved it's pos
 		if(targetEntity != null ){
-			float distanceFromTarget = Vector3.Distance(targetEntityPos, targetEntity.transform.position);
-			if (distanceFromTarget > 1f || distanceFromTarget > equippedWeapon.range){
-				Debug.Log("Distance to target while chasing is: " + distanceFromTarget);
+		
+		/*
+			(((will run every frame)))
+			if target has moved
+				request a new path
+			else
+				don't and continue on until path is finished
+			
+			if path is finished
+				if I'm not in weapon range
+					close the gap 
+				else
+					attack
+		*/
+			if (Vector3.Distance(targetEntityPos, targetEntity.transform.position) > 1f) { 
 				targetEntityPos = targetEntity.transform.position;
-				PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound); 
-			}else if((Vector3.Distance(transform.position,targetEntityPos) < equippedWeapon.range)){
-				GetComponent<AttackController>().Attack(targetEntity);
-				Debug.Log("Distance to target while attacking is: " + distanceFromTarget);
+				PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
+			}
+			
+			//should probably use a different bool
+			if (anim.GetBool("isWalking") == false){
+				if (Vector3.Distance(transform.position, targetEntity.transform.position) > equippedWeapon.range){
+					targetEntityPos = targetEntity.transform.position;
+					Debug.Log ("Distance is " + Vector3.Distance(transform.position, targetEntity.transform.position));
+					PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound); //something is still stopping me from going that extra bit
+				}else{
+					Debug.Log ("Distance is WHILE ATTCKING " + Vector3.Distance(transform.position, targetEntity.transform.position));
+					GetComponent<AttackController>().Attack(targetEntity);
+				}
 			}
 		}
 	}
