@@ -24,6 +24,7 @@ public class Pathfinding : MonoBehaviour {
 	
 		Node startNode = grid.NodeAtWorldPosition(startPos);
 		Node endNode = grid.NodeAtWorldPosition(endPos);
+		Debug.Log("BEFORE endNode.worldPos: " + endNode.worldPos);
 		
 		if(startNode.walkable && endNode.walkable){
 		
@@ -65,15 +66,17 @@ public class Pathfinding : MonoBehaviour {
 		}
 		yield return null;
 		if(pathSuccess){
-			waypoints = RetracePath(startNode, endNode);
+			
+			waypoints = RetracePath(startNode, endNode); 
 		}
+		Debug.Log("AFTER endNode.worldPos: " + waypoints[waypoints.Length-1]);
 		requestManager.FinishedProcessingPath(waypoints, pathSuccess); //this is where the finished path leaves Pathfinding.cs
 	}
 	
 	Vector3[] RetracePath(Node startNode, Node endNode){
 		List<Node> path = new List<Node>();
 		Node currentNode = endNode;
-
+	
 		if(endNode == startNode){
 			path.Add(endNode);
 		}else{		
@@ -92,16 +95,18 @@ public class Pathfinding : MonoBehaviour {
 		List<Vector3> waypoints = new List<Vector3>();
 		Vector2 directionOld = Vector2.zero;
 		
-		if (path.Count == 1){
-			waypoints.Add(path[0].worldPos); 
-		}else{
-			for (int i = 1; i<path.Count; i++){
-				Vector2 directionNew = new Vector2(path[i-1].x - path[i].x, path[i-1].y - path[i].y);
-				if(directionNew != directionOld){
-					waypoints.Add(path[i].worldPos);
-				}
-				directionOld = directionNew;
+		//make sure to add the proper end node
+		waypoints.Add(path[0].worldPos);
+		for (int i = 1; i<path.Count; i++){
+			Vector2 directionNew = new Vector2(path[i-1].x - path[i].x, path[i-1].y - path[i].y);
+			if(directionNew != directionOld){
+				waypoints.Add(path[i].worldPos);
 			}
+			directionOld = directionNew;
+		}
+		//smooth the path out after adding the end node manually
+		if(path.Count > 1){
+			waypoints.Remove(path[1].worldPos);
 		}
 		return waypoints.ToArray();
 	}

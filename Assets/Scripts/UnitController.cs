@@ -47,44 +47,40 @@ public class UnitController : MonoBehaviour {
 		
 		if (hit.collider != null) {
 			targetEntity = hit.collider.gameObject;
-			Debug.Log("Clicked a collider");
+			//Debug.Log("Clicked a collider");
 			// move player towards enemy
 			if(targetEntity.gameObject.GetComponent<Enemy>()){ //or anything other than this gameObject
 				chasingEntity = true;
 				targetEntityPos = targetEntity.transform.position;
 				PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
-				Debug.Log("The collider was an enemy");
+				//Debug.Log("The collider was an enemy");
 			}else{
 				chasingEntity = false;
 				PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
-				Debug.Log("The collider was NOT an enemy");
+				//Debug.Log("The collider was NOT an enemy");
 			}
 		}else{
 			chasingEntity = false;
 			PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
-			Debug.Log("Did not click a collider");
+			//Debug.Log("Did not click a collider");
 		}
 	
 	}
 	
 	
 	void FollowEntity(){	
-		//check if target has moved since we last saved it's pos
 		if(targetEntity != null ){
-		
-		/*
-			(((will run every frame)))
-			if target has moved
-				request a new path
-			else
-				don't and continue on until path is finished
+			// after x > 6.5 the glitch is triggered w/ nodes set to 0.2
+			//when approaching from east to target past 6.5, but when that next path is set to the same/next node he turns around
 			
-			if path is finished
-				if I'm not in weapon range
-					close the gap 
-				else
-					attack
-		*/
+			//player does not go all the way to target node in general, stops a node before
+			//neither do dummies with transform targets (how the pathfinding is set up in the video)
+			//so do the gizmos
+			
+			//I suspect this is because the end node is at some point getting lost, so the next best node is used as the last node
+			//try logging the actual coordinate of the last node in the Path
+			//we are definintly losing the last node, it works when we are only moving one node though
+			//try just failing the path if 0 nodes also, it's cleaner
 			if (Vector3.Distance(targetEntityPos, targetEntity.transform.position) > 1f) { 
 				targetEntityPos = targetEntity.transform.position;
 				PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
@@ -94,10 +90,10 @@ public class UnitController : MonoBehaviour {
 			if (anim.GetBool("isWalking") == false){
 				if (Vector3.Distance(transform.position, targetEntity.transform.position) > equippedWeapon.range){
 					targetEntityPos = targetEntity.transform.position;
-					Debug.Log ("Distance is " + Vector3.Distance(transform.position, targetEntity.transform.position));
+					//Debug.Log ("CHASING Distance is: " + Vector3.Distance(transform.position, targetEntity.transform.position));
 					PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound); //something is still stopping me from going that extra bit
 				}else{
-					Debug.Log ("Distance is WHILE ATTCKING " + Vector3.Distance(transform.position, targetEntity.transform.position));
+					//Debug.Log ("ATTACKING Distance is: " + Vector3.Distance(transform.position, targetEntity.transform.position));
 					GetComponent<AttackController>().Attack(targetEntity);
 				}
 			}
@@ -118,7 +114,7 @@ public class UnitController : MonoBehaviour {
 	
 	public void OnPathFound(Vector3[] newPath, bool pathSuccessful){
 		if(pathSuccessful){
-			Debug.Log(this + " is Starting new path");
+			//Debug.Log(this + " is Starting new path");
 			targetIndex = 0;
 			path = newPath;
 			StopCoroutine("FollowPath"); 
