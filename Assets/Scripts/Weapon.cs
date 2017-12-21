@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Weapon : MonoBehaviour {
 	public float weaponAttackDamage;
-	public float range = 1.5f;
+	public float range = 5f;
 	GameObject myOwner;
 	Animator anim;
 	

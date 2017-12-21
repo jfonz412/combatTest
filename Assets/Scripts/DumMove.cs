@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DumMove : MonoBehaviour {
 	public Transform target;
-	float speed = .05f;
+	float speed = .01f;
 	Vector3[] path;
 	int targetIndex;
 	

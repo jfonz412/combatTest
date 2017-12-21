@@ -24,7 +24,6 @@ public class Pathfinding : MonoBehaviour {
 	
 		Node startNode = grid.NodeAtWorldPosition(startPos);
 		Node endNode = grid.NodeAtWorldPosition(endPos);
-		Debug.Log("BEFORE endNode.worldPos: " + endNode.worldPos);
 		
 		if(startNode.walkable && endNode.walkable){
 		
@@ -69,7 +68,6 @@ public class Pathfinding : MonoBehaviour {
 			
 			waypoints = RetracePath(startNode, endNode); 
 		}
-		Debug.Log("AFTER endNode.worldPos: " + waypoints[waypoints.Length-1]);
 		requestManager.FinishedProcessingPath(waypoints, pathSuccess); //this is where the finished path leaves Pathfinding.cs
 	}
 	

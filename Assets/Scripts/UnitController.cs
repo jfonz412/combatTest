@@ -33,9 +33,8 @@ public class UnitController : MonoBehaviour {
 	
 	
 	void MovePlayer(){
-		Vector3 targetPos;
-		
 		if (Input.GetMouseButtonDown(0)) {
+			Vector3 targetPos;
 			targetPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
 			targetPos.z = transform.position.z; //to always keep z at 0
 			ProcessClick(targetPos);			
@@ -47,11 +46,12 @@ public class UnitController : MonoBehaviour {
 		
 		if (hit.collider != null) {
 			targetEntity = hit.collider.gameObject;
-			//Debug.Log("Clicked a collider");
+			// Debug.Log("Clicked a collider");
 			// move player towards enemy
 			if(targetEntity.gameObject.GetComponent<Enemy>()){ //or anything other than this gameObject
 				chasingEntity = true;
 				targetEntityPos = targetEntity.transform.position;
+				//if the target is an enemy, subtract the weapon range from the targetPos
 				PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
 				//Debug.Log("The collider was an enemy");
 			}else{
@@ -70,36 +70,50 @@ public class UnitController : MonoBehaviour {
 	
 	void FollowEntity(){	
 		if(targetEntity != null ){
-			// after x > 6.5 the glitch is triggered w/ nodes set to 0.2
-			//when approaching from east to target past 6.5, but when that next path is set to the same/next node he turns around
-			
-			//player does not go all the way to target node in general, stops a node before
-			//neither do dummies with transform targets (how the pathfinding is set up in the video)
-			//so do the gizmos
-			
-			//I suspect this is because the end node is at some point getting lost, so the next best node is used as the last node
-			//try logging the actual coordinate of the last node in the Path
-			//we are definintly losing the last node, it works when we are only moving one node though
-			//try just failing the path if 0 nodes also, it's cleaner
+			// check if target has moved
 			if (Vector3.Distance(targetEntityPos, targetEntity.transform.position) > 1f) { 
 				targetEntityPos = targetEntity.transform.position;
 				PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
 			}
 			
-			//should probably use a different bool
+			//should maybe use a different bool?
 			if (anim.GetBool("isWalking") == false){
+				//if I am out of range reset the enemy target position and find a path to the target
 				if (Vector3.Distance(transform.position, targetEntity.transform.position) > equippedWeapon.range){
 					targetEntityPos = targetEntity.transform.position;
-					//Debug.Log ("CHASING Distance is: " + Vector3.Distance(transform.position, targetEntity.transform.position));
-					PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound); //something is still stopping me from going that extra bit
-				}else{
-					//Debug.Log ("ATTACKING Distance is: " + Vector3.Distance(transform.position, targetEntity.transform.position));
+					PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
+					Debug.Log("Moving towards target");
+				//when I am on the target's position, set up next to the neighbor node
+					//getting stuck here still because this and the below if statement can be true at the same time, but this one goes first
+				}else if (Vector3.Distance(transform.position, targetEntity.transform.position) < 0.5f){ 
+					transform.position = Vector3.MoveTowards(transform.position, NeighborNode(), speed  * Time.deltaTime);; 
+					Debug.Log("In range, setting up next to target at: " + NeighborNode());
+				//when I am in position, attack
+				}else if(Vector3.Distance(transform.position, NeighborNode()) < 0.5){
+					Debug.Log("In position, attacking");
 					GetComponent<AttackController>().Attack(targetEntity);
 				}
+				
+				
 			}
 		}
 	}
 	
+	Vector3 NeighborNode(){
+		Vector3 offSet = new Vector3(0f,0f,0f);
+		
+		if (inputX > 0 && inputY > 0){
+			offSet = new Vector3(-0.5f, -0.5f, 0f); //NE
+		}else if (inputX < 0 && inputY < 0){
+			offSet = new Vector3(0.5f, 0.5f, 0f); //SW
+		}else if (inputX < 0 && inputY > 0){
+			offSet = new Vector3(0.5f, -0.5f, 0f); //NW
+		}else if (inputX > 0 && inputY < 0){
+			offSet = new Vector3(-0.5f, 0.5f, 0f); //SE
+		}
+		
+		return targetEntityPos + offSet;
+	}
 	
 	// not setting proper x and y values to get correct walking direction
 	void SetWalkAngle(Vector2 startPos, Vector2 endPos){
@@ -117,6 +131,7 @@ public class UnitController : MonoBehaviour {
 			//Debug.Log(this + " is Starting new path");
 			targetIndex = 0;
 			path = newPath;
+			
 			StopCoroutine("FollowPath"); 
 			StartCoroutine("FollowPath"); 
 		}
@@ -141,7 +156,7 @@ public class UnitController : MonoBehaviour {
 			yield return null;
 		}
 	}
-	
+
 	public void OnDrawGizmos(){
 		if(path != null){
 			for(int i = targetIndex; i < path.Length; i++){
