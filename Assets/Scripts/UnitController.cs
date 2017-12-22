@@ -83,13 +83,13 @@ public class UnitController : MonoBehaviour {
 					targetEntityPos = targetEntity.transform.position;
 					PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
 					Debug.Log("Moving towards target");
-				//when I am on the target's position, set up next to the neighbor node
-					//getting stuck here still because this and the below if statement can be true at the same time, but this one goes first
+				//square up with target so we aren't on top of them. Might replace with collision detection in the future
 				}else if (Vector3.Distance(transform.position, targetEntity.transform.position) < 0.5f){ 
 					transform.position = Vector3.MoveTowards(transform.position, NeighborNode(), speed  * Time.deltaTime);; 
 					Debug.Log("In range, setting up next to target at: " + NeighborNode());
 				//when I am in position, attack
-				}else if(Vector3.Distance(transform.position, NeighborNode()) < 0.5){
+				}
+				if(Vector3.Distance(transform.position, NeighborNode()) < 0.5){
 					Debug.Log("In position, attacking");
 					GetComponent<AttackController>().Attack(targetEntity);
 				}
@@ -101,7 +101,7 @@ public class UnitController : MonoBehaviour {
 	
 	Vector3 NeighborNode(){
 		Vector3 offSet = new Vector3(0f,0f,0f);
-		
+		/*
 		if (inputX > 0 && inputY > 0){
 			offSet = new Vector3(-0.5f, -0.5f, 0f); //NE
 		}else if (inputX < 0 && inputY < 0){
@@ -110,6 +110,16 @@ public class UnitController : MonoBehaviour {
 			offSet = new Vector3(0.5f, -0.5f, 0f); //NW
 		}else if (inputX > 0 && inputY < 0){
 			offSet = new Vector3(-0.5f, 0.5f, 0f); //SE
+		}*/
+		
+		if (inputX > 0 && inputY > 0){
+			offSet = new Vector3(-0.5f, 0f, 0f); //NE
+		}else if (inputX < 0 && inputY < 0){
+			offSet = new Vector3(0.5f, 0f, 0f); //SW
+		}else if (inputX < 0 && inputY > 0){
+			offSet = new Vector3(0f, -0.5f, 0f); //NW
+		}else if (inputX > 0 && inputY < 0){
+			offSet = new Vector3(0f, 0.5f, 0f); //SE
 		}
 		
 		return targetEntityPos + offSet;
