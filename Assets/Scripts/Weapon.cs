@@ -11,8 +11,8 @@ public class Weapon : MonoBehaviour {
 		anim = GetComponent<Animator>();
 	}
 	
-	void Update(){
-		if(myOwner){
+	void Update(){	  //THIS IS JUST TO SKIP SetAnimationPosition()
+		if(myOwner && myOwner.name != "Dummy"){
 			SetAnimationAndPosition();
 		}
 	}
@@ -33,7 +33,7 @@ public class Weapon : MonoBehaviour {
 			return;
 		}else{
 			Health enemyHealth = target.GetComponent<Health>();
-			enemyHealth.TakeDamage(CalculateDamageDealt());
+			enemyHealth.TakeDamage(CalculateDamageDealt(), myOwner);
 		}
 	}
 

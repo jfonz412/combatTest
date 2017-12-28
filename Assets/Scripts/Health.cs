@@ -4,12 +4,12 @@ using System.Collections;
 public class Health : MonoBehaviour {
 	public float health = 100f;
 	private Animator anim;
-	//private Rigidbody2D rb2d;
+	private UnitAI unitAI;
 
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator>();
-		//rb2d = GetComponent<Rigidbody2D>();
+		unitAI = gameObject.GetComponent<UnitAI>();
 	}
 	
 	// Update is called once per frame
@@ -17,11 +17,11 @@ public class Health : MonoBehaviour {
 	
 	}
 	
-	public void TakeDamage(float damage){
+	public void TakeDamage(float damage, GameObject attacker){
 		if (health > 0.0f){
 			health = health - damage;
-			anim.Play("attacked"); //Might want to soft-code this, make it public
-			//StartCoroutine(KnockBack());
+			unitAI.ReactToDisturbance("Damage Taken", attacker);
+			//anim.SetTrigger("hurt");
 		}
 		if (health <= 0.0f){
 			Die();

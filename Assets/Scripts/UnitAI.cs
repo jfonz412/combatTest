@@ -1,74 +1,49 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UnitController : MonoBehaviour {
-	Animator anim;
+public class UnitAI : MonoBehaviour {
+	//Animator anim;
+	//public float inputX;
+	//public float inputY;
+	
 	Vector3[] path;
 	int targetIndex;
 	
 	GameObject targetEntity;
 	Vector3 targetEntityPos; //track target's last position
-	bool chasingEntity = false;
 	
-	//for blend tree params
-	public float inputX;
-	public float inputY;
+	bool chasingEntity = false;
+	bool fleeingEntity = false;
+	bool isWalking = false;
 	
 	Weapon equippedWeapon;
 	float speed = 2f;
-		
+	
 	void Start(){
-		anim = GetComponent<Animator>();
+		//anim = GetComponent<Animator>();
 		equippedWeapon = GetComponent<AttackController>().equippedWeapon.GetComponent<Weapon>();
-		Debug.Log("Weapon Range is: " + equippedWeapon.range);
 	}
 	
 	void Update(){
-		MovePlayer();
-		
-		if (chasingEntity){
+		if(chasingEntity){
 			FollowEntity();
+		}else if(fleeingEntity){
+			//FleeEntity();
+		}else {
+			UnitIdle();
 		}
 	}
 	
-	
-	void MovePlayer(){
-		if (Input.GetMouseButtonDown(0)) {
-			Vector3 targetPos;
-			targetPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-			targetPos.z = transform.position.z; //to always keep z at 0
-			ProcessClick(targetPos);			
+
+	// Might eventually be able to export all reactions to it's own script, and then call them via variables assigned in the inspector
+	public void ReactToDisturbance(string disturbanceType, GameObject target = null){
+		if(disturbanceType == "Damage Taken"){
+			Debug.Log("Don't hit me!!!");
+			targetEntity = target;
+			chasingEntity = true;
 		}
 	}
 	
-	void ProcessClick(Vector3 targetPos){
-		RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector2.zero); //Vector2.zero == (0,0)
-		
-		if (hit.collider != null) {
-			targetEntity = hit.collider.gameObject;
-			// Debug.Log("Clicked a collider");
-			// move player towards enemy
-			if(targetEntity.gameObject.GetComponent<Enemy>()){ //or anything other than this gameObject
-				chasingEntity = true;
-				targetEntityPos = targetEntity.transform.position;
-				//if the target is an enemy, subtract the weapon range from the targetPos
-				PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
-				//Debug.Log("The collider was an enemy");
-			}else{
-				chasingEntity = false;
-				PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
-				//Debug.Log("The collider was NOT an enemy");
-			}
-		}else{
-			chasingEntity = false;
-			PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
-			//Debug.Log("Did not click a collider");
-		}
-	
-	}
-	
-	
-	//still seem to get stuck between squaring up and attacking sometimes, more so on the right side of the map?, but it works
 	void FollowEntity(){	
 		if(targetEntity != null ){
 			// check if target has moved
@@ -78,31 +53,38 @@ public class UnitController : MonoBehaviour {
 			}
 			
 			//should maybe use a different bool?
-			if (anim.GetBool("isWalking") == false){
+			if (isWalking == false){
 				//if I am out of range reset the enemy target position and find a path to the target
 				if (Vector3.Distance(transform.position, targetEntity.transform.position) > equippedWeapon.range){
 					targetEntityPos = targetEntity.transform.position;
 					PathfindingManager.RequestPath(transform.position, targetEntityPos, OnPathFound);
 					Debug.Log("Moving towards target");
-				//square up with target so we aren't on top of them. Might replace with collision detection in the future
+					//square up with target so we aren't on top of them. Might replace with collision detection in the future
 				}else if (Vector3.Distance(transform.position, targetEntity.transform.position) < 0.5f){ 
 					transform.position = Vector3.MoveTowards(transform.position, NeighborNode(), speed  * Time.deltaTime);; 
 					Debug.Log("In range, setting up next to target at: " + NeighborNode());
-				//when I am in position, attack
+					//when I am in position, attack
 				}
 				if(Vector3.Distance(transform.position, NeighborNode()) < 0.5){
 					Debug.Log("In position, attacking");
 					GetComponent<AttackController>().Attack(targetEntity);
 				}
-				
-				
 			}
+		}else{
+			chasingEntity = false;
 		}
 	}
 	
+	void UnitIdle(){
+		//do nothing
+	}
+	
+	
+	
 	Vector3 NeighborNode(){
+	
 		Vector3 offSet = new Vector3(0f,0f,0f);
-		
+	/*
 		if (inputX > 0 && inputY > 0){
 			offSet = new Vector3(-0.5f, 0f, 0f); //NE
 		}else if (inputX < 0 && inputY < 0){
@@ -112,18 +94,22 @@ public class UnitController : MonoBehaviour {
 		}else if (inputX > 0 && inputY < 0){
 			offSet = new Vector3(0f, 0.5f, 0f); //SE
 		}
-		
+	*/
 		return targetEntityPos + offSet;
+		
 	}
-
+	
 	void SetWalkAngle(Vector2 startPos, Vector2 endPos){
+		/*
 		Vector2 relativePos =  endPos - startPos;
 		inputX = relativePos.x;
 		inputY = relativePos.y;
 		
+		isWalking = true;
 		anim.SetBool("isWalking", true);
 		anim.SetFloat("x", inputX);
 		anim.SetFloat("y", inputY);
+		*/
 	}
 	
 	public void OnPathFound(Vector3[] newPath, bool pathSuccessful){
@@ -146,7 +132,7 @@ public class UnitController : MonoBehaviour {
 				if(targetIndex >= path.Length){
 					path = null;
 					targetIndex = 0;
-					anim.SetBool("isWalking", false);
+					isWalking = false;
 					yield break;
 				}
 				currentWaypoint = path[targetIndex];
@@ -156,7 +142,7 @@ public class UnitController : MonoBehaviour {
 			yield return null;
 		}
 	}
-
+	
 	public void OnDrawGizmos(){
 		if(path != null){
 			for(int i = targetIndex; i < path.Length; i++){
