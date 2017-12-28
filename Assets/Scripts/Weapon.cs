@@ -11,8 +11,9 @@ public class Weapon : MonoBehaviour {
 		anim = GetComponent<Animator>();
 	}
 	
-	void Update(){	  //THIS IS JUST TO SKIP SetAnimationPosition()
-		if(myOwner && myOwner.name != "Dummy"){
+	void Update(){
+		//is contantly setting position, might be too expensive
+		if(myOwner){
 			SetAnimationAndPosition();
 		}
 	}
@@ -28,13 +29,8 @@ public class Weapon : MonoBehaviour {
 	public void Attack(GameObject owner, GameObject target){
 		myOwner = owner;
 		anim.SetTrigger("isAttacking");
-		Enemy enemy = target.GetComponent<Enemy>(); // might need to change this if you want to use this script for enemy vs player
-		if (!enemy){
-			return;
-		}else{
-			Health enemyHealth = target.GetComponent<Health>();
-			enemyHealth.TakeDamage(CalculateDamageDealt(), myOwner);
-		}
+		Health enemyHealth = target.GetComponent<Health>();
+		enemyHealth.TakeDamage(CalculateDamageDealt(), myOwner);
 	}
 
 	float CalculateDamageDealt(){

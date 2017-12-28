@@ -3,13 +3,13 @@ using System.Collections;
 
 public class Health : MonoBehaviour {
 	public float health = 100f;
-	private Animator anim;
-	private UnitAI unitAI;
+	//private Animator anim;
+	private UnitController unit;
 
 	// Use this for initialization
 	void Start () {
-		anim = GetComponent<Animator>();
-		unitAI = gameObject.GetComponent<UnitAI>();
+		//anim = GetComponent<Animator>();
+		unit = gameObject.GetComponent<UnitController>();
 	}
 	
 	// Update is called once per frame
@@ -20,7 +20,8 @@ public class Health : MonoBehaviour {
 	public void TakeDamage(float damage, GameObject attacker){
 		if (health > 0.0f){
 			health = health - damage;
-			unitAI.ReactToDisturbance("Damage Taken", attacker);
+			Debug.Log (gameObject + "has taken damage");
+			unit.ReactToDisturbance("Damage Taken", attacker);
 			//anim.SetTrigger("hurt");
 		}
 		if (health <= 0.0f){
@@ -33,19 +34,4 @@ public class Health : MonoBehaviour {
 		//animate death
 		Destroy (gameObject);
 	}
-	/*
-	IEnumerator KnockBack(){
-		float timer = 0f;
-		float knockBackTime = 30.0f;
-		
-		while(knockBackTime > timer){
-			rb2d.isKinematic = false;
-			rb2d.AddForce(Vector2.up * .05f);
-			timer += Time.deltaTime;
-			Debug.Log (timer);
-		}
-		rb2d.isKinematic = true;
-		yield return 0;
-	}
-	*/
 }
