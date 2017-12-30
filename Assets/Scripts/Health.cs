@@ -12,15 +12,9 @@ public class Health : MonoBehaviour {
 		unit = gameObject.GetComponent<UnitController>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
 	public void TakeDamage(float damage, GameObject attacker){
 		if (health > 0.0f){
 			health = health - damage;
-			Debug.Log (gameObject + "has taken damage");
 			unit.ReactToDisturbance("Damage Taken", attacker);
 			//anim.SetTrigger("hurt");
 		}

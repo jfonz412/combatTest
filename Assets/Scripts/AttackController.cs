@@ -17,11 +17,6 @@ public class AttackController : MonoBehaviour {
 	//float attack;
 	//float defense;
 
-	//public so that i can watch if for debugging	
-	public float timer = 1.5f; //replace with weapon speed
-	bool coolingDown = false;
-	
-	
 	void Start () {
 		anim = GetComponent<Animator>();
 		if (equippedWeapon){
@@ -29,8 +24,10 @@ public class AttackController : MonoBehaviour {
 		}
 	}
 	
-	
 	public void Attack(GameObject target){
+		anim.SetTrigger("attackTrigger");
+		myWeaponInstance.GetComponent<Weapon>().Attack(gameObject, target);
+	/*
 		if (!coolingDown) {
 			anim.SetTrigger("attackTrigger");
 			myWeaponInstance.GetComponent<Weapon>().Attack(gameObject, target);
@@ -43,6 +40,8 @@ public class AttackController : MonoBehaviour {
 				coolingDown = false;
 			}
 		}
+	*/
+	
 	}
 	
 	void SpawnWeapon(){

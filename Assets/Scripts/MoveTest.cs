@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UnitController : MonoBehaviour {
+public class MoveTest : MonoBehaviour {
+
 	Animator anim;
 	public float inputX;
 	public float inputY;
 	
 	Vector3[] path;
 	int targetIndex;
+	
+	GameObject targetEntity;
+	Vector3 lastTargetPos; //track target's last position
 	
 	bool chasingEntity = false;
 	bool fleeingEntity = false;
@@ -21,9 +25,19 @@ public class UnitController : MonoBehaviour {
 	}
 	
 	void Update(){
-		// Player
 		if (gameObject.name == "Player"){
 			MovePlayer();
+			if (chasingEntity){
+				//FollowEntity();
+			}
+		}else{
+			if(chasingEntity){
+				//FollowEntity();
+			}else if(fleeingEntity){
+				//FleeEntity();
+			}else {
+				UnitIdle();
+			}
 		}
 	}
 	
@@ -72,22 +86,24 @@ public class UnitController : MonoBehaviour {
 	}
 	
 	void ProcessClick(Vector3 targetPos){
-		GameObject targetEntity;		
 		RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector2.zero); //Vector2.zero == (0,0)
 		
 		if (hit.collider != null) {
 			targetEntity = hit.collider.gameObject;
 			if(targetEntity.tag == "Entity"){
-				StartCoroutine(FollowEntity(targetEntity));
+				chasingEntity = true;
+				lastTargetPos = targetEntity.transform.position;
+				PathfindingManager.RequestPath(transform.position, lastTargetPos, OnPathFound);
 			}else{
+				chasingEntity = false;
 				PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
 			}
 		}else{
+			chasingEntity = false;
 			PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
 		}
 		
 	}
-	
 	
 	/***-----------------------------------------NPC FUNCTIONS----------------------------------------------- ***/
 	
@@ -96,7 +112,8 @@ public class UnitController : MonoBehaviour {
 	public void ReactToDisturbance(string disturbanceType, GameObject target = null){
 		if(gameObject.name != "Player"){
 			if(disturbanceType == "Damage Taken"){
-				StartCoroutine(FollowEntity(target));
+				targetEntity = target;
+				chasingEntity = true;
 			}
 		}
 	}
@@ -106,29 +123,14 @@ public class UnitController : MonoBehaviour {
 	}	
 	
 	
-	/******************************************* SHARED FUNCTIONS ***************************************************/
+	/******************************************* HELPER FUNCTIONS ***************************************************/
 	
-	IEnumerator FollowEntity(GameObject targetEntity){
-		Vector3 lastTargetPos = Vector3.one;
-		if(targetEntity != null){
-			lastTargetPos = targetEntity.transform.position;
-		}	
-		
-		while(Vector3.Distance(transform.position, lastTargetPos) > equippedWeapon.range && targetEntity != null){
-			lastTargetPos = targetEntity.transform.position;
+	void FollowEntity(){
+		if(targetEntity != null ){
 			PathfindingManager.RequestPath(transform.position, lastTargetPos, OnPathFound);
-			yield return new WaitForSeconds(2f);
-			yield return null;	
+		}else{
+			chasingEntity = false;
 		}
-		
-		while(Vector3.Distance(transform.position, lastTargetPos) < equippedWeapon.range && targetEntity != null){
-			lastTargetPos = targetEntity.transform.position;
-			GetComponent<AttackController>().Attack(targetEntity);
-			yield return new WaitForSeconds(equippedWeapon.speed);
-			yield return null;
-		}
-		
-
 	}
 	
 	void FaceDirection(Vector2 startPos, Vector2 endPos){	
