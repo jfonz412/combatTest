@@ -9,10 +9,8 @@ public class UnitController : MonoBehaviour {
 	Vector3[] path;
 	int targetIndex;
 	
-	GameObject targetEntity;	
-	
-	//bool chasingEntity = false;
-	//bool fleeingEntity = false;
+	GameObject lastKnownTarget = null;	
+	IEnumerator followingEntity;
 	
 	Weapon equippedWeapon;
 	float speed = 2f;
@@ -75,21 +73,23 @@ public class UnitController : MonoBehaviour {
 	
 	void ProcessClick(Vector3 targetPos){	
 		RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector2.zero); //Vector2.zero == (0,0)
+		GameObject targetEntity;
 		
 		if (hit.collider != null) {
-			targetEntity = hit.collider.gameObject; //might not need to be global
+			targetEntity = hit.collider.gameObject;
 			if(targetEntity.tag == "Entity"){
-				targetEntity = hit.collider.gameObject;
-				StartCoroutine(FollowEntity());
+				if(lastKnownTarget != targetEntity){ //prevent double-click attacks
+					targetEntity = hit.collider.gameObject;
+					HasTarget(true, targetEntity);
+				}
 			}else{
-				targetEntity = null;
+				HasTarget(false);
 				PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
 			}
 		}else{
-			targetEntity = null;
+			HasTarget(false);
 			PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
 		}
-		
 	}
 	
 	
@@ -99,9 +99,8 @@ public class UnitController : MonoBehaviour {
 	// Only works on non-player characters right now
 	public void ReactToDisturbance(string disturbanceType, GameObject target = null){
 		if(gameObject.name != "Player"){
-			if(disturbanceType == "Damage Taken"){
-				targetEntity = target;
-				StartCoroutine(FollowEntity());
+			if(disturbanceType == "Damage Taken" && lastKnownTarget != target){
+				HasTarget(true, target);
 			}
 		}
 	}
@@ -113,10 +112,9 @@ public class UnitController : MonoBehaviour {
 	
 	/******************************************* SHARED FUNCTIONS ***************************************************/
 	
-	IEnumerator FollowEntity(){
+	IEnumerator FollowEntity(GameObject targetEntity){
 		Vector3 lastTargetPos = Vector3.one;
-		
-		//record initial target position
+
 		if(targetEntity != null){
 			lastTargetPos = targetEntity.transform.position;
 		}	
@@ -135,6 +133,23 @@ public class UnitController : MonoBehaviour {
 			}
 		}
 	}
+
+	void HasTarget(bool hasTarget, GameObject targetEntity = null){
+		if(hasTarget){
+			lastKnownTarget = targetEntity;
+			if (followingEntity != null){
+				StopCoroutine(followingEntity); 
+			}
+			followingEntity = FollowEntity(targetEntity); 
+			StartCoroutine(followingEntity); 
+		}else{
+			if (followingEntity != null){
+				StopCoroutine(followingEntity); 
+			}
+			lastKnownTarget = null;
+		}
+	}
+	
 	
 	void FaceDirection(Vector2 startPos, Vector2 endPos){	
 		Vector2 relativePos =  endPos - startPos;
