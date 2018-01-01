@@ -11,13 +11,6 @@ public class Weapon : MonoBehaviour {
 		anim = GetComponent<Animator>();
 	}
 	
-	void Update(){
-		//is contantly setting position, might be too expensive
-		if(myOwner){
-			SetAnimationAndPosition();
-		}
-	}
-	
 	void SetAnimationAndPosition(){
 		transform.position = myOwner.transform.position;
 		float x = myOwner.GetComponent<UnitController>().inputX;
@@ -28,6 +21,7 @@ public class Weapon : MonoBehaviour {
 
 	public void Attack(GameObject owner, GameObject target){
 		myOwner = owner;
+		SetAnimationAndPosition();
 		anim.SetTrigger("isAttacking");
 		Health enemyHealth = target.GetComponent<Health>();
 		enemyHealth.TakeDamage(CalculateDamageDealt(), myOwner);

@@ -9,8 +9,10 @@ public class UnitController : MonoBehaviour {
 	Vector3[] path;
 	int targetIndex;
 	
-	bool chasingEntity = false;
-	bool fleeingEntity = false;
+	GameObject targetEntity;	
+	
+	//bool chasingEntity = false;
+	//bool fleeingEntity = false;
 	
 	Weapon equippedWeapon;
 	float speed = 2f;
@@ -71,18 +73,20 @@ public class UnitController : MonoBehaviour {
 		}
 	}
 	
-	void ProcessClick(Vector3 targetPos){
-		GameObject targetEntity;		
+	void ProcessClick(Vector3 targetPos){	
 		RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector2.zero); //Vector2.zero == (0,0)
 		
 		if (hit.collider != null) {
-			targetEntity = hit.collider.gameObject;
+			targetEntity = hit.collider.gameObject; //might not need to be global
 			if(targetEntity.tag == "Entity"){
-				StartCoroutine(FollowEntity(targetEntity));
+				targetEntity = hit.collider.gameObject;
+				StartCoroutine(FollowEntity());
 			}else{
+				targetEntity = null;
 				PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
 			}
 		}else{
+			targetEntity = null;
 			PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
 		}
 		
@@ -96,7 +100,8 @@ public class UnitController : MonoBehaviour {
 	public void ReactToDisturbance(string disturbanceType, GameObject target = null){
 		if(gameObject.name != "Player"){
 			if(disturbanceType == "Damage Taken"){
-				StartCoroutine(FollowEntity(target));
+				targetEntity = target;
+				StartCoroutine(FollowEntity());
 			}
 		}
 	}
@@ -108,27 +113,27 @@ public class UnitController : MonoBehaviour {
 	
 	/******************************************* SHARED FUNCTIONS ***************************************************/
 	
-	IEnumerator FollowEntity(GameObject targetEntity){
+	IEnumerator FollowEntity(){
 		Vector3 lastTargetPos = Vector3.one;
+		
+		//record initial target position
 		if(targetEntity != null){
 			lastTargetPos = targetEntity.transform.position;
 		}	
 		
-		while(Vector3.Distance(transform.position, lastTargetPos) > equippedWeapon.range && targetEntity != null){
-			lastTargetPos = targetEntity.transform.position;
-			PathfindingManager.RequestPath(transform.position, lastTargetPos, OnPathFound);
-			yield return new WaitForSeconds(2f);
-			yield return null;	
+		while(targetEntity){
+			if(Vector3.Distance(transform.position, lastTargetPos) > equippedWeapon.range && targetEntity != null){
+				lastTargetPos = targetEntity.transform.position;
+				PathfindingManager.RequestPath(transform.position, lastTargetPos, OnPathFound);
+				yield return new WaitForSeconds(2f); 	
+			}
+			if(Vector3.Distance(transform.position, lastTargetPos) < equippedWeapon.range && targetEntity != null){
+				lastTargetPos = targetEntity.transform.position;
+				FaceDirection(transform.position, lastTargetPos);
+				GetComponent<AttackController>().Attack(targetEntity);
+				yield return new WaitForSeconds(equippedWeapon.speed);
+			}
 		}
-		
-		while(Vector3.Distance(transform.position, lastTargetPos) < equippedWeapon.range && targetEntity != null){
-			lastTargetPos = targetEntity.transform.position;
-			GetComponent<AttackController>().Attack(targetEntity);
-			yield return new WaitForSeconds(equippedWeapon.speed);
-			yield return null;
-		}
-		
-
 	}
 	
 	void FaceDirection(Vector2 startPos, Vector2 endPos){	

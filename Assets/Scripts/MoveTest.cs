@@ -16,12 +16,12 @@ public class MoveTest : MonoBehaviour {
 	bool chasingEntity = false;
 	bool fleeingEntity = false;
 	
-	Weapon equippedWeapon;
+	//Weapon equippedWeapon;
 	float speed = 2f;
 	
 	void Start(){
 		anim = GetComponent<Animator>();
-		equippedWeapon = GetComponent<AttackController>().equippedWeapon.GetComponent<Weapon>();
+		//equippedWeapon = GetComponent<AttackController>().equippedWeapon.GetComponent<Weapon>();
 	}
 	
 	void Update(){
