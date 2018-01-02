@@ -11,6 +11,7 @@ public class UnitController : MonoBehaviour {
 	
 	GameObject lastKnownTarget = null;	
 	IEnumerator followingEntity;
+	IEnumerator followingPath;
 	
 	Weapon equippedWeapon;
 	float speed = 2f;
@@ -24,9 +25,11 @@ public class UnitController : MonoBehaviour {
 		// Player
 		if (gameObject.name == "Player"){
 			MovePlayer();
+		}//test
+		else if(Input.GetKeyDown(KeyCode.A)){
+			HasTarget(true, GameObject.Find("Player"));
 		}
 	}
-	
 	
 	/********************************** PATHFINDING *********************************************/
 	
@@ -34,8 +37,11 @@ public class UnitController : MonoBehaviour {
 		if(pathSuccessful){
 			targetIndex = 0;
 			path = newPath;	
-			StopCoroutine("FollowPath"); 
-			StartCoroutine("FollowPath"); 
+			if(followingPath != null){
+				StopCoroutine(followingPath);
+			}
+			followingPath = FollowPath(); 
+			StartCoroutine(followingPath); 
 		}
 	}
 	
@@ -123,9 +129,12 @@ public class UnitController : MonoBehaviour {
 			if(Vector3.Distance(transform.position, lastTargetPos) > equippedWeapon.range && targetEntity != null){
 				lastTargetPos = targetEntity.transform.position;
 				PathfindingManager.RequestPath(transform.position, lastTargetPos, OnPathFound);
-				yield return new WaitForSeconds(2f); 	
+				yield return new WaitForSeconds(1f); 	
 			}
 			if(Vector3.Distance(transform.position, lastTargetPos) < equippedWeapon.range && targetEntity != null){
+				if(followingPath != null){
+					StopCoroutine(followingPath);
+				}
 				lastTargetPos = targetEntity.transform.position;
 				FaceDirection(transform.position, lastTargetPos);
 				GetComponent<AttackController>().Attack(targetEntity);
