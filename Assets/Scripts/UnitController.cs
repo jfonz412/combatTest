@@ -5,9 +5,11 @@ public class UnitController : MonoBehaviour {
 	Animator anim;
 	public float inputX;
 	public float inputY;
+	public int attackerCount = 0; //keeps track of how many enemies can target this object at a time
 	
 	Vector3[] path;
 	int targetIndex;
+	
 	
 	GameObject lastKnownTarget = null;	
 	IEnumerator followingEntity;
@@ -120,7 +122,7 @@ public class UnitController : MonoBehaviour {
 	
 	IEnumerator FollowEntity(GameObject targetEntity){
 		Vector3 lastTargetPos = Vector3.one;
-
+		
 		if(targetEntity != null){
 			lastTargetPos = targetEntity.transform.position;
 		}	
@@ -133,12 +135,13 @@ public class UnitController : MonoBehaviour {
 			}
 			if(Vector3.Distance(transform.position, lastTargetPos) < equippedWeapon.range && targetEntity != null){
 				FaceDirection(transform.position, lastTargetPos);
+				ToggleMovingAnimation(false);
 				if(followingPath != null){
 					StopCoroutine(followingPath);
 				}
 				lastTargetPos = targetEntity.transform.position;
 				GetComponent<AttackController>().Attack(targetEntity);
-				yield return new WaitForSeconds(equippedWeapon.speed); //slows the combat down
+				yield return new WaitForSeconds(equippedWeapon.speed);
 			}
 		}
 	}
