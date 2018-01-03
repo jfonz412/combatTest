@@ -2,8 +2,9 @@
 using System.Collections;
 
 public class Weapon : MonoBehaviour {
-	public float weaponAttackDamage;
-	public float range,speed;
+	//default for melee weapons is 1
+	public float range, speed, condition;
+	public string material, type;
 	GameObject myOwner;
 	Animator anim;
 	
@@ -28,7 +29,7 @@ public class Weapon : MonoBehaviour {
 	}
 
 	float CalculateDamageDealt(){
-		Stats stats = myOwner.GetComponent<Stats>(); //get stats from owner
-		return stats.attack + weaponAttackDamage;
+		Stats stats = myOwner.GetComponent<Stats>();
+		return stats.CalculateTotalAttack(material, type, condition);
 	}
 }

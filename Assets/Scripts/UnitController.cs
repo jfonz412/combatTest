@@ -5,7 +5,6 @@ public class UnitController : MonoBehaviour {
 	Animator anim;
 	public float inputX;
 	public float inputY;
-	public int attackerCount = 0;
 	
 	Vector3[] path;
 	int targetIndex;
