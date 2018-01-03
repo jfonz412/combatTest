@@ -132,13 +132,13 @@ public class UnitController : MonoBehaviour {
 				yield return new WaitForSeconds(1f); 	
 			}
 			if(Vector3.Distance(transform.position, lastTargetPos) < equippedWeapon.range && targetEntity != null){
+				FaceDirection(transform.position, lastTargetPos);
 				if(followingPath != null){
 					StopCoroutine(followingPath);
 				}
 				lastTargetPos = targetEntity.transform.position;
-				FaceDirection(transform.position, lastTargetPos);
 				GetComponent<AttackController>().Attack(targetEntity);
-				yield return new WaitForSeconds(equippedWeapon.speed);
+				yield return new WaitForSeconds(equippedWeapon.speed); //slows the combat down
 			}
 		}
 	}
