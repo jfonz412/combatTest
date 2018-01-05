@@ -102,9 +102,10 @@ public class Pathfinding : MonoBehaviour {
 			}
 			directionOld = directionNew;
 		}
-		//smooth the path out after adding the end node manually
+		//changed path[1] to [0] top stop unit a node short (removes end node)
+		//change back to 1 for more precise movement
 		if(path.Count > 1){
-			waypoints.Remove(path[1].worldPos);
+			waypoints.Remove(path[0].worldPos); 
 		}
 		return waypoints.ToArray();
 	}

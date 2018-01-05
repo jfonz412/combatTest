@@ -32,41 +32,7 @@ public class UnitController : MonoBehaviour {
 			HasTarget(true, GameObject.Find("Player"));
 		}
 	}
-	
-	/********************************** PATHFINDING *********************************************/
-	
-	public void OnPathFound(Vector3[] newPath, bool pathSuccessful){
-		if(pathSuccessful){
-			targetIndex = 0;
-			path = newPath;	
-			if(followingPath != null){
-				StopCoroutine(followingPath);
-			}
-			followingPath = FollowPath(); 
-			StartCoroutine(followingPath); 
-		}
-	}
-	
-	IEnumerator FollowPath(){
-		Vector3 currentWaypoint = path[0];
-		FaceDirection(transform.position, currentWaypoint);
-		ToggleMovingAnimation(true);
-		while(true){
-			if(transform.position == currentWaypoint){
-				targetIndex++;
-				if(targetIndex >= path.Length){
-					path = null;
-					targetIndex = 0;
-					ToggleMovingAnimation(false);
-					yield break;
-				}
-				currentWaypoint = path[targetIndex];
-				FaceDirection(transform.position, currentWaypoint);
-			}
-			transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed  * Time.deltaTime);
-			yield return null;
-		}
-	}
+
 	
 	/*** --------------------------------------------PLAYER FUNCTIONS------------------------------------------------------- ***/
 	
@@ -135,10 +101,13 @@ public class UnitController : MonoBehaviour {
 			}
 			if(Vector3.Distance(transform.position, lastTargetPos) < equippedWeapon.range && targetEntity != null){
 				FaceDirection(transform.position, lastTargetPos);
-				ToggleMovingAnimation(false);
 				
 				if(followingPath != null){
 					StopCoroutine(followingPath);
+					ToggleMovingAnimation(false);
+				}else{
+					StopCoroutine("FollowPath");
+					ToggleMovingAnimation(false);
 				}
 				
 				lastTargetPos = targetEntity.transform.position;
@@ -180,6 +149,47 @@ public class UnitController : MonoBehaviour {
 		}
 		else{
 			anim.SetBool("isWalking", false);
+		}
+	}
+	
+
+	
+	/********************************** PATHFINDING *********************************************/
+	
+	public void OnPathFound(Vector3[] newPath, bool pathSuccessful){
+		if(pathSuccessful){
+			targetIndex = 0;
+			path = newPath;	
+			if(followingPath != null){
+				StopCoroutine(followingPath);
+				followingPath = FollowPath();
+				StartCoroutine(followingPath); 
+			}else{
+				StopCoroutine("FollowPath");
+				followingPath = FollowPath();
+				StartCoroutine(followingPath); 
+			}
+		}
+	}
+	
+	IEnumerator FollowPath(){
+		Vector3 currentWaypoint = path[0];
+		FaceDirection(transform.position, currentWaypoint);
+		ToggleMovingAnimation(true);
+		while(true){
+			if(transform.position == currentWaypoint){
+				targetIndex++;
+				if(targetIndex >= path.Length){
+					path = null;
+					targetIndex = 0;
+					ToggleMovingAnimation(false);
+					yield break;
+				}
+				currentWaypoint = path[targetIndex];
+				FaceDirection(transform.position, currentWaypoint);
+			}
+			transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed  * Time.deltaTime);
+			yield return null;
 		}
 	}
 	

@@ -14,12 +14,11 @@ public class Health : MonoBehaviour {
 	
 	public void TakeDamage(float damage, GameObject attacker){
 		//before you subtract damage, filter incoming damage through a DefenseController
+		currentHealth = currentHealth - damage;
 		if (currentHealth > 0.0f){
-			currentHealth = currentHealth - damage;
 			unit.ReactToDisturbance("Damage Taken", attacker);
 			//anim.SetTrigger("hurt");
-		}
-		else{
+		}else{
 			Die();
 		}
 		Debug.Log (name + " has taken " + damage + " damage!");
