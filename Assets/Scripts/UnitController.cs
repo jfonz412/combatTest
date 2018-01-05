@@ -100,21 +100,23 @@ public class UnitController : MonoBehaviour {
 				yield return new WaitForSeconds(1f); 	
 			}
 			if(Vector3.Distance(transform.position, lastTargetPos) < equippedWeapon.range && targetEntity != null){
-				FaceDirection(transform.position, lastTargetPos);
-				
-				if(followingPath != null){
-					StopCoroutine(followingPath);
-					ToggleMovingAnimation(false);
-				}else{
-					StopCoroutine("FollowPath");
-					ToggleMovingAnimation(false);
-				}
-				
+				StopAndAttack(targetEntity);
 				lastTargetPos = targetEntity.transform.position;
-				GetComponent<AttackController>().Attack(targetEntity);
-				yield return new WaitForSeconds(equippedWeapon.speed);
+				yield return new WaitForSeconds(equippedWeapon.speed +  Random.Range(0.0f, 0.2f));
 			}
 		}
+	}
+	
+	void StopAndAttack(GameObject targetEntity){
+		if(followingPath != null){
+			StopCoroutine(followingPath);
+			ToggleMovingAnimation(false);
+		}else{
+			StopCoroutine("FollowPath");
+			ToggleMovingAnimation(false);
+		}
+		FaceDirection(transform.position, targetEntity.transform.position);
+		GetComponent<AttackController>().Attack(targetEntity);
 	}
 
 	void HasTarget(bool hasTarget, GameObject targetEntity = null){
