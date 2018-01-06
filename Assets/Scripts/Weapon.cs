@@ -2,17 +2,33 @@
 using System.Collections;
 
 public class Weapon : MonoBehaviour {
-	//default for melee weapons is 1
-	public float range, speed, condition;
-	public string material, type;
-	GameObject myOwner;
 	Animator anim;
+	
+	[HideInInspector]
+	public float range; //standard is 1 for melee weapons
+	[HideInInspector]
+	public float speed;
+	
+	public float weaponCondition;
+	public float softness; //1 is max softness
+	public float sharpness;
+	public float weight;
 	
 	void Start(){
 		anim = GetComponent<Animator>();
+		speed = weight / 2;
 	}
 	
-	void SetAnimationAndPosition(){
+	public void Attack(GameObject owner, GameObject target){
+		GameObject myOwner = owner;
+		Health enemyHealth = target.GetComponent<Health>();
+		SetAnimationAndPosition(myOwner);
+		
+		anim.SetTrigger("isAttacking");
+		enemyHealth.TakeDamage(CalculateDamageDealt(owner), myOwner);
+	}
+	
+	void SetAnimationAndPosition(GameObject myOwner){
 		transform.position = myOwner.transform.position;
 		float x = myOwner.GetComponent<UnitController>().inputX;
 		float y = myOwner.GetComponent<UnitController>().inputY;
@@ -20,16 +36,10 @@ public class Weapon : MonoBehaviour {
 		anim.SetFloat ("y", y);
 	}
 
-	public void Attack(GameObject owner, GameObject target){
-		myOwner = owner;
-		SetAnimationAndPosition();
-		anim.SetTrigger("isAttacking");
-		Health enemyHealth = target.GetComponent<Health>();
-		enemyHealth.TakeDamage(CalculateDamageDealt(), myOwner);
+	float CalculateDamageDealt(GameObject owner){
+		//also need to consider weapon condtion? maybe condition just makes it break
+		float unitAttack = owner.GetComponent<Stats>().attack;
+		return unitAttack + weight + sharpness * softness;	
 	}
-
-	float CalculateDamageDealt(){
-		Stats stats = myOwner.GetComponent<Stats>();
-		return stats.CalculateTotalAttack(material, type, condition);
-	}
+	
 }
