@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class UnitController : MonoBehaviour {
-	Animator anim;
+	UnitAnimator anim;
 	public float inputX;
 	public float inputY;
 	
@@ -18,13 +18,13 @@ public class UnitController : MonoBehaviour {
 	float speed = 2f;
 	
 	void Start(){
-		anim = GetComponent<Animator>();
+		anim = GetComponent<UnitAnimator>();
 		equippedWeapon = GetComponent<AttackController>().equippedWeapon.GetComponent<Weapon>();
 	}
 	
 	void Update(){
 		// Player
-		if (gameObject.name == "Player"){
+		if (gameObject.name == "Player" || gameObject.name == "ArmorTest"){
 			MovePlayer();
 		}//test
 		else if(Input.GetKeyDown(KeyCode.A)){
@@ -110,12 +110,12 @@ public class UnitController : MonoBehaviour {
 	void StopAndAttack(GameObject targetEntity){
 		if(followingPath != null){
 			StopCoroutine(followingPath);
-			ToggleMovingAnimation(false);
+			anim.ToggleMovingAnimation(false);
 		}else{
 			StopCoroutine("FollowPath");
-			ToggleMovingAnimation(false);
+			anim.ToggleMovingAnimation(false);
 		}
-		FaceDirection(transform.position, targetEntity.transform.position);
+		anim.FaceDirection(transform.position, targetEntity.transform.position);
 		GetComponent<AttackController>().Attack(targetEntity);
 	}
 
@@ -134,27 +134,6 @@ public class UnitController : MonoBehaviour {
 			lastKnownTarget = null;
 		}
 	}
-	
-	
-	void FaceDirection(Vector2 startPos, Vector2 endPos){	
-		Vector2 relativePos =  endPos - startPos;
-		inputX = relativePos.x;
-		inputY = relativePos.y;
-		
-		anim.SetFloat("x", inputX);
-		anim.SetFloat("y", inputY);		
-	}
-	
-	void ToggleMovingAnimation(bool isMoving){
-		if(isMoving){
-			anim.SetBool("isWalking", true);
-		}
-		else{
-			anim.SetBool("isWalking", false);
-		}
-	}
-	
-
 	
 	/********************************** PATHFINDING *********************************************/
 	
@@ -176,19 +155,19 @@ public class UnitController : MonoBehaviour {
 	
 	IEnumerator FollowPath(){
 		Vector3 currentWaypoint = path[0];
-		FaceDirection(transform.position, currentWaypoint);
-		ToggleMovingAnimation(true);
+		anim.FaceDirection(transform.position, currentWaypoint);
+		anim.ToggleMovingAnimation(true);
 		while(true){
 			if(transform.position == currentWaypoint){
 				targetIndex++;
 				if(targetIndex >= path.Length){
 					path = null;
 					targetIndex = 0;
-					ToggleMovingAnimation(false);
+					anim.ToggleMovingAnimation(false);
 					yield break;
 				}
 				currentWaypoint = path[targetIndex];
-				FaceDirection(transform.position, currentWaypoint);
+				anim.FaceDirection(transform.position, currentWaypoint);
 			}
 			transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed  * Time.deltaTime);
 			yield return null;

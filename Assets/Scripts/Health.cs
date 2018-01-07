@@ -26,7 +26,7 @@ public class Health : MonoBehaviour {
 	}
 	
 	float CalculatedBodilyHarm(float damage){
-		//damage = myStats.AbsoarbAttack(damage);
+		damage = myStats.AbsoarbAttack(damage);
 		//use Indicator class to show messages for damage, blocks, ect (called from myStats)
 		
 		if (damage > 0){

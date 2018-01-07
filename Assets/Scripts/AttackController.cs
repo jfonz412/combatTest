@@ -6,9 +6,9 @@ public class AttackController : MonoBehaviour {
 	GameObject weaponParent;
 	GameObject myWeaponInstance; 
 	
-	[HideInInspector]
-	public float inputX, inputY;
-	Animator anim;
+	//[HideInInspector]
+	//public float inputX, inputY;
+	UnitAnimator anim;
 	
 	//Vector3 mousePos;
 	//Vector2 startPos;
@@ -18,14 +18,14 @@ public class AttackController : MonoBehaviour {
 	//float defense;
 
 	void Start () {
-		anim = GetComponent<Animator>();
+		anim = GetComponent<UnitAnimator>();
 		if (equippedWeapon){
 			SpawnWeapon();
 		}
 	}
 	
 	public void Attack(GameObject target){
-		anim.SetTrigger("attackTrigger");
+		anim.TriggerAttackAnimation();
 		myWeaponInstance.GetComponent<Weapon>().Attack(gameObject, target);
 	/*
 		if (!coolingDown) {
@@ -41,7 +41,6 @@ public class AttackController : MonoBehaviour {
 			}
 		}
 	*/
-	
 	}
 	
 	void SpawnWeapon(){
