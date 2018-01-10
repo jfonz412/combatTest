@@ -78,7 +78,7 @@ public class UnitAnimator : MonoBehaviour {
 			loadedWeapon = null;
 		}
 		
-		if (armorState == 0){
+		if (weaponState == 0){
 			loadedWeapon = Instantiate (Resources.Load ("Iron Dagger"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
 
@@ -104,14 +104,14 @@ public class UnitAnimator : MonoBehaviour {
 	
 	public void ToggleMovingAnimation(bool isMoving){
 		if(isMoving){
-			for (int i = 0; i < animators.Length; i++){
+			for (int i = 0; i < animators.Length -1; i++){ //-1 to remove weapon
 				if (animators [i] != null){
 					animators [i].SetBool("isWalking", true);
 				}
 			}
 		}
 		else{
-			for (int i = 0; i < animators.Length; i++){
+			for (int i = 0; i < animators.Length - 1; i++){ 
 				if (animators [i] != null){
 					animators [i].SetBool("isWalking", false);
 				}

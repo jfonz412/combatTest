@@ -19,14 +19,15 @@ public class UnitController : MonoBehaviour {
 	
 	void Start(){
 		anim = GetComponent<UnitAnimator>();
-		equippedWeapon = GetComponent<AttackController>().equippedWeapon.GetComponent<Weapon>();
+		equippedWeapon = anim.loadedWeapon.GetComponent<Weapon>();
+		//equippedWeapon = GetComponent<AttackController>().equippedWeapon.GetComponent<Weapon>();
 	}
 	
 	void Update(){
 		// Player
-		if (gameObject.name == "Player" || gameObject.name == "ArmorTest"){
+		if (gameObject.name == "Player"){
 			MovePlayer();
-		}//test
+		}//FOR TESTING!!!
 		else if(Input.GetKeyDown(KeyCode.A)){
 			speed = speed/2;
 			HasTarget(true, GameObject.Find("Player"));
@@ -116,7 +117,9 @@ public class UnitController : MonoBehaviour {
 			anim.ToggleMovingAnimation(false);
 		}
 		anim.FaceDirection(transform.position, targetEntity.transform.position);
-		GetComponent<AttackController>().Attack(targetEntity);
+		anim.TriggerAttackAnimation();
+		equippedWeapon.Attack(gameObject, targetEntity);
+		//GetComponent<AttackController>().Attack(targetEntity);
 	}
 
 	void HasTarget(bool hasTarget, GameObject targetEntity = null){
