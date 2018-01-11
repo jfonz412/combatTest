@@ -104,7 +104,7 @@ public class UnitAnimator : MonoBehaviour {
 	
 	public void ToggleMovingAnimation(bool isMoving){
 		if(isMoving){
-			for (int i = 0; i < animators.Length -1; i++){ //-1 to remove weapon
+			for (int i = 0; i < animators.Length; i++){
 				if (animators [i] != null){
 					animators [i].SetBool("isWalking", true);
 				}

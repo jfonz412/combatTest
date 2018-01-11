@@ -3,9 +3,7 @@ using System.Collections;
 
 public class Weapon : MonoBehaviour {
 	[HideInInspector]
-	public float range; //standard is 1 for melee weapons
-	[HideInInspector]
-	public float speed;
+	public float speed, range; //standard is 1 for melee weapons
 	
 	public float weaponCondition;
 	public float softness; //1 is max softness
@@ -13,7 +11,7 @@ public class Weapon : MonoBehaviour {
 	public float weight;
 	
 	void Start(){
-		speed = weight / 2;
+		speed = weight / 2; 
 	}
 	
 	public void Attack(GameObject owner, GameObject target){
@@ -23,8 +21,7 @@ public class Weapon : MonoBehaviour {
 	}
 
 	float CalculateDamageDealt(GameObject owner){
-		//also need to consider weapon condtion? maybe condition just makes it break
-		float unitAttack = owner.GetComponent<Stats>().attack;
-		return unitAttack + weight + sharpness * softness;	
+		float unitAttack = owner.GetComponent<Stats>().attack; 
+		return unitAttack + weight + sharpness * softness;	//also need to consider weapon condtion? maybe condition just makes it break
 	}
 }

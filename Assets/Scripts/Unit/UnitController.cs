@@ -3,8 +3,8 @@ using System.Collections;
 
 public class UnitController : MonoBehaviour {
 	UnitAnimator anim;
-	public float inputX;
-	public float inputY;
+	float inputX;
+	float inputY;
 	
 	Vector3[] path;
 	int targetIndex;
@@ -15,12 +15,11 @@ public class UnitController : MonoBehaviour {
 	IEnumerator followingPath;
 	
 	Weapon equippedWeapon;
-	float speed = 2f;
+	float movementSpeed = 2f;
 	
 	void Start(){
 		anim = GetComponent<UnitAnimator>();
 		equippedWeapon = anim.loadedWeapon.GetComponent<Weapon>();
-		//equippedWeapon = GetComponent<AttackController>().equippedWeapon.GetComponent<Weapon>();
 	}
 	
 	void Update(){
@@ -29,7 +28,6 @@ public class UnitController : MonoBehaviour {
 			MovePlayer();
 		}//FOR TESTING!!!
 		else if(Input.GetKeyDown(KeyCode.A)){
-			speed = speed/2;
 			HasTarget(true, GameObject.Find("Player"));
 		}
 	}
@@ -119,7 +117,6 @@ public class UnitController : MonoBehaviour {
 		anim.FaceDirection(transform.position, targetEntity.transform.position);
 		anim.TriggerAttackAnimation();
 		equippedWeapon.Attack(gameObject, targetEntity);
-		//GetComponent<AttackController>().Attack(targetEntity);
 	}
 
 	void HasTarget(bool hasTarget, GameObject targetEntity = null){
@@ -172,7 +169,7 @@ public class UnitController : MonoBehaviour {
 				currentWaypoint = path[targetIndex];
 				anim.FaceDirection(transform.position, currentWaypoint);
 			}
-			transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed  * Time.deltaTime);
+			transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, movementSpeed  * Time.deltaTime);
 			yield return null;
 		}
 	}

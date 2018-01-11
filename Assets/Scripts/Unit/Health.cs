@@ -2,12 +2,10 @@
 using System.Collections;
 
 public class Health : MonoBehaviour {
-	Stats myStats;
-	
-	private UnitController unit;
 	public float currentHealth; //do not touch, just so I can see it
-	
-	// Use this for initialization
+	UnitController unit;
+	Stats myStats;
+
 	void Start () {
 		myStats = GetComponent<Stats>();
 		currentHealth = myStats.baseHp;
