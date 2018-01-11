@@ -21,6 +21,7 @@ public class UnitAnimator : MonoBehaviour {
 		//Load Armor Set
 		loadArmorSet();
 		loadWeapon();
+		Debug.Log ("animators length is: " + animators.Length);
 	}
 	
 	
@@ -85,7 +86,7 @@ public class UnitAnimator : MonoBehaviour {
 		loadedWeapon.transform.SetParent (armorHolder.transform);
 		loadedWeapon.transform.localPosition = new Vector3 (0,0,0);
 
-		animators [2] = loadedWeapon.GetComponent<Animator> ();	
+		animators [2] = loadedWeapon.GetComponent<Animator>();	
 	}
 	
 	public void FaceDirection(Vector2 startPos, Vector2 endPos){	
@@ -111,7 +112,7 @@ public class UnitAnimator : MonoBehaviour {
 			}
 		}
 		else{
-			for (int i = 0; i < animators.Length - 1; i++){ 
+			for (int i = 0; i < animators.Length; i++){ 
 				if (animators [i] != null){
 					animators [i].SetBool("isWalking", false);
 				}
