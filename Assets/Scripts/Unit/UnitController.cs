@@ -2,20 +2,21 @@
 using System.Collections;
 
 public class UnitController : MonoBehaviour {
+	[HideInInspector]
+	public GameObject lastKnownTarget = null;
+	
 	UnitAnimator anim;
 	float inputX;
-	float inputY;
-	
-	Vector3[] path;
-	int targetIndex;
-	
-	
-	GameObject lastKnownTarget = null;	
-	IEnumerator followingEntity;
-	IEnumerator followingPath;
+	float inputY;	
 	
 	Weapon equippedWeapon;
 	float movementSpeed = 2f;
+	
+	IEnumerator followingEntity;
+	IEnumerator followingPath;
+	Vector3[] path;
+	int targetIndex;
+	
 	
 	void Start(){
 		anim = GetComponent<UnitAnimator>();
@@ -23,67 +24,32 @@ public class UnitController : MonoBehaviour {
 	}
 	
 	void Update(){
-		// Player
-		if (gameObject.name == "Player"){
-			MovePlayer();
-		}//FOR TESTING!!!
-		else if(Input.GetKeyDown(KeyCode.A)){
+		//FOR TESTING!!!
+		if(gameObject.name != "Player" && Input.GetKeyDown(KeyCode.A)){
 			HasTarget(true, GameObject.Find("Player"));
 		}
 	}
+	
+	//How the player object talks to this script
+	public void HasTarget(bool hasTarget, GameObject targetEntity = null){
+		if(hasTarget){
+			lastKnownTarget = targetEntity;
+			if (followingEntity != null){
+				StopCoroutine(followingEntity); 
+			}
+			followingEntity = FollowEntity(targetEntity); 
+			StartCoroutine(followingEntity); 
+		}else{
+			if (followingEntity != null){
+				StopCoroutine(followingEntity); 
+			}
+			lastKnownTarget = null;
+		}
+	}
+	
 
 	
-	/*** --------------------------------------------PLAYER FUNCTIONS------------------------------------------------------- ***/
-	
-	void MovePlayer(){
-		if (Input.GetMouseButtonDown(0)) {
-			Vector3 targetPos;
-			targetPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-			targetPos.z = transform.position.z; //to always keep z at 0
-			ProcessClick(targetPos);			
-		}
-	}
-	
-	void ProcessClick(Vector3 targetPos){	
-		RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector2.zero); //Vector2.zero == (0,0)
-		GameObject targetEntity;
-		
-		if (hit.collider != null) {
-			targetEntity = hit.collider.gameObject;
-			if(targetEntity.tag == "Entity"){
-				if(lastKnownTarget != targetEntity){ //prevent double-click attacks
-					targetEntity = hit.collider.gameObject;
-					HasTarget(true, targetEntity);
-				}
-			}else{
-				HasTarget(false);
-				PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
-			}
-		}else{
-			HasTarget(false);
-			PathfindingManager.RequestPath(transform.position, targetPos, OnPathFound);
-		}
-	}
-	
-	
-	/***-----------------------------------------NPC FUNCTIONS----------------------------------------------- ***/
-	
-	// Might eventually be able to export all reactions to it's own script, and then call them via variables assigned in the inspector
-	// Only works on non-player characters right now
-	public void ReactToDisturbance(string disturbanceType, GameObject target = null){
-		if(gameObject.name != "Player"){
-			if(disturbanceType == "Damage Taken" && lastKnownTarget != target){
-				HasTarget(true, target);
-			}
-		}
-	}
-	
-	void UnitIdle(){
-		//do nothing
-	}	
-	
-	
-	/******************************************* SHARED FUNCTIONS ***************************************************/
+	/******************************************* PRIVATE FUNCTIONS ***************************************************/
 	
 	IEnumerator FollowEntity(GameObject targetEntity){
 		Vector3 lastTargetPos = Vector3.one;
@@ -119,21 +85,6 @@ public class UnitController : MonoBehaviour {
 		equippedWeapon.Attack(gameObject, targetEntity);
 	}
 
-	void HasTarget(bool hasTarget, GameObject targetEntity = null){
-		if(hasTarget){
-			lastKnownTarget = targetEntity;
-			if (followingEntity != null){
-				StopCoroutine(followingEntity); 
-			}
-			followingEntity = FollowEntity(targetEntity); 
-			StartCoroutine(followingEntity); 
-		}else{
-			if (followingEntity != null){
-				StopCoroutine(followingEntity); 
-			}
-			lastKnownTarget = null;
-		}
-	}
 	
 	/********************************** PATHFINDING *********************************************/
 	

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class UnitAnimator : MonoBehaviour {
 	public int armorState; //this is what determines which armor we are choosing to equip. Can also use this to dictate stats (like an armor ID)
-	public int weaponState;
+	public int weaponState; //consider the weaponState indicating which set of animations should play
 	public Animator[] animators;
 	public GameObject loadedArmor;
 	public GameObject armorHolder;
@@ -120,7 +120,6 @@ public class UnitAnimator : MonoBehaviour {
 		}
 	}
 	
-	//not triggering player's attack animation
 	public void TriggerAttackAnimation(){
 		for (int i = 0; i < animators.Length; i++){
 			if (animators [i] != null){
