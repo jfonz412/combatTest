@@ -128,14 +128,16 @@ public class UnitAnimator : MonoBehaviour {
 		}
 	}
 	
-	public void TriggerAttackAnimation(){
+	public void TriggerAttackAnimation(){ //string attackType
+		// if "slash"
 		for (int i = 0; i < animators.Length; i++){
 			if (animators [i] != null){
 				animators [i].SetFloat ("x", inputX);
 				animators [i].SetFloat ("y", inputY);
-				animators [i].SetTrigger("isAttacking");
+				animators [i].SetTrigger("isAttacking"); // isSlashing
 			}
-		}
+		}//else if "stabbing"
+		//else if "cast"
 	}
 	
 	void ResetAnimators(){

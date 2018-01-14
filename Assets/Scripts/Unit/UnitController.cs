@@ -81,7 +81,7 @@ public class UnitController : MonoBehaviour {
 			anim.ToggleMovingAnimation(false);
 		}
 		anim.FaceDirection(transform.position, targetEntity.transform.position);
-		anim.TriggerAttackAnimation();
+		anim.TriggerAttackAnimation(); //pass in equippedWeapon.attackType 
 		equippedWeapon.Attack(gameObject, targetEntity);
 	}
 

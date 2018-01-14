@@ -9,6 +9,7 @@ public class Weapon : MonoBehaviour {
 	public float softness = 1; //1 is max hardness, the harder the better
 	public float sharpness = 1; //the sharper the better
 	public float weight = 1; //the heavier the better
+	//string attackType = "cast"/"slash"/"stab"
 	
 	void Start(){
 		speed = weight / 2; 
