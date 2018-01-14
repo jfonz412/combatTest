@@ -2,76 +2,31 @@
 using System.Collections;
 
 public class UnitAnimator : MonoBehaviour {
-	public int armorState; //this is what determines which armor we are choosing to equip. Can also use this to dictate stats (like an armor ID)
-	public int weaponState; //consider the weaponState indicating which set of animations should play
 	public Animator[] animators;
-	public GameObject loadedArmor;
-	public GameObject armorHolder;
+	public GameObject unitBody;
+	
+	public int torsoID; //this is what determines which armor we are choosing to equip. Can also use this to dictate stats (like an armor ID)
+	public int LegID;
+	public int weaponID; //consider the weaponID indicating which set of animations should play
+
+	public GameObject loadedTorsoArmor;
+	public GameObject loadedLegArmor;
 	public GameObject loadedWeapon;
-	public GameObject weaponHolder;
 	
 	float inputX = 0f;
 	float inputY = -1f;
 	
 	// Use this for initialization
 	void Start () {
-		animators = new Animator[3];
+		animators = new Animator[4];
 		//Get Character Animator
 		animators [0] = GetComponent<Animator> ();
-		//Load Armor Set
-		loadArmorSet();
-		loadWeapon();
-		Debug.Log ("animators length is: " + animators.Length);
+		//Load Equipment
+		loadWeapon();     //1
+		loadTorsoArmor(); //2
+		loadLegArmor();   //3
 	}
 	
-	
-	void loadArmorSet(){
-		//Get rid of old armor if there is any
-		if (loadedArmor != null){
-			// If we were going to be doing alot of armor changes we may want to disable the current armor and pool it.
-			// If this like an RPG where the player will only be changing armor on upgrades then destory is fine.
-			// Because we likely wont be recalling the old armor.
-			Destroy (loadedArmor.gameObject);
-			loadedArmor = null;
-		}
-		
-		if (armorState == 0){
-			//We are doing a resource load instead of having all of the armor on the player but disabled incase there are several 
-			//Armor sets so we wont have to worry about loading for exaomple 10 armors all at once.
-			//Resources require a special folder, prefabs in that folder, and string dependant loading. 
-			//if the armor is in sub folders you will need to path down to them for example.
-			// "/armor/AurthorSilverCostume"
-			loadedArmor = Instantiate (Resources.Load ("PlateIronTorso"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
-		}
-		
-		/*
-		if (armorState == 1){
-			loadedArmor = Instantiate (Resources.Load ("LeatherTorso"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
-		}
-		*/
-		
-		//Attach the armor
-		loadedArmor.transform.SetParent (armorHolder.transform);
-		
-		//Make sure armor is centered and right scale
-		loadedArmor.transform.localPosition = new Vector3 (0,0,0);
-		//loadedArmor.transform.localScale = new Vector3 (1, 1, 1);
-		
-		//Grab the animator for the loaded armor
-		animators [1] = loadedArmor.GetComponent<Animator> ();
-		
-		//Now we need to sync animators
-		//the best way to do that is to quickly set their animation to idle
-		//might need to reset bools too
-		
-		for (int i = 0; i < animators.Length; i++){
-			if (animators [i] != null){
-				animators [i].SetFloat ("x", inputX);
-				animators [i].SetFloat ("y", inputY);
-			}
-		}
-		
-	}
 	
 	void loadWeapon(){
 		if (loadedWeapon != null){
@@ -79,15 +34,68 @@ public class UnitAnimator : MonoBehaviour {
 			loadedWeapon = null;
 		}
 		
-		if (weaponState == 0){
+		if (weaponID == 0){
 			loadedWeapon = Instantiate (Resources.Load ("Iron Dagger"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
-
-		loadedWeapon.transform.SetParent (armorHolder.transform);
+		
+		loadedWeapon.transform.SetParent (unitBody.transform);
 		loadedWeapon.transform.localPosition = new Vector3 (0,0,0);
-
-		animators [2] = loadedWeapon.GetComponent<Animator>();	
+		
+		animators [1] = loadedWeapon.GetComponent<Animator>();
+		ResetAnimators();	
 	}
+	
+	
+	void loadTorsoArmor(){
+		//Get rid of old armor if there is any
+		if (loadedTorsoArmor != null){
+			//PutItemBackInInventory(loadedTorsoArmor);
+			Destroy (loadedTorsoArmor.gameObject);
+			loadedTorsoArmor = null;
+		}
+		
+		if (torsoID == 0){
+			loadedTorsoArmor = Instantiate (Resources.Load ("PlateIronTorso"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+		}
+		
+		//Attach the armor
+		loadedTorsoArmor.transform.SetParent (unitBody.transform);
+		
+		//Make sure armor is centered and right scale
+		loadedTorsoArmor.transform.localPosition = new Vector3 (0,0,0);
+		
+		//Grab the animator for the loaded armor
+		animators [2] = loadedTorsoArmor.GetComponent<Animator> ();
+		
+		ResetAnimators();
+	}
+	
+	void loadLegArmor(){
+		//Get rid of old armor if there is any
+		if (loadedLegArmor != null){
+			//PutItemBackInInventory(loadedTorsoArmor);
+			Destroy (loadedLegArmor.gameObject);
+			loadedLegArmor = null;
+		}
+		
+		if (LegID == 0){
+			loadedLegArmor = Instantiate (Resources.Load ("PlateIronLegs"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+		}
+		
+		//Attach the armor
+		loadedLegArmor.transform.SetParent (unitBody.transform);
+		
+		//Make sure armor is centered and right scale
+		loadedLegArmor.transform.localPosition = new Vector3 (0,0,0);
+		
+		//Grab the animator for the loaded armor
+		animators [3] = loadedLegArmor.GetComponent<Animator> ();
+		
+		ResetAnimators();
+	}
+	
+	
+	/************************* PUBLIC FUNCTIONS ****************************************/
 	
 	public void FaceDirection(Vector2 startPos, Vector2 endPos){	
 		Vector2 relativePos =  endPos - startPos;
@@ -126,6 +134,16 @@ public class UnitAnimator : MonoBehaviour {
 				animators [i].SetFloat ("x", inputX);
 				animators [i].SetFloat ("y", inputY);
 				animators [i].SetTrigger("isAttacking");
+			}
+		}
+	}
+	
+	void ResetAnimators(){
+		//might need to reset bools too
+		for (int i = 0; i < animators.Length; i++){
+			if (animators [i] != null){
+				animators [i].SetFloat ("x", inputX);
+				animators [i].SetFloat ("y", inputY);
 			}
 		}
 	}

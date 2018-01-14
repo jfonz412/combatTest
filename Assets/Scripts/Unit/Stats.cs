@@ -2,21 +2,49 @@
 using System.Collections;
 
 public class Stats : MonoBehaviour {
-	public float attack;
-	public float defense;
+	[SerializeField]
+	public float baseAttack;
+	[SerializeField]
+	public float baseDefense;
+	[SerializeField]
 	public float baseHp;
 	
-	//need functions or getters/setters to calculate skills after items, status', ect.
+
+	public float CalculatedBodilyHarm(float incomingDamage){
+		int bodyPartID = PickBodyPart(); 
+		float totalDamage = AbsorbAttack(incomingDamage, bodyPartID);
+		
+		if (totalDamage > 0){
+			DamageStats(bodyPartID,totalDamage);	
+		}
+		return totalDamage;
+	}
 	
-	public void LevelUp(string skill){
-		//skill + 1
+	float AbsorbAttack(float incomingDamage, int targetedBodyPartID){
+		UnitAnimator anim = GetComponent<UnitAnimator>();
+		//Armor armor = anim.loadedArmor.GetComponent<Armor>();
+		float totalDamage = incomingDamage; //= 0;
+		
+		return totalDamage;
 	}
-	public float AbsoarbAttack(float incomingDamage){
-		float damage = incomingDamage;
-		return damage;
-			
+	
+	int PickBodyPart(){
+		//use random bodypart for now with percentages of being selected to determine where blow has landed
+		// the int should corrospond with the appropriate armor slot
+		return 1;
 	}
-	public void DamageStats(string bodyPart,float damage){
+	
+	void DamageStats(int bodyPart,float damage){
 		//skills deducted depending on damage and bdy part
+	}
+	
+	
+	
+	/******************** STATS *****************************************/
+	
+	public float attack {
+		get {
+			return baseAttack;
+		}
 	}
 }

@@ -14,12 +14,12 @@ public class Weapon : MonoBehaviour {
 		speed = weight / 2; 
 	}
 	
-	public void Attack(GameObject owner, GameObject target){
-		GameObject myOwner = owner;
+	public void Attack(GameObject owner, GameObject target){ //instead of passing GameObject, might be better to retrieve parent's parent?
 		Health enemyHealth = target.GetComponent<Health>();
-		enemyHealth.TakeDamage(CalculateDamageDealt(owner), myOwner);
+		enemyHealth.TakeDamage(CalculateDamageDealt(owner), owner);
 	}
 
+	//Calculate the damage of the weapon
 	float CalculateDamageDealt(GameObject owner){
 		float unitAttack = owner.GetComponent<Stats>().attack; 
 		return unitAttack + weight + sharpness * softness;	//also need to consider weapon condtion? maybe condition just makes it break
