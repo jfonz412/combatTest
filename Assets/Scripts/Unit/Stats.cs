@@ -9,29 +9,28 @@ public class Stats : MonoBehaviour {
 	[SerializeField]
 	public float baseHp;
 	
-
-	public float CalculatedBodilyHarm(float incomingDamage){
-		int bodyPartID = PickBodyPart(); 
-		float totalDamage = AbsorbAttack(incomingDamage, bodyPartID);
-		
-		if (totalDamage > 0){
-			DamageStats(bodyPartID,totalDamage);	
-		}
-		return totalDamage;
-	}
+	UnitAnimator anim;
 	
-	float AbsorbAttack(float incomingDamage, int targetedBodyPartID){
-		UnitAnimator anim = GetComponent<UnitAnimator>();
-		//Armor armor = anim.loadedArmor.GetComponent<Armor>();
-		float totalDamage = incomingDamage; //= 0;
+	void Start(){
+		anim = GetComponent<UnitAnimator>();
+	}
+
+	public float DamageAfterDefense(float incomingDamage){
+		int bodyPartIndex = PickBodyPart();
+		Armor armor = anim.animators[bodyPartIndex].gameObject.GetComponent<Armor>();
 		
-		return totalDamage;
+		float totalDamage = incomingDamage - (armor.defense + baseDefense);
+		if (totalDamage > 0){
+			DamageStats(bodyPartIndex,totalDamage);	
+			return totalDamage;
+		}else{
+			return 0f;
+		}
 	}
 	
 	int PickBodyPart(){
-		//use random bodypart for now with percentages of being selected to determine where blow has landed
-		// the int should corrospond with the appropriate armor slot
-		return 1;
+		// cannot be 0 or 1, which are the unit and weapon animators
+		return 2; //2 is torso, 3 is legs
 	}
 	
 	void DamageStats(int bodyPart,float damage){

@@ -13,14 +13,14 @@ public class Health : MonoBehaviour {
 	}
 	
 	public void TakeDamage(float damage, GameObject attacker){		
-		currentHealth = currentHealth - myStats.CalculatedBodilyHarm(damage);
+		currentHealth = currentHealth - myStats.DamageAfterDefense(damage);
+		Debug.Log (name + " has taken " + myStats.DamageAfterDefense(damage) + " damage!");
 		if (currentHealth > 0.0f){
 			unitReactions.ReactToDisturbance("Damage Taken", attacker);
-			//anim.SetTrigger("hurt");
+			//anim.SetTrigger("hurt"); or trigger damage indicators
 		}else{
 			Die();
 		}
-		Debug.Log (name + " has taken " + damage + " damage!");
 	}
 	
 	void Die(){
