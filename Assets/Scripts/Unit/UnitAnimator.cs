@@ -35,9 +35,10 @@ public class UnitAnimator : MonoBehaviour {
 		}
 		
 		if (weaponID == 0){
+			loadedWeapon = Instantiate (Resources.Load ("unarmed"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+		}else if (weaponID == 1){
 			loadedWeapon = Instantiate (Resources.Load ("Iron Dagger"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
-		}
-		else if (weaponID == 1){
+		}else if (weaponID == 2){
 			loadedWeapon = Instantiate (Resources.Load ("Iron Spear"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
 		
@@ -58,6 +59,8 @@ public class UnitAnimator : MonoBehaviour {
 		}
 		
 		if (torsoID == 0){
+			loadedTorsoArmor = Instantiate (Resources.Load ("naked"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+		}else if (torsoID == 1){
 			loadedTorsoArmor = Instantiate (Resources.Load ("PlateIronTorso"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
 		
@@ -82,6 +85,8 @@ public class UnitAnimator : MonoBehaviour {
 		}
 		
 		if (LegID == 0){
+			loadedLegArmor = Instantiate (Resources.Load ("naked"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+		}else if (LegID == 1){
 			loadedLegArmor = Instantiate (Resources.Load ("PlateIronLegs"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
 		
