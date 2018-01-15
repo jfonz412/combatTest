@@ -63,8 +63,10 @@ public class UnitController : MonoBehaviour {
 				lastTargetPos = targetEntity.transform.position;
 				PathfindingManager.RequestPath(transform.position, lastTargetPos, OnPathFound);
 				yield return new WaitForSeconds(1f); 	
+				Debug.Log("chasing out of rnge target");
 			}
 			if(Vector3.Distance(transform.position, lastTargetPos) < equippedWeapon.range && targetEntity != null){
+				Debug.Log("about to stop and attack");
 				StopAndAttack(targetEntity);
 				lastTargetPos = targetEntity.transform.position;
 				yield return new WaitForSeconds(equippedWeapon.speed +  Random.Range(0.0f, 0.2f));
@@ -81,7 +83,7 @@ public class UnitController : MonoBehaviour {
 			anim.ToggleMovingAnimation(false);
 		}
 		anim.FaceDirection(transform.position, targetEntity.transform.position);
-		anim.TriggerAttackAnimation(); //pass in equippedWeapon.attackType 
+		anim.TriggerAttackAnimation(equippedWeapon.attackType);
 		equippedWeapon.Attack(gameObject, targetEntity);
 	}
 

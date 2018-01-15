@@ -37,6 +37,9 @@ public class UnitAnimator : MonoBehaviour {
 		if (weaponID == 0){
 			loadedWeapon = Instantiate (Resources.Load ("Iron Dagger"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
+		else if (weaponID == 1){
+			loadedWeapon = Instantiate (Resources.Load ("Iron Spear"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+		}
 		
 		loadedWeapon.transform.SetParent (unitBody.transform);
 		loadedWeapon.transform.localPosition = new Vector3 (0,0,0);
@@ -128,16 +131,24 @@ public class UnitAnimator : MonoBehaviour {
 		}
 	}
 	
-	public void TriggerAttackAnimation(){ //string attackType
-		// if "slash"
-		for (int i = 0; i < animators.Length; i++){
-			if (animators [i] != null){
-				animators [i].SetFloat ("x", inputX);
-				animators [i].SetFloat ("y", inputY);
-				animators [i].SetTrigger("isAttacking"); // isSlashing
+	public void TriggerAttackAnimation(string attackType){
+		if(attackType == "slash"){
+			for (int i = 0; i < animators.Length; i++){
+				if (animators [i] != null){
+					animators [i].SetFloat ("x", inputX);
+					animators [i].SetFloat ("y", inputY);
+					animators [i].SetTrigger("isSlashing"); 
+				}
 			}
-		}//else if "stabbing"
-		//else if "cast"
+		}else if (attackType == "thrust"){
+			for (int i = 0; i < animators.Length; i++){
+				if (animators [i] != null){
+					animators [i].SetFloat ("x", inputX);
+					animators [i].SetFloat ("y", inputY);
+					animators [i].SetTrigger("isThrusting"); 
+				}
+			}
+		}
 	}
 	
 	void ResetAnimators(){
