@@ -17,14 +17,32 @@ public class Health : MonoBehaviour {
 		Debug.Log (name + " has taken " + myStats.DamageAfterDefense(damage) + " damage!");
 		if (currentHealth > 0.0f){
 			unitReactions.ReactToDisturbance("Damage Taken", attacker);
-			//anim.SetTrigger("hurt"); or trigger damage indicators
 		}else{
-			Die();
+			IEnumerator death = Die(attacker);
+			StartCoroutine(death);
 		}
 	}
 	
-	void Die(){
-		//animate death
+	IEnumerator Die(GameObject attacker){
+		UnitController myUnit = GetComponent<UnitController>();
+		UnitAnimator myAnim = GetComponent<UnitAnimator>();
+
+		//stop the attacker
+		attacker.GetComponent<UnitController>().HasTarget(false); 
+		
+		//stop the target
+		myUnit.HasTarget(false); 
+		myUnit.StopMoving();
+		myAnim.TriggerDeathAnimation();
+		
+		//stop processing clicks if player
+		PlayerController player = myUnit.GetComponent<PlayerController>();
+		if(player != null){
+			player.incapacitated = true;
+		}
+		
+		//extend death animation before destroy
+		yield return new WaitForSeconds(6f);
 		Destroy (gameObject);
 	}
 }

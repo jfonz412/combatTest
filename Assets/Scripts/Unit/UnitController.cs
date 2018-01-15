@@ -47,6 +47,15 @@ public class UnitController : MonoBehaviour {
 		}
 	}
 	
+	public void StopMoving(){
+		if(followingPath != null){
+			StopCoroutine(followingPath);
+			anim.ToggleMovingAnimation(false);
+		}else{
+			StopCoroutine("FollowPath");
+			anim.ToggleMovingAnimation(false);
+		}
+	}
 
 	
 	/******************************************* PRIVATE FUNCTIONS ***************************************************/
@@ -75,18 +84,11 @@ public class UnitController : MonoBehaviour {
 	}
 	
 	void StopAndAttack(GameObject targetEntity){
-		if(followingPath != null){
-			StopCoroutine(followingPath);
-			anim.ToggleMovingAnimation(false);
-		}else{
-			StopCoroutine("FollowPath");
-			anim.ToggleMovingAnimation(false);
-		}
+		StopMoving();
 		anim.FaceDirection(transform.position, targetEntity.transform.position);
 		anim.TriggerAttackAnimation(equippedWeapon.attackType);
 		equippedWeapon.Attack(gameObject, targetEntity);
 	}
-
 	
 	/********************************** PATHFINDING *********************************************/
 	
@@ -127,7 +129,6 @@ public class UnitController : MonoBehaviour {
 		}
 	}
 	
-	
 	public void OnDrawGizmos(){
 		if(path != null){
 			for(int i = targetIndex; i < path.Length; i++){
@@ -143,3 +144,4 @@ public class UnitController : MonoBehaviour {
 		}
 	}
 }
+

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 	UnitController unitController;
+	public bool incapacitated;
 
 	// Use this for initialization
 	void Start () {
@@ -11,7 +12,9 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		MovePlayer();
+		if(!incapacitated){
+			MovePlayer();
+		}
 	}
 	
 	void MovePlayer(){

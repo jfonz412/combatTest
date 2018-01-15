@@ -151,6 +151,14 @@ public class UnitAnimator : MonoBehaviour {
 		}
 	}
 	
+	public void TriggerDeathAnimation(){ //unless i = 1 which is weapon
+		for (int i = 0; i < animators.Length; i++){
+			if (animators [i] != null && i != 1){
+				animators [i].SetTrigger("deathAnimation");
+			}
+		}
+	}
+	
 	void ResetAnimators(){
 		//might need to reset bools too
 		for (int i = 0; i < animators.Length; i++){
