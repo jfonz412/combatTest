@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        FloatingTextController.Initialize();
 		unitController = GetComponent<UnitController>();
 	}
 	

@@ -17,17 +17,10 @@ public class Stats : MonoBehaviour {
 
 	public float DamageAfterDefense(float incomingDamage){
 		int bodyPartIndex = PickBodyPart();
-		Debug.Log ("bodypart ID = " + bodyPartIndex);
-		Armor armor = anim.animators[bodyPartIndex].gameObject.GetComponent<Armor>();
-		
-		float totalDamage = incomingDamage - (armor.defense + baseDefense);
-		if (totalDamage > 0){
-			DamageStats(bodyPartIndex,totalDamage);	
-			return totalDamage;
-		}else{
-			return 0f;
-		}
-	}
+        float totalDamage = CalculateTotalDamage(incomingDamage, bodyPartIndex);
+        FloatingTextController.CreateFloatingText(totalDamage.ToString(), transform);
+        return totalDamage;
+    }
 	
 	int PickBodyPart(){
 		// cannot be 0 or 1, which are the unit and weapon animators
@@ -37,7 +30,22 @@ public class Stats : MonoBehaviour {
 	void DamageStats(int bodyPart,float damage){
 		//skills deducted depending on damage and bdy part
 	}
-	
+
+    // will eventually check for blocks, parrys, misses, ect.
+    float CalculateTotalDamage(float incomingDamage, int bodyPartIndex)
+    {
+        Armor armor = anim.animators[bodyPartIndex].gameObject.GetComponent<Armor>();
+        float totalDamage = incomingDamage - (armor.defense + baseDefense); 
+        if (totalDamage < 0)
+        {
+            return 0;
+        }
+        else
+        {
+            DamageStats(bodyPartIndex, totalDamage);
+            return totalDamage;
+        }
+    }
 	
 	
 	/******************** STATS *****************************************/
