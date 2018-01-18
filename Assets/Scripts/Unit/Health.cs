@@ -12,7 +12,7 @@ public class Health : MonoBehaviour {
 		unitReactions = GetComponent<UnitReactions>();
 	}
 	
-	public void TakeDamage(float damage, GameObject attacker){		
+	public void TakeDamage(float damage, Transform attacker){		
 		currentHealth = currentHealth - myStats.DamageAfterDefense(damage);
 		Debug.Log (name + " has taken " + myStats.DamageAfterDefense(damage) + " damage!");
 		if (currentHealth > 0.0f){
@@ -23,7 +23,7 @@ public class Health : MonoBehaviour {
 		}
 	}
 	
-	IEnumerator Die(GameObject attacker){
+	IEnumerator Die(Transform attacker){
 		UnitController myUnit = GetComponent<UnitController>();
 		UnitAnimator myAnim = GetComponent<UnitAnimator>();
 

@@ -12,7 +12,7 @@ public class UnitReactions : MonoBehaviour {
 	/***-----------------------------------------NPC FUNCTIONS----------------------------------------------- ***/
 	
 	// Might eventually be able to call the appropriate respnse based on variables assigned in the inspector
-	public void ReactToDisturbance(string disturbanceType, GameObject target = null){
+	public void ReactToDisturbance(string disturbanceType, Transform target = null){
 		if(gameObject.name == "Player"){
 			if(disturbanceType == "Damage Taken" && unitController.lastKnownTarget == null){
 				//do nothing for now

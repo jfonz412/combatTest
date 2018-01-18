@@ -19,24 +19,33 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void MovePlayer(){
-		if (Input.GetMouseButtonDown(0)) {
+		if (Input.GetMouseButtonDown(0))
+        {
 			Vector3 targetPos;
 			targetPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
 			targetPos.z = transform.position.z; //to always keep z at 0
-			ProcessClick(targetPos);			
+			ProcessLeftClick(targetPos);			
 		}
+        else if (Input.GetMouseButtonDown(1))
+        {
+            Vector3 targetPos;
+            targetPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            targetPos.z = transform.position.z; //to always keep z at 0
+            ProcessRightClick(targetPos);
+        }
 	}
 	
-	void ProcessClick(Vector3 targetPos){	
+	void ProcessLeftClick(Vector3 targetPos){	
 		RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector2.zero); //Vector2.zero == (0,0)
-		GameObject targetEntity;
+		Transform targetTransform;
 		
 		if (hit.collider != null) {
-			targetEntity = hit.collider.gameObject;
-			if(targetEntity.tag == "Entity"){
-				if(unitController.lastKnownTarget != targetEntity){ //prevent double-click attacks
-					targetEntity = hit.collider.gameObject;
-					unitController.HasTarget(true, targetEntity);
+			targetTransform = hit.collider.transform;
+			if(targetTransform.tag == "Entity"){
+				if(unitController.lastKnownTarget != targetTransform)
+                { //prevent double-click attacks
+                    targetTransform = hit.collider.transform;
+					unitController.HasTarget(true, targetTransform);
 				}
 			}else{
 				unitController.HasTarget(false);
@@ -47,5 +56,34 @@ public class PlayerController : MonoBehaviour {
 			PathfindingManager.RequestPath(transform.position, targetPos, unitController.OnPathFound);
 		}
 	}
-	
+
+    void ProcessRightClick(Vector3 targetPos)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector2.zero); //Vector2.zero == (0,0)
+        Transform targetTransform;
+
+        if (hit.collider != null)
+        {
+            targetTransform = hit.collider.transform;
+            if (targetTransform.tag == "Entity")
+            {
+                if (unitController.lastKnownTarget != targetTransform)
+                { //prevent double-click attacks
+                    targetTransform = hit.collider.transform;
+                    unitController.HasTarget(true, targetTransform);
+                }
+            }
+            else
+            {
+                unitController.HasTarget(false);
+                PathfindingManager.RequestPath(transform.position, targetPos, unitController.OnPathFound);
+            }
+        }
+        else
+        {
+            unitController.HasTarget(false);
+            PathfindingManager.RequestPath(transform.position, targetPos, unitController.OnPathFound);
+        }
+    }
+
 }

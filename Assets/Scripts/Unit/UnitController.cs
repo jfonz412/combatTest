@@ -3,7 +3,7 @@ using System.Collections;
 
 public class UnitController : MonoBehaviour {
 	[HideInInspector]
-	public GameObject lastKnownTarget = null;
+	public Transform lastKnownTarget = null;
 	
 	UnitAnimator anim;
 	float inputX;
@@ -26,18 +26,18 @@ public class UnitController : MonoBehaviour {
 	void Update(){
 		//FOR TESTING!!!
 		if(gameObject.name != "Player" && Input.GetKeyDown(KeyCode.A)){
-			HasTarget(true, GameObject.Find("Player"));
+			HasTarget(true, GameObject.Find("Player").transform);
 		}
 	}
 	
 	//How the player object talks to this script
-	public void HasTarget(bool hasTarget, GameObject targetEntity = null){
+	public void HasTarget(bool hasTarget, Transform targetTransform = null){
 		if(hasTarget){
-			lastKnownTarget = targetEntity;
+			lastKnownTarget = targetTransform;
 			if (followingEntity != null){
 				StopCoroutine(followingEntity); 
 			}
-			followingEntity = FollowEntity(targetEntity); 
+			followingEntity = FollowEntity(targetTransform); 
 			StartCoroutine(followingEntity); 
 		}else{
 			if (followingEntity != null){
@@ -60,32 +60,26 @@ public class UnitController : MonoBehaviour {
 	
 	/******************************************* PRIVATE FUNCTIONS ***************************************************/
 	
-	IEnumerator FollowEntity(GameObject targetEntity){
-		Vector3 lastTargetPos = Vector3.one;
-		
-		if(targetEntity != null){
-			lastTargetPos = targetEntity.transform.position;
-		}	
-		
-		while(targetEntity){
-			if(Vector3.Distance(transform.position, lastTargetPos) > equippedWeapon.range && targetEntity != null){
-				lastTargetPos = targetEntity.transform.position;
-				PathfindingManager.RequestPath(transform.position, lastTargetPos, OnPathFound);
+	IEnumerator FollowEntity(Transform targetTransform){
+		while(targetTransform){
+			if(Vector3.Distance(transform.position, lastKnownTarget.position) > equippedWeapon.range && targetTransform != null){
+                lastKnownTarget = targetTransform;
+                PathfindingManager.RequestPath(transform.position, lastKnownTarget.position, OnPathFound);
 				yield return new WaitForSeconds(1f); 	
 			}
-			if(Vector3.Distance(transform.position, lastTargetPos) < equippedWeapon.range && targetEntity != null){
-				StopAndAttack(targetEntity);
-				lastTargetPos = targetEntity.transform.position;
+			if(Vector3.Distance(transform.position, lastKnownTarget.position) < equippedWeapon.range && targetTransform != null){
+				StopAndAttack(targetTransform);
+                lastKnownTarget = targetTransform; 
 				yield return new WaitForSeconds(equippedWeapon.speed +  Random.Range(0.0f, 0.2f));
 			}
 		}
 	}
 	
-	void StopAndAttack(GameObject targetEntity){
+	void StopAndAttack(Transform targetTransform){
 		StopMoving();
-		anim.FaceDirection(transform.position, targetEntity.transform.position);
+		anim.FaceDirection(transform.position, targetTransform.position);
 		anim.TriggerAttackAnimation(equippedWeapon.attackType);
-		equippedWeapon.Attack(gameObject, targetEntity);
+		equippedWeapon.Attack(transform, targetTransform);
 	}
 	
 	/********************************** PATHFINDING *********************************************/

@@ -8,13 +8,13 @@ public class Weapon : MonoBehaviour {
 	public float weight = 1; //the heavier the better
 	public string attackType; // cast, slash, thrust
 	
-	public void Attack(GameObject owner, GameObject target){ //instead of passing GameObject, might be better to retrieve parent's parent?
+	public void Attack(Transform owner, Transform target){ //instead of passing GameObject, might be better to retrieve parent's parent?
 		Health enemyHealth = target.GetComponent<Health>();
 		enemyHealth.TakeDamage(CalculateDamageDealt(owner), owner);
 	}
 
 	//Calculate the damage of the weapon
-	float CalculateDamageDealt(GameObject owner){
+	float CalculateDamageDealt(Transform owner){
 		float unitAttack = owner.GetComponent<Stats>().attack; 
 		return unitAttack + weight + sharpness * softness * weaponCondition;	//also need to consider weapon condtion? maybe condition just makes it break
 	}
