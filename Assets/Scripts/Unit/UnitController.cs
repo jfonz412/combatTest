@@ -48,7 +48,8 @@ public class UnitController : MonoBehaviour {
 	}
 	
 	public void StopMoving(){
-		if(followingPath != null){
+        //movementSpeed = 0;
+        if (followingPath != null){
 			StopCoroutine(followingPath);
 			anim.ToggleMovingAnimation(false);
 		}else{
@@ -61,21 +62,27 @@ public class UnitController : MonoBehaviour {
 	/******************************************* PRIVATE FUNCTIONS ***************************************************/
 	
 	IEnumerator FollowEntity(Transform targetTransform){
-		while(targetTransform){
+        while (targetTransform){
 			if(Vector3.Distance(transform.position, lastKnownTarget.position) > equippedWeapon.range && targetTransform != null){
                 lastKnownTarget = targetTransform;
                 PathfindingManager.RequestPath(transform.position, lastKnownTarget.position, OnPathFound);
-				yield return new WaitForSeconds(1f); 	
+
+                //was originally one second, but it took units too long to register they were in range and to stop moving 
+                //however if the unit is moved out of range while attacking, this may cause the unit to attack over and over each time it's in range
+                //a bool checking to see if the unit's attack is off cooldown may solve this issue
+                //could also be an animation issue?
+                yield return new WaitForSeconds(.1f); 
 			}
-			if(Vector3.Distance(transform.position, lastKnownTarget.position) < equippedWeapon.range && targetTransform != null){
-				StopAndAttack(targetTransform);
-                lastKnownTarget = targetTransform; 
+            if (Vector3.Distance(transform.position, lastKnownTarget.position) < equippedWeapon.range && targetTransform != null)
+            {
+                StopAndAttack(targetTransform);
+                lastKnownTarget = targetTransform;
 				yield return new WaitForSeconds(equippedWeapon.speed +  Random.Range(0.0f, 0.2f));
 			}
 		}
 	}
-	
-	void StopAndAttack(Transform targetTransform){
+
+    void StopAndAttack(Transform targetTransform){
 		StopMoving();
 		anim.FaceDirection(transform.position, targetTransform.position);
 		anim.TriggerAttackAnimation(equippedWeapon.attackType);
@@ -86,6 +93,7 @@ public class UnitController : MonoBehaviour {
 	
 	public void OnPathFound(Vector3[] newPath, bool pathSuccessful){
 		if(pathSuccessful){
+            movementSpeed = 2f;
 			targetIndex = 0;
 			path = newPath;	
 			if(followingPath != null){
