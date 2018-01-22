@@ -24,19 +24,19 @@ public class Health : MonoBehaviour {
 	}
 	
 	IEnumerator Die(Transform attacker){
-		UnitController myUnit = GetComponent<UnitController>();
+        AttackController myAttackController = GetComponent<AttackController>();
 		UnitAnimator myAnim = GetComponent<UnitAnimator>();
 
 		//stop the attacker
-		attacker.GetComponent<UnitController>().HasTarget(false); 
-		
-		//stop the target
-		myUnit.HasTarget(false); 
-		myUnit.StopMoving();
+		attacker.GetComponent<AttackController>().EngageTarget(false);
+
+        //stop the target
+        myAttackController.EngageTarget(false);
+        GetComponent<UnitController>().StopMoving();
 		myAnim.TriggerDeathAnimation();
 		
 		//stop processing clicks if player
-		PlayerController player = myUnit.GetComponent<PlayerController>();
+		PlayerController player = myAttackController.GetComponent<PlayerController>();
 		if(player != null){
 			player.incapacitated = true;
 		}

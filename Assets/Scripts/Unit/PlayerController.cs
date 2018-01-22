@@ -2,16 +2,18 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-	UnitController unitController;
+    UnitController unitController;
+    AttackController attackController;
     [HideInInspector]
 	public bool incapacitated;
 
 
 	// Use this for initialization
 	void Start () {
-        FloatingTextController.Initialize();
-		unitController = GetComponent<UnitController>();
-	}
+        FloatingTextController.Initialize(); 
+        unitController = GetComponent<UnitController>();
+        attackController = GetComponent<AttackController>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -47,26 +49,30 @@ public class PlayerController : MonoBehaviour {
             targetTransform = hit.collider.transform;
             if (targetTransform.tag == "Entity")
             {
-                if (unitController.lastKnownTarget != targetTransform)
+                if (attackController.lastKnownTarget != targetTransform)
                 { //prevent double-click attacks
                     targetTransform = hit.collider.transform;
-                    unitController.HasTarget(true, targetTransform);
+                    attackController.EngageTarget(true, targetTransform);
                 }
             }
             else
             {
-                unitController.HasTarget(false);
+                attackController.EngageTarget(false);
                 PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
             }
         }
         else
         {
-            unitController.HasTarget(false);
+            attackController.EngageTarget(false);
             PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
         }
     }
 
     // USING THIS TO EXPERIMENT WITH INTERACTABLE OBJECTS
+
+    // The plan is to remove all attack controller type stuff from unit controller so it's not so messy to use a totally seperate circut (different from Interact) to engage enemies
+    // Maybe instead of Interact for all objects and NPCs, objects will have their own interaction script and NPC will have it's own in order to be able to talk, attack, ect.
+    // for now lets get the attacking out of UnitController
     void ProcessRightClick(Vector3 mouseClickPos)
     {
         RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
@@ -78,12 +84,12 @@ public class PlayerController : MonoBehaviour {
             if (interactable)
             {
                 targetTransform = hit.collider.transform;
-                if (targetTransform.tag == "Entity") 
+                if (targetTransform.tag == "Entity") //enemy
                 {
-                    if (unitController.lastKnownTarget != targetTransform)
-                    { //prevent double-click attacks
+                    if (attackController.lastKnownTarget != targetTransform) //prevent double-click attacks
+                    { 
                         targetTransform = hit.collider.transform;
-                        unitController.HasTarget(true, targetTransform);
+                        attackController.EngageTarget(true, targetTransform);
                     }
                 }
                 else if (targetTransform.tag == "Pickup")
@@ -98,13 +104,13 @@ public class PlayerController : MonoBehaviour {
             }
             else //else let pathfinding handle the rest (pathfinding won't let you walk on unwalkable tagged objects
             {
-                unitController.HasTarget(false);
+                attackController.EngageTarget(false);
                 PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
             }
         }
         else
         {
-            unitController.HasTarget(false);
+            attackController.EngageTarget(false);
             PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
         }
     }

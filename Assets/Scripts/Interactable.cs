@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class Interactable : MonoBehaviour {
     public float radius = 1f; //same as melee as of 1/18
