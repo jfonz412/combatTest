@@ -38,26 +38,21 @@ public class PlayerController : MonoBehaviour {
             ProcessRightClick(mouseClickPos);
         }
 	}
-	
-	void ProcessLeftClick(Vector3 mouseClickPos)
+
+    void ProcessLeftClick(Vector3 mouseClickPos)
     {
         RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
-        Transform targetTransform;
 
         if (hit.collider)
         {
-            targetTransform = hit.collider.transform;
-            if (targetTransform.tag == "Entity")
+            Interactable interactable = hit.collider.GetComponent<Interactable>();
+            if (interactable)
             {
-                if (attackController.lastKnownTarget != targetTransform)
-                { //prevent double-click attacks
-                    targetTransform = hit.collider.transform;
-                    attackController.EngageTarget(true, targetTransform);
-                }
+                interactable.DefaultInteraction(transform); //pass in player's transform
             }
             else
             {
-                attackController.EngageTarget(false);
+                attackController.EngageTarget(false); //make sure to disengage target if previously fighting
                 PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
             }
         }
@@ -68,51 +63,22 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    // USING THIS TO EXPERIMENT WITH INTERACTABLE OBJECTS
 
-    // The plan is to remove all attack controller type stuff from unit controller so it's not so messy to use a totally seperate circut (different from Interact) to engage enemies
-    // Maybe instead of Interact for all objects and NPCs, objects will have their own interaction script and NPC will have it's own in order to be able to talk, attack, ect.
-    // for now lets get the attacking out of UnitController
+    //Brings up interaction options menu
     void ProcessRightClick(Vector3 mouseClickPos)
     {
         RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
-        Transform targetTransform;
 
         if (hit.collider)
         {
             Interactable interactable = hit.collider.GetComponent<Interactable>();
             if (interactable)
             {
-                targetTransform = hit.collider.transform;
-                if (targetTransform.tag == "Entity") //enemy
-                {
-                    if (attackController.lastKnownTarget != targetTransform) //prevent double-click attacks
-                    { 
-                        targetTransform = hit.collider.transform;
-                        attackController.EngageTarget(true, targetTransform);
-                    }
-                }
-                else if (targetTransform.tag == "Pickup")
-                {
-                    //do nothing for now
-                    PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound); //pathfind player to radius, not target's transform (or as it is, mousePos)
-                }
-                else if (targetTransform.tag == "WorldItem") //crafting stations, ect.
-                {
-                    //do nothing for now
-                }
-            }
-            else //else let pathfinding handle the rest (pathfinding won't let you walk on unwalkable tagged objects
-            {
-                attackController.EngageTarget(false);
-                PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
+                //Pull up interaction options menu
+                Debug.Log("Interaction Options");
             }
         }
-        else
-        {
-            attackController.EngageTarget(false);
-            PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
-        }
+        //if it's not a collider or interactable right click does nothing
     }
 
 }
