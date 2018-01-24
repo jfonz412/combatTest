@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Interactable : MonoBehaviour {
     public float radius = 1f; //same as melee standard in weapon script
+    [HideInInspector]
     public Transform playerTransform;
 
     void Start()
