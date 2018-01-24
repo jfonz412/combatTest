@@ -64,6 +64,7 @@ public class AttackController : MonoBehaviour {
             }
             yield return null;
         }
+        yield break;
     }
 
 

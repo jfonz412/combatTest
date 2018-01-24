@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : Interactable {
 
-    public override void DefaultInteraction(Transform playerTransform)
+    public override void DefaultInteraction()
     {
         AttackController playerAttackController = playerTransform.GetComponent<AttackController>();
 
@@ -13,6 +13,6 @@ public class Enemy : Interactable {
             playerAttackController.EngageTarget(true, transform);
         }
 
-        base.DefaultInteraction(playerTransform);
+        base.DefaultInteraction();
     }
 }

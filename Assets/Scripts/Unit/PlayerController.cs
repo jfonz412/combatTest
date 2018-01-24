@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
     UnitController unitController;
     AttackController attackController;
+    IEnumerator movingToInteraction = null;
     [HideInInspector]
 	public bool incapacitated;
 
@@ -48,7 +49,12 @@ public class PlayerController : MonoBehaviour {
             Interactable interactable = hit.collider.GetComponent<Interactable>();
             if (interactable)
             {
-                interactable.DefaultInteraction(transform); //pass in player's transform
+                if (movingToInteraction != null)
+                    StopCoroutine(movingToInteraction); //stop moving towards previous interaction, if any
+               
+                attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine), if any
+                movingToInteraction = MoveToInteraction(interactable);
+                StartCoroutine(movingToInteraction);
             }
             else
             {
@@ -81,4 +87,21 @@ public class PlayerController : MonoBehaviour {
         //if it's not a collider or interactable right click does nothing
     }
 
+    IEnumerator MoveToInteraction(Interactable interactable)
+    {
+        while (interactable)
+        {
+            if (Vector3.Distance(transform.position, interactable.transform.position) > interactable.radius) //and interactable != null ?
+            { 
+                PathfindingManager.RequestPath(transform.position, interactable.transform.position, unitController.OnPathFound);
+                yield return new WaitForSeconds(.2f); //might be able to extend this here? no need to be as precise?
+            }
+            else
+            {
+                break;
+            }
+        }
+        interactable.DefaultInteraction();
+        yield break;
+    }
 }
