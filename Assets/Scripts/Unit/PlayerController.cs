@@ -40,6 +40,9 @@ public class PlayerController : MonoBehaviour {
         }
 	}
 
+
+    /************************************ LEFT AND RIGHT CLICKS *******************************/
+
     void ProcessLeftClick(Vector3 mouseClickPos)
     {
         RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
@@ -49,29 +52,25 @@ public class PlayerController : MonoBehaviour {
             Interactable interactable = hit.collider.GetComponent<Interactable>();
             if (interactable)
             {
-                if (movingToInteraction != null)
-                    StopCoroutine(movingToInteraction); //stop moving towards previous interaction, if any
-               
-                attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine), if any
+                StopPreviousInteraction();
                 movingToInteraction = MoveToInteraction(interactable);
                 StartCoroutine(movingToInteraction);
             }
             else
             {
-                attackController.EngageTarget(false); //make sure to disengage target if previously fighting
+                StopPreviousInteraction();
                 PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
             }
         }
         else
         {
-            attackController.EngageTarget(false);
+            StopPreviousInteraction();
             PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
         }
     }
 
 
-    //Brings up interaction options menu
-    void ProcessRightClick(Vector3 mouseClickPos)
+    void ProcessRightClick(Vector3 mouseClickPos) //Brings up interaction options menu
     {
         RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
 
@@ -86,6 +85,9 @@ public class PlayerController : MonoBehaviour {
         }
         //if it's not a collider or interactable right click does nothing
     }
+
+
+    /****************** HELPER FUNCTIONS **************************/
 
     IEnumerator MoveToInteraction(Interactable interactable)
     {
@@ -103,5 +105,13 @@ public class PlayerController : MonoBehaviour {
         }
         interactable.DefaultInteraction();
         yield break;
+    }
+
+    void StopPreviousInteraction()
+    {
+        if (movingToInteraction != null)
+            StopCoroutine(movingToInteraction); //stop moving towards previous interaction, if any
+
+        attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine), if any
     }
 }
