@@ -23,15 +23,14 @@ public class Inventory : MonoBehaviour {
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChanged; 
 
-    public int space = 10;
-
     public List<Item> items = new List<Item>();
+    public int inventorySpace = 10;
 
     public bool Add(Item item)
     {
-        if (!item.isDefaultItem)
+        if (!item.isDefaultItem) //not sure what this is supposed to be for yet
         {
-            if(items.Count >= space)
+            if(items.Count >= inventorySpace)
             {
                 Debug.Log("Inventory is full");
                 return false;

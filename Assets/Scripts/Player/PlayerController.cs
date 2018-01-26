@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
@@ -18,6 +19,10 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
 		if(!incapacitated){
 			MovePlayer();
 		}
