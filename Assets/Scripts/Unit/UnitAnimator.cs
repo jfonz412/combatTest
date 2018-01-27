@@ -9,9 +9,12 @@ public class UnitAnimator : MonoBehaviour {
 	public int LegID;
 	public int weaponID; //consider the weaponID indicating which set of animations should play
 
+    [HideInInspector]
 	public GameObject loadedTorsoArmor;
-	public GameObject loadedLegArmor;
-	public GameObject loadedWeapon;
+    [HideInInspector]
+    public GameObject loadedLegArmor;
+    [HideInInspector]
+    public GameObject loadedWeapon;
 	
 	float inputX = 0f;
 	float inputY = -1f;
@@ -28,18 +31,18 @@ public class UnitAnimator : MonoBehaviour {
 	}
 	
 	
-	void loadWeapon(){
+	void loadWeapon(){ //should take an into for the equipment ID
 		if (loadedWeapon != null){
 			Destroy (loadedWeapon.gameObject);
 			loadedWeapon = null;
 		}
 		
 		if (weaponID == 0){
-			loadedWeapon = Instantiate (Resources.Load ("unarmed"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+			loadedWeapon = Instantiate (Resources.Load ("Weapons/unarmed"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}else if (weaponID == 1){
-			loadedWeapon = Instantiate (Resources.Load ("Iron Dagger"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+			loadedWeapon = Instantiate (Resources.Load ("Weapons/Iron Dagger"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}else if (weaponID == 2){
-			loadedWeapon = Instantiate (Resources.Load ("Iron Spear"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+			loadedWeapon = Instantiate (Resources.Load ("Weapons/Iron Spear"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
 		
 		loadedWeapon.transform.SetParent (unitBody.transform);
@@ -59,9 +62,9 @@ public class UnitAnimator : MonoBehaviour {
 		}
 		
 		if (torsoID == 0){
-			loadedTorsoArmor = Instantiate (Resources.Load ("naked"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+			loadedTorsoArmor = Instantiate (Resources.Load ("Armor/naked"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}else if (torsoID == 1){
-			loadedTorsoArmor = Instantiate (Resources.Load ("PlateIronTorso"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+			loadedTorsoArmor = Instantiate (Resources.Load ("Armor/PlateIronTorso"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
 		
 		//Attach the armor
@@ -85,9 +88,9 @@ public class UnitAnimator : MonoBehaviour {
 		}
 		
 		if (LegID == 0){
-			loadedLegArmor = Instantiate (Resources.Load ("naked"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+			loadedLegArmor = Instantiate (Resources.Load ("Armor/naked"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}else if (LegID == 1){
-			loadedLegArmor = Instantiate (Resources.Load ("PlateIronLegs"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+			loadedLegArmor = Instantiate (Resources.Load ("Armor/PlateIronLegs"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
 		
 		//Attach the armor

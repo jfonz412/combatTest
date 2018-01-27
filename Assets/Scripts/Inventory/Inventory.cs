@@ -19,7 +19,7 @@ public class Inventory : MonoBehaviour {
     }
     #endregion
 
-    //creates a callback?
+    //creates a callback
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChanged; 
 

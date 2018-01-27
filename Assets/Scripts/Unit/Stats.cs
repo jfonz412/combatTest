@@ -15,6 +15,8 @@ public class Stats : MonoBehaviour {
 		anim = GetComponent<UnitAnimator>();
 	}
 
+    /************* CALCULATE INCOMING HIT ************************/
+
 	public float DamageAfterDefense(float incomingDamage){
 		int bodyPartIndex = PickBodyPart();
         float totalDamage = CalculateTotalDamage(incomingDamage, bodyPartIndex);

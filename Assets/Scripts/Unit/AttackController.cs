@@ -5,6 +5,7 @@ using UnityEngine;
 public class AttackController : MonoBehaviour {
     [HideInInspector]
     public Transform lastKnownTarget = null;
+    Health targetHealth;
 
     UnitAnimator anim;
     UnitController unit;
@@ -13,12 +14,14 @@ public class AttackController : MonoBehaviour {
 
     IEnumerator engagingEntity;
 
+    float myAttack;
 
     void Start()
     {
+        myAttack = GetComponent<Stats>().attack;
         anim = GetComponent<UnitAnimator>();
         unit = GetComponent<UnitController>();
-        equippedWeapon = anim.loadedWeapon.GetComponent<Weapon>();
+        equippedWeapon = anim.loadedWeapon.GetComponent<Weapon>(); //maybe get this from equip slot instead of animator
     }
 
     //How the player object talks to this script
@@ -31,6 +34,7 @@ public class AttackController : MonoBehaviour {
             {
                 StopCoroutine(engagingEntity);
             }
+            targetHealth = lastKnownTarget.GetComponent<Health>();
             engagingEntity = MoveToEngagement(targetTransform);
             StartCoroutine(engagingEntity);
         }
@@ -73,6 +77,14 @@ public class AttackController : MonoBehaviour {
         unit.StopMoving();
         anim.FaceDirection(transform.position, targetTransform.position);
         anim.TriggerAttackAnimation(equippedWeapon.attackType);
-        equippedWeapon.Attack(transform, targetTransform);
+        targetHealth.TakeDamage(CalculateDamageDealt(), transform);
+    }
+
+
+    //Calculate the damage of the weapon + stats
+    float CalculateDamageDealt()
+    {
+        //also need to consider weapon condtion? maybe condition just makes it break
+        return myAttack + equippedWeapon.weight + equippedWeapon.sharpness * equippedWeapon.softness * equippedWeapon.weaponCondition;    
     }
 }

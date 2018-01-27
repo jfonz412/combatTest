@@ -28,7 +28,7 @@ public class InventorySlot : MonoBehaviour {
         Inventory.instance.Remove(item);
     }
 
-    public void UseItem()
+    public void UseItem() //if item == equipment it needs to be sent to UnitAnimator
     {
         if (item != null)
         {
