@@ -28,7 +28,7 @@ public class InventorySlot : MonoBehaviour {
         Inventory.instance.Remove(item);
     }
 
-    public void UseItem() //if item == equipment it needs to be sent to UnitAnimator
+    public void UseItem() //should probably pass in the player's transform here
     {
         if (item != null)
         {

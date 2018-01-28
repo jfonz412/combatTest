@@ -6,11 +6,20 @@ public class Item : ScriptableObject {
     public Sprite icon = null;
     public bool isDefaultItem = false; //not sure what this is for, it's from the video
 
+    //for now just the player will be using/equipping items from the singleton inventory
+    [HideInInspector]
+    public Transform player;
+
     public virtual void Use()
     {
         //Use item
         //Something might happen
-
+        player = GameObject.Find("Player").transform;
         Debug.Log("Using " + name);
+    }
+
+    public void RemoveFromInventory()
+    {
+        Inventory.instance.Remove(this);
     }
 }
