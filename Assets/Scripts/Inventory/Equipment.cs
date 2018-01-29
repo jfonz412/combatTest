@@ -3,14 +3,11 @@
 [CreateAssetMenu(fileName = "New Equipment", menuName = "Inventory/Equipment")]
 public class Equipment : Item {
 
-    //video makes this a singleton, I am not doing that because I may want to use this script on
-    //my npcs, or consider created an NPCEquipmentManager...
-
     public EquipmentSlot equipSlot;
     
     public override void Use()
     {
-        base.Use();
+        base.Use(); //gets reference to the player
         player.GetComponent<EquipmentManager>().Equip(this);
         RemoveFromInventory();
     }

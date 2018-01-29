@@ -2,17 +2,13 @@
 using System.Collections;
 
 public class Interactable : MonoBehaviour {
-    public float radius = 1f; //same as melee standard in weapon script
     [HideInInspector]
-    public Transform playerTransform;
-
-    void Start()
-    {
-        playerTransform = GameObject.Find("Player").transform; //might need to check if player exists
-    }
+    public Transform player;
+    public float radius = 1f; //same as melee standard in weapon script
 
     public virtual void DefaultInteraction()
     {
+        player = PlayerManager.instance.player.transform;
         Debug.Log("Default Interaction with " + this);
     }
 
