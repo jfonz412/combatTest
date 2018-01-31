@@ -2,17 +2,22 @@
 using System.Collections;
 
 public class Stats : MonoBehaviour {
-	[SerializeField]
+
+	//[SerializeField]
 	public float baseAttack;
-	[SerializeField]
+	//[SerializeField]
 	public float baseDefense;
-	[SerializeField]
+	//[SerializeField]
 	public float baseHp;
 	
-	UnitAnimator anim;
-	
+	//UnitAnimator anim;
+    EquipmentManager equipmentManager;
+
 	void Start(){
-		anim = GetComponent<UnitAnimator>();
+		//anim = GetComponent<UnitAnimator>();
+
+        equipmentManager = GetComponent<EquipmentManager>();
+        equipmentManager.onEquipmentChanged += AdjustStats;
 	}
 
     /************* CALCULATE INCOMING HIT ************************/
@@ -23,20 +28,11 @@ public class Stats : MonoBehaviour {
         FloatingTextController.CreateFloatingText(totalDamage.ToString(), transform);
         return totalDamage;
     }
-	
-	int PickBodyPart(){
-		// cannot be 0 or 1, which are the unit and weapon animators
-		return Random.Range(2,4); //2 is torso, 3 is legs (the max is exclusive so must be +1)
-	}
-	
-	void DamageStats(int bodyPart,float damage){
-		//skills deducted depending on damage and bdy part
-	}
 
     // will eventually check for blocks, parrys, misses, ect.
     float CalculateTotalDamage(float incomingDamage, int bodyPartIndex)
     {
-        Armor armor = anim.animators[bodyPartIndex].gameObject.GetComponent<Armor>();
+        Armor armor = (Armor)equipmentManager.currentEquipment[bodyPartIndex]; //probably not very effecient
         float totalDamage = incomingDamage - (armor.defense + baseDefense); 
         if (totalDamage < 0)
         {
@@ -48,13 +44,33 @@ public class Stats : MonoBehaviour {
             return totalDamage;
         }
     }
-	
-	
-	/******************** STATS *****************************************/
-	
-	public float attack {
+
+    int PickBodyPart()
+    {
+        //EquipmentSlot { Head, Chest, Legs, MainHand, OffHand, Feet} (the max is exclusive so must be +1)
+        int num = Random.Range(1, 3);
+        Debug.Log("Attacking bodypart #" + num);
+        return num;
+    }
+
+    void DamageStats(int bodyPart, float damage)
+    {
+        //skills deducted depending on damage and bdy part
+    }
+
+
+    /******************** STATS *****************************************/
+
+    //Invoked from EquipmentManager to adjust stats based on newly equipped items
+    void AdjustStats(Equipment oldItem, Equipment newItem)
+    {
+        Debug.Log("ADJUSTING STATS HOMIE!!");
+    }
+
+    public float attack {
 		get {
 			return baseAttack;
 		}
 	}
+
 }

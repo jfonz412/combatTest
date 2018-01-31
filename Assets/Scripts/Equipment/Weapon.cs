@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Weapon : MonoBehaviour {
+[CreateAssetMenu(fileName = "New Weapon", menuName = "Inventory/Weapon")]
+public class Weapon : Equipment {
 	public float weaponCondition = 1; //1 is undamaged
 	public float softness = 1; //1 is max hardness, the harder the better
 	public float sharpness = 1; //the sharper the better

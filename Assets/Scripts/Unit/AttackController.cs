@@ -5,25 +5,30 @@ using UnityEngine;
 public class AttackController : MonoBehaviour {
     [HideInInspector]
     public Transform lastKnownTarget = null;
+
     Health targetHealth;
+
+    EquipmentManager equipmentManager;
+    Weapon equippedWeapon;
 
     UnitAnimator anim;
     UnitController unit;
 
-    Weapon equippedWeapon;
-
     IEnumerator engagingEntity;
 
-    float myAttack;
+    float myAttackStat;
 
     void Start()
     {
-        myAttack = GetComponent<Stats>().attack;
+        myAttackStat = GetComponent<Stats>().attack;
         anim = GetComponent<UnitAnimator>();
         unit = GetComponent<UnitController>();
-        equippedWeapon = anim.loadedWeapon.GetComponent<Weapon>(); //maybe get this from equip slot instead of animator
-    }
 
+        equipmentManager = GetComponent<EquipmentManager>();
+        equipmentManager.onEquipmentChanged += SwapWeapons;
+    }
+#region MainFunctionality
+    #region EngageTarget
     //How the player object talks to this script
     public void EngageTarget(bool hasTarget, Transform targetTransform = null)
     {
@@ -47,9 +52,10 @@ public class AttackController : MonoBehaviour {
             lastKnownTarget = null;
         }
     }
+#endregion
 
     /****************** PRIVATE FUNCTIONS **************************/
-
+    #region MoveToEngagement
     IEnumerator MoveToEngagement(Transform targetTransform)
     {
         while (targetTransform)
@@ -70,7 +76,7 @@ public class AttackController : MonoBehaviour {
         }
         yield break;
     }
-
+#endregion
 
     void StopAndAttack(Transform targetTransform)
     {
@@ -82,9 +88,19 @@ public class AttackController : MonoBehaviour {
 
 
     //Calculate the damage of the weapon + stats
+    //maybe put this method in stats? Maybe...
     float CalculateDamageDealt()
     {
         //also need to consider weapon condtion? maybe condition just makes it break
-        return myAttack + equippedWeapon.weight + equippedWeapon.sharpness * equippedWeapon.softness * equippedWeapon.weaponCondition;    
+        return myAttackStat + equippedWeapon.weight + equippedWeapon.sharpness * equippedWeapon.softness * equippedWeapon.weaponCondition;    
+    }
+#endregion
+
+    //Player callback for weapon swaps (called from EquipmentManager)
+    void SwapWeapons(Equipment oldItem, Equipment newItem)
+    {
+        Debug.Log("UPDATING WEAPON");
+        int weaponIndex = (int)EquipmentSlot.MainHand;
+        equippedWeapon = (Weapon)equipmentManager.currentEquipment[weaponIndex];
     }
 }

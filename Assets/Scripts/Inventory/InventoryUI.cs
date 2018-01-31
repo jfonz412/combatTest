@@ -27,18 +27,18 @@ public class InventoryUI : MonoBehaviour {
 
     void UpdateUI()
     {
-        Debug.Log("UPDATING UI");
+        Debug.Log("UPDATING UI"); 
         for (int i = 0; i < slots.Length; i++)
         {
             if (i < inventory.items.Count)
             {
                 slots[i].AddItem(inventory.items[i]);
-                Debug.Log("Added item to slot");
+                //Debug.Log("Added item to slot");
             }
             else
             {
                 slots[i].ClearSlot();
-                Debug.Log("Cleared item from slot");
+                //Debug.Log("Cleared item from slot");
             }
         }
     }

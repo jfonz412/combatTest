@@ -5,10 +5,11 @@ public class UnitAnimator : MonoBehaviour {
 	public Animator[] animators;
 	public GameObject unitBody;
 	
-	public int torsoID; //this is what determines which armor we are choosing to equip. Can also use this to dictate stats (like an armor ID)
-	public int LegID;
-	public int weaponID; //consider the weaponID indicating which set of animations should play
+	//public int torsoID; 
+	//public int LegID;
+	//public int weaponID; 
 
+    //these might not have to be gameobjects anymore, just animators
     [HideInInspector]
 	public GameObject loadedTorsoArmor;
     [HideInInspector]
@@ -21,17 +22,47 @@ public class UnitAnimator : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		animators = new Animator[4];
-		//Get Character Animator
-		animators [0] = GetComponent<Animator> ();
-		//Load Equipment
-		loadWeapon();     //1
-		loadTorsoArmor(); //2
-		loadLegArmor();   //3
-	}
-	
-	
-	void loadWeapon(){ //should take an into for the equipment ID
+        animators = new Animator[4]; //will be 7, 6 enum bodyparts plus player
+		animators [0] = GetComponent<Animator> (); //Get Character Animator
+    }
+
+    public void LoadEquipment(int equipSlot, int equipmentID)
+    {
+        GameObject loadedEquipment = null;
+        int animIndex = equipSlot + 1;
+        switch (equipSlot)
+        {
+            case 1:
+                loadedEquipment = LoadTorsoArmor(equipmentID);
+                Debug.Log("Equipping to torso");
+                break;
+            case 2:
+                loadedEquipment = LoadLegArmor(equipmentID);
+                Debug.Log("Equipping to legs");
+                break;
+            case 3:
+                animIndex = 1; //want to keep weapon at one...can probably change this later
+                loadedEquipment = LoadWeapon(equipmentID);
+                Debug.Log("Equipping to main hand");
+                break;
+            default:
+                loadedEquipment = null;
+                Debug.LogError("Bodypart not yet defined");
+                break;
+        }
+        if (loadedEquipment != null)
+        {
+            loadedEquipment.transform.SetParent(unitBody.transform);
+            loadedEquipment.transform.localPosition = new Vector3(0, 0, 0);
+
+            animators[animIndex] = loadedEquipment.GetComponent<Animator>();
+            ResetAnimators();
+        }
+    }
+
+    #region Individual Equipment Loads
+
+    GameObject LoadWeapon(int weaponID){ //should take an into for the equipment ID
 		if (loadedWeapon != null){
 			Destroy (loadedWeapon.gameObject);
 			loadedWeapon = null;
@@ -44,19 +75,14 @@ public class UnitAnimator : MonoBehaviour {
 		}else if (weaponID == 2){
 			loadedWeapon = Instantiate (Resources.Load ("Weapons/Iron Spear"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
-		
-		loadedWeapon.transform.SetParent (unitBody.transform);
-		loadedWeapon.transform.localPosition = new Vector3 (0,0,0);
-		
-		animators [1] = loadedWeapon.GetComponent<Animator>();
-		ResetAnimators();	
+
+        return loadedWeapon;
 	}
 	
 	
-	void loadTorsoArmor(){
+	GameObject LoadTorsoArmor(int torsoID){
 		//Get rid of old armor if there is any
 		if (loadedTorsoArmor != null){
-			//PutItemBackInInventory(loadedTorsoArmor);
 			Destroy (loadedTorsoArmor.gameObject);
 			loadedTorsoArmor = null;
 		}
@@ -66,20 +92,11 @@ public class UnitAnimator : MonoBehaviour {
 		}else if (torsoID == 1){
 			loadedTorsoArmor = Instantiate (Resources.Load ("Armor/PlateIronTorso"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
-		
-		//Attach the armor
-		loadedTorsoArmor.transform.SetParent (unitBody.transform);
-		
-		//Make sure armor is centered and right scale
-		loadedTorsoArmor.transform.localPosition = new Vector3 (0,0,0);
-		
-		//Grab the animator for the loaded armor
-		animators [2] = loadedTorsoArmor.GetComponent<Animator> ();
-		
-		ResetAnimators();
+
+        return loadedTorsoArmor;
 	}
 	
-	void loadLegArmor(){
+	GameObject LoadLegArmor(int LegID){
 		//Get rid of old armor if there is any
 		if (loadedLegArmor != null){
 			//PutItemBackInInventory(loadedTorsoArmor);
@@ -92,23 +109,14 @@ public class UnitAnimator : MonoBehaviour {
 		}else if (LegID == 1){
 			loadedLegArmor = Instantiate (Resources.Load ("Armor/PlateIronLegs"), new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
 		}
-		
-		//Attach the armor
-		loadedLegArmor.transform.SetParent (unitBody.transform);
-		
-		//Make sure armor is centered and right scale
-		loadedLegArmor.transform.localPosition = new Vector3 (0,0,0);
-		
-		//Grab the animator for the loaded armor
-		animators [3] = loadedLegArmor.GetComponent<Animator> ();
-		
-		ResetAnimators();
+
+        return loadedLegArmor;
 	}
-	
-	
-	/************************* PUBLIC FUNCTIONS ****************************************/
-	
-	public void FaceDirection(Vector2 startPos, Vector2 endPos){	
+#endregion
+
+    /************************* PUBLIC FUNCTIONS ****************************************/
+
+    public void FaceDirection(Vector2 startPos, Vector2 endPos){	
 		Vector2 relativePos =  endPos - startPos;
 		inputX = relativePos.x;
 		inputY = relativePos.y;

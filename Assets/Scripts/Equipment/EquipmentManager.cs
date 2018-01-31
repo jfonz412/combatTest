@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour {
 
-    Equipment[] currentEquipment; //holds all of our equipment
+    public Equipment[] currentEquipment; //holds all of our equipment
+    UnitAnimator unitAnim;
     Inventory inventory;
 
     //this will be used to adjust stats on equipment changes
-    public delegate void OnEquipmentChanged(Equipment newItem, Equipment oldItem);
-    public OnEquipmentChanged onEquipmentChanged;
+    public delegate void OnEquipmentChanged(Equipment oldItem, Equipment newItem);
+    public OnEquipmentChanged onEquipmentChanged; //this will probably take in a method from Stats.cs to change the stats on equipment changes
 
 	void Start () {
+        unitAnim = GetComponent<UnitAnimator>();
         inventory = Inventory.instance;
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
         currentEquipment = new Equipment[numSlots];
-	}
-	
-	public void Equip (Equipment newItem) {
+        //LoadOut.LoadDefaultLoadout();
+    }
+
+    public void Equip (Equipment newItem) {
         Equipment oldItem = null;
         int slotIndex = (int)newItem.equipSlot; //grabs the item's equip slot based on it's enum
 
@@ -27,13 +30,13 @@ public class EquipmentManager : MonoBehaviour {
             inventory.Add(oldItem);
         }
 
-        if(onEquipmentChanged != null)
+        currentEquipment[slotIndex] = newItem;
+        unitAnim.LoadEquipment((int)newItem.equipSlot, newItem.equipmentID);
+
+        if (onEquipmentChanged != null)
         {
             onEquipmentChanged.Invoke(newItem, oldItem);
         }
-
-        currentEquipment[slotIndex] = newItem;
-        //load equipment to UnitAnimator
     }
 
     public void Unequip(int slotIndex)
@@ -42,22 +45,22 @@ public class EquipmentManager : MonoBehaviour {
         {
             Equipment oldItem = currentEquipment[slotIndex];
             inventory.Add(oldItem);
-
+            unitAnim.LoadEquipment((int)oldItem.equipSlot, 0); //strip player
             currentEquipment[slotIndex] = null;
             if (onEquipmentChanged != null)
             {
-                onEquipmentChanged.Invoke(null, oldItem);
+                onEquipmentChanged.Invoke(null, oldItem);    
             }
         }
     }
 
-    //temporary...
+    //TEMPORARY
 
     public void UnequpAll() 
     {
         for(int i = 0; i < currentEquipment.Length; i++)
         {
-            Unequip(i);
+            Unequip(i); 
         }
     }
 
