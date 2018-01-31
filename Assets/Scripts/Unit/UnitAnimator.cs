@@ -47,7 +47,7 @@ public class UnitAnimator : MonoBehaviour {
                 break;
             default:
                 loadedEquipment = null;
-                Debug.LogError("Bodypart not yet defined");
+                Debug.LogWarning("Bodypart not yet defined");
                 break;
         }
         if (loadedEquipment != null)

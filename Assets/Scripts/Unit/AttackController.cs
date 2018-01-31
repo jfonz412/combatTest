@@ -10,6 +10,7 @@ public class AttackController : MonoBehaviour {
 
     EquipmentManager equipmentManager;
     Weapon equippedWeapon;
+    int weaponIndex = (int)EquipmentSlot.MainHand;
 
     UnitAnimator anim;
     UnitController unit;
@@ -26,6 +27,7 @@ public class AttackController : MonoBehaviour {
 
         equipmentManager = GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += SwapWeapons;
+        SwapWeapons(null, null); //load whatever weapon is already equipped
     }
 #region MainFunctionality
     #region EngageTarget
@@ -39,6 +41,7 @@ public class AttackController : MonoBehaviour {
             {
                 StopCoroutine(engagingEntity);
             }
+
             targetHealth = lastKnownTarget.GetComponent<Health>();
             engagingEntity = MoveToEngagement(targetTransform);
             StartCoroutine(engagingEntity);
@@ -100,7 +103,6 @@ public class AttackController : MonoBehaviour {
     void SwapWeapons(Equipment oldItem, Equipment newItem)
     {
         Debug.Log("UPDATING WEAPON");
-        int weaponIndex = (int)EquipmentSlot.MainHand;
         equippedWeapon = (Weapon)equipmentManager.currentEquipment[weaponIndex];
     }
 }

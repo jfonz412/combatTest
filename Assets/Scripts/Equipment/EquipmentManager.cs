@@ -4,27 +4,30 @@ using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour {
 
-    public Equipment[] currentEquipment; //holds all of our equipment
+    public Equipment[] currentEquipment; 
+ 
     UnitAnimator unitAnim;
     Inventory inventory;
 
-    //this will be used to adjust stats on equipment changes
     public delegate void OnEquipmentChanged(Equipment oldItem, Equipment newItem);
-    public OnEquipmentChanged onEquipmentChanged; //this will probably take in a method from Stats.cs to change the stats on equipment changes
+    public OnEquipmentChanged onEquipmentChanged;
 
 	void Start () {
         unitAnim = GetComponent<UnitAnimator>();
         inventory = Inventory.instance;
+
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
         currentEquipment = new Equipment[numSlots];
-        //LoadOut.LoadDefaultLoadout();
     }
 
     public void Equip (Equipment newItem) {
         Equipment oldItem = null;
-        int slotIndex = (int)newItem.equipSlot; //grabs the item's equip slot based on it's enum
+        int slotIndex = (int)newItem.equipSlot;
 
-        if(currentEquipment[slotIndex] != null)
+        Debug.Log(slotIndex);
+
+        //put item in inventory if valid
+        if(currentEquipment[slotIndex] != null && currentEquipment[slotIndex].equipmentID != 0)
         {
             oldItem = currentEquipment[slotIndex];
             inventory.Add(oldItem);
@@ -39,13 +42,19 @@ public class EquipmentManager : MonoBehaviour {
         }
     }
 
+    //may need to check for naked unequip
     public void Unequip(int slotIndex)
     {
         if(currentEquipment[slotIndex] != null)
         {
             Equipment oldItem = currentEquipment[slotIndex];
-            inventory.Add(oldItem);
-            unitAnim.LoadEquipment((int)oldItem.equipSlot, 0); //strip player
+            if (oldItem.equipmentID != 0) 
+            {
+                inventory.Add(oldItem);
+            }
+            
+            unitAnim.LoadEquipment((int)oldItem.equipSlot, 0); //add naked/unarmed to anim slot
+
             currentEquipment[slotIndex] = null;
             if (onEquipmentChanged != null)
             {
@@ -53,6 +62,8 @@ public class EquipmentManager : MonoBehaviour {
             }
         }
     }
+
+
 
     //TEMPORARY
 
