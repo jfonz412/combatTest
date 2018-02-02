@@ -12,7 +12,9 @@ public class EquipmentManager : MonoBehaviour {
     public delegate void OnEquipmentChanged(Equipment oldItem, Equipment newItem);
     public OnEquipmentChanged onEquipmentChanged;
 
-	void Start () {
+    public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead; //only for player
+
+    void Start () {
         unitAnim = GetComponent<UnitAnimator>();
         inventory = Inventory.instance;
 
@@ -23,8 +25,6 @@ public class EquipmentManager : MonoBehaviour {
     public void Equip (Equipment newItem) {
         Equipment oldItem = null;
         int slotIndex = (int)newItem.equipSlot;
-
-        Debug.Log(slotIndex);
 
         //put item in inventory if valid
         if(currentEquipment[slotIndex] != null && currentEquipment[slotIndex].equipmentID != 0)
@@ -38,13 +38,14 @@ public class EquipmentManager : MonoBehaviour {
 
         if (onEquipmentChanged != null)
         {
-            onEquipmentChanged.Invoke(newItem, oldItem);
+            onEquipmentChanged.Invoke(oldItem, newItem);
         }
     }
 
     //may need to check for naked unequip
     public void Unequip(int slotIndex)
     {
+
         if(currentEquipment[slotIndex] != null)
         {
             Equipment oldItem = currentEquipment[slotIndex];
@@ -52,17 +53,47 @@ public class EquipmentManager : MonoBehaviour {
             {
                 inventory.Add(oldItem);
             }
-            
-            unitAnim.LoadEquipment((int)oldItem.equipSlot, 0); //add naked/unarmed to anim slot
 
-            currentEquipment[slotIndex] = null;
+            Strip(oldItem);
+
             if (onEquipmentChanged != null)
             {
-                onEquipmentChanged.Invoke(null, oldItem);    
+                onEquipmentChanged.Invoke(oldItem, null);    
             }
         }
     }
 
+    void Strip(Equipment oldItem)
+    {
+        int slotIndex = (int)oldItem.equipSlot;
+
+        switch (oldItem.equipSlot)
+        {
+            case EquipmentSlot.Head:
+                currentEquipment[slotIndex] = nakedHead;
+                break;
+            case EquipmentSlot.Chest:
+                currentEquipment[slotIndex] = nakedChest;
+                break;
+            case EquipmentSlot.MainHand:
+                currentEquipment[slotIndex] = unarmedMain;
+                break;
+            case EquipmentSlot.OffHand:
+                currentEquipment[slotIndex] = unarmedOff;
+                break;
+            case EquipmentSlot.Legs:
+                currentEquipment[slotIndex] = nakedLegs;
+                break;
+            case EquipmentSlot.Feet:
+                currentEquipment[slotIndex] = nakedFeet;
+                break;
+            default:
+                currentEquipment[slotIndex] = null;
+                Debug.LogError("Invalid EquipSlot");
+                break;
+        }
+        unitAnim.LoadEquipment((int)oldItem.equipSlot, 0); //add naked/unarmed to anim slot
+    }
 
 
     //TEMPORARY

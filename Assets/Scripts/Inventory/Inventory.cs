@@ -23,7 +23,7 @@ public class Inventory : MonoBehaviour {
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChanged; 
 
-    public List<Item> items = new List<Item>();
+    public List<Item> items = new List<Item>(); 
     public int inventorySpace = 10;
 
     public bool Add(Item item)

@@ -16,7 +16,6 @@ public class Loadout : MonoBehaviour {
     {
         for (int i = 0; i < defaultLoadout.Length; i++)
         {
-            Debug.Log("Loading: " + defaultLoadout[i].name);
             equipmentManager.Equip(defaultLoadout[i]);
         }
     }

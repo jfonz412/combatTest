@@ -34,20 +34,20 @@ public class UnitAnimator : MonoBehaviour {
         {
             case 1:
                 loadedEquipment = LoadTorsoArmor(equipmentID);
-                Debug.Log("Equipping to torso");
+                //Debug.Log("Equipping to torso");
                 break;
             case 2:
                 loadedEquipment = LoadLegArmor(equipmentID);
-                Debug.Log("Equipping to legs");
+                //Debug.Log("Equipping to legs");
                 break;
             case 3:
                 animIndex = 1; //want to keep weapon at one...can probably change this later
                 loadedEquipment = LoadWeapon(equipmentID);
-                Debug.Log("Equipping to main hand");
+                //Debug.Log("Equipping to main hand");
                 break;
             default:
                 loadedEquipment = null;
-                Debug.LogWarning("Bodypart not yet defined");
+                //Debug.LogWarning("Bodypart not yet defined");
                 break;
         }
         if (loadedEquipment != null)

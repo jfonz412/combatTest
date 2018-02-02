@@ -14,8 +14,8 @@ public class InventoryUI : MonoBehaviour {
         //whenever onInventoryChanged is Invoked, it will call UpdateUI from this script
         inventory.onInventoryChanged += UpdateUI;
 
-        slots = itemsParent.GetComponentsInChildren<InventorySlot>(); //might want to put this in UpdateUI if slots change
-	}
+        slots = itemsParent.GetComponentsInChildren<InventorySlot>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -27,7 +27,7 @@ public class InventoryUI : MonoBehaviour {
 
     void UpdateUI()
     {
-        Debug.Log("UPDATING UI"); 
+        Debug.Log("UPDATING INVENTORY UI"); 
         for (int i = 0; i < slots.Length; i++)
         {
             if (i < inventory.items.Count)
