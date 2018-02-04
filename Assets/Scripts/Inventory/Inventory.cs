@@ -26,6 +26,7 @@ public class Inventory : MonoBehaviour {
     public List<Item> items = new List<Item>(); 
     public int inventorySpace = 10;
 
+    //create a seperate stackable inventory for stocks?
     public bool Add(Item item)
     {
         if (!item.isDefaultItem) //not sure what this is supposed to be for yet

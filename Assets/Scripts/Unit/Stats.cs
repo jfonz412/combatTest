@@ -14,8 +14,6 @@ public class Stats : MonoBehaviour {
     EquipmentManager equipmentManager;
 
 	void Start(){
-		//anim = GetComponent<UnitAnimator>();
-
         equipmentManager = GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += AdjustStats;
 	}
@@ -47,10 +45,12 @@ public class Stats : MonoBehaviour {
 
     int PickBodyPart()
     {
-        //EquipmentSlot { Head, Chest, Legs, MainHand, OffHand, Feet} (the max is exclusive so must be +1)
-        int num = Random.Range(1, 3);
-        Debug.Log("Attacking bodypart #" + num);
-        return num;
+        //EquipmentSlot { Head, Chest, Legs, MainHand, OffHand, Feet}
+        int[] validChoices = new int[] { 0, 1, 2, 5 };
+        int num = Random.Range(0, validChoices.Length);
+
+        Debug.Log("Attacking bodypart #" + validChoices[num]);
+        return validChoices[num];
     }
 
     void DamageStats(int bodyPart, float damage)
@@ -59,7 +59,7 @@ public class Stats : MonoBehaviour {
     }
 
 
-    /******************** STATS *****************************************/
+    /**************************** STATS *****************************************/
 
     //Invoked from EquipmentManager to adjust stats based on newly equipped items
     void AdjustStats(Equipment oldItem, Equipment newItem)

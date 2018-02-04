@@ -4,12 +4,14 @@ using System.Collections;
 public class UnitAnimator : MonoBehaviour {
 	public Animator[] animators;
 	public GameObject unitBody;
-	
-	//public int torsoID; 
-	//public int LegID;
-	//public int weaponID; 
+
+    //public int torsoID; 
+    //public int LegID;
+    //public int weaponID; 
 
     //these might not have to be gameobjects anymore, just animators
+    [HideInInspector]
+    public GameObject loadedHeadArmor;
     [HideInInspector]
 	public GameObject loadedTorsoArmor;
     [HideInInspector]
@@ -22,7 +24,7 @@ public class UnitAnimator : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-        animators = new Animator[4]; //will be 7, 6 enum bodyparts plus player
+        animators = new Animator[5]; //will be 7, 6 enum bodyparts plus player
 		animators [0] = GetComponent<Animator> (); //Get Character Animator
     }
 
@@ -32,6 +34,11 @@ public class UnitAnimator : MonoBehaviour {
         int animIndex = equipSlot + 1;
         switch (equipSlot)
         {
+            case 0:
+                animIndex = 4;
+                loadedEquipment = LoadHeadArmor(equipmentID);
+                //Debug.Log("Equipping to head");
+                break;
             case 1:
                 loadedEquipment = LoadTorsoArmor(equipmentID);
                 //Debug.Log("Equipping to torso");
@@ -78,9 +85,31 @@ public class UnitAnimator : MonoBehaviour {
 
         return loadedWeapon;
 	}
-	
-	
-	GameObject LoadTorsoArmor(int torsoID){
+
+    GameObject LoadHeadArmor(int headID)
+    {
+        //Get rid of old armor if there is any
+        if (loadedHeadArmor != null)
+        {
+            Destroy(loadedHeadArmor.gameObject);
+            loadedHeadArmor = null;
+        }
+
+        if (headID == 0)
+        {
+            loadedHeadArmor = Instantiate(Resources.Load("Armor/naked"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        }
+        else if (headID == 1)
+        {
+            loadedHeadArmor = Instantiate(Resources.Load("Armor/PlateIronHelmet"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        }
+
+        return loadedHeadArmor;
+    }
+
+
+
+    GameObject LoadTorsoArmor(int torsoID){
 		//Get rid of old armor if there is any
 		if (loadedTorsoArmor != null){
 			Destroy (loadedTorsoArmor.gameObject);

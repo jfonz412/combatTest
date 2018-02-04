@@ -18,7 +18,6 @@ public class EquipSlot : MonoBehaviour {
     public void AddItem(Equipment newItem)
     {
         equipment = newItem;
-        Debug.Log("new item being added is: " + newItem.icon);
         icon.sprite = equipment.icon;
         icon.enabled = true;
         removeButton.interactable = true;

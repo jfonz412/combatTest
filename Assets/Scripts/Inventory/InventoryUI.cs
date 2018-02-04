@@ -11,9 +11,7 @@ public class InventoryUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         inventory = Inventory.instance;
-        //whenever onInventoryChanged is Invoked, it will call UpdateUI from this script
         inventory.onInventoryChanged += UpdateUI;
-
         slots = itemsParent.GetComponentsInChildren<InventorySlot>();
     }
 	
@@ -27,18 +25,15 @@ public class InventoryUI : MonoBehaviour {
 
     void UpdateUI()
     {
-        Debug.Log("UPDATING INVENTORY UI"); 
         for (int i = 0; i < slots.Length; i++)
         {
             if (i < inventory.items.Count)
             {
                 slots[i].AddItem(inventory.items[i]);
-                //Debug.Log("Added item to slot");
             }
             else
             {
                 slots[i].ClearSlot();
-                //Debug.Log("Cleared item from slot");
             }
         }
     }
