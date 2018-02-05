@@ -6,9 +6,11 @@ public class PlayerController : MonoBehaviour {
     UnitController unitController;
     AttackController attackController;
     IEnumerator movingToInteraction = null;
+
     [HideInInspector]
 	public bool incapacitated;
 
+    public GameObject clickMarker;
 
 	// Use this for initialization
 	void Start () {
@@ -72,6 +74,8 @@ public class PlayerController : MonoBehaviour {
             StopPreviousInteraction();
             PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
         }
+        //spawn marker
+        Instantiate(clickMarker, mouseClickPos, Quaternion.identity);
     }
 
 
