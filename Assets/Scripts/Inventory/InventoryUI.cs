@@ -21,6 +21,11 @@ public class InventoryUI : MonoBehaviour {
         {
             inventoryUI.SetActive(!inventoryUI.activeSelf);
         }
+
+        if (DialogueManager.instance.isOpen)
+        {
+            inventoryUI.SetActive(false);
+        }
 	}
 
     void UpdateUI()

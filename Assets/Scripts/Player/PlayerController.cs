@@ -89,7 +89,10 @@ public class PlayerController : MonoBehaviour {
             if (interactable)
             {
                 //Pull up interaction options menu
-                Debug.Log("Interaction Options");
+                //Debug.Log("Interaction Options");
+
+                //TESTING
+                interactable.TriggerDialogue();
             }
         }
         //if it's not a collider or interactable right click does nothing
