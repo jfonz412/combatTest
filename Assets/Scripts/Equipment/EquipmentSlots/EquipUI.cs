@@ -23,6 +23,11 @@ public class EquipUI : MonoBehaviour {
         {
             equipmentUI.SetActive(!equipmentUI.activeSelf);
         }
+
+        if (DialogueManager.instance.isOpen)
+        {
+            equipmentUI.SetActive(false);
+        }
     }
 
 

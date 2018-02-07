@@ -3,9 +3,9 @@
 public class ItemPickup : Interactable {
     public Item item;
 
-    public override void DefaultInteraction()
+    public override void Interaction(string interaction)
     {
-        base.DefaultInteraction();
+        base.Interaction(interaction);
         PickUp();    
     }
 

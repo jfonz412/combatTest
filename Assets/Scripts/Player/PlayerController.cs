@@ -59,8 +59,9 @@ public class PlayerController : MonoBehaviour {
             Interactable interactable = hit.collider.GetComponent<Interactable>();
             if (interactable)
             {
+                string interaction = "Attack";
                 StopPreviousInteraction();
-                movingToInteraction = MoveToInteraction(interactable);
+                movingToInteraction = MoveToInteraction(interactable, interaction);
                 StartCoroutine(movingToInteraction);
             }
             else
@@ -86,14 +87,22 @@ public class PlayerController : MonoBehaviour {
         if (hit.collider)
         {
             Interactable interactable = hit.collider.GetComponent<Interactable>();
+
+            //testing, currently moves player where we actually want to pull up a menu first
             if (interactable)
             {
-                //Pull up interaction options menu
-                //Debug.Log("Interaction Options");
-
-                //TESTING
-                interactable.TriggerDialogue();
+                string interaction = "Talk";
+                StopPreviousInteraction();
+                movingToInteraction = MoveToInteraction(interactable, interaction);
+                StartCoroutine(movingToInteraction);
             }
+            else
+            {
+                StopPreviousInteraction();
+                PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
+            }
+            //end testing
+
         }
         //if it's not a collider or interactable right click does nothing
     }
@@ -101,7 +110,7 @@ public class PlayerController : MonoBehaviour {
 
     /****************** HELPER FUNCTIONS **************************/
 
-    IEnumerator MoveToInteraction(Interactable interactable)
+    IEnumerator MoveToInteraction(Interactable interactable, string interaction)
     {
         while (interactable)
         {
@@ -112,10 +121,11 @@ public class PlayerController : MonoBehaviour {
             }
             else
             {
+                unitController.StopMoving();
                 break;
             }
         }
-        interactable.DefaultInteraction();
+        interactable.Interaction(interaction);
         yield break;
     }
 

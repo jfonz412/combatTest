@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour {
 
-    public GameObject dialogueWindow;
+    public Animator dialogueWindow;
 
     public Text nameText;
     public Text dialogueText;
@@ -38,7 +38,7 @@ public class DialogueManager : MonoBehaviour {
     public void StartDialogue(Dialogue dialogue)
     {
         isOpen = true;
-        dialogueWindow.SetActive(isOpen);
+        dialogueWindow.SetBool("isOpen", isOpen);
 
         nameText.text = dialogue.name;
 
@@ -61,14 +61,24 @@ public class DialogueManager : MonoBehaviour {
         }
 
         string sentence = sentences.Dequeue();
-        dialogueText.text = sentence;
+        StopAllCoroutines();
+        StartCoroutine(TypeSentence(sentence));
+    }
+
+    IEnumerator TypeSentence(string sentance)
+    {
+        dialogueText.text = "";
+        foreach(char letter in sentance.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return null; //waits a single frame
+        }
     }
 
     void EndDialogue()
     {
         isOpen = false;
-        dialogueWindow.SetActive(isOpen);
-
+        dialogueWindow.SetBool("isOpen", isOpen);
         Debug.Log("End of conversation");
     }
 }
