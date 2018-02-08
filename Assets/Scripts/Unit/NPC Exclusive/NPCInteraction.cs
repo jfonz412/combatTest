@@ -4,9 +4,21 @@ using UnityEngine;
 
 public class NPCInteraction : Interactable
 {
+    public DefaultInteractions defaultInteraction;
+
+    void Start()
+    {
+        myInteractions = new string[] { "Attack", "Talk" };
+    }
+
     public override void Interaction(string interaction)
     {
         base.Interaction(interaction); //gets the reference to the player
+
+        if (interaction == "Default")
+        {
+            interaction = defaultInteraction.ToString();
+        }
 
         //chose which interaction to trigger
         switch (interaction)
@@ -23,7 +35,7 @@ public class NPCInteraction : Interactable
         }
     }
 
-    #region Possible Interactions
+    #region Possible Interactions for NPCs
 
     //can be used for descriptions and observations as well
     void TriggerDialogue()

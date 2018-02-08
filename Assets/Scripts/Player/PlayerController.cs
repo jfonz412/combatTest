@@ -33,19 +33,34 @@ public class PlayerController : MonoBehaviour {
 	void MovePlayer(){
 		if (Input.GetMouseButtonDown(0))
         {
-			Vector3 mouseClickPos;
-            mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            mouseClickPos.z = transform.position.z; //to always keep z at 0
-			ProcessLeftClick(mouseClickPos);			
-		}
+            ProcessClick(0);
+        }
         else if (Input.GetMouseButtonDown(1))
         {
-            Vector3 mouseClickPos;
-            mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            mouseClickPos.z = transform.position.z; //to always keep z at 0
-            ProcessRightClick(mouseClickPos);
+            ProcessClick(1);   
         }
 	}
+
+    void ProcessClick(int mouseButton)
+    {
+        if (InteractableMenu.instance != null)
+        { 
+            InteractableMenu.instance.CloseMenu();
+        }
+
+        Vector3 mouseClickPos;
+        mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        mouseClickPos.z = transform.position.z; //to always keep z at 0
+
+        if(mouseButton == 0)
+        {
+            ProcessLeftClick(mouseClickPos);
+        }
+        else
+        {
+            ProcessRightClick(mouseClickPos);
+        }
+    }
 
 
     /************************************ LEFT AND RIGHT CLICKS *******************************/
@@ -59,7 +74,7 @@ public class PlayerController : MonoBehaviour {
             Interactable interactable = hit.collider.GetComponent<Interactable>();
             if (interactable)
             {
-                string interaction = "Attack";
+                string interaction = "Default";
                 StopPreviousInteraction();
                 movingToInteraction = MoveToInteraction(interactable, interaction);
                 StartCoroutine(movingToInteraction);
@@ -88,23 +103,15 @@ public class PlayerController : MonoBehaviour {
         {
             Interactable interactable = hit.collider.GetComponent<Interactable>();
 
-            //testing, currently moves player where we actually want to pull up a menu first
             if (interactable)
             {
-                string interaction = "Talk";
-                StopPreviousInteraction();
-                movingToInteraction = MoveToInteraction(interactable, interaction);
-                StartCoroutine(movingToInteraction);
+                interactable.OpenInteractionMenu();
+                //Drop down menu
+                //when button is pressed, then call a function that does the following (and passes the chosen interaction
+                //maybe if button is pressed, trigger below funtion and pass in the interactable + chosenInteraction (string)
+                //ChooseInteraction(interactable, button.chosenInteraction); ?
             }
-            else
-            {
-                StopPreviousInteraction();
-                PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
-            }
-            //end testing
-
         }
-        //if it's not a collider or interactable right click does nothing
     }
 
 
@@ -135,5 +142,14 @@ public class PlayerController : MonoBehaviour {
             StopCoroutine(movingToInteraction); //stop moving towards previous interaction, if any
 
         attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine), if any
+    }
+
+    //this will be called from the button in the dropdown interaction menu
+    public void ChooseInteraction(Interactable interactable, string Interaction)
+    { 
+        string chosenInteraction = "InteractionChosenFromMenu";
+        StopPreviousInteraction();
+        movingToInteraction = MoveToInteraction(interactable, chosenInteraction);
+        StartCoroutine(movingToInteraction);
     }
 }
