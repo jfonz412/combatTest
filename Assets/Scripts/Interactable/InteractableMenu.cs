@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class InteractableMenu : MonoBehaviour {
 
     [HideInInspector]
-    public Text option1, option2, option3, option4;
+    public Text[] interactionOptions = new Text[4]; //actual text items
 
 #region Singleton 
     [HideInInspector]
@@ -24,6 +24,11 @@ public class InteractableMenu : MonoBehaviour {
     public void PopulateOptions(Interactable interactable)
     {
         //grab the interactable's interactions and populate myself with them
+        for(int i = 0; i<interactionOptions.Length; i++)
+        {
+            interactionOptions[i] = transform.GetChild(i).GetComponent<Text>();
+            interactionOptions[i].text = interactable.myInteractions[i];
+        }
     }
 
     public void PassChosenInteraction()

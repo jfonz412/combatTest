@@ -106,10 +106,8 @@ public class PlayerController : MonoBehaviour {
             if (interactable)
             {
                 interactable.OpenInteractionMenu();
-                //Drop down menu
                 //when button is pressed, then call a function that does the following (and passes the chosen interaction
                 //maybe if button is pressed, trigger below funtion and pass in the interactable + chosenInteraction (string)
-                //ChooseInteraction(interactable, button.chosenInteraction); ?
             }
         }
     }

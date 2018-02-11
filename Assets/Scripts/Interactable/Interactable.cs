@@ -10,8 +10,8 @@ public class Interactable : MonoBehaviour {
     public Dialogue dialog; //contains fields for name and text
 
     [HideInInspector]
-    public string[] myInteractions; //use this to populate interact menu
-    public enum DefaultInteractions { Attack, Talk };
+    public string[] myInteractions = new string[4]; //use this to populate interact menu
+    public enum DefaultInteractions { Attack, Talk, Pickup, Inspect };
     
     //virtual allows child classes to overwrite this function
     public virtual void Interaction(string interaction)
@@ -34,7 +34,8 @@ public class Interactable : MonoBehaviour {
             Debug.Log(myInteractions[i]);
         }
 
-        //pass this interactable into it?
+        //passes interactable script, not the whole gameobject
+        InteractableMenu.instance.PopulateOptions(this); //need to pass the interactable AND the interactions from this function to the player
 
     }
 

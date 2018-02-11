@@ -8,7 +8,7 @@ public class NPCInteraction : Interactable
 
     void Start()
     {
-        myInteractions = new string[] { "Attack", "Talk" };
+        myInteractions = new string[] { "Attack", "Talk", "Trade", "Inspect" };
     }
 
     public override void Interaction(string interaction)
@@ -28,6 +28,12 @@ public class NPCInteraction : Interactable
                 break;
             case "Talk":
                 TriggerDialogue();
+                break;
+            case "Trade":
+                //TriggerTrade();
+                break;
+            case "Inspect":
+                //InspectObject(); //should put this in Interactable.cs
                 break;
             default:
                 Debug.Log("invalid " + interaction + "interaction passed to " + gameObject);
