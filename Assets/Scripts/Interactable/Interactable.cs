@@ -17,26 +17,22 @@ public class Interactable : MonoBehaviour {
     public virtual void Interaction(string interaction)
     {
         player = PlayerManager.instance.player.transform;
-        Debug.Log("Default Interaction with " + this);
+    }
+
+    //maybe have this trigger dialogue window with italicized text
+    public void InspectObject()
+    {
+        Debug.Log("Inspecting " + gameObject);
     }
 
     public virtual void OpenInteractionMenu()
     {
-
         Vector3 menuSpawnPoint = Camera.main.WorldToScreenPoint(transform.position);
         menuSpawnPoint = new Vector3(menuSpawnPoint.x + 30f, menuSpawnPoint.y + 30f, menuSpawnPoint.z);
 
         Instantiate(Resources.Load("InteractionMenu"), menuSpawnPoint, Quaternion.identity, FindObjectOfType<Canvas>().transform);
-        Debug.Log("Opening interaction menu");
 
-        for (int i = 0; i<myInteractions.Length; i++)
-        {
-            Debug.Log(myInteractions[i]);
-        }
-
-        //passes interactable script, not the whole gameobject
-        InteractableMenu.instance.PopulateOptions(this); //need to pass the interactable AND the interactions from this function to the player
-
+        InteractableMenu.instance.PopulateOptions(this);
     }
 
     //debuggin' purposes

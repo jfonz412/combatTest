@@ -33,7 +33,7 @@ public class NPCInteraction : Interactable
                 //TriggerTrade();
                 break;
             case "Inspect":
-                //InspectObject(); //should put this in Interactable.cs
+                InspectObject();
                 break;
             default:
                 Debug.Log("invalid " + interaction + "interaction passed to " + gameObject);

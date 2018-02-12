@@ -8,6 +8,9 @@ public class InteractableMenu : MonoBehaviour {
     [HideInInspector]
     public Text[] interactionOptions = new Text[4]; //actual text items
 
+    Interactable currentInteractable;
+    PlayerController player;
+
 #region Singleton 
     [HideInInspector]
     public static InteractableMenu instance;
@@ -19,21 +22,34 @@ public class InteractableMenu : MonoBehaviour {
         }
         instance = this; //there can only be one!
     }
-#endregion
+    #endregion
+
+    void Start()
+    {
+        player = PlayerManager.instance.player.GetComponent<PlayerController>();
+    }
 
     public void PopulateOptions(Interactable interactable)
     {
-        //grab the interactable's interactions and populate myself with them
-        for(int i = 0; i<interactionOptions.Length; i++)
-        {
-            interactionOptions[i] = transform.GetChild(i).GetComponent<Text>();
-            interactionOptions[i].text = interactable.myInteractions[i];
+        currentInteractable = interactable;
+        if (currentInteractable != null)
+        { 
+            for (int i = 0; i < interactionOptions.Length; i++)
+            {
+                interactionOptions[i] = transform.GetChild(i).GetComponent<Text>();
+                interactionOptions[i].text = interactable.myInteractions[i];
+            }
         }
     }
 
-    public void PassChosenInteraction()
+    public void PassChosenInteraction(Text interaction)
     {
-        //pass the interactable and the chosen interaction to the PlayerController
+        if (currentInteractable != null)
+        {
+            string chosenInteraction = interaction.text;
+            player.InteractWithInteractable(chosenInteraction, currentInteractable);
+        }
+        CloseMenu();
     }
 
     public void CloseMenu()

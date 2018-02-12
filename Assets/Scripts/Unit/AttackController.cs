@@ -102,7 +102,6 @@ public class AttackController : MonoBehaviour {
     //Player callback for weapon swaps (called from EquipmentManager)
     void SwapWeapons(Equipment oldItem, Equipment newItem)
     {
-        Debug.Log("UPDATING WEAPON");
         equippedWeapon = (Weapon)equipmentManager.currentEquipment[weaponIndex];
     }
 }

@@ -74,10 +74,7 @@ public class PlayerController : MonoBehaviour {
             Interactable interactable = hit.collider.GetComponent<Interactable>();
             if (interactable)
             {
-                string interaction = "Default";
-                StopPreviousInteraction();
-                movingToInteraction = MoveToInteraction(interactable, interaction);
-                StartCoroutine(movingToInteraction);
+                InteractWithInteractable("Default", interactable);
             }
             else
             {
@@ -106,8 +103,6 @@ public class PlayerController : MonoBehaviour {
             if (interactable)
             {
                 interactable.OpenInteractionMenu();
-                //when button is pressed, then call a function that does the following (and passes the chosen interaction
-                //maybe if button is pressed, trigger below funtion and pass in the interactable + chosenInteraction (string)
             }
         }
     }
@@ -119,7 +114,7 @@ public class PlayerController : MonoBehaviour {
     {
         while (interactable)
         {
-            if (Vector3.Distance(transform.position, interactable.transform.position) > interactable.radius) //and interactable != null ?
+            if (Vector3.Distance(transform.position, interactable.transform.position) > interactable.radius)
             { 
                 PathfindingManager.RequestPath(transform.position, interactable.transform.position, unitController.OnPathFound);
                 yield return new WaitForSeconds(.2f); //might be able to extend this here? no need to be as precise?
@@ -130,7 +125,12 @@ public class PlayerController : MonoBehaviour {
                 break;
             }
         }
-        interactable.Interaction(interaction);
+
+        if(interactable != null)
+        {
+            interactable.Interaction(interaction);
+        }
+        
         yield break;
     }
 
@@ -143,9 +143,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     //this will be called from the button in the dropdown interaction menu
-    public void ChooseInteraction(Interactable interactable, string Interaction)
+    public void InteractWithInteractable(string chosenInteraction, Interactable interactable)
     { 
-        string chosenInteraction = "InteractionChosenFromMenu";
         StopPreviousInteraction();
         movingToInteraction = MoveToInteraction(interactable, chosenInteraction);
         StartCoroutine(movingToInteraction);
