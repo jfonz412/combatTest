@@ -7,8 +7,15 @@ public class InventorySlot : MonoBehaviour {
     public Button removeButton;
     Item item;
 
+    //this is called in InventoryUI.UpdateUI which is a callback whenever an item is added or removed
     public void AddItem(Item newItem)
     {
+       if (newItem == null)
+        {
+            ClearSlot();
+            return;
+        }
+
         item = newItem;
         icon.sprite = item.icon;
         icon.enabled = true;
@@ -25,11 +32,11 @@ public class InventorySlot : MonoBehaviour {
 
     public void OnRemoveButton()
     {
-        Inventory.instance.Remove(item);
+        Inventory.instance.RemoveAndDestroy(item);    
     }
 
     public void UseItem() //should probably pass in the player's transform here
-    {
+    { 
         if (item != null)
         {
             item.Use();

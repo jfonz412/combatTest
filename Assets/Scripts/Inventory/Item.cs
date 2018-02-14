@@ -5,6 +5,8 @@ public class Item : ScriptableObject {
 
     new public string name = "New Item";
     public Sprite icon = null;
+    public int? slotNum;
+    //public int quantity;
 
     public bool isDefaultItem = false; //not sure what this is for, it's from the video
 
@@ -15,7 +17,7 @@ public class Item : ScriptableObject {
     {
         //player is always going to be the one using the item so might as well grab this here in the base item script
         player = PlayerManager.instance.player.transform;
-        Debug.Log("Using " + name);
+        //Debug.Log("Using " + name);
     }
 
     public void RemoveFromInventory()

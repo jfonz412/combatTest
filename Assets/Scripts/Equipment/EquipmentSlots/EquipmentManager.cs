@@ -94,23 +94,4 @@ public class EquipmentManager : MonoBehaviour {
         }
         unitAnim.LoadEquipment((int)oldItem.equipSlot, 0); //add naked/unarmed to anim slot
     }
-
-
-    //TEMPORARY
-
-    public void UnequpAll() 
-    {
-        for(int i = 0; i < currentEquipment.Length; i++)
-        {
-            Unequip(i); 
-        }
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            UnequpAll();
-        }
-    }
 }
