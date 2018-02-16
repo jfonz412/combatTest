@@ -36,11 +36,20 @@ public class EquipSlot : MonoBehaviour {
         equipmentManager.Unequip((int)equipment.equipSlot);
     }
 
-    public void UseItem() 
-    {
+    public void UseItem()
+    { 
         if (equipment != null)
         {
             equipment.Use();
+        }
+    }
+
+    public void SwapWithMouseSlot()
+    {
+        if (equipment != null)
+        {
+            Debug.Log("Putting equipment in mouse slot");
+            equipmentManager.Unequip((int)equipment.equipSlot);
         }
     }
 }
