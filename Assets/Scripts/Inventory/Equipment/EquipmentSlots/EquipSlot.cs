@@ -1,21 +1,17 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
 
-public class EquipSlot : MonoBehaviour {
+public class EquipSlot : InventorySlot {
 
     EquipmentManager equipmentManager;
     Equipment equipment;
-
-    public Image icon;
-    public Button removeButton;
-    
 
     void Start()
     {
         equipmentManager = PlayerManager.instance.player.GetComponent<EquipmentManager>();
     }
 
-    public void AddItem(Equipment newItem)
+    public void AddEquipment(Equipment newItem)
     {
         equipment = newItem;
         icon.sprite = equipment.icon;
@@ -23,33 +19,28 @@ public class EquipSlot : MonoBehaviour {
         removeButton.interactable = true;
     }
 
-    public void ClearSlot()
-    {
-        equipment = null;
-        icon.sprite = null;
-        icon.enabled = false;
-        removeButton.interactable = false;
-    }
-
-    public void OnRemoveButton()
+    public override void OnRemoveButton()
     {
         equipmentManager.Unequip((int)equipment.equipSlot);
     }
 
-    public void UseItem()
-    { 
+    public override void SlotRightClicked()
+    {
         if (equipment != null)
         {
+            //display equipment stat window ( Equipment.Use() currently equips items if it is in the inventory but does not unequip )
             equipment.Use();
         }
     }
 
-    public void SwapWithMouseSlot()
+    public override void SlotLeftClicked()
     {
         if (equipment != null)
         {
-            Debug.Log("Putting equipment in mouse slot");
-            equipmentManager.Unequip((int)equipment.equipSlot);
+            //does nothing right now
+            //eventually this can be placed in our mouseSlot and put in the inventory
+            //but focus on inventory item movement first
+            Debug.Log("Putting equipment into mouseSlot");
         }
     }
 }

@@ -22,6 +22,14 @@ public class EquipmentManager : MonoBehaviour {
         currentEquipment = new Equipment[numSlots];
     }
 
+    //FIGURE OUT A WAY TO CALL THESE METHODS WHEN THE MOUSESLOT ITEM IS SWAPPED ???
+
+    //IF MOUSESLOT == NULL --> UNEQUIP
+
+    //IF MOUSESLOT == EQUIPMENT --> EQUIP
+
+    //ELSE --> RETURN (INVALID ITEM)
+
     public void Equip (Equipment newItem) {
         Equipment oldItem = null;
         int slotIndex = (int)newItem.equipSlot;
@@ -51,7 +59,7 @@ public class EquipmentManager : MonoBehaviour {
             Equipment oldItem = currentEquipment[slotIndex];
             if (oldItem.equipmentID != 0) 
             {
-                inventory.Add(oldItem);
+                inventory.Add(oldItem); 
             }
 
             Strip(oldItem);

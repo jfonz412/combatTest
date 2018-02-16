@@ -17,6 +17,10 @@ public class Item : ScriptableObject {
     {
         //player is always going to be the one using the item so might as well grab this here in the base item script
         player = PlayerManager.instance.player.transform;
+
+        //Item.Use() is for Right Clicks and will do different things depending on the item (consumable, equipment, etc.) 
+        //will need more classes that inherit from Item to get more item variety
+
         //Debug.Log("Using " + name);
     }
 

@@ -5,12 +5,11 @@ public class InventorySlot : MonoBehaviour
 {
     public Image icon;
     public Button removeButton;
-    Item item;
+    public Item item;
 
-    //this is called in InventoryUI.UpdateUI which is a callback whenever an item is added or removed
     public void AddItem(Item newItem)
     {
-       if (newItem == null)
+        if (newItem == null)
         {
             ClearSlot();
             return;
@@ -22,7 +21,7 @@ public class InventorySlot : MonoBehaviour
         removeButton.interactable = true;
     }
 
-    public void ClearSlot()
+    public virtual void ClearSlot()
     {
         item = null;
         icon.sprite = null;
@@ -30,25 +29,25 @@ public class InventorySlot : MonoBehaviour
         removeButton.interactable = false;
     }
 
-    public void OnRemoveButton()
+    public virtual void OnRemoveButton()
     {
-        Inventory.instance.RemoveAndDestroy(item);    
+        Inventory.instance.RemoveAndDestroy(item);
     }
 
-    public void UseItem()
-    { 
+    public virtual void SlotRightClicked()
+    {
         if (item != null)
         {
             item.Use();
         }
     }
 
-    public void SwapWithMouseSlot()
+    public virtual void SlotLeftClicked()
     {
         if (item != null)
         {
-            Debug.Log("Putting item in mouse slot");
             Inventory.instance.Remove(item);
         }
     }
+
 }

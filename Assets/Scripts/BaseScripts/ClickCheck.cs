@@ -18,15 +18,15 @@ public class ClickCheck : MonoBehaviour, IPointerClickHandler
         if (pointerEventData.button == PointerEventData.InputButton.Right)
         {
             //Output to console the clicked GameObject's name and the following message. You can replace this with your own actions for when clicking the GameObject.
-            Debug.Log(name + " Game Object Right Clicked!");
-            slot.UseItem();
+            //Debug.Log(name + " Game Object Right Clicked!");
+            slot.SlotRightClicked();
         }
 
         //Use this to tell when the user left-clicks on the Button
         if (pointerEventData.button == PointerEventData.InputButton.Left)
         {
-            Debug.Log(name + " Game Object Left Clicked!");
-            slot.SwapWithMouseSlot();
+            //Debug.Log(name + " Game Object Left Clicked!");
+            slot.SlotLeftClicked();
         }
     }
 }

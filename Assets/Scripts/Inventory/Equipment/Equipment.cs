@@ -9,7 +9,12 @@ public class Equipment : Item {
     public override void Use()
     {
         base.Use(); //gets reference to the player
-        player.GetComponent<EquipmentManager>().Equip(this);
+
+        //OpenStatWindow();
+        Debug.Log("Displaying equipment stat window");
+
+        //equiping should be done via mouseSlot swapping...NOT Use(), which will be a right click and will just open the stat menu
+        player.GetComponent<EquipmentManager>().Equip(this); 
         RemoveFromInventory();
     }
 

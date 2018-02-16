@@ -6,8 +6,7 @@ public class Slot : MonoBehaviour {
     public Button removeButton;
     public Item item;
 
-    //this is called in InventoryUI.UpdateUI which is a callback whenever an item is added or removed
-    public virtual void AddItem(Item newItem)
+    public void AddItem(Item newItem)
     {
         if (newItem == null)
         {
@@ -34,7 +33,7 @@ public class Slot : MonoBehaviour {
         Inventory.instance.RemoveAndDestroy(item);
     }
 
-    public virtual void UseItem()
+    public virtual void SlotRightClicked()
     {
         if (item != null)
         {
@@ -42,11 +41,10 @@ public class Slot : MonoBehaviour {
         }
     }
 
-    public virtual void SwapWithMouseSlot()
+    public virtual void SlotLeftClicked()
     {
         if (item != null)
         {
-            Debug.Log("Putting item in mouse slot");
             Inventory.instance.Remove(item);
         }
     }
