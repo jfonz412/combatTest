@@ -40,7 +40,6 @@ public class EquipSlot : InventorySlot {
             //does nothing right now
             //eventually this can be placed in our mouseSlot and put in the inventory
             //but focus on inventory item movement first
-            Debug.Log("Putting equipment into mouseSlot");
         }
     }
 }

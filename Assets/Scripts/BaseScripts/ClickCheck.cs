@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class ClickCheck : MonoBehaviour, IPointerClickHandler
 {
-    InventorySlot slot; //must account for equipslot also....maybe make equip and slot inherit from Slot.cs script?
+    InventorySlot slot;
 
     void Start()
     {

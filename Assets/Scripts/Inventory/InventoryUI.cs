@@ -13,6 +13,7 @@ public class InventoryUI : MonoBehaviour {
         inventory = Inventory.instance;
         inventory.onInventoryChanged += UpdateUI;
         slots = itemsParent.GetComponentsInChildren<InventorySlot>();
+        AssignSlotNums();
     }
 	
 	// Update is called once per frame
@@ -40,6 +41,14 @@ public class InventoryUI : MonoBehaviour {
             {
                 slots[i].ClearSlot();
             }
+        }
+    }
+
+    void AssignSlotNums()
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slots[i].slotNum = i;
         }
     }
 }

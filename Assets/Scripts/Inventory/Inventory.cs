@@ -27,20 +27,19 @@ public class Inventory : MonoBehaviour {
     public List<Item> items = new List<Item>(); 
     public int inventorySpace;
 
-    public Item mouseItem;
-
     void Start()
     {
+        //fill inventory with null spaces
         for(int i = 0; i < inventorySpace; i++)
         {
             items.Add(null);
-            //update inventory UI?
         }
     }
 
+    //change to Pickup()? maybe after equipment item slot functionality is set
     public bool Add(Item item)
     {
-        //check if there are any null slots/items
+        //check if there are any empty slots/items
         for (int i = 0; i < inventorySpace; i++)
         {
             if(items[i] == null)
@@ -50,7 +49,7 @@ public class Inventory : MonoBehaviour {
                 if(item.slotNum == null)
                 {
                     item = Instantiate(item);
-                    Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
+                    //Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
                 }
                     
 
@@ -59,19 +58,33 @@ public class Inventory : MonoBehaviour {
 
                 items[i].slotNum = i; //save refrence to the slot it's been placed in
 
-                Debug.Log(items[i].GetInstanceID()); 
+                //Debug.Log("Instance ID of "+ items[i] + " is: " + items[i].GetInstanceID()); 
 
                 if (onInventoryChanged != null)
                 {
                     onInventoryChanged.Invoke(); 
                 }
-
                 return true;
             }
         }
 
         Debug.Log("Inventory is full");
         return false;
+    }
+
+    public void AddToSpecificSlot(Item item)
+    {
+        int slotNum = item.slotNum.GetValueOrDefault();
+
+        items.RemoveAt(slotNum);     
+        items.Insert(slotNum, item);
+
+        //Debug.Log("Instance ID of "+ items[i] + " is: " + items[i].GetInstanceID()); 
+
+        if (onInventoryChanged != null)
+        {
+            onInventoryChanged.Invoke();
+        }
     }
 
     public void Remove(Item item)
@@ -85,6 +98,7 @@ public class Inventory : MonoBehaviour {
         {
             onInventoryChanged.Invoke(); //callback
         }
+
     }
 
     public void RemoveAndDestroy(Item item)
