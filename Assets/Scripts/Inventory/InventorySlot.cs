@@ -19,6 +19,7 @@ public class InventorySlot : MonoBehaviour
 
         item = newItem;
         icon.sprite = item.icon;
+        icon.rectTransform.sizeDelta = new Vector2(50f, 50f); //temporary, the long term solution would be to make a custom icon sprite for each item
         icon.enabled = true;
         removeButton.interactable = true;
     }

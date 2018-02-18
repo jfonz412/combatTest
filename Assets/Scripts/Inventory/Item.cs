@@ -3,15 +3,13 @@
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")] //allows us to create Items like we can create folders, scripts, etc.
 public class Item : ScriptableObject {
 
+    [HideInInspector]
+    public Transform player;
+
     new public string name = "New Item";
     public Sprite icon = null;
     public int? slotNum;
     //public int quantity;
-
-    public bool isDefaultItem = false; //not sure what this is for, it's from the video
-
-    [HideInInspector]
-    public Transform player;
 
     public virtual void Use()
     {

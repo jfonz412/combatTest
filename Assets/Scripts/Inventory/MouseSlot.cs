@@ -3,12 +3,9 @@ using UnityEngine.UI;
 
 public class MouseSlot : MonoBehaviour {
 
-    //MIGHT BE GOOD TO MAKE THE GAMEOBJECT THIS SCRIPT IS ATTACHED TO A CUSTOM CURSOR, THEN JUST FIGURE OUT HOW TO CHANGE THE 
-    //CURSOR'S SPRITE
-
-    //Image image;
+    public SpriteRenderer spriteRenderer;
+    public Sprite currentItemSprite;
     public Item currentItem;
-    //public Sprite itemSprite;
 
     #region Singleton
     public static MouseSlot instance;
@@ -24,6 +21,11 @@ public class MouseSlot : MonoBehaviour {
     }
     #endregion
 
+    void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
 	// Update is called once per frame
 	void Update () {
         Vector3 temp = Input.mousePosition;
@@ -37,11 +39,12 @@ public class MouseSlot : MonoBehaviour {
 
         if(currentItem != null)
         {
-            //image.sprite = currentItem.icon;
+            currentItemSprite = currentItem.icon;
+            spriteRenderer.sprite = currentItemSprite;
         }
         else
         {
-            //image.sprite = null;
+            spriteRenderer.sprite = null;
         }
     }
 }

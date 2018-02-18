@@ -21,6 +21,8 @@ public class InventoryUI : MonoBehaviour {
         if (Input.GetButtonDown("Inventory")) 
         {
             inventoryUI.SetActive(!inventoryUI.activeSelf);
+
+            ToggleMouseSlotSprite();
         }
 
         if (DialogueManager.instance.isOpen)
@@ -49,6 +51,21 @@ public class InventoryUI : MonoBehaviour {
         for (int i = 0; i < slots.Length; i++)
         {
             slots[i].slotNum = i;
+        }
+    }
+
+    void ToggleMouseSlotSprite()
+    {
+        MouseSlot mouseSlot = MouseSlot.instance;
+
+        if (inventoryUI.activeSelf == false)
+        {
+            mouseSlot.spriteRenderer.sprite = null;
+        }
+        else
+        {
+            if (mouseSlot.currentItem != null)
+                mouseSlot.spriteRenderer.sprite = mouseSlot.currentItemSprite;
         }
     }
 }
