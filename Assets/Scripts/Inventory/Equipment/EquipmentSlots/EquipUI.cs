@@ -15,6 +15,7 @@ public class EquipUI : MonoBehaviour {
         equipmentManager = PlayerManager.instance.player.GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += UpdateUI;
         slots = equipParent.GetComponentsInChildren<EquipSlot>();
+        AssignSlotNums();
     }
 	
 	// Update is called once per frame
@@ -30,7 +31,6 @@ public class EquipUI : MonoBehaviour {
         }
     }
 
-
     //might need work, currentEquipment is a list, the original function was using a List
     void UpdateUI(Equipment oldItem, Equipment newItem)
     {
@@ -43,6 +43,14 @@ public class EquipUI : MonoBehaviour {
         {
             int slotNum = (int)oldItem.equipSlot;
             slots[slotNum].ClearSlot();
+        }
+    }
+
+    void AssignSlotNums()
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slots[i].equipSlot = i;
         }
     }
 }

@@ -16,10 +16,9 @@ public class FloatingTextController : MonoBehaviour {
 
     public static void CreateFloatingText(string text, Transform unitLocation)
     {
-        Vector2 screenPos = Camera.main.WorldToScreenPoint(unitLocation.position);
         GameObject instance = Instantiate(popupText);
         instance.transform.SetParent(canvas.transform, false);
-        instance.transform.position = screenPos;
+        instance.transform.position = unitLocation.position;
         instance.GetComponent<FloatingText>().SetText(text);
     }
 }

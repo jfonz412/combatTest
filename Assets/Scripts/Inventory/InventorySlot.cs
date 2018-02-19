@@ -45,6 +45,7 @@ public class InventorySlot : MonoBehaviour
         }
     }
 
+    #region Slot Clicks
     public virtual void SlotLeftClicked()
     {
         Inventory inventory = Inventory.instance;
@@ -93,34 +94,5 @@ public class InventorySlot : MonoBehaviour
             return;
         }
     }
-
-    /*
-             if(item == null && mouseItem == null)
-        {
-            return;
-        }
-
-        if (mouseItem == null)
-        {
-            inventory.Remove(item);               //clear the slot
-            mouseSlot.currentItem = previousItem; //add inventory item to mouse slot 
-        }
-        else if(mouseItem != null)
-        {
-
-            mouseItem.slotNum = slotNum; //change the slot number before adding
-
-            inventory.AddToSpecificSlot(mouseItem);
-
-            if (previousItem != null)
-            {
-                inventory.Remove(item);
-            }
-
-            mouseSlot.currentItem = previousItem; //add old inventory item to mouse slot 
-
-
-        }     
-     */
-
+#endregion
 }
