@@ -110,6 +110,20 @@ public class PlayerController : MonoBehaviour {
 
     /****************** HELPER FUNCTIONS **************************/
 
+    //this will be called from the button in the dropdown interaction menu
+    public void InteractWithInteractable(string chosenInteraction, Interactable interactable)
+    {
+        //don't allow player to attack same target over and over by clicking
+        if(interactable.gameObject.transform == attackController.lastKnownTarget)
+        {
+            return;
+        }
+
+        StopPreviousInteraction();
+        movingToInteraction = MoveToInteraction(interactable, chosenInteraction);
+        StartCoroutine(movingToInteraction);
+    }
+
     IEnumerator MoveToInteraction(Interactable interactable, string interaction)
     {
         while (interactable)
@@ -140,13 +154,5 @@ public class PlayerController : MonoBehaviour {
             StopCoroutine(movingToInteraction); //stop moving towards previous interaction, if any
 
         attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine), if any
-    }
-
-    //this will be called from the button in the dropdown interaction menu
-    public void InteractWithInteractable(string chosenInteraction, Interactable interactable)
-    { 
-        StopPreviousInteraction();
-        movingToInteraction = MoveToInteraction(interactable, chosenInteraction);
-        StartCoroutine(movingToInteraction);
     }
 }
