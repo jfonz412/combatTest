@@ -48,9 +48,7 @@ public class InventorySlot : MonoBehaviour
     #region Slot Clicks
     public virtual void SlotLeftClicked()
     {
-        Inventory inventory = Inventory.instance;
-        MouseSlot mouseSlot = MouseSlot.instance;
-        
+        MouseSlot mouseSlot = MouseSlot.instance;      
         Item mouseItem = MouseSlot.instance.currentItem; //save a copy of the mouseItem
                                
         
@@ -64,35 +62,58 @@ public class InventorySlot : MonoBehaviour
         //just pick up item out of slot
         if(mouseItem == null && item != null)
         {
-            Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");
-            Item previousItem = item;             //save a copy of the slotItem
-            inventory.Remove(previousItem);       //remove the item in the slot 
-            mouseSlot.UpdateItem(previousItem); //place previous item in the mouseSlot
-
+            PickUpItemIntoEmptyMouseSlot(mouseSlot);
             return;
         }
 
         //place mouse item in empty slot
         if(mouseItem != null && item == null)
         {
-            Debug.Log("PLACING ITEM IN EMPTY SLOT");
-            mouseItem.slotNum = slotNum; //assign item's slotNum to this slot
-            inventory.AddToSpecificSlot(mouseItem); //drop item in slot
-            mouseSlot.UpdateItem(null); //clear mouseSlot's item
-
+            PlaceItemInEmptySlot(mouseSlot);
             return;
         }
         //AFTER THE ABOVE IT CALLED THE BELOW IS NOW TRUE!
         if(mouseItem != null && item != null)
         {
-            Debug.Log("SWAPPING ITEMS");
-            Item previousItem = item;                 //save a copy of the slotItem
-            mouseItem.slotNum = slotNum;              //assign item's slotNum to this slot
-            inventory.AddToSpecificSlot(mouseItem);   //drop item in slot, removing old item is taken care of here too
-            mouseSlot.UpdateItem(previousItem);     //add old item to mouseSlot
-
+            SwapItems(mouseSlot);
             return;
         }
     }
-#endregion
+    #endregion
+
+    #region Click Helpers
+
+    void PickUpItemIntoEmptyMouseSlot(MouseSlot mouseSlot)
+    {
+        Inventory inventory = Inventory.instance;
+
+        Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");
+        Item previousItem = item;             //save a copy of the slotItem
+        inventory.Remove(previousItem);       //remove the item in the slot 
+        mouseSlot.UpdateItem(previousItem); //place previous item in the mouseSlot            //place previous item in the mouseSlot (as an item)?
+    }
+
+    void PlaceItemInEmptySlot(MouseSlot mouseSlot)
+    {
+        Inventory inventory = Inventory.instance;
+        Item mouseItem = mouseSlot.currentItem;
+
+        Debug.Log("PLACING ITEM IN EMPTY SLOT");
+        mouseItem.slotNum = slotNum; //assign item's slotNum to this slot
+        inventory.AddToSpecificSlot(mouseItem); //drop item in slot
+        mouseSlot.UpdateItem(null); //clear mouseSlot's item
+    }
+
+    void SwapItems(MouseSlot mouseSlot)
+    {
+        Inventory inventory = Inventory.instance;
+        Item mouseItem = mouseSlot.currentItem;
+        Item previousItem = item;
+
+        Debug.Log("SWAPPING ITEMS");
+        mouseItem.slotNum = slotNum;              //assign item's slotNum to this slot
+        inventory.AddToSpecificSlot(mouseItem);   //drop item in slot, removing old item is taken care of here too
+        mouseSlot.UpdateItem(previousItem);     //add old item to mouseSlot
+    }
+    #endregion
 }

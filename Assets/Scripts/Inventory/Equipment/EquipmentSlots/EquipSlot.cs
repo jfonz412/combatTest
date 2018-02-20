@@ -64,48 +64,68 @@ public class EquipSlot : InventorySlot {
         //just pick up item out of slot
         if (mouseItem == null && equipment != null)
         {
-            Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");   //or equipment == naked or unarmed?
-            Equipment previousItem = equipment;                //save a copy of the slotItem
-            equipmentManager.Unequip((int)previousItem.equipSlot); //unequip item currently in equip slot
-            mouseSlot.UpdateItem(previousItem);                //place previous item in the mouseSlot (as an item)?
+            PickUpItemIntoEmptyMouseSlot(mouseSlot);
             return;
         }
 
         //place mouse item in empty slot
         if (mouseItem != null && equipment == null) //or equipment == naked or unarmed?
         {
-            //make sure equipment would be going in the correct slot
-            if (!CheckEquipSlot((int)mouseItem.equipSlot))
-            {
-                return;
-            }
-
-            Debug.Log("PLACING ITEM IN EMPTY SLOT");
-            equipmentManager.Equip(mouseItem);
-            mouseSlot.UpdateItem(null); //clear mouseSlot's item
-
+            PlaceItemInEmptySlot(mouseSlot);
             return;
         }
 
         if (mouseItem != null && equipment != null) //or equipment == naked or unarmed?
         {
-            //make sure equipment would be going in the correct slot
-            if (!CheckEquipSlot((int)mouseItem.equipSlot))
-            {
-                return;
-            }
-
-            Debug.Log("SWAPPING ITEMS");
-            Equipment previousItem = equipment;        //save a copy of the slotItem
-            equipmentManager.Equip(mouseItem);
-            mouseSlot.UpdateItem(previousItem);        //add old item to mouseSlot
-
+            SwapItems(mouseSlot);
             return;
         }
     }
     #endregion
 
     #region Click Helpers
+
+    void PickUpItemIntoEmptyMouseSlot(MouseSlot mouseSlot)
+    {
+        Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");   //or equipment == naked or unarmed?
+        Equipment previousItem = equipment;                //save a copy of the slotItem
+        equipmentManager.Unequip((int)previousItem.equipSlot); //unequip item currently in equip slot
+        mouseSlot.UpdateItem(previousItem);                //place previous item in the mouseSlot (as an item)?
+    }
+
+    void PlaceItemInEmptySlot(MouseSlot mouseSlot)
+    {
+        Equipment mouseItem = mouseSlot.currentItem as Equipment;
+
+        //make sure equipment would be going in the correct slot
+        if (!CheckEquipSlot((int)mouseItem.equipSlot))
+        {
+            return;
+        }
+
+        Debug.Log("PLACING ITEM IN EMPTY SLOT");
+        equipmentManager.Equip(mouseItem);
+        mouseSlot.UpdateItem(null); //clear mouseSlot's item
+    }
+
+    void SwapItems(MouseSlot mouseSlot)
+    {
+        Equipment mouseItem = mouseSlot.currentItem as Equipment;
+
+        //make sure equipment would be going in the correct slot
+        if (!CheckEquipSlot((int)mouseItem.equipSlot))
+        {
+            return;
+        }
+
+        Debug.Log("SWAPPING ITEMS");
+        Equipment previousItem = equipment;        //save a copy of the slotItem
+        equipmentManager.Equip(mouseItem);
+        mouseSlot.UpdateItem(previousItem);        //add old item to mouseSlot
+    }
+
+
+    //----------------------------------------------
     bool CheckItemType()
     {
         if(MouseSlot.instance.currentItem == null)
