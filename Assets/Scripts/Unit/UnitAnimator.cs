@@ -5,10 +5,6 @@ public class UnitAnimator : MonoBehaviour {
 	public Animator[] animators;
 	public GameObject unitBody;
 
-    //public int torsoID; 
-    //public int LegID;
-    //public int weaponID; 
-
     //these might not have to be gameobjects anymore, just animators
     [HideInInspector]
     public GameObject loadedHeadArmor;
@@ -17,14 +13,16 @@ public class UnitAnimator : MonoBehaviour {
     [HideInInspector]
     public GameObject loadedLegArmor;
     [HideInInspector]
+    public GameObject loadedFeetArmor;
+    [HideInInspector]
     public GameObject loadedWeapon;
 	
 	float inputX = 0f;
-	float inputY = -1f;
+	float inputY = -1f; //why is this -1?
 	
 	// Use this for initialization
 	void Start () {
-        animators = new Animator[5]; //will be 7, 6 enum bodyparts plus player
+        animators = new Animator[7]; //will be 7, 6 enum bodyparts plus player
 		animators [0] = GetComponent<Animator> (); //Get Character Animator
     }
 
@@ -51,6 +49,10 @@ public class UnitAnimator : MonoBehaviour {
                 animIndex = 1; //want to keep weapon at one...can probably change this later
                 loadedEquipment = LoadWeapon(equipmentID);
                 //Debug.Log("Equipping to main hand");
+                break;
+            case 5:
+                loadedEquipment = LoadFeetArmor(equipmentID);
+                Debug.Log("Equipping to feet");
                 break;
             default:
                 loadedEquipment = null;
@@ -141,7 +143,29 @@ public class UnitAnimator : MonoBehaviour {
 
         return loadedLegArmor;
 	}
-#endregion
+
+    GameObject LoadFeetArmor(int FeetID)
+    {
+        //Get rid of old armor if there is any
+        if (loadedFeetArmor != null)
+        {
+            //PutItemBackInInventory(loadedTorsoArmor);
+            Destroy(loadedFeetArmor.gameObject);
+            loadedFeetArmor = null;
+        }
+
+        if (FeetID == 0)
+        {
+            loadedFeetArmor = Instantiate(Resources.Load("Armor/naked"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        }
+        else if (FeetID == 1)
+        {
+            loadedFeetArmor = Instantiate(Resources.Load("Armor/PlateIronBoots"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        }
+
+        return loadedFeetArmor;
+    }
+    #endregion
 
     /************************* PUBLIC FUNCTIONS ****************************************/
 

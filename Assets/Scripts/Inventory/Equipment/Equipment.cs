@@ -12,10 +12,6 @@ public class Equipment : Item {
 
         //OpenStatWindow();
         Debug.Log("Displaying equipment stat window");
-
-        //equiping should be done via mouseSlot swapping...NOT Use(), which will be a right click and will just open the stat menu
-        player.GetComponent<EquipmentManager>().Equip(this); 
-        RemoveFromInventory();
     }
 
 }
