@@ -39,7 +39,7 @@ public class ItemPickup : Interactable {
     void PickUp()
     {
         //Debug.Log("Picking up " + item.name);
-        if (Inventory.instance.Add(item) == true)
+        if (Inventory.instance.AddToFirstEmptySlot(item) == true)
         {
             Destroy(gameObject);
         }

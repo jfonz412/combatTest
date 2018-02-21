@@ -1,27 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Stats : MonoBehaviour {
+public class Stats : MonoBehaviour
+{
 
-	//[SerializeField]
-	public float baseAttack;
-	//[SerializeField]
-	public float baseDefense;
-	//[SerializeField]
-	public float baseHp;
-	
-	//UnitAnimator anim;
+    //[SerializeField]
+    public float baseAttack;
+    //[SerializeField]
+    public float baseDefense;
+    //[SerializeField]
+    public float baseHp;
+
     EquipmentManager equipmentManager;
 
-	void Start(){
+    void Start()
+    {
         equipmentManager = GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += AdjustStats;
-	}
+    }
 
     /************* CALCULATE INCOMING HIT ************************/
 
-	public float DamageAfterDefense(float incomingDamage){
-		int bodyPartIndex = PickBodyPart();
+/*
+    * maybe calculations should be taken care of in a seperate static Calculations class which can hold a bunch of different functions 
+    * for all types of calculations, and then this class Stats.cs can just be for hold stat values
+    * 
+ */
+
+    public float DamageAfterDefense(float incomingDamage)
+    {
+        int bodyPartIndex = PickBodyPart();
         float totalDamage = CalculateTotalDamage(incomingDamage, bodyPartIndex);
         FloatingTextController.CreateFloatingText(totalDamage.ToString(), transform);
         return totalDamage;
@@ -31,7 +39,7 @@ public class Stats : MonoBehaviour {
     float CalculateTotalDamage(float incomingDamage, int bodyPartIndex)
     {
         Armor armor = (Armor)equipmentManager.currentEquipment[bodyPartIndex]; //probably not very effecient
-        float totalDamage = incomingDamage - (armor.defense + baseDefense); 
+        float totalDamage = incomingDamage - (armor.defense + baseDefense);
         if (totalDamage < 0)
         {
             return 0;
@@ -67,10 +75,12 @@ public class Stats : MonoBehaviour {
         //Debug.Log("ADJUSTING STATS HOMIE!!");
     }
 
-    public float attack {
-		get {
-			return baseAttack;
-		}
-	}
+    public float attack
+    {
+        get
+        {
+            return baseAttack;
+        }
+    }
 
 }

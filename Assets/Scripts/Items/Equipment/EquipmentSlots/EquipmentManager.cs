@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour {
 
-    public Equipment[] currentEquipment; 
+    [HideInInspector]
+    public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead; //only for player
  
     UnitAnimator unitAnim;
+
+    public Equipment[] currentEquipment;
 
     public delegate void OnEquipmentChanged(Equipment oldItem, Equipment newItem);
     public OnEquipmentChanged onEquipmentChanged;
 
-    [HideInInspector]
-    public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead; //only for player
 
     void Start () {
         unitAnim = GetComponent<UnitAnimator>();

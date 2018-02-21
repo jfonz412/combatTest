@@ -3,15 +3,18 @@ using System.Collections;
 
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Inventory/Weapon")]
 public class Weapon : Equipment {
-	public float weaponCondition = 1; //1 is undamaged
+
+    #region Stats
+    //these are only public so they can be editted in the inspector
+    public float weaponCondition = 1; //1 is undamaged
 	public float softness = 1; //1 is max hardness, the harder the better
 	public float sharpness = 1; //the sharper the better
 	public float weight = 1; //the heavier the better
 	public string attackType; // cast, slash, thrust
-	
+    #endregion
 
-	
-	public float range{
+
+    public float range{
 		get{
 			if(attackType == "cast" || attackType == "ranged"){
 				return 5f;
@@ -26,4 +29,12 @@ public class Weapon : Equipment {
 			return weight / 2;
 		}
 	}
+
+    public float totalAttack
+    {
+        get
+        {
+            return weight + sharpness * softness * weaponCondition;
+        }   
+    }
 }

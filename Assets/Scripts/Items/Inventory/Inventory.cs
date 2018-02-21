@@ -20,12 +20,12 @@ public class Inventory : MonoBehaviour {
     }
     #endregion
 
+    public List<Item> items = new List<Item>();
+    public int inventorySpace;
+
     //creates a callback
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChanged; 
-
-    public List<Item> items = new List<Item>(); 
-    public int inventorySpace;
 
     void Start()
     {
@@ -36,8 +36,7 @@ public class Inventory : MonoBehaviour {
         }
     }
 
-    //change to Pickup()? maybe after equipment item slot functionality is set
-    public bool Add(Item item)
+    public bool AddToFirstEmptySlot(Item item)
     {
         //check if there are any empty slots/items
         for (int i = 0; i < inventorySpace; i++)
@@ -52,7 +51,6 @@ public class Inventory : MonoBehaviour {
                     Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
                 }
                     
-
                 items.RemoveAt(i); //remove the null item
                 items.Insert(i, item); //replace it with actual item
 
@@ -104,6 +102,6 @@ public class Inventory : MonoBehaviour {
     public void RemoveAndDestroy(Item item)
     {
         Remove(item);
-        Destroy(item); //should eventually remove item from memory...
+        Destroy(item); //this should eventually remove item from memory...
     }
 }

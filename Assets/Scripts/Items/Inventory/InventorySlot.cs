@@ -37,6 +37,8 @@ public class InventorySlot : MonoBehaviour
         Inventory.instance.RemoveAndDestroy(item);
     }
 
+
+    #region Slot Clicks
     public virtual void SlotRightClicked()
     {
         if (item != null)
@@ -44,35 +46,30 @@ public class InventorySlot : MonoBehaviour
             item.Use();
         }
     }
-
-    #region Slot Clicks
+  
     public virtual void SlotLeftClicked()
     {
         MouseSlot mouseSlot = MouseSlot.instance;      
-        Item mouseItem = MouseSlot.instance.currentItem; //save a copy of the mouseItem
+        Item mouseItem = MouseSlot.instance.currentItem; 
                                
-        
-        //if both slots are null, exit immediatly
         if(mouseItem == null && item == null)
         {
             Debug.Log("BOTH SLOTS EMPTY");
             return;
         }
 
-        //just pick up item out of slot
         if(mouseItem == null && item != null)
         {
             PickUpItemIntoEmptyMouseSlot(mouseSlot);
             return;
         }
 
-        //place mouse item in empty slot
         if(mouseItem != null && item == null)
         {
             PlaceItemInEmptySlot(mouseSlot);
             return;
         }
-        //AFTER THE ABOVE IT CALLED THE BELOW IS NOW TRUE!
+
         if(mouseItem != null && item != null)
         {
             SwapItems(mouseSlot);

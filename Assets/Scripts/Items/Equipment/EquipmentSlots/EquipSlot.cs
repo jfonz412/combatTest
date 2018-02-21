@@ -43,7 +43,6 @@ public class EquipSlot : InventorySlot {
         }
     }
 
-    //seems to be working even with "naked" placeholder equipment...
     public override void SlotLeftClicked()
     {
         MouseSlot mouseSlot = MouseSlot.instance;
@@ -54,21 +53,18 @@ public class EquipSlot : InventorySlot {
             return;
         }
 
-        //if both slots are null, exit immediatly
         if (mouseItem == null && equipment == null) //or equipment == naked or unarmed?
         {
             Debug.Log("BOTH SLOTS EMPTY");
             return;
         }
 
-        //just pick up item out of slot
         if (mouseItem == null && equipment != null)
         {
             PickUpItemIntoEmptyMouseSlot(mouseSlot);
             return;
         }
 
-        //place mouse item in empty slot
         if (mouseItem != null && equipment == null) //or equipment == naked or unarmed?
         {
             PlaceItemInEmptySlot(mouseSlot);

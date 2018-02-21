@@ -1,48 +1,56 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Health : MonoBehaviour {
-	public float currentHealth; //do not touch, just so I can see it
-	UnitReactions unitReactions;
-	Stats myStats;
+public class Health : MonoBehaviour
+{
+    public float currentHealth; //do not touch, just so I can see it
+    UnitReactions unitReactions;
+    Stats myStats;
 
-	void Start () {
-		myStats = GetComponent<Stats>();
-		currentHealth = myStats.baseHp;
-		unitReactions = GetComponent<UnitReactions>();
-	}
-	
-	public void TakeDamage(float damage, Transform attacker){		
-		currentHealth = currentHealth - myStats.DamageAfterDefense(damage);
-		Debug.Log (name + " has taken " + myStats.DamageAfterDefense(damage) + " damage!");
-		if (currentHealth > 0.0f){
-			unitReactions.ReactToDisturbance("Damage Taken", attacker);
-		}else{
-			IEnumerator death = Die(attacker);
-			StartCoroutine(death);
-		}
-	}
-	
-	IEnumerator Die(Transform attacker){
+    void Start()
+    {
+        myStats = GetComponent<Stats>();
+        currentHealth = myStats.baseHp;
+        unitReactions = GetComponent<UnitReactions>();
+    }
+
+    public void TakeDamage(float damage, Transform attacker)
+    {
+        currentHealth = currentHealth - myStats.DamageAfterDefense(damage);
+        Debug.Log(name + " has taken " + myStats.DamageAfterDefense(damage) + " damage!");
+        if (currentHealth > 0.0f)
+        {
+            unitReactions.ReactToDisturbance("Damage Taken", attacker);
+        }
+        else
+        {
+            IEnumerator death = Die(attacker);
+            StartCoroutine(death);
+        }
+    }
+
+    IEnumerator Die(Transform attacker)
+    {
         AttackController myAttackController = GetComponent<AttackController>();
-		UnitAnimator myAnim = GetComponent<UnitAnimator>();
+        UnitAnimator myAnim = GetComponent<UnitAnimator>();
 
-		//stop the attacker
-		attacker.GetComponent<AttackController>().EngageTarget(false);
+        //stop the attacker
+        attacker.GetComponent<AttackController>().EngageTarget(false);
 
         //stop the target
         myAttackController.EngageTarget(false);
         GetComponent<UnitController>().StopMoving();
-		myAnim.TriggerDeathAnimation();
-		
-		//stop processing clicks if player
-		PlayerController player = myAttackController.GetComponent<PlayerController>();
-		if(player != null){
-			player.incapacitated = true;
-		}
-		
-		//extend death animation before destroy
-		yield return new WaitForSeconds(6f);
-		Destroy (gameObject);
-	}
+        myAnim.TriggerDeathAnimation();
+
+        //stop processing clicks if player
+        PlayerController player = myAttackController.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.incapacitated = true;
+        }
+
+        //extend death animation before destroy
+        yield return new WaitForSeconds(6f);
+        Destroy(gameObject);
+    }
 }
