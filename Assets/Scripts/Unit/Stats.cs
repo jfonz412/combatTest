@@ -3,15 +3,11 @@ using System.Collections;
 
 public class Stats : MonoBehaviour
 {
-
-    //[SerializeField]
     public float baseAttack;
-    //[SerializeField]
     public float baseDefense;
-    //[SerializeField]
     public float baseHp;
 
-    EquipmentManager equipmentManager;
+    EquipmentManager equipmentManager; //might not be necessary to cache
 
     void Start()
     {
@@ -19,13 +15,28 @@ public class Stats : MonoBehaviour
         equipmentManager.onEquipmentChanged += AdjustStats;
     }
 
-    /************* CALCULATE INCOMING HIT ************************/
+    static void DamageStats(Armor bodyPart, float damage)
+    {
+        //skills deducted depending on damage and bdy part
+    }
 
-/*
-    * maybe calculations should be taken care of in a seperate static Calculations class which can hold a bunch of different functions 
-    * for all types of calculations, and then this class Stats.cs can just be for hold stat values
-    * 
- */
+    /**************************** STATS *****************************************/
+
+    //Invoked from EquipmentManager to adjust stats based on newly equipped items
+    void AdjustStats(Equipment oldItem, Equipment newItem)
+    {
+        Debug.Log("ADJUSTING STATS HOMIE!!");
+    }
+
+    public float attack
+    {
+        get
+        {
+            return baseAttack;
+        }
+    }
+
+    /*
 
     public float DamageAfterDefense(float incomingDamage)
     {
@@ -65,22 +76,6 @@ public class Stats : MonoBehaviour
     {
         //skills deducted depending on damage and bdy part
     }
-
-
-    /**************************** STATS *****************************************/
-
-    //Invoked from EquipmentManager to adjust stats based on newly equipped items
-    void AdjustStats(Equipment oldItem, Equipment newItem)
-    {
-        //Debug.Log("ADJUSTING STATS HOMIE!!");
-    }
-
-    public float attack
-    {
-        get
-        {
-            return baseAttack;
-        }
-    }
+    */
 
 }

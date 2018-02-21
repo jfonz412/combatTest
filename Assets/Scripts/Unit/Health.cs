@@ -4,11 +4,13 @@ using System.Collections;
 public class Health : MonoBehaviour
 {
     public float currentHealth; //do not touch, just so I can see it
+    EquipmentManager equipmentManager;
     UnitReactions unitReactions;
     Stats myStats;
 
     void Start()
     {
+        equipmentManager = GetComponent<EquipmentManager>();
         myStats = GetComponent<Stats>();
         currentHealth = myStats.baseHp;
         unitReactions = GetComponent<UnitReactions>();
@@ -16,8 +18,11 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float damage, Transform attacker)
     {
-        currentHealth = currentHealth - myStats.DamageAfterDefense(damage);
-        Debug.Log(name + " has taken " + myStats.DamageAfterDefense(damage) + " damage!");
+        float totalDamage = DamageCalculator.CalculateTotalDamage(damage, myStats.baseDefense, PickBodyPart());
+
+        currentHealth = currentHealth - totalDamage;
+        //Debug.Log(name + " has taken " + DamageCalculator.CalculateTotalDamage(damage, myStats.baseDefense, PickBodyPart()) + " damage!");
+
         if (currentHealth > 0.0f)
         {
             unitReactions.ReactToDisturbance("Damage Taken", attacker);
@@ -27,7 +32,20 @@ public class Health : MonoBehaviour
             IEnumerator death = Die(attacker);
             StartCoroutine(death);
         }
+
+        FloatingTextController.CreateFloatingText(totalDamage.ToString(), transform);
     }
+
+    Armor PickBodyPart()
+    {
+        //EquipmentSlot { Head, Chest, Legs, MainHand, OffHand, Feet}
+        int[] validChoices = new int[] { 0, 1, 2, 5 };
+        int num = Random.Range(0, validChoices.Length);
+
+        Debug.Log("Attacking bodypart #" + validChoices[num]);
+        return (Armor)equipmentManager.currentEquipment[validChoices[num]];
+    }
+
 
     IEnumerator Die(Transform attacker)
     {
@@ -53,4 +71,6 @@ public class Health : MonoBehaviour
         yield return new WaitForSeconds(6f);
         Destroy(gameObject);
     }
+
+
 }
