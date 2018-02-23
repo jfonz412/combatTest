@@ -43,10 +43,7 @@ public class PlayerController : MonoBehaviour {
 
     void ProcessClick(int mouseButton)
     {
-        if (InteractableMenu.instance != null)
-        { 
-            InteractableMenu.instance.CloseMenu();
-        }
+        DestroyOpenMenus();
 
         Vector3 mouseClickPos;
         mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -154,5 +151,18 @@ public class PlayerController : MonoBehaviour {
             StopCoroutine(movingToInteraction); //stop moving towards previous interaction, if any
 
         attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine), if any
+    }
+
+    void DestroyOpenMenus()
+    {
+        if (InteractableMenu.instance != null)
+        {
+            InteractableMenu.instance.CloseMenu();          
+        }
+
+        if (EquipmentStats.instance != null)
+        {
+            EquipmentStats.instance.CloseMenu();
+        }
     }
 }

@@ -9,11 +9,19 @@ public class Equipment : Item {
     public override void Use()
     {
         base.Use(); //gets reference to the player
-
-        //OpenStatWindow();
-        Debug.Log("Displaying equipment stat window");
+        OpenStatWindow();
     }
 
+    public virtual void OpenStatWindow()
+    {   
+        Vector3 spawnPoint = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        spawnPoint.y += 1f;
+        spawnPoint.z = 0f;
+        Instantiate(Resources.Load("EquipmentStats"), spawnPoint, Quaternion.identity, FindObjectOfType<Canvas>().transform);
+        Debug.Log("Opening equipment stat window");
+    }
+    
+    
 }
 
 public enum EquipmentSlot {Head, Chest, Legs, MainHand, OffHand, Feet}
