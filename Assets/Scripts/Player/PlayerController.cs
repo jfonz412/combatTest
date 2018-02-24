@@ -25,9 +25,14 @@ public class PlayerController : MonoBehaviour {
         {
             return;
         }
+
 		if(!incapacitated){
 			MovePlayer();
-		}
+        }
+        else
+        {
+            CloseOpenWindows.DestroyOpenMenus();
+        }
 	}
 	
 	void MovePlayer(){
