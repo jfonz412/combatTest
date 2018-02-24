@@ -5,6 +5,7 @@ using UnityEngine;
 public class NPCInteraction : Interactable
 {
     public DefaultInteractions defaultInteraction;
+    public bool isDead = false;
 
     void Start()
     {
@@ -13,6 +14,11 @@ public class NPCInteraction : Interactable
 
     public override void Interaction(string interaction)
     {
+        if (isDead)
+        {
+            return;
+        }
+
         base.Interaction(interaction); //gets the reference to the player
 
         if (interaction == "Default")
@@ -31,12 +37,12 @@ public class NPCInteraction : Interactable
                 break;
             case "Trade":
                 //TriggerTrade();
+                Debug.Log("Trading with " + name);
                 break;
             case "Inspect":
                 InspectObject();
                 break;
             default:
-                Debug.Log("invalid " + interaction + "interaction passed to " + gameObject);
                 break;
         }
     }

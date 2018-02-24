@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
-            CloseOpenWindows.DestroyOpenMenus();
+            CloseOpenWindows.instance.DestroyPopupMenus(); //close windows after death or during dialogue
         }
 	}
 	
@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour {
 
     void ProcessClick(int mouseButton)
     {
-        CloseOpenWindows.DestroyOpenMenus();
+        CloseOpenWindows.instance.DestroyPopupMenus();
 
         Vector3 mouseClickPos;
         mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour {
         if (movingToInteraction != null)
             StopCoroutine(movingToInteraction); //stop moving towards previous interaction, if any
 
-        attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine), if any
+        attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine)
     }
 
 }

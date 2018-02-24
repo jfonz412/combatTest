@@ -24,12 +24,13 @@ public class InventoryUI : MonoBehaviour {
 
             ToggleMouseSlotSprite();
 
-            CloseOpenWindows.DestroyOpenMenus();
+            CloseOpenWindows.instance.DestroyPopupMenus();
         }
 
         if (DialogueManager.instance.isOpen)
         {
             inventoryUI.SetActive(false);
+            ToggleMouseSlotSprite();
         }
 	}
 
@@ -56,7 +57,8 @@ public class InventoryUI : MonoBehaviour {
         }
     }
 
-    void ToggleMouseSlotSprite()
+    //public for CloseOpenWindows.cs , consider moving it there?
+    public void ToggleMouseSlotSprite()
     {
         MouseSlot mouseSlot = MouseSlot.instance;
 

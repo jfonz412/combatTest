@@ -14,6 +14,8 @@ public class ClickCheck : MonoBehaviour, IPointerClickHandler
     //Detect if a click occurs
     public void OnPointerClick(PointerEventData pointerEventData)
     {
+        CloseOpenWindows.instance.DestroyPopupMenus();
+
         //Use this to tell when the user right-clicks on the Button
         if (pointerEventData.button == PointerEventData.InputButton.Right)
         {

@@ -49,6 +49,33 @@ public class Health : MonoBehaviour
 
     IEnumerator Die(Transform attacker)
     {
+        StopAllCombat(attacker);
+        IncapacitateEntity();
+
+        //extend death animation before destroy
+        yield return new WaitForSeconds(6f);
+        Destroy(gameObject);
+    }
+
+    void IncapacitateEntity()
+    {
+        //stop processing clicks if player
+        PlayerController player = GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.incapacitated = true;
+        }
+
+        //stop interactions if npc
+        NPCInteraction npc = GetComponent<NPCInteraction>();
+        if (npc != null)
+        {
+            npc.isDead = true;
+        }
+    }
+
+    void StopAllCombat(Transform attacker)
+    {
         AttackController myAttackController = GetComponent<AttackController>();
         UnitAnimator myAnim = GetComponent<UnitAnimator>();
 
@@ -59,18 +86,6 @@ public class Health : MonoBehaviour
         myAttackController.EngageTarget(false);
         GetComponent<UnitController>().StopMoving();
         myAnim.TriggerDeathAnimation();
-
-        //stop processing clicks if player
-        PlayerController player = myAttackController.GetComponent<PlayerController>();
-        if (player != null)
-        {
-            player.incapacitated = true;
-        }
-
-        //extend death animation before destroy
-        yield return new WaitForSeconds(6f);
-        Destroy(gameObject);
     }
-
 
 }
