@@ -85,6 +85,6 @@ public class DialogueManager : MonoBehaviour {
         player.incapacitated = false;
         isOpen = false;
         dialogueWindow.SetBool("isOpen", isOpen);
-        Debug.Log("End of conversation");
+        //Debug.Log("End of conversation");
     }
 }

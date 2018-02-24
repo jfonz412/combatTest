@@ -86,6 +86,7 @@ public class AttackController : MonoBehaviour {
         unit.StopMoving();
         anim.FaceDirection(transform.position, targetTransform.position);
         anim.TriggerAttackAnimation(equippedWeapon.attackType);
+
         targetHealth.TakeDamage(CalculateDamageDealt(), transform);
     }
 

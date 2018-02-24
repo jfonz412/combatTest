@@ -23,9 +23,11 @@ public class Health : MonoBehaviour
         currentHealth = currentHealth - totalDamage;
         //Debug.Log(name + " has taken " + DamageCalculator.CalculateTotalDamage(damage, myStats.baseDefense, PickBodyPart()) + " damage!");
 
+        FloatingTextController.CreateFloatingText(totalDamage.ToString(), transform);
+
         if (currentHealth > 0.0f)
         {
-            unitReactions.ReactToDisturbance("Damage Taken", attacker);
+            unitReactions.ReactToAttack(attacker);           
         }
         else
         {
@@ -33,7 +35,7 @@ public class Health : MonoBehaviour
             StartCoroutine(death);
         }
 
-        FloatingTextController.CreateFloatingText(totalDamage.ToString(), transform);
+        
     }
 
     Armor PickBodyPart()

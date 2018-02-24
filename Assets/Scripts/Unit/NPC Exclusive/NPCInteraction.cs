@@ -5,7 +5,9 @@ using UnityEngine;
 public class NPCInteraction : Interactable
 {
     public DefaultInteractions defaultInteraction;
+    public Dialogue dialog; //contains fields for name and text
     public bool isDead = false;
+
 
     void Start()
     {

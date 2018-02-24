@@ -3,9 +3,14 @@ using System.Collections;
 
 public class UnitReactions : MonoBehaviour
 {
+    public enum Factions { Townie, BigRedGang, Player };
+    public Factions faction;
+
     AttackController attackController;
     NPCInteraction interactions;
-    // Use this for initialization
+
+    public float reactionRadius = 5f;
+
     void Start()
     {
         interactions = GetComponent<NPCInteraction>();
@@ -14,33 +19,59 @@ public class UnitReactions : MonoBehaviour
 
     /***-----------------------------------------NPC FUNCTIONS----------------------------------------------- ***/
 
-    // Might eventually be able to call the appropriate respnse based on variables assigned in the inspector
-    // might forget about player reactions and instead have one parent UnitReaction script, and then a FactionReaction variable that will determine how
-    // the unit will react to certain things
-    public void ReactToDisturbance(string disturbanceType, Transform target = null)
+    public void ReactToAttack(Transform attacker = null)
     {
-        //if the player is being attacked
-        if (gameObject.name == "Player")
+        if(name == "Player")
         {
-            if (disturbanceType == "Damage Taken" && attackController.lastKnownTarget == null)
+            return;
+        }
+
+        //target the last unit that attacked it while preventing attacking the same target everytime unit is damaged
+        if (attackController.lastKnownTarget != attacker)
+        {
+            attackController.EngageTarget(true, attacker);
+            RemovePeacefulInteractions();
+
+            UnitReactionManager.instance.AlertEveryoneInRange((int)faction, attacker);
+        }      
+    }
+
+    public void ReactToFactionAttack(Transform attacker = null)
+    {
+        if (name == "Player")
+        {
+            return;
+        }
+
+        //target the last unit that attacked it while preventing attacking the same target everytime unit is damaged
+        if (attackController.lastKnownTarget != attacker)
+        {
+            attackController.EngageTarget(true, attacker);
+            RemovePeacefulInteractions();
+        }
+    }
+
+    public void ReactToNonFactionAttack(Transform attacker = null)
+    {
+        //do nothing
+    }
+
+    void RemovePeacefulInteractions()
+    {
+        for (int i = 0; i < interactions.myInteractions.Length; i++)
+        {
+            if (interactions.myInteractions[i] != "Attack")
             {
-                //do nothing for now
+                interactions.myInteractions[i] = "--";
             }
         }
-        else //if anything else is attacked
-        {
-            //target the last unit that attacked it
-            if (disturbanceType == "Damage Taken" && attackController.lastKnownTarget != target)
-            {
-                attackController.EngageTarget(true, target);
-                for(int i = 0; i < interactions.myInteractions.Length; i++)
-                {
-                    if(interactions.myInteractions[i] != "Attack")
-                    {
-                        interactions.myInteractions[i] = "--";
-                    }
-                }
-            }
-        }
+        interactions.defaultInteraction = Interactable.DefaultInteractions.Attack;
+    }
+
+    //debuggin' purposes
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, reactionRadius);
     }
 }

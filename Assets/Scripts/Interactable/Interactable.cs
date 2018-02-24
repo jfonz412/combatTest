@@ -7,7 +7,6 @@ public class Interactable : MonoBehaviour {
     public Transform player;
 
     public float radius = 1f; //same as melee standard in weapon script
-    public Dialogue dialog; //contains fields for name and text
 
     [HideInInspector]
     public string[] myInteractions = new string[4]; //use this to populate interact menu
