@@ -9,6 +9,7 @@ public class InventorySlot : MonoBehaviour
 
     public int slotNum;
 
+
     public void AddItem(Item newItem)
     {
         if (newItem == null)
@@ -43,7 +44,7 @@ public class InventorySlot : MonoBehaviour
     {
         if (item != null)
         {
-            item.Use();
+            item.OpenStatWindow();
         }
     }
   

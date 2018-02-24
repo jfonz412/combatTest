@@ -10,7 +10,6 @@ public class Weapon : Equipment {
 	public float softness = 1; //1 is max hardness, the harder the better (should be hardness I think, makes more sense)
 	public float sharpness = 1; //the sharper the better
 	public float weight = 1; //the heavier the better
-    public float value = 100;
 
 	public string attackType; // cast, slash, thrust
     #endregion
@@ -47,7 +46,7 @@ public class Weapon : Equipment {
         myStats[0] = "Attack: " + totalAttack.ToString();
         myStats[1] = "Condition: " + weaponCondition.ToString();
         myStats[2] = "Weight: " + weight.ToString();
-        myStats[3] = "Value " + value.ToString();
+        myStats[3] = "Value: " + value.ToString();
 
         EquipmentStats.instance.PopulateStats(myStats);
     }

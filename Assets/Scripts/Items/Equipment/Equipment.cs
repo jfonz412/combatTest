@@ -9,14 +9,11 @@ public class Equipment : Item {
     public override void Use()
     {
         base.Use(); //gets reference to the player
-        OpenStatWindow();
     }
 
-    public virtual void OpenStatWindow()
-    {   
-        Vector3 spawnPoint = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        spawnPoint.y += 1f;
-        spawnPoint.z = 0f;
+    public override void OpenStatWindow()
+    {
+        Vector3 spawnPoint = WindowSpawnPoint();
         Instantiate(Resources.Load("EquipmentStats"), spawnPoint, Quaternion.identity, FindObjectOfType<Canvas>().transform);
         Debug.Log("Opening equipment stat window");
     }

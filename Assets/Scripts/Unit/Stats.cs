@@ -25,7 +25,7 @@ public class Stats : MonoBehaviour
     //Invoked from EquipmentManager to adjust stats based on newly equipped items
     void AdjustStats(Equipment oldItem, Equipment newItem)
     {
-        Debug.Log("ADJUSTING STATS HOMIE!!");
+        //Debug.Log("ADJUSTING STATS HOMIE!!");
     }
 
     public float attack

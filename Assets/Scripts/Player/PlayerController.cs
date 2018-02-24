@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour {
 
     void ProcessClick(int mouseButton)
     {
-        DestroyOpenMenus();
+        CloseOpenWindows.DestroyOpenMenus();
 
         Vector3 mouseClickPos;
         mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -153,16 +153,4 @@ public class PlayerController : MonoBehaviour {
         attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine), if any
     }
 
-    void DestroyOpenMenus()
-    {
-        if (InteractableMenu.instance != null)
-        {
-            InteractableMenu.instance.CloseMenu();          
-        }
-
-        if (EquipmentStats.instance != null)
-        {
-            EquipmentStats.instance.CloseMenu();
-        }
-    }
 }

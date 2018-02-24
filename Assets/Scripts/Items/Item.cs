@@ -7,9 +7,10 @@ public class Item : ScriptableObject {
     public Transform player;
 
     new public string name = "New Item";
+    public float value = 100f;
     public Sprite icon = null;
     public int? slotNum;
-    //public int quantity;
+    public int quantity;
 
     public virtual void Use()
     {
@@ -19,7 +20,26 @@ public class Item : ScriptableObject {
         //Item.Use() is for Right Clicks and will do different things depending on the item (consumable, equipment, etc.) 
         //will need more classes that inherit from Item to get more item variety
 
-        //Debug.Log("Using " + name);
+        Debug.Log("Using " + name);
+    }
+
+    public virtual void OpenStatWindow()
+    {
+        Vector3 spawnPoint = WindowSpawnPoint();
+        Instantiate(Resources.Load("ItemMenu"), spawnPoint, Quaternion.identity, FindObjectOfType<Canvas>().transform);
+        Debug.Log("Opening Item menu");
+
+
+
+        ItemMenu.instance.PopulateStats(this);
+    }
+
+    public Vector3 WindowSpawnPoint()
+    {
+        Vector3 spawnPoint = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        spawnPoint.y += 1f;
+        spawnPoint.z = 0f;
+        return spawnPoint;
     }
 
     public void RemoveFromInventory()

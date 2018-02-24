@@ -6,7 +6,6 @@ public class Armor : Equipment {
 	public float armorCondition = 1f; //1 = no damage to armor 
 	public float protection = 1f; //essentially baseDefense
 	public float weight = 0f; //used to determine if unit is strong enough to equip
-    public float value = 100f;
 
 	public float defense{
 		get {
@@ -22,7 +21,7 @@ public class Armor : Equipment {
         myStats[0] = "Defense: " + defense.ToString();
         myStats[1] = "Condition: " + armorCondition.ToString();
         myStats[2] = "Weight: " + weight.ToString();
-        myStats[3] = "Value " + value.ToString();
+        myStats[3] = "Value: " + value.ToString();
 
         EquipmentStats.instance.PopulateStats(myStats);
     }

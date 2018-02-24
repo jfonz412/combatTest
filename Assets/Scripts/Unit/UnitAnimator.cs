@@ -52,7 +52,7 @@ public class UnitAnimator : MonoBehaviour {
                 break;
             case 5:
                 loadedEquipment = LoadFeetArmor(equipmentID);
-                Debug.Log("Equipping to feet");
+                //Debug.Log("Equipping to feet");
                 break;
             default:
                 loadedEquipment = null;

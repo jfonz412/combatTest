@@ -38,8 +38,7 @@ public class EquipSlot : InventorySlot {
     {
         if (equipment != null)
         {
-            //display equipment stat window ( Equipment.Use() currently equips items if it is in the inventory but does not unequip )
-            equipment.Use();
+            equipment.OpenStatWindow();
         }
     }
 

@@ -23,6 +23,8 @@ public class InventoryUI : MonoBehaviour {
             inventoryUI.SetActive(!inventoryUI.activeSelf);
 
             ToggleMouseSlotSprite();
+
+            CloseOpenWindows.DestroyOpenMenus();
         }
 
         if (DialogueManager.instance.isOpen)
