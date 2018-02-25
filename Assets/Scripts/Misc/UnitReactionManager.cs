@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UnitReactionManager : MonoBehaviour {
 
@@ -26,6 +24,12 @@ public class UnitReactionManager : MonoBehaviour {
         for(int i = 0; i < units.unitReactors.Length; i++)
         {
             UnitReactions unit = units.unitReactors[i];
+
+            if (unit.isDead)
+            {
+                continue;
+            }
+
             if (Vector3.Distance(unit.transform.position, location) < unit.reactionRadius)
             {
                 if (factionID == (int)unit.faction)

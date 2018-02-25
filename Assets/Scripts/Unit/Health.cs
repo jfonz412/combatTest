@@ -33,9 +33,7 @@ public class Health : MonoBehaviour
         {
             IEnumerator death = Die(attacker);
             StartCoroutine(death);
-        }
-
-        
+        }      
     }
 
     Armor PickBodyPart()
@@ -69,10 +67,11 @@ public class Health : MonoBehaviour
         }
 
         //stop interactions if npc
-        NPCInteraction npc = GetComponent<NPCInteraction>();
-        if (npc != null)
+        NPCInteraction npcInteractions = GetComponent<NPCInteraction>();
+        if (npcInteractions != null)
         {
-            npc.isDead = true;
+            npcInteractions.isDead = true;
+            unitReactions.isDead = true;
         }
     }
 

@@ -10,6 +10,7 @@ public class UnitReactions : MonoBehaviour
     NPCInteraction interactions;
 
     public float reactionRadius = 5f;
+    public bool isDead = false;
 
     void Start()
     {
@@ -31,9 +32,9 @@ public class UnitReactions : MonoBehaviour
         {
             attackController.EngageTarget(true, attacker);
             RemovePeacefulInteractions();
+        }
 
-            UnitReactionManager.instance.AlertEveryoneInRange((int)faction, attacker);
-        }      
+        UnitReactionManager.instance.AlertEveryoneInRange((int)faction, attacker);
     }
 
     public void ReactToFactionAttack(Transform attacker = null)
