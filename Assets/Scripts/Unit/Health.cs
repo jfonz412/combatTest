@@ -31,7 +31,8 @@ public class Health : MonoBehaviour
         }
         else
         {
-            IEnumerator death = Die(attacker);
+            //IEnumerator death = Die(attacker);
+            IEnumerator death = Death.HumanoidDeath(transform, attacker);
             StartCoroutine(death);
         }      
     }
@@ -45,48 +46,4 @@ public class Health : MonoBehaviour
         Debug.Log("Attacking bodypart #" + validChoices[num]);
         return (Armor)equipmentManager.currentEquipment[validChoices[num]];
     }
-
-
-    IEnumerator Die(Transform attacker)
-    {
-        StopAllCombat(attacker);
-        IncapacitateEntity();
-
-        //extend death animation before destroy
-        yield return new WaitForSeconds(6f);
-        Destroy(gameObject);
-    }
-
-    void IncapacitateEntity()
-    {
-        //stop processing clicks if player
-        PlayerController player = GetComponent<PlayerController>();
-        if (player != null)
-        {
-            player.incapacitated = true;
-        }
-
-        //stop interactions if npc
-        NPCInteraction npcInteractions = GetComponent<NPCInteraction>();
-        if (npcInteractions != null)
-        {
-            npcInteractions.isDead = true;
-            unitReactions.isDead = true;
-        }
-    }
-
-    void StopAllCombat(Transform attacker)
-    {
-        AttackController myAttackController = GetComponent<AttackController>();
-        UnitAnimator myAnim = GetComponent<UnitAnimator>();
-
-        //stop the attacker
-        attacker.GetComponent<AttackController>().EngageTarget(false);
-
-        //stop the target
-        myAttackController.EngageTarget(false);
-        GetComponent<UnitController>().StopMoving();
-        myAnim.TriggerDeathAnimation();
-    }
-
 }
