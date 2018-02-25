@@ -3,18 +3,20 @@ using UnityEngine.EventSystems;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
+
+    public GameObject clickMarker;
+
     UnitController unitController;
     AttackController attackController;
+
     IEnumerator movingToInteraction = null;
 
     [HideInInspector]
 	public bool incapacitated;
 
-    public GameObject clickMarker;
-
 	// Use this for initialization
 	void Start () {
-        FloatingTextController.Initialize(); 
+        FloatingTextController.Initialize(); //just needs to be initialized somewhere
         unitController = GetComponent<UnitController>();
         attackController = GetComponent<AttackController>();
     }

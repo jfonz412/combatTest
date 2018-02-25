@@ -40,6 +40,7 @@ public class InventorySlot : MonoBehaviour
 
 
     #region Slot Clicks
+    //consider moving the insides of this function to it's own SlotClick.InventorySlotRightClicked(this);
     public virtual void SlotRightClicked()
     {
         if (item != null)
@@ -48,6 +49,7 @@ public class InventorySlot : MonoBehaviour
         }
     }
   
+    //consider moving the insides of this function to it's own SlotClick.InventorySlotLeftClicked(this);
     public virtual void SlotLeftClicked()
     {
         MouseSlot mouseSlot = MouseSlot.instance;      

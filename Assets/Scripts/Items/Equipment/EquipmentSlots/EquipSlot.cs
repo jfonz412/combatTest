@@ -34,6 +34,7 @@ public class EquipSlot : InventorySlot {
     }
 
     #region Slot Clicks
+    //consider moving the insides of this function to it's own SlotClick.EquipSlotRightClicked(this);
     public override void SlotRightClicked()
     {
         if (equipment != null)
@@ -42,6 +43,7 @@ public class EquipSlot : InventorySlot {
         }
     }
 
+    //consider moving the insides of this function to it's own SlotClick.EquipSlotLeftClicked(this);
     public override void SlotLeftClicked()
     {
         MouseSlot mouseSlot = MouseSlot.instance;

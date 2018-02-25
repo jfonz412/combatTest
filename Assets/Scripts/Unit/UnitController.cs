@@ -17,15 +17,6 @@ public class UnitController : MonoBehaviour
         anim = GetComponent<UnitAnimator>();
     }
 
-    void Update()
-    {
-        //FOR TESTING!!!
-        if (gameObject.name != "Player" && Input.GetKeyDown(KeyCode.A))
-        { //and not dead or otherwise incapacitated...
-            GetComponent<AttackController>().EngageTarget(true, GameObject.Find("Player").transform);
-        }
-    }
-
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {

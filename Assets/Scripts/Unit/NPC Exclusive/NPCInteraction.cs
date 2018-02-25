@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class NPCInteraction : Interactable
 {
-    public DefaultInteractions defaultInteraction;
     public Dialogue dialog; //contains fields for name and text
     public bool isDead = false;
 
@@ -47,6 +44,18 @@ public class NPCInteraction : Interactable
             default:
                 break;
         }
+    }
+
+    public void RemovePeacefulInteractions()
+    {
+        for (int i = 0; i < myInteractions.Length; i++)
+        {
+            if (myInteractions[i] != "Attack")
+            {
+                myInteractions[i] = "--";
+            }
+        }
+        defaultInteraction = Interactable.DefaultInteractions.Attack;
     }
 
     #region Possible Interactions for NPCs

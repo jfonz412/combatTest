@@ -24,6 +24,7 @@ public class UnitReactions : MonoBehaviour
     {
         if(name == "Player")
         {
+            CloseOpenWindows.instance.KnockPlayerOutOfDialogue();
             return;
         }
 
@@ -31,7 +32,7 @@ public class UnitReactions : MonoBehaviour
         if (attackController.lastKnownTarget != attacker)
         {
             attackController.EngageTarget(true, attacker);
-            RemovePeacefulInteractions();
+            interactions.RemovePeacefulInteractions();
         }
 
         UnitReactionManager.instance.AlertEveryoneInRange((int)faction, attacker);
@@ -48,25 +49,13 @@ public class UnitReactions : MonoBehaviour
         if (attackController.lastKnownTarget != attacker)
         {
             attackController.EngageTarget(true, attacker);
-            RemovePeacefulInteractions();
+            interactions.RemovePeacefulInteractions();
         }
     }
 
     public void ReactToNonFactionAttack(Transform attacker = null)
     {
         //do nothing
-    }
-
-    void RemovePeacefulInteractions()
-    {
-        for (int i = 0; i < interactions.myInteractions.Length; i++)
-        {
-            if (interactions.myInteractions[i] != "Attack")
-            {
-                interactions.myInteractions[i] = "--";
-            }
-        }
-        interactions.defaultInteraction = Interactable.DefaultInteractions.Attack;
     }
 
     //debuggin' purposes

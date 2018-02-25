@@ -13,7 +13,6 @@ public class CloseOpenWindows : MonoBehaviour {
     {
         if (instance != null)
         {
-            Debug.LogWarning("More than one instance of inventory found");
             return;
         }
         instance = this;
@@ -52,7 +51,16 @@ public class CloseOpenWindows : MonoBehaviour {
         equipUI.equipmentUI.SetActive(false);
         inventoryUI.inventoryUI.SetActive(false);
         inventoryUI.ToggleMouseSlotSprite();
-        DialogueManager.instance.isOpen = false;
+        DialogueManager.instance.dialogueWindow.SetBool("isOpen", false); 
     }
 
+    public void KnockPlayerOutOfDialogue()
+    {
+        bool dialogOpen = DialogueManager.instance.dialogueWindow.GetBool("isOpen");
+        if (dialogOpen)
+        {
+            PlayerManager.instance.player.GetComponent<PlayerController>().incapacitated = false;
+            DialogueManager.instance.dialogueWindow.SetBool("isOpen", false);
+        }
+    }
 }

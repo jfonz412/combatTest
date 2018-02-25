@@ -35,47 +35,4 @@ public class Stats : MonoBehaviour
             return baseAttack;
         }
     }
-
-    /*
-
-    public float DamageAfterDefense(float incomingDamage)
-    {
-        int bodyPartIndex = PickBodyPart();
-        float totalDamage = CalculateTotalDamage(incomingDamage, bodyPartIndex);
-        FloatingTextController.CreateFloatingText(totalDamage.ToString(), transform);
-        return totalDamage;
-    }
-
-    // will eventually check for blocks, parrys, misses, ect.
-    float CalculateTotalDamage(float incomingDamage, int bodyPartIndex)
-    {
-        Armor armor = (Armor)equipmentManager.currentEquipment[bodyPartIndex]; //probably not very effecient
-        float totalDamage = incomingDamage - (armor.defense + baseDefense);
-        if (totalDamage < 0)
-        {
-            return 0;
-        }
-        else
-        {
-            DamageStats(bodyPartIndex, totalDamage);
-            return totalDamage;
-        }
-    }
-
-    int PickBodyPart()
-    {
-        //EquipmentSlot { Head, Chest, Legs, MainHand, OffHand, Feet}
-        int[] validChoices = new int[] { 0, 1, 2, 5 };
-        int num = Random.Range(0, validChoices.Length);
-
-        Debug.Log("Attacking bodypart #" + validChoices[num]);
-        return validChoices[num];
-    }
-
-    void DamageStats(int bodyPart, float damage)
-    {
-        //skills deducted depending on damage and bdy part
-    }
-    */
-
 }

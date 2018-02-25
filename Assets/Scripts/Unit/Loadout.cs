@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Loadout : MonoBehaviour {
     public Equipment[] defaultLoadout = new Equipment[6]; //num of equipslots 

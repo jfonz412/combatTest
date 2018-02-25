@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Death : MonoBehaviour {
@@ -24,6 +23,7 @@ public class Death : MonoBehaviour {
         if (player != null)
         {
             player.incapacitated = true;
+            CloseOpenWindows.instance.CloseAllWindows();
         }
 
         //stop interactions if npc       

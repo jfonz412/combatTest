@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
 public class ItemPickup : Interactable {
-    public Item item;
 
-    public DefaultInteractions defaultInteraction;
+    public Item item;
 
     void Start()
     {
@@ -12,8 +11,6 @@ public class ItemPickup : Interactable {
 
     public override void Interaction(string interaction)
     {
-        base.Interaction(interaction);
-
         base.Interaction(interaction); //gets the reference to the player
 
         if (interaction == "Default")
