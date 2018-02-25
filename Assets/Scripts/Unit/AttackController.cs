@@ -10,6 +10,8 @@ public class AttackController : MonoBehaviour {
 
     EquipmentManager equipmentManager;
     Weapon equippedWeapon;
+    Stats myStats;
+
     int weaponIndex = (int)EquipmentSlot.MainHand;
 
     UnitAnimator anim;
@@ -21,7 +23,7 @@ public class AttackController : MonoBehaviour {
 
     void Start()
     {
-        myAttackStat = GetComponent<Stats>().attack;
+        myStats = GetComponent<Stats>(); //need to account for stat changes
         anim = GetComponent<UnitAnimator>();
         unit = GetComponent<UnitController>();
 
@@ -37,23 +39,12 @@ public class AttackController : MonoBehaviour {
         if (hasTarget)
         {
             lastKnownTarget = targetTransform;
-
-            if (engagingEntity != null)
-            {
-                StopCoroutine(engagingEntity);
-            }
-
-            targetHealth = lastKnownTarget.GetComponent<Health>();
-            engagingEntity = MoveToEngagement(targetTransform);
-
-            StartCoroutine(engagingEntity);
+            StopEngagingEnemy();
+            EngageNewEnemy(targetTransform);
         }
         else
         {
-            if (engagingEntity != null)
-            {
-                StopCoroutine(engagingEntity);
-            }
+            StopEngagingEnemy();
             lastKnownTarget = null;
         }
     }
@@ -63,8 +54,8 @@ public class AttackController : MonoBehaviour {
     {
         while (targetTransform)
         {
-            if (Vector3.Distance(transform.position, lastKnownTarget.position) > equippedWeapon.range)
-            { //and targetTransform != null ?
+            if (Vector3.Distance(transform.position, lastKnownTarget.position) > equippedWeapon.range) //and targetTransform != null ?
+            { 
                 lastKnownTarget = targetTransform;
                 PathfindingManager.RequestPath(transform.position, lastKnownTarget.position, unit.OnPathFound);
                 yield return new WaitForSeconds(.1f);
@@ -80,25 +71,39 @@ public class AttackController : MonoBehaviour {
         yield break;
     }
 
-
+#region Helper Functions
     void StopAndAttack(Transform targetTransform)
+    {
+        float damage = DamageCalculator.CalculateDamageDealt(myStats.baseAttack, equippedWeapon.totalAttack);
+
+        AttackAnimation(targetTransform);
+        targetHealth.TakeDamage(damage, transform);
+    }
+
+
+    void AttackAnimation(Transform targetTransform)
     {
         unit.StopMoving();
         anim.FaceDirection(transform.position, targetTransform.position);
         anim.TriggerAttackAnimation(equippedWeapon.attackType);
-
-        targetHealth.TakeDamage(CalculateDamageDealt(), transform);
     }
 
-
-    //Calculate the damage of the weapon + stats
-    //maybe put this method in stats? Or a new class altogether
-    float CalculateDamageDealt()
+    void StopEngagingEnemy()
     {
-        //also need to consider weapon condtion? maybe condition just makes it break
-        return myAttackStat + equippedWeapon.totalAttack;    
+        if (engagingEntity != null)
+        {
+            StopCoroutine(engagingEntity);
+        }
     }
 
+    void EngageNewEnemy(Transform targetTransform)
+    {     
+        targetHealth = lastKnownTarget.GetComponent<Health>();
+        engagingEntity = MoveToEngagement(targetTransform);
+
+        StartCoroutine(engagingEntity);
+    }
+#endregion
 
     //Player callback for weapon swaps (called from EquipmentManager)
     void SwapWeapons(Equipment oldItem, Equipment newItem)

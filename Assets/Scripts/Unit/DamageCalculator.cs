@@ -20,4 +20,11 @@ public class DamageCalculator : MonoBehaviour {
             return totalDamage;
         }
     }
+
+    //calculate attack damage
+    public static float CalculateDamageDealt(float baseAttack, float weaponAttack)
+    {
+        //also need to consider weapon condtion? maybe condition just makes it break
+        return baseAttack + weaponAttack;
+    }
 }

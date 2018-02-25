@@ -73,25 +73,7 @@ public class PlayerController : MonoBehaviour {
     {
         RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
 
-        if (hit.collider)
-        {
-            Interactable interactable = hit.collider.GetComponent<Interactable>();
-            if (interactable)
-            {
-                InteractWithInteractable("Default", interactable);
-            }
-            else
-            {
-                StopPreviousInteraction();
-                PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
-            }
-        }
-        else
-        {
-            StopPreviousInteraction();
-            PathfindingManager.RequestPath(transform.position, mouseClickPos, unitController.OnPathFound);
-        }
-        //spawn marker
+        CheckHit(hit, mouseClickPos);
         Instantiate(clickMarker, mouseClickPos, Quaternion.identity);
     }
 
@@ -100,20 +82,60 @@ public class PlayerController : MonoBehaviour {
     {
         RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
 
-        if (hit.collider)
+        Collider2D collider = hit.collider;
+        if (collider)
         {
-            Interactable interactable = hit.collider.GetComponent<Interactable>();
-
-            if (interactable)
-            {
-                interactable.OpenInteractionMenu();
-            }
+            CheckForInteractableMenu(collider);
         }
     }
 
 
     /****************** HELPER FUNCTIONS **************************/
+    #region Left and Right Click Helpers
+    void CheckHit(RaycastHit2D hit, Vector3 location)
+    {
+        Collider2D collider = hit.collider;
+        if (collider)
+        {
+            CheckCollider(collider, location);
+        }
+        else
+        {
+            MoveHere(location);
+        }
+    }
 
+    void CheckCollider(Collider2D collider, Vector3 location)
+    {
+        Interactable interactable = collider.GetComponent<Interactable>();
+        if (interactable)
+        {
+            InteractWithInteractable("Default", interactable);
+        }
+        else
+        {
+            MoveHere(location);
+        }
+    }
+
+    void CheckForInteractableMenu(Collider2D collider)
+    {
+        Interactable interactable = collider.GetComponent<Interactable>();
+
+        if (interactable)
+        {
+            interactable.OpenInteractionMenu();
+        }
+    }
+
+    void MoveHere(Vector3 location)
+    {
+        StopPreviousInteraction();
+        PathfindingManager.RequestPath(transform.position, location, unitController.OnPathFound);
+    }
+    #endregion
+
+    #region Movement helpers
     //this will be called from the button in the dropdown interaction menu
     public void InteractWithInteractable(string chosenInteraction, Interactable interactable)
     {
@@ -159,5 +181,5 @@ public class PlayerController : MonoBehaviour {
 
         attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine)
     }
-
+    #endregion
 }
