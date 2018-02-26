@@ -17,21 +17,9 @@ public class InventoryUI : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-        if (Input.GetButtonDown("Inventory")) 
-        {
-            inventoryUI.SetActive(!inventoryUI.activeSelf);
-
-            ToggleMouseSlotSprite();
-
-            CloseOpenWindows.instance.DestroyPopupMenus();
-        }
-
-        if (DialogueManager.instance.isOpen)
-        {
-            inventoryUI.SetActive(false);
-            ToggleMouseSlotSprite();
-        }
+	void Update ()
+    {
+        InventoryUIToggle();
 	}
 
     void UpdateUI()
@@ -49,27 +37,29 @@ public class InventoryUI : MonoBehaviour {
         }
     }
 
+    void InventoryUIToggle()
+    {
+        if (Input.GetButtonDown("Inventory"))
+        {
+            inventoryUI.SetActive(!inventoryUI.activeSelf);
+
+            MouseSlot.instance.ToggleSprite(inventoryUI.activeSelf);
+
+            CloseOpenWindows.instance.DestroyPopupMenus();
+        }
+
+        if (DialogueManager.instance.isOpen)
+        {
+            inventoryUI.SetActive(false);
+            MouseSlot.instance.ToggleSprite(inventoryUI.activeSelf);
+        }
+    }
+
     void AssignSlotNums()
     {
         for (int i = 0; i < slots.Length; i++)
         {
             slots[i].slotNum = i;
-        }
-    }
-
-    //public for CloseOpenWindows.cs , consider moving it there?
-    public void ToggleMouseSlotSprite()
-    {
-        MouseSlot mouseSlot = MouseSlot.instance;
-
-        if (inventoryUI.activeSelf == false)
-        {
-            mouseSlot.spriteRenderer.sprite = null;
-        }
-        else
-        {
-            if (mouseSlot.currentItem != null)
-                mouseSlot.spriteRenderer.sprite = mouseSlot.currentItemSprite;
         }
     }
 }

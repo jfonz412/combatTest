@@ -50,7 +50,7 @@ public class CloseOpenWindows : MonoBehaviour {
         DestroyPopupMenus();
         equipUI.equipmentUI.SetActive(false);
         inventoryUI.inventoryUI.SetActive(false);
-        inventoryUI.ToggleMouseSlotSprite();
+        MouseSlot.instance.ToggleSprite(inventoryUI.inventoryUI.activeSelf);
         DialogueManager.instance.dialogueWindow.SetBool("isOpen", false); 
     }
 

@@ -43,25 +43,11 @@ public class Inventory : MonoBehaviour {
         {
             if(items[i] == null)
             {
-                //if slotNum is null then it has not been in our inventory needs an instance
-                //otherwise we do not create a new instance and simply use the item as it is
-                if(item.slotNum == null)
-                {
-                    item = Instantiate(item);
-                    Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
-                }
-                    
-                items.RemoveAt(i); //remove the null item
-                items.Insert(i, item); //replace it with actual item
+                item = CheckIfAlreadyInstantiated(item);
 
-                items[i].slotNum = i; //save refrence to the slot it's been placed in
+                InsertItemIntoEmptySlot(item, i);
 
-                //Debug.Log("Instance ID of "+ items[i] + " is: " + items[i].GetInstanceID()); 
-
-                if (onInventoryChanged != null)
-                {
-                    onInventoryChanged.Invoke(); 
-                }
+                Callback();
                 return true;
             }
         }
@@ -79,10 +65,7 @@ public class Inventory : MonoBehaviour {
 
         //Debug.Log("Instance ID of "+ items[i] + " is: " + items[i].GetInstanceID()); 
 
-        if (onInventoryChanged != null)
-        {
-            onInventoryChanged.Invoke();
-        }
+        Callback();
     }
 
     public void Remove(Item item)
@@ -92,10 +75,7 @@ public class Inventory : MonoBehaviour {
         items.RemoveAt(itemIndex);
         items.Insert(itemIndex, null);
 
-        if (onInventoryChanged != null)
-        {
-            onInventoryChanged.Invoke(); //callback
-        }
+        Callback();
 
     }
 
@@ -103,5 +83,34 @@ public class Inventory : MonoBehaviour {
     {
         Remove(item);
         Destroy(item); //this should eventually remove item from memory...
+    }
+
+    void Callback()
+    {
+        if (onInventoryChanged != null)
+        {
+            onInventoryChanged.Invoke(); //callback
+        }
+    }
+
+    void InsertItemIntoEmptySlot(Item item, int slotNum)
+    {
+        items.RemoveAt(slotNum); //remove the null item
+        items.Insert(slotNum, item); //replace it with actual item
+
+        items[slotNum].slotNum = slotNum; //save refrence to the slot it's been placed in
+    }
+
+    Item CheckIfAlreadyInstantiated(Item item)
+    {
+        //if slotNum is null then it has not been in our inventory needs an instance
+        //otherwise we do not create a new instance and simply use the item as it is
+        if (item.slotNum == null)
+        {
+            item = Instantiate(item);
+            Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
+        }
+
+        return item;
     }
 }

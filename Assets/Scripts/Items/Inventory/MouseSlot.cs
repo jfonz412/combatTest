@@ -47,4 +47,17 @@ public class MouseSlot : MonoBehaviour {
             spriteRenderer.sprite = null;
         }
     }
+
+    public void ToggleSprite(bool spriteOn)
+    {
+        if (!spriteOn)
+        {
+            spriteRenderer.sprite = null;
+        }
+        else
+        {
+            if (currentItem != null)
+                spriteRenderer.sprite = currentItemSprite;
+        }
+    }
 }

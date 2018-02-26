@@ -18,15 +18,7 @@ public class EquipUI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButtonDown("Inventory"))
-        {
-            equipmentUI.SetActive(!equipmentUI.activeSelf);
-        }
-
-        if (DialogueManager.instance.isOpen)
-        {
-            equipmentUI.SetActive(false);
-        }
+        InventoryToggle();
     }
 
     void UpdateUI(Equipment oldItem, Equipment newItem)
@@ -43,9 +35,17 @@ public class EquipUI : MonoBehaviour {
         }
     }
 
-    public void InitialUILoad(Equipment item)
+    void InventoryToggle()
     {
+        if (Input.GetButtonDown("Inventory"))
+        {
+            equipmentUI.SetActive(!equipmentUI.activeSelf);
+        }
 
+        if (DialogueManager.instance.isOpen)
+        {
+            equipmentUI.SetActive(false);
+        }
     }
 
     void AssignSlotNums()

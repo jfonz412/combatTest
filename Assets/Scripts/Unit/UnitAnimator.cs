@@ -233,26 +233,23 @@ public class UnitAnimator : MonoBehaviour
     {
         if (attackType == "slash")
         {
-            for (int i = 0; i < animators.Length; i++)
-            {
-                if (animators[i] != null)
-                {
-                    animators[i].SetFloat("x", inputX);
-                    animators[i].SetFloat("y", inputY);
-                    animators[i].SetTrigger("isSlashing");
-                }
-            }
+            AttackAnimation("isSlashing");
         }
         else if (attackType == "thrust")
         {
-            for (int i = 0; i < animators.Length; i++)
+            AttackAnimation("isThrusting");
+        }
+    }
+
+    void AttackAnimation(string triggerType)
+    {
+        for (int i = 0; i < animators.Length; i++)
+        {
+            if (animators[i] != null)
             {
-                if (animators[i] != null)
-                {
-                    animators[i].SetFloat("x", inputX);
-                    animators[i].SetFloat("y", inputY);
-                    animators[i].SetTrigger("isThrusting");
-                }
+                animators[i].SetFloat("x", inputX);
+                animators[i].SetFloat("y", inputY);
+                animators[i].SetTrigger(triggerType);
             }
         }
     }
