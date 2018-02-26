@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EquipUI : MonoBehaviour {
 
@@ -31,7 +29,6 @@ public class EquipUI : MonoBehaviour {
         }
     }
 
-    //might need work, currentEquipment is a list, the original function was using a List
     void UpdateUI(Equipment oldItem, Equipment newItem)
     {
         if (newItem != null)
@@ -44,6 +41,11 @@ public class EquipUI : MonoBehaviour {
             int slotNum = (int)oldItem.equipSlot;
             slots[slotNum].ClearSlot();
         }
+    }
+
+    public void InitialUILoad(Equipment item)
+    {
+
     }
 
     void AssignSlotNums()
