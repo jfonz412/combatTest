@@ -16,9 +16,11 @@ public class FloatingTextController : MonoBehaviour {
 
     public static void CreateFloatingText(string text, Transform unitLocation)
     {
+        Vector3 position = new Vector3(unitLocation.position.x, unitLocation.position.y + 0.5f, unitLocation.position.z);
         GameObject instance = Instantiate(popupText);
+
         instance.transform.SetParent(canvas.transform, false);
-        instance.transform.position = unitLocation.position;
+        instance.transform.position = position;
         instance.GetComponent<FloatingText>().SetText(text);
     }
 }

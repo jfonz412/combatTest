@@ -177,8 +177,10 @@ public class PlayerController : MonoBehaviour {
     void StopPreviousInteraction()
     {
         if (movingToInteraction != null)
+        {
             StopCoroutine(movingToInteraction); //stop moving towards previous interaction, if any
-
+        }
+           
         attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine)
     }
     #endregion

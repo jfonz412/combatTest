@@ -10,6 +10,7 @@ public class AttackController : MonoBehaviour {
 
     EquipmentManager equipmentManager;
     Weapon equippedWeapon;
+
     Stats myStats;
 
     int weaponIndex = (int)EquipmentSlot.MainHand;

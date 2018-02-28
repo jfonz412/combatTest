@@ -28,7 +28,7 @@ public class Interactable : MonoBehaviour {
 
     public virtual void OpenInteractionMenu()
     {
-        Vector3 menuSpawnPoint = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+        Vector3 menuSpawnPoint = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
 
         Instantiate(Resources.Load("InteractionMenu"), menuSpawnPoint, Quaternion.identity, FindObjectOfType<Canvas>().transform); //FindObjectOfType is iffy, might not always grab proper canvas
 
