@@ -14,7 +14,7 @@ public class UnitReactions : MonoBehaviour
 
     void Start()
     {
-        interactions = GetComponent<NPCInteraction>();
+        interactions = transform.GetChild(0).GetComponent<NPCInteraction>();
         attackController = GetComponent<AttackController>();
     }
 

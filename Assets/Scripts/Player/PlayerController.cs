@@ -107,24 +107,47 @@ public class PlayerController : MonoBehaviour {
 
     void CheckCollider(Collider2D collider, Vector3 location)
     {
-        Interactable interactable = collider.GetComponent<Interactable>();
-        if (interactable)
+        Transform body;
+        Interactable interactable;
+
+        if(collider.transform.childCount == 0)
         {
-            InteractWithInteractable("Default", interactable);
+            return;
         }
         else
         {
-            MoveHere(location);
+            body = collider.transform.GetChild(0);
+            interactable = body.GetComponent<Interactable>();
+
+            if (interactable)
+            {
+                InteractWithInteractable("Default", interactable);
+            }
+            else
+            {
+                MoveHere(location);
+            }
         }
     }
 
     void CheckForInteractableMenu(Collider2D collider)
     {
-        Interactable interactable = collider.GetComponent<Interactable>();
+        Transform body;
+        Interactable interactable;
 
-        if (interactable)
+        if (collider.transform.childCount == 0)
         {
-            interactable.OpenInteractionMenu();
+            return;
+        }
+        else
+        {
+            body = collider.transform.GetChild(0);
+            interactable = body.GetComponent<Interactable>();
+
+            if (interactable)
+            {
+                interactable.OpenInteractionMenu();
+            }
         }
     }
 

@@ -17,7 +17,7 @@ public class Death : MonoBehaviour {
     {
         UnitReactions unitReactions = victim.GetComponent<UnitReactions>();
         PlayerController player = victim.GetComponent<PlayerController>();
-        NPCInteraction npcInteractions = victim.GetComponent<NPCInteraction>();
+        NPCInteraction npcInteractions = victim.GetChild(0).GetComponent<NPCInteraction>();
 
         //stop processing clicks if player
         if (player != null)
