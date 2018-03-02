@@ -53,6 +53,8 @@ public class AttackController : MonoBehaviour {
     /****************** PRIVATE FUNCTIONS **************************/
     IEnumerator MoveToEngagement(Transform targetTransform)
     {
+        yield return new WaitForSeconds(equippedWeapon.speed); //initial delay to prevent enemy attack-swapping
+
         while (targetTransform)
         {
             if (Vector3.Distance(transform.position, lastKnownTarget.position) > equippedWeapon.range) //and targetTransform != null ?
