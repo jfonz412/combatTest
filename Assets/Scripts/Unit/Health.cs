@@ -27,7 +27,7 @@ public class Health : MonoBehaviour
 
         if (currentHealth > 0.0f)
         {
-            unitReactions.ReactToAttack(attacker);           
+            unitReactions.ReactToAttackAgainstSelf(attacker);           
         }
         else
         {

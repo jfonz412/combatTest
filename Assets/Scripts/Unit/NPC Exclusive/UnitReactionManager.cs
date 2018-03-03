@@ -14,8 +14,7 @@ public class UnitReactionManager : MonoBehaviour {
     #endregion
 
 
-    //in the future I can make this specific to violent attacks and have other functions alert Units 
-    //to other things like non-violent crimes
+    //this is called by a unit when it is attacked (UnitReactions.ReactToAttackAgainstSelf())
     public void AlertEveryoneInRange(int factionID, Transform attacker)
     {
         Vector3 location = attacker.position;
@@ -32,14 +31,7 @@ public class UnitReactionManager : MonoBehaviour {
 
             if (Vector3.Distance(unit.transform.position, location) < unit.reactionRadius)
             {
-                if (factionID == (int)unit.faction)
-                {
-                    unit.ReactToFactionAttack(attacker);
-                }
-                else
-                {
-                    unit.ReactToNonFactionAttack(attacker);
-                }   
+                unit.ReactToAttackAgainstOther(factionID, attacker);
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class UnitReactions : MonoBehaviour
 {
@@ -10,6 +9,8 @@ public class UnitReactions : MonoBehaviour
     NPCInteraction interactions;
 
     public float reactionRadius = 5f;
+    //public float criticalHealthThreshold = 0;
+    [HideInInspector]
     public bool isDead = false;
 
     void Start()
@@ -20,31 +21,52 @@ public class UnitReactions : MonoBehaviour
 
     /***-----------------------------------------NPC FUNCTIONS----------------------------------------------- ***/
 
-    public void ReactToAttack(Transform attacker = null)
+    //called by UnitReactionManager.cs 
+    public void ReactToAttackAgainstOther(int factionID, Transform attacker)
     {
-        if(name == "Player")
+        if (factionID == (int)faction)
+        {
+            ReactToFactionAttack(attacker);
+        }
+        else
+        {
+            ReactToNonFactionAttack(attacker);
+        }
+    }
+
+    //called by my Health.cs when attacked
+    public virtual void ReactToAttackAgainstSelf(Transform attacker = null)
+    {
+        if (name == "Player")
         {
             CloseOpenWindows.instance.KnockPlayerOutOfDialogue();
             return;
         }
 
-        //target the last unit that attacked it while preventing attacking the same target everytime unit is damaged
-        if (attackController.lastKnownTarget != attacker)
-        {
-            attackController.EngageTarget(true, attacker);
-            interactions.RemovePeacefulInteractions();
-        }
-
         UnitReactionManager.instance.AlertEveryoneInRange((int)faction, attacker);
     }
 
-    public void ReactToFactionAttack(Transform attacker = null)
+
+    public virtual void ReactToFactionAttack(Transform attacker = null)
     {
         if (name == "Player")
         {
             return;
         }
+    }
 
+    public virtual void ReactToNonFactionAttack(Transform attacker = null)
+    {
+        if (name == "Player")
+        {
+            return;
+        }
+    }
+
+#region Possible Reactions
+    //possibly give these their own script?
+    public void Fight(Transform attacker)
+    {
         //target the last unit that attacked it while preventing attacking the same target everytime unit is damaged
         if (attackController.lastKnownTarget != attacker)
         {
@@ -52,11 +74,7 @@ public class UnitReactions : MonoBehaviour
             interactions.RemovePeacefulInteractions();
         }
     }
-
-    public void ReactToNonFactionAttack(Transform attacker = null)
-    {
-        //do nothing
-    }
+#endregion
 
     //debuggin' purposes
     void OnDrawGizmosSelected()
