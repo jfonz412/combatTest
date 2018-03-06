@@ -43,7 +43,7 @@ public class Health : MonoBehaviour
         int[] validChoices = new int[] { 0, 1, 2, 5 };
         int num = Random.Range(0, validChoices.Length);
 
-        Debug.Log("Attacking bodypart #" + validChoices[num]);
+        //Debug.Log("Attacking bodypart #" + validChoices[num]);
         return (Armor)equipmentManager.currentEquipment[validChoices[num]];
     }
 }

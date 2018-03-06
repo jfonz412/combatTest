@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class Grid : MonoBehaviour {
@@ -13,14 +12,18 @@ public class Grid : MonoBehaviour {
 	
 	float nodeDiameter;
 	int nodeCountX, nodeCountY; // # of nodes on x and y axis
-	
-	void Awake(){
+
+    public static Grid instance;
+
+    void Awake(){
 		nodeDiameter = nodeRadius*2;
 		// gets us how many nodes we can fit into grid's x and y
 		nodeCountX = Mathf.RoundToInt(gridWorldSize.x/nodeDiameter); //rounding to Int prevents partial-nodes
 		nodeCountY = Mathf.RoundToInt(gridWorldSize.y/nodeDiameter);
 		CreateGrid();
-	}
+
+        instance = this;
+    }
 	
 	public int MaxSize{
 		get {

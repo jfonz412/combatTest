@@ -19,7 +19,7 @@ public class UnitReactionManager : MonoBehaviour {
     {
         Vector3 location = attacker.position;
 
-        Debug.Log("Alerting others in range");
+        //Debug.Log("Alerting others in range");
         for(int i = 0; i < units.unitReactors.Length; i++)
         {
             UnitReactions unit = units.unitReactors[i];

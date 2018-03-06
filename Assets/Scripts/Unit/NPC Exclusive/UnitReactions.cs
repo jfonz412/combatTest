@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class UnitReactions : MonoBehaviour
 {
@@ -7,16 +8,20 @@ public class UnitReactions : MonoBehaviour
 
     AttackController attackController;
     NPCInteraction interactions;
+    UnitController unitController;
 
     public float reactionRadius = 5f;
     //public float criticalHealthThreshold = 0;
     [HideInInspector]
     public bool isDead = false;
+    [HideInInspector]
+    public bool runningAway = false;
 
     void Start()
     {
         interactions = transform.GetChild(0).GetComponent<NPCInteraction>();
         attackController = GetComponent<AttackController>();
+        unitController = GetComponent<UnitController>();
     }
 
     /***-----------------------------------------NPC FUNCTIONS----------------------------------------------- ***/
@@ -63,8 +68,9 @@ public class UnitReactions : MonoBehaviour
         }
     }
 
-#region Possible Reactions
     //possibly give these their own script?
+    #region Possible Reactions
+
     public void Fight(Transform attacker)
     {
         //target the last unit that attacked it while preventing attacking the same target everytime unit is damaged
@@ -74,7 +80,96 @@ public class UnitReactions : MonoBehaviour
             interactions.RemovePeacefulInteractions();
         }
     }
-#endregion
+
+    public void RunAway(Transform attacker)
+    {
+        if (!runningAway)
+        {
+            runningAway = true;
+            StartCoroutine(RunFromAttacker(attacker));
+        }           
+    }
+
+    #endregion
+
+    //----------------------------------------
+
+    IEnumerator RunFromAttacker(Transform attacker)
+    {
+        //PathfindingManager.RequestPath(transform.position, GetPosition(attacker), unitController.OnPathFound); //makes for a quick initial reaction
+
+        interactions.RemovePeacefulInteractions();
+        while (attacker)
+        {
+            if (Vector3.Distance(transform.position, attacker.transform.position) < 3f) //runaway radius hardcoded
+            {
+                PathfindingManager.RequestPath(transform.position, GetPosition(attacker), unitController.OnPathFound);
+                yield return new WaitForSeconds(3f); //might want to play with this?
+            }
+            else
+            {
+                unitController.StopMoving();
+                runningAway = false;
+                break;
+            }
+        }
+        yield break;
+    }
+
+    Vector3 GetPosition(Transform attacker)
+    {
+        Node node;
+        int attempts = 0;
+
+        //check if we can run directly away from attacker first     
+        //causes units to run in opposite direciton, looks more natural
+        node = NodeOppositeAttacker(attacker);
+        if (node.walkable)
+        {
+            return node.worldPos;
+        }
+        
+        //otherwise run wherever you can
+        while (true)
+        {
+            node = RandomNode();
+
+            if (node.walkable || attempts >= 10)
+            {
+                break;
+            }
+
+            attempts++;          
+        }
+
+        return node.worldPos;     
+    }
+
+    Node NodeOppositeAttacker(Transform attacker)
+    {
+        float deviation = Random.Range(0.6f, 0.9f); 
+
+        float x = -attacker.position.x * deviation;
+        float y = -attacker.position.y * deviation;
+        float z = -attacker.position.z * deviation;
+
+        Vector3 position = new Vector3(x, y, z);
+        Node node = Grid.instance.NodeAtWorldPosition(position);
+
+        return node;
+    }
+
+    Node RandomNode()
+    {
+        float x = transform.position.x;
+        float y = transform.position.y;
+        float z = transform.position.z;
+
+        Vector3 position = new Vector3(x + Random.Range(-5.0f, 5.0f), y + Random.Range(-5.0f, 5.0f), z);
+        Node node = Grid.instance.NodeAtWorldPosition(position);
+
+        return node;
+    }
 
     //debuggin' purposes
     void OnDrawGizmosSelected()
