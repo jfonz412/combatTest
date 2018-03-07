@@ -110,6 +110,7 @@ public class PlayerController : MonoBehaviour {
         Transform body;
         Interactable interactable;
 
+        //if collider has no body
         if(collider.transform.childCount == 0)
         {
             return;

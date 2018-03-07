@@ -83,7 +83,7 @@ public class UnitReactions : MonoBehaviour
 
     public void RunAway(Transform attacker)
     {
-        if (!runningAway)
+        if (!runningAway) //!isDead doesn't stop zombie running
         {
             runningAway = true;
             StartCoroutine(RunFromAttacker(attacker));
@@ -108,7 +108,6 @@ public class UnitReactions : MonoBehaviour
             }
             else
             {
-                unitController.StopMoving();
                 runningAway = false;
                 break;
             }
@@ -126,7 +125,7 @@ public class UnitReactions : MonoBehaviour
         node = NodeOppositeAttacker(attacker);
         if (node.walkable)
         {
-            return node.worldPos;
+            //return node.worldPos;
         }
         
         //otherwise run wherever you can

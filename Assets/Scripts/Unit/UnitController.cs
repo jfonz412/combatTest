@@ -43,8 +43,10 @@ public class UnitController : MonoBehaviour
     IEnumerator FollowPath()
     {
         Vector3 currentWaypoint = path[0];
+
         anim.FaceDirection(transform.position, currentWaypoint);
         anim.ToggleMovingAnimation(true);
+
         while (true)
         {
             if (transform.position == currentWaypoint)
@@ -52,6 +54,7 @@ public class UnitController : MonoBehaviour
                 targetIndex++;
                 if (targetIndex >= path.Length)
                 {
+                    
                     path = null;
                     targetIndex = 0;
                     anim.ToggleMovingAnimation(false);
@@ -66,19 +69,28 @@ public class UnitController : MonoBehaviour
     }
 
     //used by other scripts to stop the pathfinding on command
+
     public void StopMoving()
     {
-        //movementSpeed = 0;
-        if (followingPath != null)
+        if (CurrentNode().walkable)
         {
-            StopCoroutine(followingPath);
-            anim.ToggleMovingAnimation(false);
+            //movementSpeed = 0;
+            if (followingPath != null)
+            {
+                StopCoroutine(followingPath);
+                anim.ToggleMovingAnimation(false);
+            }
+            else
+            {
+                StopCoroutine("FollowPath");
+                anim.ToggleMovingAnimation(false);
+            }
         }
-        else
-        {
-            StopCoroutine("FollowPath");
-            anim.ToggleMovingAnimation(false);
-        }
+    }
+
+    Node CurrentNode()
+    {
+        return Grid.instance.NodeAtWorldPosition(transform.position);
     }
 
     public void OnDrawGizmos()
