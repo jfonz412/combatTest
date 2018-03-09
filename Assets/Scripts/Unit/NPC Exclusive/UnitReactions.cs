@@ -125,7 +125,7 @@ public class UnitReactions : MonoBehaviour
         node = NodeOppositeAttacker(attacker);
         if (node.walkable)
         {
-            //return node.worldPos;
+            //return node.worldPos; //implement raycast detection first so they all don't stack together. Then we don't need to deviate
         }
         
         //otherwise run wherever you can
@@ -146,11 +146,11 @@ public class UnitReactions : MonoBehaviour
 
     Node NodeOppositeAttacker(Transform attacker)
     {
-        float deviation = Random.Range(0.6f, 0.9f); 
+        float deviation = Random.Range(0f, 0.9f); 
 
         float x = -attacker.position.x * deviation;
         float y = -attacker.position.y * deviation;
-        float z = -attacker.position.z * deviation;
+        float z = -attacker.position.z;
 
         Vector3 position = new Vector3(x, y, z);
         Node node = Grid.instance.NodeAtWorldPosition(position);

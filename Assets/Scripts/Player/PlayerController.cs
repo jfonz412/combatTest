@@ -20,9 +20,11 @@ public class PlayerController : MonoBehaviour {
         unitController = GetComponent<UnitController>();
         attackController = GetComponent<AttackController>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    
+
+    // Update is called once per frame
+    void Update () {
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
@@ -208,4 +210,25 @@ public class PlayerController : MonoBehaviour {
         attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine)
     }
     #endregion
+    /*
+    public void OnDrawGizmos()
+    {
+        Vector3 pos = GetBodyPos();
+        Gizmos.color = Color.green;
+
+        Gizmos.DrawRay(pos, Vector3.up);
+        Gizmos.DrawRay(pos, Vector3.down);
+        Gizmos.DrawRay(pos, Vector3.left);
+        Gizmos.DrawRay(pos, Vector3.right);
+    }
+
+    Vector3 GetBodyPos()
+    {
+        float x = transform.position.x;
+        float y = transform.position.y + 0.5f;
+        float z = transform.position.z;
+
+        return new Vector3(x, y, z);
+    }
+    */
 }

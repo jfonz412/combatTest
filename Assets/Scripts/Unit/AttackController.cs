@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackController : MonoBehaviour {
+
     [HideInInspector]
     public Transform lastKnownTarget = null;
+    IEnumerator engagingEntity;
 
     Health targetHealth;
 
     EquipmentManager equipmentManager;
     Weapon equippedWeapon;
+    int weaponIndex = (int)EquipmentSlot.MainHand;
 
     Stats myStats;
 
-    int weaponIndex = (int)EquipmentSlot.MainHand;
-
     UnitAnimator anim;
-    UnitController unit;
-
-    IEnumerator engagingEntity;
+    UnitController unit;   
 
     float myAttackStat;
+    
 
     void Start()
     {
@@ -61,6 +61,7 @@ public class AttackController : MonoBehaviour {
             if (Vector3.Distance(transform.position, lastKnownTarget.position) > equippedWeapon.range) //and targetTransform != null ?
             { 
                 lastKnownTarget = targetTransform;
+                
                 PathfindingManager.RequestPath(transform.position, lastKnownTarget.position, unit.OnPathFound);
                 yield return new WaitForSeconds(.1f);
             }
@@ -92,6 +93,8 @@ public class AttackController : MonoBehaviour {
         anim.TriggerAttackAnimation(equippedWeapon.attackType);
     }
 
+
+
     void StopEngagingEnemy()
     {
         if (engagingEntity != null)
@@ -107,6 +110,7 @@ public class AttackController : MonoBehaviour {
 
         StartCoroutine(engagingEntity);
     }
+
 #endregion
 
     //Player callback for weapon swaps (called from EquipmentManager)

@@ -4,6 +4,7 @@ using System.Collections;
 public class UnitController : MonoBehaviour
 {
     UnitAnimator anim;
+    Rigidbody2D rb;
 
     IEnumerator followingPath;
     Vector3[] path;
@@ -15,6 +16,7 @@ public class UnitController : MonoBehaviour
     void Start()
     {
         anim = GetComponent<UnitAnimator>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
 
@@ -25,6 +27,7 @@ public class UnitController : MonoBehaviour
             movementSpeed = 2f;
             targetIndex = 0;
             path = newPath;
+
             if (followingPath != null)
             {
                 StopCoroutine(followingPath);
@@ -54,22 +57,29 @@ public class UnitController : MonoBehaviour
                 targetIndex++;
                 if (targetIndex >= path.Length)
                 {
-                    
                     path = null;
                     targetIndex = 0;
                     anim.ToggleMovingAnimation(false);
+                    IsKinematic(false);
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
                 anim.FaceDirection(transform.position, currentWaypoint);
             }
+
+            if (!rb.isKinematic)
+            {
+                IsKinematic(true);
+            }    
+            
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, movementSpeed * Time.deltaTime);
             yield return null;
         }
+
     }
 
     //used by other scripts to stop the pathfinding on command
-
+    //may need more cleanup (see reaching the end of path in FollowPath()
     public void StopMoving()
     {
         if (CurrentNode().walkable)
@@ -78,19 +88,31 @@ public class UnitController : MonoBehaviour
             if (followingPath != null)
             {
                 StopCoroutine(followingPath);
-                anim.ToggleMovingAnimation(false);
             }
             else
             {
-                StopCoroutine("FollowPath");
-                anim.ToggleMovingAnimation(false);
+                StopCoroutine("FollowPath");              
             }
+            anim.ToggleMovingAnimation(false);
+            IsKinematic(false);
         }
     }
 
     Node CurrentNode()
     {
         return Grid.instance.NodeAtWorldPosition(transform.position);
+    }
+
+    void IsKinematic(bool toggleOn)
+    {
+        if (toggleOn)
+        {
+            rb.isKinematic = true; 
+        }
+        else
+        {
+            rb.isKinematic = false;
+        }
     }
 
     public void OnDrawGizmos()
