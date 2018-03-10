@@ -38,7 +38,7 @@ public class ItemPickup : Interactable {
         //Debug.Log("Picking up " + item.name);
         if (Inventory.instance.AddToFirstEmptySlot(item) == true)
         {
-            Destroy(transform.parent.gameObject);
+            Destroy(transform.gameObject);
         }
     }
 }

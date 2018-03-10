@@ -109,49 +109,30 @@ public class PlayerController : MonoBehaviour {
 
     void CheckCollider(Collider2D collider, Vector3 location)
     {
-        Transform body;
         Interactable interactable;
 
-        //if collider has no body
-        if(collider.transform.childCount == 0)
+        interactable = collider.GetComponent<Interactable>();
+
+        if (interactable)
         {
-            return;
+            InteractWithInteractable("Default", interactable);
         }
         else
         {
-            body = collider.transform.GetChild(0);
-            interactable = body.GetComponent<Interactable>();
-
-            if (interactable)
-            {
-                InteractWithInteractable("Default", interactable);
-            }
-            else
-            {
-                MoveHere(location);
-            }
+            MoveHere(location);
         }
     }
 
     void CheckForInteractableMenu(Collider2D collider)
     {
-        Transform body;
         Interactable interactable;
 
-        if (collider.transform.childCount == 0)
-        {
-            return;
-        }
-        else
-        {
-            body = collider.transform.GetChild(0);
-            interactable = body.GetComponent<Interactable>();
+        interactable = collider.GetComponent<Interactable>();
 
-            if (interactable)
-            {
-                interactable.OpenInteractionMenu();
-            }
-        }
+        if (interactable)
+        {
+            interactable.OpenInteractionMenu();
+        }     
     }
 
     void MoveHere(Vector3 location)
@@ -210,25 +191,5 @@ public class PlayerController : MonoBehaviour {
         attackController.EngageTarget(false); //disengage current target (stops the attacking coroutine)
     }
     #endregion
-    /*
-    public void OnDrawGizmos()
-    {
-        Vector3 pos = GetBodyPos();
-        Gizmos.color = Color.green;
 
-        Gizmos.DrawRay(pos, Vector3.up);
-        Gizmos.DrawRay(pos, Vector3.down);
-        Gizmos.DrawRay(pos, Vector3.left);
-        Gizmos.DrawRay(pos, Vector3.right);
-    }
-
-    Vector3 GetBodyPos()
-    {
-        float x = transform.position.x;
-        float y = transform.position.y + 0.5f;
-        float z = transform.position.z;
-
-        return new Vector3(x, y, z);
-    }
-    */
 }

@@ -24,7 +24,7 @@ public class UnitReactionManager : MonoBehaviour {
         {
             UnitReactions unit = units.unitReactors[i];
 
-            if (unit.isDead)
+            if (unit.isDead || unit == null)
             {
                 continue;
             }
