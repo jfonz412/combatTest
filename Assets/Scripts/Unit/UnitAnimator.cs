@@ -19,7 +19,7 @@ public class UnitAnimator : MonoBehaviour
     public GameObject loadedWeapon;
 
     float inputX = 0f;
-    float inputY = -1f; //why is this -1?
+    float inputY = -1f; //why is this -1? so they star facing south I believe
 
     // Use this for initialization
     void Start()
@@ -65,6 +65,7 @@ public class UnitAnimator : MonoBehaviour
         {
             loadedEquipment.transform.SetParent(unitBody.transform);
             loadedEquipment.transform.localPosition = new Vector3(0, 0, 0);
+            loadedEquipment.GetComponent<EquippedItemDepth>().myOwner = transform;
 
             animators[animIndex] = loadedEquipment.GetComponent<Animator>();
             ResetAnimators();

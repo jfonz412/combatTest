@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 mouseClickPos;
         mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        mouseClickPos.z = transform.position.z; //to always keep z at 0
+        mouseClickPos.z = 0f; //transform.position.z; //make sure this stays the same
 
         if(mouseButton == 0)
         {

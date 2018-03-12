@@ -5,6 +5,7 @@ public class UnitController : MonoBehaviour
 {
     UnitAnimator anim;
     Rigidbody2D rb;
+    SpriteRenderer sp;
 
     IEnumerator followingPath;
     Vector3[] path;
@@ -12,13 +13,19 @@ public class UnitController : MonoBehaviour
 
     float movementSpeed = 2f; //standard for npcs, make this public?
 
-
     void Start()
     {
         anim = GetComponent<UnitAnimator>();
         rb = GetComponent<Rigidbody2D>();
+        sp = transform.GetChild(0).GetComponent<SpriteRenderer>();
+
+        SetDepth();
     }
 
+    void Update()
+    {
+        SetDepth();
+    }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
@@ -70,16 +77,16 @@ public class UnitController : MonoBehaviour
             if (!rb.isKinematic)
             {
                 IsKinematic(true);
-            }    
-            
+            }
+       
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, movementSpeed * Time.deltaTime);
             yield return null;
         }
-
     }
 
+
     //used by other scripts to stop the pathfinding on command
-    //may need more cleanup (see reaching the end of path in FollowPath()
+    //may need more cleanup (like setting path = null, see reaching the end of path in FollowPath()
     public void StopMoving()
     {
         if (CurrentNode().walkable)
@@ -93,6 +100,7 @@ public class UnitController : MonoBehaviour
             {
                 StopCoroutine("FollowPath");              
             }
+            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);  //set depth according to Y axis
             anim.ToggleMovingAnimation(false);
             IsKinematic(false);
         }
@@ -113,6 +121,11 @@ public class UnitController : MonoBehaviour
         {
             rb.isKinematic = false;
         }
+    }
+
+    void SetDepth()
+    {
+        sp.sortingOrder = (int)Mathf.RoundToInt(-transform.position.y * 1000);
     }
 
     public void OnDrawGizmos()
