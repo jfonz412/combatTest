@@ -100,7 +100,7 @@ public class UnitController : MonoBehaviour
             {
                 StopCoroutine("FollowPath");              
             }
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);  //set depth according to Y axis
+
             anim.ToggleMovingAnimation(false);
             IsKinematic(false);
         }
