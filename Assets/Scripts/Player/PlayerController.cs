@@ -25,12 +25,8 @@ public class PlayerController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (EventSystem.current.IsPointerOverGameObject())
+		if(!incapacitated)
         {
-            return;
-        }
-
-		if(!incapacitated){
 			MovePlayer();
         }
         else
@@ -40,13 +36,16 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void MovePlayer(){
-		if (Input.GetMouseButtonDown(0))
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            ProcessClick(0);
-        }
-        else if (Input.GetMouseButtonDown(1))
-        {
-            ProcessClick(1);   
+            if (Input.GetMouseButtonDown(0))
+            {
+                ProcessClick(0);
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                ProcessClick(1);
+            }
         }
 	}
 

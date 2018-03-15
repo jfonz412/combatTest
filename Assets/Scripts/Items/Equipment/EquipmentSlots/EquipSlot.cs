@@ -36,6 +36,11 @@ public class EquipSlot : InventorySlot {
         icon.enabled = false;
     }
 
+    public override void SlotHoverOver()
+    {
+        SlotClick.EquipSlotHoverOver(this);
+    }
+
     public override void SlotRightClicked()
     {
         SlotClick.EquipSlotRightClicked(this);

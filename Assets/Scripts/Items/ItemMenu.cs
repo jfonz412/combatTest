@@ -33,15 +33,6 @@ public class ItemMenu : MonoBehaviour {
         }
     }
 
-    public void UseItem()
-    {
-        if (currentItem != null)
-        {
-            currentItem.Use();
-        }
-        CloseMenu();
-    }
-
     public void CloseMenu()
     {
         Destroy(gameObject);
@@ -53,9 +44,8 @@ public class ItemMenu : MonoBehaviour {
         if (item != null)
         {           
             myStats[0] = item.name;
-            myStats[1] = "Use";
-            myStats[2] = "Value: " + item.value.ToString();
-            myStats[3] = "Quantity: " + item.quantity.ToString();           
+            myStats[1] = "Value: " + item.value.ToString();
+            myStats[2] = "Quantity: " + item.quantity.ToString();           
         }
         return myStats;
     }

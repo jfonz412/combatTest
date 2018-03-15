@@ -1,12 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SlotClick : MonoBehaviour {
 
     #region Equip Slot Clicks
 
     public static void EquipSlotRightClicked(EquipSlot slot)
+    {
+        Debug.Log("Equip slot right clicked");
+        if(slot.equipment != null)
+        {
+            slot.equipmentManager.FastUnequip(slot.equipment);
+        }
+    }
+
+    public static void EquipSlotHoverOver(EquipSlot slot)
     {
         if (slot.equipment != null)
         {
@@ -131,6 +138,15 @@ public class SlotClick : MonoBehaviour {
     #region Inventory Slot Clicks
 
     public static void InventorySlotRightClicked(Item item)
+    {
+        Debug.Log("Inventory slot right clicked");
+        if (item != null)
+        {
+            item.Use();
+        }           
+    }
+
+    public static void InventorySlotHoverOver(Item item)
     {
         if (item != null)
         {

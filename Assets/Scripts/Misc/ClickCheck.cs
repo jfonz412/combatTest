@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ClickCheck : MonoBehaviour, IPointerClickHandler
+public class ClickCheck : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     InventorySlot slot;
 
@@ -11,6 +11,20 @@ public class ClickCheck : MonoBehaviour, IPointerClickHandler
         //need a refrence to parent's InventorySlot.cs
         slot = GetComponentInParent<InventorySlot>();
     }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        CloseOpenWindows.instance.DestroyPopupMenus();
+        //Debug.Log("entered " + name);
+        slot.SlotHoverOver();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        //Debug.Log("exiting " + name);
+        CloseOpenWindows.instance.DestroyPopupMenus();
+    }
+
     //Detect if a click occurs
     public void OnPointerClick(PointerEventData pointerEventData)
     {
@@ -19,15 +33,12 @@ public class ClickCheck : MonoBehaviour, IPointerClickHandler
         //Use this to tell when the user right-clicks on the Button
         if (pointerEventData.button == PointerEventData.InputButton.Right)
         {
-            //Output to console the clicked GameObject's name and the following message. You can replace this with your own actions for when clicking the GameObject.
-            //Debug.Log(name + " Game Object Right Clicked!");
-            slot.SlotRightClicked();
+            slot.SlotRightClicked(); 
         }
 
         //Use this to tell when the user left-clicks on the Button
         if (pointerEventData.button == PointerEventData.InputButton.Left)
         {
-            //Debug.Log(name + " Game Object Left Clicked!");
             slot.SlotLeftClicked();
         }
     }

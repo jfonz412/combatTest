@@ -38,6 +38,11 @@ public class InventorySlot : MonoBehaviour
         Inventory.instance.RemoveAndDestroy(item);
     }
 
+    public virtual void SlotHoverOver()
+    {
+        SlotClick.InventorySlotHoverOver(item);
+    }
+
     public virtual void SlotRightClicked()
     {
         SlotClick.InventorySlotRightClicked(item);

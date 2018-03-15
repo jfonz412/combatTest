@@ -20,6 +20,35 @@ public class EquipmentManager : MonoBehaviour {
         currentEquipment = new Equipment[numSlots];
     }
 
+    //Right clicks
+    public void FastEquip(Equipment newItem)
+    {
+        Inventory inv = Inventory.instance;
+
+        int slotNum = (int)newItem.equipSlot;
+        Equipment oldItem = currentEquipment[slotNum];
+
+        //also Strips so this comes before Equip
+        Unequip(slotNum); 
+
+        Equip(newItem);
+        inv.Remove(newItem);
+
+        if(oldItem.equipmentID != 0) //0 is unarmed/naked
+            inv.AddToFirstEmptySlot(oldItem);
+    }
+
+    //Right clicks
+    public void FastUnequip(Equipment item)
+    {
+        Inventory inv = Inventory.instance;
+
+        if (item.equipmentID != 0) //0 is unarmed/naked
+        {
+            Unequip((int)item.equipSlot);
+            inv.AddToFirstEmptySlot(item);
+        }
+    }
 
     public void Equip (Equipment newItem) {
         Equipment oldItem = null;

@@ -24,7 +24,6 @@ public class EquipmentStats : MonoBehaviour {
     {
         for (int i = 0; i < stats.Length; i++)
         {
-            Debug.Log("Filling stats " + stats[i]);
             equipmentInfo[i] = transform.GetChild(i).GetComponent<Text>();
             equipmentInfo[i].text = stats[i];
         }      

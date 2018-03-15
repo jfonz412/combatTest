@@ -8,7 +8,14 @@ public class Equipment : Item {
 
     public override void Use()
     {
-        base.Use(); //gets reference to the player
+        base.Use();
+
+        Debug.Log("Equipping item");
+
+        //the only entity that will equipping items after loading the scene is the player
+        EquipmentManager manager = player.GetComponent<EquipmentManager>();
+
+        manager.FastEquip(this);
     }
 
     public override void OpenStatWindow()
