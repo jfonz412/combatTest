@@ -7,16 +7,23 @@ public class EquipUI : MonoBehaviour {
     EquipmentManager equipmentManager;
     EquipSlot[] slots;
 
+    PlayerState playerState;
+    PlayerState.PlayerStates[] invalidStates = new PlayerState.PlayerStates[]
+    {
+        PlayerState.PlayerStates.Dead,
+        PlayerState.PlayerStates.Speaking
+    };
 
-    // Use this for initialization
-    void Start () {
+    void Start()
+    {
+        playerState = PlayerManager.instance.player.GetComponent<PlayerState>();
         equipmentManager = PlayerManager.instance.player.GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += UpdateUI;
         slots = equipParent.GetComponentsInChildren<EquipSlot>();
         AssignSlotNums();
     }
 	
-	// Update is called once per frame
+
 	void Update () {
         InventoryToggle();
     }
@@ -42,7 +49,12 @@ public class EquipUI : MonoBehaviour {
             equipmentUI.SetActive(!equipmentUI.activeSelf);
         }
 
-        if (DialogueManager.instance.isOpen)
+        CheckForValidPlayerState();
+    }
+
+    void CheckForValidPlayerState()
+    {
+        if (playerState.CheckPlayerState(invalidStates))
         {
             equipmentUI.SetActive(false);
         }

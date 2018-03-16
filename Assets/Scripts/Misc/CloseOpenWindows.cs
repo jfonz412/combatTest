@@ -59,7 +59,7 @@ public class CloseOpenWindows : MonoBehaviour {
         bool dialogOpen = DialogueManager.instance.dialogueWindow.GetBool("isOpen");
         if (dialogOpen)
         {
-            PlayerManager.instance.player.GetComponent<PlayerController>().incapacitated = false;
+            PlayerManager.instance.player.GetComponent<PlayerState>().SetPlayerState(PlayerState.PlayerStates.Idle);
             DialogueManager.instance.dialogueWindow.SetBool("isOpen", false);
         }
     }

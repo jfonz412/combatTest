@@ -15,7 +15,7 @@ public class DialogueManager : MonoBehaviour {
 
     Queue<string> sentences;
 
-    PlayerController player;
+    PlayerState playerState;
 
     #region Singleton
 
@@ -33,14 +33,15 @@ public class DialogueManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        player = PlayerManager.instance.player.GetComponent<PlayerController>();
+        playerState = PlayerManager.instance.player.GetComponent<PlayerState>();
         sentences = new Queue<string>();
 	}
 
 
     public void StartDialogue(Dialogue dialogue)
     {
-        player.incapacitated = true; //disable player until dialogue has ended
+        //player.incapacitated = true; //disable player until dialogue has ended
+        playerState.SetPlayerState(PlayerState.PlayerStates.Speaking);
 
         isOpen = true;
         dialogueWindow.SetBool("isOpen", isOpen);
@@ -82,9 +83,10 @@ public class DialogueManager : MonoBehaviour {
 
     void EndDialogue()
     {
-        player.incapacitated = false;
+        //player.incapacitated = false;
+        playerState.SetPlayerState(PlayerState.PlayerStates.Idle);
+
         isOpen = false;
         dialogueWindow.SetBool("isOpen", isOpen);
-        //Debug.Log("End of conversation");
     }
 }

@@ -8,32 +8,47 @@ public class PlayerController : MonoBehaviour {
 
     UnitController unitController;
     AttackController attackController;
+    PlayerState state;
 
     IEnumerator movingToInteraction = null;
 
+    PlayerState.PlayerStates[] movementImparingStates = new PlayerState.PlayerStates[] 
+    {
+        PlayerState.PlayerStates.Shopping,
+        PlayerState.PlayerStates.Speaking,
+        PlayerState.PlayerStates.Dead
+    };
+
     [HideInInspector]
-	public bool incapacitated;
+	//public bool incapacitated;
 
 	// Use this for initialization
 	void Start () {
         FloatingTextController.Initialize(); //just needs to be initialized somewhere
         unitController = GetComponent<UnitController>();
         attackController = GetComponent<AttackController>();
+        state = GetComponent<PlayerState>();
     }
 
     
 
     // Update is called once per frame
     void Update () {
-		if(!incapacitated)
+        if (!Incapcitated())
         {
-			MovePlayer();
+            MovePlayer();
         }
+
         else
         {
             CloseOpenWindows.instance.DestroyPopupMenus(); //close windows after death or during dialogue
         }
 	}
+
+    bool Incapcitated()
+    {
+        return state.CheckPlayerState(movementImparingStates);
+    }
 	
 	void MovePlayer(){
         if (!EventSystem.current.IsPointerOverGameObject())

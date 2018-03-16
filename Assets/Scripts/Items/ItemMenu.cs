@@ -6,8 +6,6 @@ public class ItemMenu : MonoBehaviour {
     [HideInInspector]
     public Text[] equipmentInfo = new Text[4]; 
 
-    Item currentItem;
-
     #region Singleton 
     [HideInInspector]
     public static ItemMenu instance;
@@ -23,7 +21,6 @@ public class ItemMenu : MonoBehaviour {
 
     public void PopulateStats(Item item)
     {
-        currentItem = item;
         string[] stats = GetItemStats(item);
 
         for (int i = 0; i < stats.Length; i++)
