@@ -22,7 +22,7 @@ public class Item : ScriptableObject {
     public virtual void OpenStatWindow()
     {
         Vector3 spawnPoint = WindowSpawnPoint();
-        Instantiate(Resources.Load("ItemMenu"), spawnPoint, Quaternion.identity, FindObjectOfType<Canvas>().transform);
+        Instantiate(Resources.Load("ItemMenu"), spawnPoint, Quaternion.identity, CanvasUI.instance.CanvasTransform);
 
         Debug.Log("Opening Item menu");
 

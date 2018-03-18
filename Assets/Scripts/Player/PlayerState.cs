@@ -5,19 +5,6 @@ public class PlayerState : MonoBehaviour {
     public enum PlayerStates { Idle, Speaking, Fighting, Shopping, Dead }
 
     PlayerStates currentState;
-    //PlayerController player;
-    //public bool canMove = false;
-
-    // Use this for initialization
-    void Start()
-    {
-        //player = PlayerManager.instance.player.GetComponent<PlayerController>();
-    }
-
-    // Update is called once per frame
-    void Update() {
-
-    }
 
     public void SetPlayerState(PlayerStates newState) //possibly make this return a bool that can tell sender if state switch was successful or not
     {

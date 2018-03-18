@@ -6,11 +6,11 @@ public class InventorySlot : MonoBehaviour
     public Image icon;
     public Button removeButton;
     public Item item;
-
+    [HideInInspector]
     public int slotNum;
 
 
-    public void AddItem(Item newItem)
+    public virtual void AddItem(Item newItem)
     {
         if (newItem == null)
         {

@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour {
+public class ShopInventory : MonoBehaviour {
 
     #region Singleton
     //insures that we can easily access the inventory, and that there is only one 
     //inventory at all times
-    public static Inventory instance;
+    public static ShopInventory instance;
 
     void Awake()
     {
         if (instance != null)
         {
-            Debug.LogWarning("More than one instance of inventory found");
+            Debug.LogWarning("More than one instance of SHOP inventory found");
             return;
         }
         instance = this;
@@ -24,12 +24,12 @@ public class Inventory : MonoBehaviour {
 
     //creates a callback
     public delegate void OnInventoryChanged();
-    public OnInventoryChanged onInventoryChanged; 
+    public OnInventoryChanged onInventoryChanged;
 
     void Start()
     {
         //fill inventory with null spaces
-        for(int i = 0; i < inventorySpace; i++)
+        for (int i = 0; i < inventorySpace; i++)
         {
             items.Add(null);
         }
@@ -40,7 +40,7 @@ public class Inventory : MonoBehaviour {
         //check if there are any empty slots/items
         for (int i = 0; i < inventorySpace; i++)
         {
-            if(items[i] == null)
+            if (items[i] == null)
             {
                 item = CheckIfAlreadyInstantiated(item);
 
@@ -59,7 +59,7 @@ public class Inventory : MonoBehaviour {
     {
         int slotNum = item.slotNum.GetValueOrDefault();
 
-        items.RemoveAt(slotNum);     
+        items.RemoveAt(slotNum);
         items.Insert(slotNum, item);
 
         //Debug.Log("Instance ID of "+ items[i] + " is: " + items[i].GetInstanceID()); 
@@ -70,18 +70,12 @@ public class Inventory : MonoBehaviour {
     public void Remove(Item item)
     {
         int itemIndex = item.slotNum.GetValueOrDefault();
-     
+
         items.RemoveAt(itemIndex);
         items.Insert(itemIndex, null);
 
         Callback();
 
-    }
-
-    public void RemoveAndDestroy(Item item)
-    {
-        Remove(item);
-        Destroy(item); //this should eventually remove item from memory...
     }
 
     void Callback()

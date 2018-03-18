@@ -3,12 +3,14 @@
 public class NPCInteraction : Interactable
 {
     public Dialogue dialog; //contains fields for name and text
+    PlayerState playerState;
     public bool isDead = false;
 
 
     void Start()
     {
         myInteractions = new string[] { "Attack", "Talk", "Trade", "Inspect" };
+        playerState = PlayerManager.instance.player.GetComponent<PlayerState>();
     }
 
     public override void Interaction(string interaction)
@@ -35,8 +37,7 @@ public class NPCInteraction : Interactable
                 TriggerDialogue();
                 break;
             case "Trade":
-                //TriggerTrade();
-                Debug.Log("Trading with " + name);
+                TriggerTrade();
                 break;
             case "Inspect":
                 InspectObject();
@@ -74,6 +75,14 @@ public class NPCInteraction : Interactable
         {
             playerAttackController.EngageTarget(true, transform);
         }
+    }
+
+    //needs to put player in certain state? Similar to dialog state (can shop in combat but can be knocked out of it)
+    void TriggerTrade()
+    {
+        ShopInventoryUI.instance.OpenShop(name);
+        playerState.SetPlayerState(PlayerState.PlayerStates.Shopping);
+        Debug.Log("Trading with " + name);
     }
 
     #endregion

@@ -21,7 +21,7 @@ public class Equipment : Item {
     public override void OpenStatWindow()
     {
         Vector3 spawnPoint = WindowSpawnPoint();
-        Instantiate(Resources.Load("EquipmentStats"), spawnPoint, Quaternion.identity, FindObjectOfType<Canvas>().transform);
+        Instantiate(Resources.Load("EquipmentStats"), spawnPoint, Quaternion.identity, CanvasUI.instance.CanvasTransform);
         Debug.Log("Opening equipment stat window");
     }
     

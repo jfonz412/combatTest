@@ -221,4 +221,91 @@ public class SlotClick : MonoBehaviour {
     }
 
     #endregion
+
+    #region Shop Slot Clicks
+
+    public static void ShopSlotRightClicked(Item item)
+    {
+        Debug.Log("Shop slot right clicked");
+        if (item != null)
+        {
+            item.Use();
+        }
+    }
+
+    public static void ShopSlotHoverOver(Item item)
+    {
+        if (item != null)
+        {
+            item.OpenStatWindow();
+        }
+    }
+
+    public static void ShopSlotLeftClicked(ShopSlot slot)
+    {
+        MouseSlot mouseSlot = MouseSlot.instance;
+        Item mouseItem = MouseSlot.instance.currentItem;
+
+        if (mouseItem == null && slot.item == null)
+        {
+            Debug.Log("BOTH SLOTS EMPTY");
+            return;
+        }
+
+        if (mouseItem == null && slot.item != null)
+        {
+            PickUpItemIntoEmptyMouseSlot(mouseSlot, slot);
+            return;
+        }
+
+        if (mouseItem != null && slot.item == null)
+        {
+            PlaceItemInEmptySlot(mouseSlot, slot);
+            return;
+        }
+
+        if (mouseItem != null && slot.item != null)
+        {
+            SwapItems(mouseSlot, slot);
+            return;
+        }
+    }
+
+
+    //HELPERS 
+
+    static void PickUpItemIntoEmptyMouseSlot(MouseSlot mouseSlot, ShopSlot slot)
+    {
+        ShopInventory shop = ShopInventory.instance;
+
+        Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");
+        Item previousItem = slot.item;             //save a copy of the slotItem
+        shop.Remove(previousItem);       //remove the item in the slot 
+        mouseSlot.UpdateItem(previousItem); //place previous item in the mouseSlot            //place previous item in the mouseSlot (as an item)?
+    }
+
+    static void PlaceItemInEmptySlot(MouseSlot mouseSlot, ShopSlot slot)
+    {
+        ShopInventory shop = ShopInventory.instance;
+        Item mouseItem = mouseSlot.currentItem;
+
+        Debug.Log("PLACING ITEM IN EMPTY SLOT");
+        mouseItem.slotNum = slot.slotNum; //assign item's slotNum to this slot
+        shop.AddToSpecificSlot(mouseItem); //drop item in slot
+        mouseSlot.UpdateItem(null); //clear mouseSlot's item
+    }
+
+    static void SwapItems(MouseSlot mouseSlot, ShopSlot slot)
+    {
+        ShopInventory shop = ShopInventory.instance;
+        Item mouseItem = mouseSlot.currentItem;
+        Item previousItem = slot.item;
+
+        Debug.Log("SWAPPING ITEMS");
+        mouseItem.slotNum = slot.slotNum;              //assign item's slotNum to this slot
+        shop.AddToSpecificSlot(mouseItem);   //drop item in slot, removing old item is taken care of here too
+        mouseSlot.UpdateItem(previousItem);     //add old item to mouseSlot
+    }
+
+    #endregion
 }

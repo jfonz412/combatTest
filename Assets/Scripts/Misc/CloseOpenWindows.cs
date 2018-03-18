@@ -43,7 +43,6 @@ public class CloseOpenWindows : MonoBehaviour {
         }
     }
 
-    //not yet used but will probably come in handy later on...
     //closes any inventory, equipment, dialogue, and popup windows that may be open
     public void CloseAllWindows()
     {
@@ -56,11 +55,8 @@ public class CloseOpenWindows : MonoBehaviour {
 
     public void KnockPlayerOutOfDialogue()
     {
-        bool dialogOpen = DialogueManager.instance.dialogueWindow.GetBool("isOpen");
-        if (dialogOpen)
-        {
-            PlayerManager.instance.player.GetComponent<PlayerState>().SetPlayerState(PlayerState.PlayerStates.Idle);
-            DialogueManager.instance.dialogueWindow.SetBool("isOpen", false);
-        }
+        PlayerManager.instance.player.GetComponent<PlayerState>().SetPlayerState(PlayerState.PlayerStates.Idle);
+        DialogueManager.instance.dialogueWindow.SetBool("isOpen", false);
+        ShopInventoryUI.instance.ShopUIToggle(false);
     }
 }

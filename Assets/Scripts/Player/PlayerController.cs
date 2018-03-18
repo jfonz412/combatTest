@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
 
     UnitController unitController;
     AttackController attackController;
-    PlayerState state;
+    PlayerState playerState;
 
     IEnumerator movingToInteraction = null;
 
@@ -19,39 +19,36 @@ public class PlayerController : MonoBehaviour {
         PlayerState.PlayerStates.Dead
     };
 
-    [HideInInspector]
-	//public bool incapacitated;
 
-	// Use this for initialization
+
 	void Start () {
         FloatingTextController.Initialize(); //just needs to be initialized somewhere
         unitController = GetComponent<UnitController>();
         attackController = GetComponent<AttackController>();
-        state = GetComponent<PlayerState>();
+        playerState = GetComponent<PlayerState>();
     }
 
     
-
     // Update is called once per frame
     void Update () {
         if (!Incapcitated())
         {
             MovePlayer();
         }
-
         else
         {
-            CloseOpenWindows.instance.DestroyPopupMenus(); //close windows after death or during dialogue
+            CloseOpenWindows.instance.DestroyPopupMenus(); //close windows if incapacitated
         }
 	}
 
+    //this will prevent all movement, popups, and interactions during certain states
     bool Incapcitated()
     {
-        return state.CheckPlayerState(movementImparingStates);
+        return playerState.CheckPlayerState(movementImparingStates);
     }
 	
 	void MovePlayer(){
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (!EventSystem.current.IsPointerOverGameObject()) //check if mouse is over UI element
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -70,7 +67,7 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 mouseClickPos;
         mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        mouseClickPos.z = 0f; //transform.position.z; //make sure this stays the same
+        mouseClickPos.z = 0f; //make sure this stays the same
 
         if(mouseButton == 0)
         {
@@ -107,7 +104,9 @@ public class PlayerController : MonoBehaviour {
 
 
     /****************** HELPER FUNCTIONS **************************/
-    #region Left and Right Click Helpers
+    #region Click Helpers
+
+    // LEFT CLICK HELPERS
     void CheckHit(RaycastHit2D hit, Vector3 location)
     {
         Collider2D collider = hit.collider;
@@ -137,6 +136,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    // RIGHT CLICK HELPER
     void CheckForInteractableMenu(Collider2D collider)
     {
         Interactable interactable;
@@ -155,6 +155,7 @@ public class PlayerController : MonoBehaviour {
         PathfindingManager.RequestPath(transform.position, location, unitController.OnPathFound);
     }
     #endregion
+
 
     #region Movement helpers
     //this will be called from the button in the dropdown interaction menu
