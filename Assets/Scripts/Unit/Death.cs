@@ -16,13 +16,12 @@ public class Death : MonoBehaviour {
     static void IncapacitateEntity(Transform victim, Transform attacker)
     {
         UnitReactions unitReactions = victim.GetComponent<UnitReactions>();
-        PlayerState playerState = victim.GetComponent<PlayerState>();
         NPCInteraction npcInteractions = victim.GetComponent<NPCInteraction>();
 
         //stop processing clicks if player
-        if (playerState != null)
+        if (victim.name == "Player")
         {
-            playerState.SetPlayerState(PlayerState.PlayerStates.Dead);
+            PlayerState.SetPlayerState(PlayerState.PlayerStates.Dead);
             CloseOpenWindows.instance.CloseAllWindows();
         }
 

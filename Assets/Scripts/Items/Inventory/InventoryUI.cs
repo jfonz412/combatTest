@@ -7,7 +7,6 @@ public class InventoryUI : MonoBehaviour {
     Inventory inventory;
     InventorySlot[] slots;
 
-    PlayerState playerState;
     PlayerState.PlayerStates[] invalidStates = new PlayerState.PlayerStates[]
     {
         PlayerState.PlayerStates.Dead,
@@ -15,8 +14,8 @@ public class InventoryUI : MonoBehaviour {
     };
 
 	// Use this for initialization
-	void Start () {
-        playerState = PlayerManager.instance.player.GetComponent<PlayerState>();
+	void Start ()
+    {
         inventory = Inventory.instance;
         inventory.onInventoryChanged += UpdateUI;
         slots = itemsParent.GetComponentsInChildren<InventorySlot>();
@@ -60,7 +59,7 @@ public class InventoryUI : MonoBehaviour {
 
     void CheckForValidPlayerState()
     {
-        if (playerState.CheckPlayerState(invalidStates))
+        if (PlayerState.CheckPlayerState(invalidStates))
         {
             inventoryUI.SetActive(false);
             MouseSlot.instance.ToggleSprite(inventoryUI.activeSelf);

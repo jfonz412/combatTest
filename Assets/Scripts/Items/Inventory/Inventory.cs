@@ -67,7 +67,8 @@ public class Inventory : MonoBehaviour {
         Callback();
     }
 
-    public void Remove(Item item)
+    //Removes but doesn't destroy the item
+    public void Remove(Item item) 
     {
         int itemIndex = item.slotNum.GetValueOrDefault();
      

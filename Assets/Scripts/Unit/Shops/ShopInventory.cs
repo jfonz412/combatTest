@@ -35,6 +35,12 @@ public class ShopInventory : MonoBehaviour {
         }
     }
 
+    public void AddToSoldSlot(Item item)
+    {
+        Debug.Log(item + " has been added to the sold slot");
+    }
+
+    #region probably won't use these
     public bool AddToFirstEmptySlot(Item item)
     {
         //check if there are any empty slots/items
@@ -67,6 +73,7 @@ public class ShopInventory : MonoBehaviour {
         Callback();
     }
 
+
     public void Remove(Item item)
     {
         int itemIndex = item.slotNum.GetValueOrDefault();
@@ -76,14 +83,6 @@ public class ShopInventory : MonoBehaviour {
 
         Callback();
 
-    }
-
-    void Callback()
-    {
-        if (onInventoryChanged != null)
-        {
-            onInventoryChanged.Invoke(); //callback
-        }
     }
 
     void InsertItemIntoEmptySlot(Item item, int slotNum)
@@ -106,4 +105,15 @@ public class ShopInventory : MonoBehaviour {
 
         return item;
     }
+    #endregion
+
+    void Callback()
+    {
+        if (onInventoryChanged != null)
+        {
+            onInventoryChanged.Invoke(); //callback
+        }
+    }
+
+
 }

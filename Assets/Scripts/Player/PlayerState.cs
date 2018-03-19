@@ -4,9 +4,10 @@ public class PlayerState : MonoBehaviour {
 
     public enum PlayerStates { Idle, Speaking, Fighting, Shopping, Dead }
 
-    PlayerStates currentState;
+    [HideInInspector]
+    public static PlayerStates currentState;
 
-    public void SetPlayerState(PlayerStates newState) //possibly make this return a bool that can tell sender if state switch was successful or not
+    public static void SetPlayerState(PlayerStates newState) //possibly make this return a bool that can tell sender if state switch was successful or not
     {
 
         switch (newState)
@@ -33,7 +34,7 @@ public class PlayerState : MonoBehaviour {
         Debug.Log("Player state is: " + currentState);
     }
 
-    public bool CheckPlayerState(PlayerStates[] stateChecks) //possibly take an array of states to check
+    public static bool CheckPlayerState(PlayerStates[] stateChecks) //possibly take an array of states to check
     {
         for (int i = 0; i < stateChecks.Length; i++)
         {

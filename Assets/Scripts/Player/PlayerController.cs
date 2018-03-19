@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour {
 
     UnitController unitController;
     AttackController attackController;
-    PlayerState playerState;
 
     IEnumerator movingToInteraction = null;
 
@@ -25,7 +24,6 @@ public class PlayerController : MonoBehaviour {
         FloatingTextController.Initialize(); //just needs to be initialized somewhere
         unitController = GetComponent<UnitController>();
         attackController = GetComponent<AttackController>();
-        playerState = GetComponent<PlayerState>();
     }
 
     
@@ -35,16 +33,12 @@ public class PlayerController : MonoBehaviour {
         {
             MovePlayer();
         }
-        else
-        {
-            CloseOpenWindows.instance.DestroyPopupMenus(); //close windows if incapacitated
-        }
 	}
 
     //this will prevent all movement, popups, and interactions during certain states
     bool Incapcitated()
     {
-        return playerState.CheckPlayerState(movementImparingStates);
+        return PlayerState.CheckPlayerState(movementImparingStates);
     }
 	
 	void MovePlayer(){

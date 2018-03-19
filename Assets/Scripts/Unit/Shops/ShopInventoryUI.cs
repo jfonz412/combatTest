@@ -10,8 +10,6 @@ public class ShopInventoryUI : MonoBehaviour {
     ShopInventory shop;
     ShopSlot[] slots;
 
-    PlayerState playerState;
-
     #region Singleton
 
     public static ShopInventoryUI instance;
@@ -30,7 +28,6 @@ public class ShopInventoryUI : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        playerState = PlayerManager.instance.player.GetComponent<PlayerState>();
         shop = ShopInventory.instance;
         shop.onInventoryChanged += UpdateUI;
         slots = itemsParent.GetComponentsInChildren<ShopSlot>();
@@ -63,14 +60,11 @@ public class ShopInventoryUI : MonoBehaviour {
         //to be trigged by NPC interaction
         shopUI.SetActive(active);
 
-        //shouldn't allow user to pick items off shop without suffecient funds (or space)?
-        //MouseSlot.instance.ToggleSprite(shopUI.activeSelf); 
-
-        CloseOpenWindows.instance.DestroyPopupMenus();
+        CloseOpenWindows.instance.DestroyPopupMenus(); //not sure why I have this? Might not be needed now that I have states
 
         if (!active)
         {
-            playerState.SetPlayerState(PlayerState.PlayerStates.Idle);
+            PlayerState.SetPlayerState(PlayerState.PlayerStates.Idle);
         }
     }
 

@@ -32,7 +32,7 @@ public class ShopSlot : InventorySlot
 
     public override void SlotRightClicked()
     {
-        SlotClick.ShopSlotRightClicked(item);
+        SlotClick.ShopSlotRightClicked(item); //does nothing, leave it here in case I find a use for this
     }
 
     public override void SlotLeftClicked()

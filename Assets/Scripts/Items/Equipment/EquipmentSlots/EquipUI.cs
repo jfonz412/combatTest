@@ -7,7 +7,6 @@ public class EquipUI : MonoBehaviour {
     EquipmentManager equipmentManager;
     EquipSlot[] slots;
 
-    PlayerState playerState;
     PlayerState.PlayerStates[] invalidStates = new PlayerState.PlayerStates[]
     {
         PlayerState.PlayerStates.Dead,
@@ -16,7 +15,6 @@ public class EquipUI : MonoBehaviour {
 
     void Start()
     {
-        playerState = PlayerManager.instance.player.GetComponent<PlayerState>();
         equipmentManager = PlayerManager.instance.player.GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += UpdateUI;
         slots = equipParent.GetComponentsInChildren<EquipSlot>();
@@ -54,7 +52,7 @@ public class EquipUI : MonoBehaviour {
 
     void CheckForValidPlayerState()
     {
-        if (playerState.CheckPlayerState(invalidStates))
+        if (PlayerState.CheckPlayerState(invalidStates))
         {
             equipmentUI.SetActive(false);
         }

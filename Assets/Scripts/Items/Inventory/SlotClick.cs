@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+//THIS SCRIPT IS GETTING BIG, CONSIDER SPLITTING IT INTO 3 SEPERATE SCRIPTS?
 public class SlotClick : MonoBehaviour {
 
     #region Equip Slot Clicks
@@ -184,6 +185,15 @@ public class SlotClick : MonoBehaviour {
         }
     }
 
+    public static void LeftClickedToSell(InventorySlot slot)
+    {
+        Item item = slot.item;
+        //int quantity = PromptForQuantity();
+        if (item != null)
+        {
+            SellItem(item); //pass quantity in also
+        }
+    }
 
     //HELPERS 
 
@@ -220,17 +230,25 @@ public class SlotClick : MonoBehaviour {
         mouseSlot.UpdateItem(previousItem);     //add old item to mouseSlot
     }
 
+    //SHOP HELPERS
+
+    static void SellItem(Item item)
+    {
+        Debug.Log("Selling " + item);
+        Inventory.instance.Remove(item);
+        ShopInventory.instance.AddToSoldSlot(item);
+        PlayerWallet.balance += item.value; // *economic/charisma/race/location modifiers
+        Debug.Log("You have been credited $" + item.value);
+        Debug.Log("Your balance is: $" + PlayerWallet.balance);
+    }
+
     #endregion
 
     #region Shop Slot Clicks
 
     public static void ShopSlotRightClicked(Item item)
     {
-        Debug.Log("Shop slot right clicked");
-        if (item != null)
-        {
-            item.Use();
-        }
+        Debug.Log("Shop slot right clicked (does nothing)");
     }
 
     public static void ShopSlotHoverOver(Item item)
@@ -243,68 +261,29 @@ public class SlotClick : MonoBehaviour {
 
     public static void ShopSlotLeftClicked(ShopSlot slot)
     {
-        MouseSlot mouseSlot = MouseSlot.instance;
-        Item mouseItem = MouseSlot.instance.currentItem;
-
-        if (mouseItem == null && slot.item == null)
+        Item item = slot.item;
+        if(item != null)
         {
-            Debug.Log("BOTH SLOTS EMPTY");
-            return;
-        }
-
-        if (mouseItem == null && slot.item != null)
-        {
-            PickUpItemIntoEmptyMouseSlot(mouseSlot, slot);
-            return;
-        }
-
-        if (mouseItem != null && slot.item == null)
-        {
-            PlaceItemInEmptySlot(mouseSlot, slot);
-            return;
-        }
-
-        if (mouseItem != null && slot.item != null)
-        {
-            SwapItems(mouseSlot, slot);
-            return;
+            PurchaseItem(item);
         }
     }
 
+    //HELPERS
 
-    //HELPERS 
-
-    static void PickUpItemIntoEmptyMouseSlot(MouseSlot mouseSlot, ShopSlot slot)
+    static void PurchaseItem(Item item)
     {
-        ShopInventory shop = ShopInventory.instance;
+        float price = item.value;
+/*
+        coroutine? Or put player in another state that only lets them interact with the prompt
+        int quantity = PromptForQuantity(); 
 
-        Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");
-        Item previousItem = slot.item;             //save a copy of the slotItem
-        shop.Remove(previousItem);       //remove the item in the slot 
-        mouseSlot.UpdateItem(previousItem); //place previous item in the mouseSlot            //place previous item in the mouseSlot (as an item)?
-    }
-
-    static void PlaceItemInEmptySlot(MouseSlot mouseSlot, ShopSlot slot)
-    {
-        ShopInventory shop = ShopInventory.instance;
-        Item mouseItem = mouseSlot.currentItem;
-
-        Debug.Log("PLACING ITEM IN EMPTY SLOT");
-        mouseItem.slotNum = slot.slotNum; //assign item's slotNum to this slot
-        shop.AddToSpecificSlot(mouseItem); //drop item in slot
-        mouseSlot.UpdateItem(null); //clear mouseSlot's item
-    }
-
-    static void SwapItems(MouseSlot mouseSlot, ShopSlot slot)
-    {
-        ShopInventory shop = ShopInventory.instance;
-        Item mouseItem = mouseSlot.currentItem;
-        Item previousItem = slot.item;
-
-        Debug.Log("SWAPPING ITEMS");
-        mouseItem.slotNum = slot.slotNum;              //assign item's slotNum to this slot
-        shop.AddToSpecificSlot(mouseItem);   //drop item in slot, removing old item is taken care of here too
-        mouseSlot.UpdateItem(previousItem);     //add old item to mouseSlot
+        if(price <= PlayerWallet.balance)
+        {
+            PlayerWallet.balance -= price * quantity;
+            item.quantity = quantity;
+            AddToFirstEmptySlot(item)
+        }
+*/
     }
 
     #endregion

@@ -55,7 +55,7 @@ public class CloseOpenWindows : MonoBehaviour {
 
     public void KnockPlayerOutOfDialogue()
     {
-        PlayerManager.instance.player.GetComponent<PlayerState>().SetPlayerState(PlayerState.PlayerStates.Idle);
+        PlayerState.SetPlayerState(PlayerState.PlayerStates.Idle);
         DialogueManager.instance.dialogueWindow.SetBool("isOpen", false);
         ShopInventoryUI.instance.ShopUIToggle(false);
     }

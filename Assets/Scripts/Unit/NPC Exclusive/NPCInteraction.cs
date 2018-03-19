@@ -3,14 +3,12 @@
 public class NPCInteraction : Interactable
 {
     public Dialogue dialog; //contains fields for name and text
-    PlayerState playerState;
     public bool isDead = false;
 
 
     void Start()
     {
         myInteractions = new string[] { "Attack", "Talk", "Trade", "Inspect" };
-        playerState = PlayerManager.instance.player.GetComponent<PlayerState>();
     }
 
     public override void Interaction(string interaction)
@@ -81,7 +79,7 @@ public class NPCInteraction : Interactable
     void TriggerTrade()
     {
         ShopInventoryUI.instance.OpenShop(name);
-        playerState.SetPlayerState(PlayerState.PlayerStates.Shopping);
+        PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping);
         Debug.Log("Trading with " + name);
     }
 

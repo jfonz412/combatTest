@@ -50,6 +50,14 @@ public class InventorySlot : MonoBehaviour
 
     public virtual void SlotLeftClicked()
     {
-        SlotClick.InventorySlotLeftClicked(this);
+        if(PlayerState.currentState == PlayerState.PlayerStates.Shopping)
+        {
+            SlotClick.LeftClickedToSell(this);
+        }
+        else
+        {
+            SlotClick.InventorySlotLeftClicked(this);
+        }
+
     }
 }
