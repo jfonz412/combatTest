@@ -26,6 +26,9 @@ public class ShopInventory : MonoBehaviour {
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChanged;
 
+    public SoldSlot soldSlot;
+    Item lastItemSold;
+
     void Start()
     {
         //fill inventory with null spaces
@@ -37,7 +40,8 @@ public class ShopInventory : MonoBehaviour {
 
     public void AddToSoldSlot(Item item)
     {
-        Debug.Log(item + " has been added to the sold slot");
+        lastItemSold = item;
+        soldSlot.AddItem(lastItemSold);
     }
 
     #region probably won't use these

@@ -234,11 +234,17 @@ public class SlotClick : MonoBehaviour {
 
     static void SellItem(Item item)
     {
-        Debug.Log("Selling " + item);
+        float appraisedValue = item.value * 0.9f; //hardcoded for testing
+
+        Debug.Log("Selling " + item + " at $" + appraisedValue);
+
         Inventory.instance.Remove(item);
+
+        item.value = appraisedValue;
         ShopInventory.instance.AddToSoldSlot(item);
-        PlayerWallet.balance += item.value; // *economic/charisma/race/location modifiers
-        Debug.Log("You have been credited $" + item.value);
+
+        PlayerWallet.balance += appraisedValue; // *economic/charisma/race/location modifiers
+        Debug.Log("You have been credited $" + appraisedValue);
         Debug.Log("Your balance is: $" + PlayerWallet.balance);
     }
 
