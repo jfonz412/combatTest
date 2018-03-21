@@ -18,8 +18,9 @@ public class Equipment : Item {
         manager.FastEquip(this);
     }
 
-    public override void OpenStatWindow()
+    public override void OpenStatWindow(string itemLocation)
     {
+        DetermineValue(itemLocation);
         Vector3 spawnPoint = WindowSpawnPoint();
         Instantiate(Resources.Load("EquipmentStats"), spawnPoint, Quaternion.identity, CanvasUI.instance.CanvasTransform);
         Debug.Log("Opening equipment stat window");

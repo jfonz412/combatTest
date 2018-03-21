@@ -7,7 +7,8 @@ public class Item : ScriptableObject {
     public Transform player;
 
     new public string name = "New Item";
-    public float value = 100f;
+    public float baseValue = 100f;
+    public float currentValue;
     public Sprite icon = null;
     public int? slotNum;
     public int quantity;
@@ -19,8 +20,10 @@ public class Item : ScriptableObject {
         Debug.Log("Using " + name);
     }
 
-    public virtual void OpenStatWindow()
+    public virtual void OpenStatWindow(string itemLocation)
     {
+        DetermineValue(itemLocation);
+
         Vector3 spawnPoint = WindowSpawnPoint();
         Instantiate(Resources.Load("ItemMenu"), spawnPoint, Quaternion.identity, CanvasUI.instance.CanvasTransform);
 
@@ -40,5 +43,17 @@ public class Item : ScriptableObject {
     public void RemoveFromInventory()
     {
         Inventory.instance.Remove(this);
+    }
+
+    public void DetermineValue(string itemLocation)
+    {
+        if (itemLocation == "Shop")
+        {
+            currentValue = PriceChecker.AppraiseItem(this, "Purchase");
+        }
+        else
+        {
+            currentValue = PriceChecker.AppraiseItem(this, "Sale");
+        }
     }
 }

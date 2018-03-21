@@ -10,15 +10,15 @@ public class PriceChecker : MonoBehaviour {
             //fancy stat modifiers
             //fancy race modifiers
             //fancy npc relationship modifiers
-            return item.value * 0.9f;
+            return item.baseValue * 0.9f;
         }
         else if(exchangeType == "Purchase")
         {
             //modifiers
-            return item.value;
+            return item.baseValue;
         }
 
         Debug.LogWarning("exchangeType could not be determined");
-        return item.value;
+        return item.baseValue;
     }
 }

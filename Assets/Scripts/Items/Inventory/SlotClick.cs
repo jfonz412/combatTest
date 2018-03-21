@@ -18,7 +18,7 @@ public class SlotClick : MonoBehaviour {
     {
         if (slot.equipment != null)
         {
-            slot.equipment.OpenStatWindow();
+            slot.equipment.OpenStatWindow("Inventory");
         }
     }
 
@@ -151,7 +151,7 @@ public class SlotClick : MonoBehaviour {
     {
         if (item != null)
         {
-            item.OpenStatWindow();
+            item.OpenStatWindow("Inventory");
         }
     }
 
@@ -257,7 +257,7 @@ public class SlotClick : MonoBehaviour {
     {
         if (item != null)
         {
-            item.OpenStatWindow();
+            item.OpenStatWindow("Shop");
         }
     }
 

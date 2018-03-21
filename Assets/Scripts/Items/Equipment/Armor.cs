@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [CreateAssetMenu(fileName = "New Armor", menuName = "Inventory/Armor")]
 public class Armor : Equipment {	
@@ -13,15 +12,16 @@ public class Armor : Equipment {
 		}
 	}
 
-    public override void OpenStatWindow()
+    //weapon and armor populate their own stats because they differ between the two
+    public override void OpenStatWindow(string itemLocation)
     {
-        base.OpenStatWindow();
+        base.OpenStatWindow(itemLocation);
 
         string[] myStats = new string[4];
         myStats[0] = "Defense: " + defense.ToString();
         myStats[1] = "Condition: " + armorCondition.ToString();
         myStats[2] = "Weight: " + weight.ToString();
-        myStats[3] = "Base Value: " + value.ToString();
+        myStats[3] = "Value: " + currentValue.ToString();
 
         EquipmentStats.instance.PopulateStats(myStats);
     }
