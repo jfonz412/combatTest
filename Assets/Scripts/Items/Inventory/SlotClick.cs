@@ -234,17 +234,13 @@ public class SlotClick : MonoBehaviour {
 
     static void SellItem(Item item)
     {
-        float appraisedValue = item.value * 0.9f; //hardcoded for testing
-
-        Debug.Log("Selling " + item + " at $" + appraisedValue);
+        float price = PriceChecker.AppraiseItem(item, "Sale");
 
         Inventory.instance.Remove(item);
-
-        item.value = appraisedValue;
         ShopInventory.instance.AddToSoldSlot(item);
 
-        PlayerWallet.balance += appraisedValue; // *economic/charisma/race/location modifiers
-        Debug.Log("You have been credited $" + appraisedValue);
+        PlayerWallet.balance += price;
+        Debug.Log("You have been credited $" + price);
         Debug.Log("Your balance is: $" + PlayerWallet.balance);
     }
 
@@ -278,18 +274,31 @@ public class SlotClick : MonoBehaviour {
 
     static void PurchaseItem(Item item)
     {
-        float price = item.value;
-/*
-        coroutine? Or put player in another state that only lets them interact with the prompt
-        int quantity = PromptForQuantity(); 
+        float price = PriceChecker.AppraiseItem(item, "Purchase");
+        int quantity = PromptForQuantity(); //just returns 1 right now
 
         if(price <= PlayerWallet.balance)
         {
             PlayerWallet.balance -= price * quantity;
+
             item.quantity = quantity;
-            AddToFirstEmptySlot(item)
+
+            Inventory.instance.AddToFirstEmptySlot(item);
+            ShopInventory.instance.Remove(item); //remove and destroy?
+
+            Debug.Log("You payed $" + price);
+            Debug.Log("Your balance is: $" + PlayerWallet.balance);
         }
-*/
+        else
+        {
+            Debug.Log("Insufficient funds, balance: $" + PlayerWallet.balance);
+        }
+    }
+
+    static int PromptForQuantity()
+    {
+        //coroutine? Or put player in another state that only lets them interact with the prompt
+        return 1;
     }
 
     #endregion

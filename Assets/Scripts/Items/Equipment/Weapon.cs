@@ -46,7 +46,7 @@ public class Weapon : Equipment {
         myStats[0] = "Attack: " + totalAttack.ToString();
         myStats[1] = "Condition: " + weaponCondition.ToString();
         myStats[2] = "Weight: " + weight.ToString();
-        myStats[3] = "Value: " + value.ToString();
+        myStats[3] = "Base Value: " + value.ToString();
 
         EquipmentStats.instance.PopulateStats(myStats);
     }

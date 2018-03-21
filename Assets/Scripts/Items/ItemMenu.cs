@@ -41,7 +41,7 @@ public class ItemMenu : MonoBehaviour {
         if (item != null)
         {           
             myStats[0] = item.name;
-            myStats[1] = "Value: " + item.value.ToString();
+            myStats[1] = "Base Value: " + item.value.ToString();
             myStats[2] = "Quantity: " + item.quantity.ToString();           
         }
         return myStats;
