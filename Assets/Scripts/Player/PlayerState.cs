@@ -31,7 +31,7 @@ public class PlayerState : MonoBehaviour {
                 Debug.LogError("Unknown player state");
                 break;
         }
-        Debug.Log("Player state is: " + currentState);
+        //Debug.Log("Player state is: " + currentState);
     }
 
     public static bool CheckPlayerState(PlayerStates[] stateChecks) //possibly take an array of states to check

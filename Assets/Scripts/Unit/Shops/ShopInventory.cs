@@ -3,6 +3,16 @@ using UnityEngine;
 
 public class ShopInventory : MonoBehaviour {
 
+    public List<Item> items = new List<Item>();
+    public int inventorySpace;
+
+    //creates a callback
+    public delegate void OnInventoryChanged();
+    public OnInventoryChanged onInventoryChanged;
+
+    public SoldSlot soldSlot;
+    Item lastItemSold;
+
     #region Singleton
     //insures that we can easily access the inventory, and that there is only one 
     //inventory at all times
@@ -19,16 +29,6 @@ public class ShopInventory : MonoBehaviour {
     }
     #endregion
 
-    public List<Item> items = new List<Item>();
-    public int inventorySpace;
-
-    //creates a callback
-    public delegate void OnInventoryChanged();
-    public OnInventoryChanged onInventoryChanged;
-
-    public SoldSlot soldSlot;
-    Item lastItemSold;
-
     void Start()
     {
         //fill inventory with null spaces
@@ -40,11 +40,14 @@ public class ShopInventory : MonoBehaviour {
 
     public void AddToSoldSlot(Item item)
     {
+        int lastSlot = inventorySpace - 1;
         lastItemSold = item;
+        lastItemSold.slotNum = lastSlot;
+        items.Insert(lastSlot, lastItemSold);
         soldSlot.AddItem(lastItemSold);
     }
 
-    #region probably won't use these
+
     public bool AddToFirstEmptySlot(Item item)
     {
         //check if there are any empty slots/items
@@ -65,6 +68,7 @@ public class ShopInventory : MonoBehaviour {
         return false;
     }
 
+    #region probably won't use these
     public void AddToSpecificSlot(Item item)
     {
         int slotNum = item.slotNum.GetValueOrDefault();
@@ -77,30 +81,8 @@ public class ShopInventory : MonoBehaviour {
         Callback();
     }
 
-
-    public void Remove(Item item)
-    {
-        int itemIndex = item.slotNum.GetValueOrDefault();
-
-        items.RemoveAt(itemIndex);
-        items.Insert(itemIndex, null);
-
-        Callback();
-
-    }
-
-    void InsertItemIntoEmptySlot(Item item, int slotNum)
-    {
-        items.RemoveAt(slotNum); //remove the null item
-        items.Insert(slotNum, item); //replace it with actual item
-
-        items[slotNum].slotNum = slotNum; //save refrence to the slot it's been placed in
-    }
-
     Item CheckIfAlreadyInstantiated(Item item)
     {
-        //if slotNum is null then it has not been in our inventory needs an instance
-        //otherwise we do not create a new instance and simply use the item as it is
         if (item.slotNum == null)
         {
             item = Instantiate(item);
@@ -110,6 +92,34 @@ public class ShopInventory : MonoBehaviour {
         return item;
     }
     #endregion
+
+    public void Remove(Item item)
+    {
+        int itemIndex = item.slotNum.GetValueOrDefault();
+        Debug.Log("removing from " + itemIndex);
+        items.RemoveAt(itemIndex);
+        items.Insert(itemIndex, null);
+
+        Callback();
+    }
+
+    void InsertItemIntoEmptySlot(Item item, int slotNum)
+    {
+        items.RemoveAt(slotNum); //remove the null item
+        items.Insert(slotNum, item); //replace it with actual item
+
+        items[slotNum].slotNum = slotNum; //save refrence to the slot it's been placed in
+        //Debug.Log(item.name + "'s index on load is: " + slotNum);
+    }
+
+    public void ClearShopInventory()
+    {
+        for(int i = 0; i<items.Count; i++)
+        {
+            if(items[i] != null)
+                Remove(items[i]);
+        }
+    }
 
     void Callback()
     {

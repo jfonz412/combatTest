@@ -32,6 +32,7 @@ public class ShopInventoryUI : MonoBehaviour {
         shop.onInventoryChanged += UpdateUI;
         slots = itemsParent.GetComponentsInChildren<ShopSlot>();
         AssignSlotNums();
+        Debug.Log(slots.Length);
     }
 
     void UpdateUI()

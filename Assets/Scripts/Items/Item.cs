@@ -10,7 +10,7 @@ public class Item : ScriptableObject {
     public float baseValue = 100f;
     public float currentValue;
     public Sprite icon = null;
-    public int? slotNum;
+    public int? slotNum; //allows the int to be null
     public int quantity;
 
     public virtual void Use()
@@ -27,7 +27,7 @@ public class Item : ScriptableObject {
         Vector3 spawnPoint = WindowSpawnPoint();
         Instantiate(Resources.Load("ItemMenu"), spawnPoint, Quaternion.identity, CanvasUI.instance.CanvasTransform);
 
-        Debug.Log("Opening Item menu");
+        //Debug.Log("Opening Item menu");
 
         ItemMenu.instance.PopulateStats(this);
     }

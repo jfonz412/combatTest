@@ -23,7 +23,7 @@ public class Equipment : Item {
         DetermineValue(itemLocation);
         Vector3 spawnPoint = WindowSpawnPoint();
         Instantiate(Resources.Load("EquipmentStats"), spawnPoint, Quaternion.identity, CanvasUI.instance.CanvasTransform);
-        Debug.Log("Opening equipment stat window");
+        //Debug.Log("Opening equipment stat window");
     }
     
     

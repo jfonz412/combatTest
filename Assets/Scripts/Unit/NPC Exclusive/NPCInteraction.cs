@@ -5,10 +5,12 @@ public class NPCInteraction : Interactable
     public Dialogue dialog; //contains fields for name and text
     public bool isDead = false;
 
+    LoadShop myShop;
 
     void Start()
     {
         myInteractions = new string[] { "Attack", "Talk", "Trade", "Inspect" };
+        myShop = GetComponent<LoadShop>();
     }
 
     public override void Interaction(string interaction)
@@ -78,9 +80,20 @@ public class NPCInteraction : Interactable
     //needs to put player in certain state? Similar to dialog state (can shop in combat but can be knocked out of it)
     void TriggerTrade()
     {
-        ShopInventoryUI.instance.OpenShop(name);
-        PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping);
-        Debug.Log("Trading with " + name);
+        //might make everyone have a LoadShop script so you can trade with everyone. Shouldn't result
+        //in too much technical overhead but possibly more work for myself
+        if(myShop != null)
+        {
+            ShopInventoryUI.instance.OpenShop(name);
+            myShop.LoadShopInventory();
+            PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping);
+            //Debug.Log("Trading with " + name);
+        }
+        else
+        {
+            Debug.Log("This NPC cannot trade");
+        }
+        
     }
 
     #endregion
