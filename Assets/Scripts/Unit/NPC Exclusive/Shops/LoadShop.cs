@@ -12,7 +12,6 @@ public class LoadShop : MonoBehaviour {
 
     public void LoadShopInventory()
     {
-        shop.ClearShopInventory();
         for (int i = 0; i < shopInventory.Length; i++)
         {
             if(shopInventory[i] != null)

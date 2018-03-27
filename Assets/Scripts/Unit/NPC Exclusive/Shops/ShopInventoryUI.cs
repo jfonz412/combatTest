@@ -66,6 +66,7 @@ public class ShopInventoryUI : MonoBehaviour {
         if (!active)
         {
             PlayerState.SetPlayerState(PlayerState.PlayerStates.Idle);
+            shop.ClearShopInventory();
         }
     }
 

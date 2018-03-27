@@ -28,7 +28,7 @@ public class ItemPickup : Interactable {
                 InspectObject(); 
                 break;
             default:
-                Debug.Log("invalid " + interaction + "interaction passed to " + gameObject);
+                Debug.Log("invalid " + interaction + " interaction passed to " + gameObject);
                 break;
         }
     }

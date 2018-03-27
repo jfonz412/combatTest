@@ -117,7 +117,10 @@ public class ShopInventory : MonoBehaviour {
         for(int i = 0; i<items.Count; i++)
         {
             if(items[i] != null)
+            {
                 Remove(items[i]);
+                Destroy(items[i]);
+            }
         }
     }
 

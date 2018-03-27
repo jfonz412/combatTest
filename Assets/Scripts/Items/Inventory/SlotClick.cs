@@ -263,13 +263,10 @@ public class SlotClick : MonoBehaviour {
 
     public static void ShopSlotLeftClicked(ShopSlot slot)
     {
-        Debug.Log(slot);
         Item item = slot.item;
 
         if (item != null)
         {
-            Debug.Log(item);
-            Debug.Log(item.slotNum);
             PurchaseItem(item);
         }
     }
@@ -287,13 +284,8 @@ public class SlotClick : MonoBehaviour {
 
             item.quantity = quantity;
 
-            Debug.Log(item.name + "'s index in SlotClick before purchase is: " + item.slotNum);
-
-            ShopInventory.instance.Remove(item); //remove and destroy?
-            Inventory.instance.AddToFirstEmptySlot(item); //must be after the removal because this will change the slotNum
-
-            //Debug.Log("You payed $" + price);
-            //Debug.Log("Your balance is: $" + PlayerWallet.balance);
+            ShopInventory.instance.Remove(item); 
+            Inventory.instance.AddToFirstEmptySlot(item); //must be after the Removal because this reassigns the slotNum
         }
         else
         {
