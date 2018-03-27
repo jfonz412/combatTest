@@ -239,9 +239,8 @@ public class SlotClick : MonoBehaviour {
         Inventory.instance.Remove(item);
         ShopInventory.instance.AddToSoldSlot(item);
 
-        PlayerWallet.balance += price;
+        PlayerWallet.instance.Deposit(price);
         Debug.Log("You have been credited $" + price);
-        Debug.Log("Your balance is: $" + PlayerWallet.balance);
     }
 
     #endregion
@@ -275,12 +274,13 @@ public class SlotClick : MonoBehaviour {
 
     static void PurchaseItem(Item item)
     {
+        PlayerWallet wallet = PlayerWallet.instance;
         float price = PriceChecker.AppraiseItem(item, "Purchase");
         int quantity = PromptForQuantity(); //just returns 1 right now
 
-        if(price <= PlayerWallet.balance)
+        if (price <= wallet.balance)
         {
-            PlayerWallet.balance -= price * quantity;
+            wallet.Withdraw(price * quantity); 
 
             item.quantity = quantity;
 
@@ -289,7 +289,7 @@ public class SlotClick : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Insufficient funds, balance: $" + PlayerWallet.balance);
+            Debug.Log("Insufficient funds, balance: $" + wallet.balance);
         }
     }
 
