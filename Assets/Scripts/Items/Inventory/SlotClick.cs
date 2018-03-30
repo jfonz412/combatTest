@@ -285,7 +285,7 @@ public class SlotClick : MonoBehaviour {
             item.quantity = quantity;
 
             ShopInventory.instance.Remove(item); 
-            Inventory.instance.AddToFirstEmptySlot(item); //must be after the Removal because this reassigns the slotNum
+            Inventory.instance.PickupItem(item); //must be after the Removal because this reassigns the slotNum
         }
         else
         {

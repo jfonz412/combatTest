@@ -35,7 +35,58 @@ public class Inventory : MonoBehaviour {
         }
     }
 
-    public bool AddToFirstEmptySlot(Item item)
+    public int PickupItem(Item item)
+    {
+        item = CheckIfAlreadyInstantiated(item);
+
+        Debug.Log(item.quantity);
+        int leftovers = AttemptToStackItem(item);
+
+        if(leftovers == 0)
+        {
+            return 0;
+        }
+        else if(AddToFirstEmptySlot(item))
+        {
+            return 0;
+        }
+        else
+        {
+            return leftovers;
+        }
+        //if there are still leftovers it needs to change the quantity of the object on the ground
+    }
+
+    int AttemptToStackItem(Item newItem)
+    {
+        for (int i = 0; i < inventorySpace; i++)
+        {
+            if(items[i] != null)
+            {
+                if (items[i].name == newItem.name)
+                {
+                    newItem.quantity = TransferQuantity(i, newItem.quantity);
+                }
+            }
+        }
+
+        return newItem.quantity;
+    }
+
+    int TransferQuantity(int slot, int newItemQuantity)
+    {
+        int maxQ = items[slot].maxQuantity;
+
+        while (items[slot].quantity != maxQ && newItemQuantity != 0) //or?
+        {
+            items[slot].quantity++;
+            newItemQuantity--;
+        }
+
+        return newItemQuantity;
+    }
+
+    bool AddToFirstEmptySlot(Item item)
     {
         //check if there are any empty slots/items
         for (int i = 0; i < inventorySpace; i++)

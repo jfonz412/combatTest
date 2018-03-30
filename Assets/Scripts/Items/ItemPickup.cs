@@ -2,11 +2,14 @@
 
 public class ItemPickup : Interactable {
 
+    public Item baseItem;
+    [HideInInspector]
     public Item item;
 
     void Start()
     {
         myInteractions = new string[] { "Pickup", "Inspect", "--", "--" };
+        item = Instantiate(baseItem);
     }
 
     public override void Interaction(string interaction)
@@ -36,9 +39,16 @@ public class ItemPickup : Interactable {
     void PickUp()
     {
         //Debug.Log("Picking up " + item.name);
-        if (Inventory.instance.AddToFirstEmptySlot(item) == true)
+        int leftoverItems = Inventory.instance.PickupItem(item);
+        if (leftoverItems == 0)
         {
+            Destroy(item);
             Destroy(transform.gameObject);
+        }
+        else
+        {
+            //item = Instantiate(item); //create a seperate item entity, do I want to do this here for each item instead in the inventory? 
+            item.quantity = leftoverItems;
         }
     }
 }

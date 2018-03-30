@@ -6,12 +6,15 @@ public class Item : ScriptableObject {
     [HideInInspector]
     public Transform player;
 
+    public Sprite icon = null;
+    public int? slotNum; //allows the int to be null
+
     new public string name = "New Item";
     public float baseValue = 100f;
     public float currentValue;
-    public Sprite icon = null;
-    public int? slotNum; //allows the int to be null
-    public int quantity;
+    public int quantity = 1;
+    public int maxQuantity = 99;
+    public bool stackable;
 
     public virtual void Use()
     {
