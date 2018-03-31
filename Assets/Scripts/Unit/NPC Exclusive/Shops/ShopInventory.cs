@@ -80,6 +80,7 @@ public class ShopInventory : MonoBehaviour {
 
         Callback();
     }
+    #endregion
 
     Item CheckIfAlreadyInstantiated(Item item)
     {
@@ -91,7 +92,7 @@ public class ShopInventory : MonoBehaviour {
 
         return item;
     }
-    #endregion
+ 
 
     public void Remove(Item item)
     {
@@ -99,7 +100,6 @@ public class ShopInventory : MonoBehaviour {
         Debug.Log("removing from " + itemIndex);
         items.RemoveAt(itemIndex);
         items.Insert(itemIndex, null);
-
         Callback();
     }
 
@@ -119,7 +119,6 @@ public class ShopInventory : MonoBehaviour {
             if(items[i] != null)
             {
                 Remove(items[i]);
-                Destroy(items[i]);
             }
         }
     }

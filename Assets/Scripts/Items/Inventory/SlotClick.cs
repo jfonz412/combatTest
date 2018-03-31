@@ -282,10 +282,10 @@ public class SlotClick : MonoBehaviour {
         {
             wallet.Withdraw(price * quantity); 
 
-            item.quantity = quantity;
+            //item.quantity = quantity;
 
             ShopInventory.instance.Remove(item); 
-            Inventory.instance.PickupItem(item); //must be after the Removal because this reassigns the slotNum
+            Inventory.instance.AddItem(item); //must be after the Removal because this reassigns the slotNum
         }
         else
         {

@@ -35,7 +35,7 @@ public class EquipmentManager : MonoBehaviour {
         inv.Remove(newItem);
 
         if(oldItem.equipmentID != 0) //0 is unarmed/naked
-            inv.PickupItem(oldItem);
+            inv.AddItem(oldItem);
     }
 
     //Right clicks
@@ -46,7 +46,7 @@ public class EquipmentManager : MonoBehaviour {
         if (item.equipmentID != 0) //0 is unarmed/naked
         {
             Unequip((int)item.equipSlot);
-            inv.PickupItem(item);
+            inv.AddItem(item);
         }
     }
 

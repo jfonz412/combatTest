@@ -3,6 +3,14 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour {
 
+    public int inventorySpace;
+    public List<Item> items = new List<Item>();
+
+
+    //creates a callback
+    public delegate void OnInventoryChanged();
+    public OnInventoryChanged onInventoryChanged;
+
     #region Singleton
     //insures that we can easily access the inventory, and that there is only one 
     //inventory at all times
@@ -19,13 +27,6 @@ public class Inventory : MonoBehaviour {
     }
     #endregion
 
-    public List<Item> items = new List<Item>();
-    public int inventorySpace;
-
-    //creates a callback
-    public delegate void OnInventoryChanged();
-    public OnInventoryChanged onInventoryChanged; 
-
     void Start()
     {
         //fill inventory with null spaces
@@ -35,9 +36,10 @@ public class Inventory : MonoBehaviour {
         }
     }
 
-    public int PickupItem(Item item)
+    //this returns the amount of leftover items that could not be added
+    public int AddItem(Item item)
     {
-        item = CheckIfAlreadyInstantiated(item);
+        item = ConvertToInventoryItem(item);
 
         Debug.Log(item.quantity);
         int leftovers = AttemptToStackItem(item);
@@ -54,7 +56,6 @@ public class Inventory : MonoBehaviour {
         {
             return leftovers;
         }
-        //if there are still leftovers it needs to change the quantity of the object on the ground
     }
 
     int AttemptToStackItem(Item newItem)
@@ -93,7 +94,7 @@ public class Inventory : MonoBehaviour {
         {
             if(items[i] == null)
             {
-                item = CheckIfAlreadyInstantiated(item);
+                item = ConvertToInventoryItem(item);
 
                 InsertItemIntoEmptySlot(item, i);
 
@@ -152,7 +153,7 @@ public class Inventory : MonoBehaviour {
         items[slotNum].slotNum = slotNum; //save refrence to the slot it's been placed in
     }
 
-    Item CheckIfAlreadyInstantiated(Item item)
+    Item ConvertToInventoryItem(Item item)
     {
         //if slotNum is null then it has not been in our inventory needs an instance
         //otherwise we do not create a new instance and simply use the item as it is

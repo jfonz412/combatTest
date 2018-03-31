@@ -39,16 +39,16 @@ public class ItemPickup : Interactable {
     void PickUp()
     {
         //Debug.Log("Picking up " + item.name);
-        int leftoverItems = Inventory.instance.PickupItem(item);
-        if (leftoverItems == 0)
+        int itemsLeftAfterPickup = Inventory.instance.AddItem(item);
+
+        if (itemsLeftAfterPickup == 0)
         {
             Destroy(item);
             Destroy(transform.gameObject);
         }
         else
         {
-            //item = Instantiate(item); //create a seperate item entity, do I want to do this here for each item instead in the inventory? 
-            item.quantity = leftoverItems;
+            item.quantity = itemsLeftAfterPickup;
         }
     }
 }

@@ -30,8 +30,6 @@ public class Item : ScriptableObject {
         Vector3 spawnPoint = WindowSpawnPoint();
         Instantiate(Resources.Load("ItemMenu"), spawnPoint, Quaternion.identity, CanvasUI.instance.CanvasTransform);
 
-        //Debug.Log("Opening Item menu");
-
         ItemMenu.instance.PopulateStats(this);
     }
 
