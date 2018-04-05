@@ -29,16 +29,16 @@ public class ShopSlot : InventorySlot
 
     public override void SlotHoverOver()
     {
-        SlotClick.ShopSlotHoverOver(item);
+        SlotClick.instance.ShopSlotHoverOver(item);
     }
 
     public override void SlotRightClicked()
     {
-        SlotClick.ShopSlotRightClicked(item); //does nothing, leave it here in case I find a use for this
+        SlotClick.instance.ShopSlotRightClicked(item); //does nothing, leave it here in case I find a use for this
     }
 
     public override void SlotLeftClicked()
     {
-        SlotClick.ShopSlotLeftClicked(this);
+        SlotClick.instance.ShopSlotLeftClicked(this);
     }
 }

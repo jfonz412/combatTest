@@ -2,7 +2,7 @@
 
 public class EquipSlot : InventorySlot {
 
-    //SlotClick.cs needs to know about these
+    //SlotClick.instance.cs needs to know about these
     [HideInInspector]
     public EquipmentManager equipmentManager;
     [HideInInspector]
@@ -38,17 +38,17 @@ public class EquipSlot : InventorySlot {
 
     public override void SlotHoverOver()
     {
-        SlotClick.EquipSlotHoverOver(this);
+        SlotClick.instance.EquipSlotHoverOver(this);
     }
 
     public override void SlotRightClicked()
     {
-        SlotClick.EquipSlotRightClicked(this);
+        SlotClick.instance.EquipSlotRightClicked(this);
     }
 
     public override void SlotLeftClicked()
     {
-        SlotClick.EquipSlotLeftClicked(this);
+        SlotClick.instance.EquipSlotLeftClicked(this);
     }
 }
 

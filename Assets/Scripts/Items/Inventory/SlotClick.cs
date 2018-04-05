@@ -1,11 +1,27 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 //THIS SCRIPT IS GETTING BIG, CONSIDER SPLITTING IT INTO 3 SEPERATE SCRIPTS?
 public class SlotClick : MonoBehaviour {
 
+    #region Singleton
+
+    public static SlotClick instance;
+
+    void Awake()
+    {
+        if (instance != null)
+        {
+            Debug.LogWarning("More than one instance of SlotClick found");
+            return;
+        }
+        instance = this;
+    }
+    #endregion
+
     #region Equip Slot Clicks
 
-    public static void EquipSlotRightClicked(EquipSlot slot)
+    public  void EquipSlotRightClicked(EquipSlot slot)
     {
         Debug.Log("Equip slot right clicked");
         if(slot.equipment != null)
@@ -14,7 +30,7 @@ public class SlotClick : MonoBehaviour {
         }
     }
 
-    public static void EquipSlotHoverOver(EquipSlot slot)
+    public  void EquipSlotHoverOver(EquipSlot slot)
     {
         if (slot.equipment != null)
         {
@@ -23,7 +39,7 @@ public class SlotClick : MonoBehaviour {
     }
 
 
-    public static void EquipSlotLeftClicked(EquipSlot slot)
+    public  void EquipSlotLeftClicked(EquipSlot slot)
     {
         MouseSlot mouseSlot = MouseSlot.instance;
         Equipment mouseItem = MouseSlot.instance.currentItem as Equipment; //save a copy of the mouseItem
@@ -60,7 +76,7 @@ public class SlotClick : MonoBehaviour {
 
     //HELPERS
 
-    static void PickUpItemIntoEmptyMouseSlot(MouseSlot mouseSlot, EquipSlot slot)
+     void PickUpItemIntoEmptyMouseSlot(MouseSlot mouseSlot, EquipSlot slot)
     {
         Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");   //or equipment == naked or unarmed?
         Equipment previousItem = slot.equipment;                //save a copy of the slotItem
@@ -68,7 +84,7 @@ public class SlotClick : MonoBehaviour {
         mouseSlot.UpdateItem(previousItem);                //place previous item in the mouseSlot (as an item)?
     }
 
-    static void PlaceItemInEmptySlot(MouseSlot mouseSlot, EquipSlot slot)
+     void PlaceItemInEmptySlot(MouseSlot mouseSlot, EquipSlot slot)
     {
         Equipment mouseItem = mouseSlot.currentItem as Equipment;
 
@@ -83,7 +99,7 @@ public class SlotClick : MonoBehaviour {
         mouseSlot.UpdateItem(null); //clear mouseSlot's item
     }
 
-    static void SwapItems(MouseSlot mouseSlot, EquipSlot slot)
+     void SwapItems(MouseSlot mouseSlot, EquipSlot slot)
     {
         Equipment mouseItem = mouseSlot.currentItem as Equipment;
 
@@ -101,7 +117,7 @@ public class SlotClick : MonoBehaviour {
 
 
     //----------------------------------------------
-    static bool CheckItemType()
+     bool CheckItemType()
     {
         if (MouseSlot.instance.currentItem == null)
         {
@@ -122,7 +138,7 @@ public class SlotClick : MonoBehaviour {
         }
     }
 
-    static bool CheckEquipSlot(int mouseItemEquipSlot, EquipSlot slot)
+     bool CheckEquipSlot(int mouseItemEquipSlot, EquipSlot slot)
     {
         if (mouseItemEquipSlot != slot.equipSlot)
         {
@@ -138,7 +154,7 @@ public class SlotClick : MonoBehaviour {
 
     #region Inventory Slot Clicks
 
-    public static void InventorySlotRightClicked(Item item)
+    public  void InventorySlotRightClicked(Item item)
     {
         Debug.Log("Inventory slot right clicked");
         if (item != null)
@@ -147,7 +163,7 @@ public class SlotClick : MonoBehaviour {
         }           
     }
 
-    public static void InventorySlotHoverOver(Item item)
+    public  void InventorySlotHoverOver(Item item)
     {
         if (item != null)
         {
@@ -155,7 +171,7 @@ public class SlotClick : MonoBehaviour {
         }
     }
 
-    public static void InventorySlotLeftClicked(InventorySlot slot)
+    public  void InventorySlotLeftClicked(InventorySlot slot)
     {
         MouseSlot mouseSlot = MouseSlot.instance;
         Item mouseItem = MouseSlot.instance.currentItem;
@@ -185,7 +201,7 @@ public class SlotClick : MonoBehaviour {
         }
     }
 
-    public static void LeftClickedToSell(InventorySlot slot)
+    public  void LeftClickedToSell(InventorySlot slot)
     {
         Item item = slot.item;
         //int quantity = PromptForQuantity();
@@ -197,7 +213,7 @@ public class SlotClick : MonoBehaviour {
 
     //HELPERS 
 
-    static void PickUpItemIntoEmptyMouseSlot(MouseSlot mouseSlot, InventorySlot slot)
+     void PickUpItemIntoEmptyMouseSlot(MouseSlot mouseSlot, InventorySlot slot)
     {
         Inventory inventory = Inventory.instance;
 
@@ -207,7 +223,7 @@ public class SlotClick : MonoBehaviour {
         mouseSlot.UpdateItem(previousItem); //place previous item in the mouseSlot            //place previous item in the mouseSlot (as an item)?
     }
 
-    static void PlaceItemInEmptySlot(MouseSlot mouseSlot, InventorySlot slot)
+     void PlaceItemInEmptySlot(MouseSlot mouseSlot, InventorySlot slot)
     {
         Inventory inventory = Inventory.instance;
         Item mouseItem = mouseSlot.currentItem;
@@ -218,7 +234,7 @@ public class SlotClick : MonoBehaviour {
         mouseSlot.UpdateItem(null); //clear mouseSlot's item
     }
 
-    static void SwapItems(MouseSlot mouseSlot, InventorySlot slot)
+     void SwapItems(MouseSlot mouseSlot, InventorySlot slot)
     {
         Inventory inventory = Inventory.instance;
         Item mouseItem = mouseSlot.currentItem;
@@ -232,7 +248,7 @@ public class SlotClick : MonoBehaviour {
 
     //SHOP HELPERS
 
-    static void SellItem(Item item)
+     void SellItem(Item item)
     {
         float price = PriceChecker.AppraiseItem(item, "Sale");
 
@@ -247,12 +263,12 @@ public class SlotClick : MonoBehaviour {
 
     #region Shop Slot Clicks
 
-    public static void ShopSlotRightClicked(Item item)
+    public  void ShopSlotRightClicked(Item item)
     {
         Debug.Log("Shop slot right clicked (does nothing)");
     }
 
-    public static void ShopSlotHoverOver(Item item)
+    public  void ShopSlotHoverOver(Item item)
     {
         if (item != null)
         {
@@ -260,27 +276,41 @@ public class SlotClick : MonoBehaviour {
         }
     }
 
-    public static void ShopSlotLeftClicked(ShopSlot slot)
+    public  void ShopSlotLeftClicked(ShopSlot slot)
     {
         Item item = slot.item;
 
         if (item != null)
         {
-            PurchaseItem(item);
+            StartCoroutine(PurchaseItem(item)); //should have a way to exit this if player is knocked out of shopping during a purchase, no?
         }
     }
 
     //HELPERS
 
-    static void PurchaseItem(Item item)
+    IEnumerator PurchaseItem(Item item)
     {
         PlayerWallet wallet = PlayerWallet.instance;
-        float price = PriceChecker.AppraiseItem(item, "Purchase");
-        int quantity = PromptForQuantity(); //just returns 1 right now
+        QuantityPrompt.instance.TriggerPrompt();
+
+        while (QuantityPrompt.instance.waitingForInput) //and playerstate is Prompt
+        {
+            yield return null; //should pause us
+        }
+
+        int quantity = QuantityPrompt.instance.GetQuantity();
+        
+        //will set to 0 if nothing is entered or cancel is selected
+        if(quantity == 0)
+        {
+            yield break;
+        }
+
+        float price = PriceChecker.AppraiseItem(item, "Purchase") * quantity;
 
         if (price <= wallet.balance)
         {
-            wallet.Withdraw(price * quantity); 
+            wallet.Withdraw(price); 
 
             //item.quantity = quantity;
 
@@ -293,11 +323,24 @@ public class SlotClick : MonoBehaviour {
         }
     }
 
-    static int PromptForQuantity()
-    {
-        //coroutine? Or put player in another state that only lets them interact with the prompt
-        return 1;
-    }
-
     #endregion
+
+    int PromptForQuantity()
+    {
+        QuantityPrompt.instance.TriggerPrompt();
+
+        IEnumerator waitForInput = WaitForInput();
+        StartCoroutine(waitForInput);
+        Debug.Log("exiting coroutine loop");
+        return QuantityPrompt.instance.enteredAmount;
+    }
+    
+    IEnumerator WaitForInput()
+    {
+        while (QuantityPrompt.instance.waitingForInput)
+        {
+            yield return null;
+        }
+        Debug.Log("exiting WaitForInput");
+    }
 }

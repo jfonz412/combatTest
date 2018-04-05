@@ -2,10 +2,11 @@
 
 public class PlayerState : MonoBehaviour {
 
-    public enum PlayerStates { Idle, Speaking, Fighting, Shopping, Dead }
+    public enum PlayerStates { Idle, Speaking, Fighting, Shopping, Dead, Prompt }
 
     [HideInInspector]
     public static PlayerStates currentState;
+
 
     public static void SetPlayerState(PlayerStates newState) //possibly make this return a bool that can tell sender if state switch was successful or not
     {
@@ -25,6 +26,9 @@ public class PlayerState : MonoBehaviour {
                 currentState = newState;
                 break;
             case PlayerStates.Dead:
+                currentState = newState;
+                break;
+            case PlayerStates.Prompt:
                 currentState = newState;
                 break;
             default:

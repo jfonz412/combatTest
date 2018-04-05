@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class PlayerWallet : MonoBehaviour {
     public float balance = 0f;
-    Text displayedAmount;
+    public Text displayedAmount;
 
     #region Singleton
     public static PlayerWallet instance;
@@ -20,7 +20,6 @@ public class PlayerWallet : MonoBehaviour {
 
     void Start()
     {
-        displayedAmount = GetComponent<Text>();
         UpdateDisplayedAmount();
     }
 

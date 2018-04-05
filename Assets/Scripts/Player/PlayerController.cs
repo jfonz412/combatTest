@@ -15,7 +15,8 @@ public class PlayerController : MonoBehaviour {
     {
         PlayerState.PlayerStates.Shopping,
         PlayerState.PlayerStates.Speaking,
-        PlayerState.PlayerStates.Dead
+        PlayerState.PlayerStates.Dead,
+        PlayerState.PlayerStates.Prompt
     };
 
 
@@ -33,7 +34,14 @@ public class PlayerController : MonoBehaviour {
         {
             MovePlayer();
         }
-	}
+
+            //FOR DEBUGGING 
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                Debug.Log(PlayerState.currentState);
+            }
+        
+    }
 
     //this will prevent all movement, popups, and interactions during certain states
     bool Incapcitated()
