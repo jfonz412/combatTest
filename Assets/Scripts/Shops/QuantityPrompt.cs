@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class QuantityPrompt : MonoBehaviour {
 
     public GameObject promptWindow;
-    public Text quantityInput;
+    //public Text quantityInput;
     public bool waitingForInput = false;
     public int enteredAmount = 0;
 
@@ -33,6 +33,32 @@ public class QuantityPrompt : MonoBehaviour {
         StartCoroutine(waitForInput);
     }
 
+
+    IEnumerator WaitForInput()
+    {
+        PromptState(true);
+        while (waitingForInput && PlayerState.currentState == PlayerState.PlayerStates.Prompt)
+        {
+            yield return null;
+        }
+        PromptState(false);
+    }
+
+    void PromptState(bool prompting)
+    {
+        if (prompting)
+        {
+            PlayerState.SetPlayerState(PlayerState.PlayerStates.Prompt);
+            promptWindow.SetActive(true);
+            waitingForInput = true;
+        }
+        else
+        {
+            PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping); //should just be previous state to catch edge cases?
+            promptWindow.SetActive(false);
+        }
+    }
+
     public int GetQuantity()
     {
         int quantity = enteredAmount;
@@ -40,22 +66,20 @@ public class QuantityPrompt : MonoBehaviour {
         return quantity;
     }
 
-    IEnumerator WaitForInput()
+    public void OKButtonPressed(Text input) //Text input?
     {
-        PlayerState.SetPlayerState(PlayerState.PlayerStates.Prompt);
-        promptWindow.SetActive(true);
-        waitingForInput = true;
-
-        //what happens if player is hit while inputting? Must cancel this Coroutine if knocked out of shoppping/prompt states
-        while (!Input.GetKeyDown(KeyCode.Space)) // && PlayerState == Prompt
-        {
-            yield return null;
-        }
-
-        PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping); //should just be previous state to catch edge cases?
-        promptWindow.SetActive(false);
         waitingForInput = false;
-        //int.TryParse(quantityInput.text, out enteredAmount); //should put this into entered amount automatically
-        enteredAmount = 10;
+
+        //if int not passed in just return 0
+        if(!int.TryParse(input.text, out enteredAmount)) 
+        {
+            enteredAmount = 0;
+        }
+    }
+
+    public void CancelButtonPressed()
+    {
+        waitingForInput = false;
+        enteredAmount = 0;
     }
 }

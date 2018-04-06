@@ -290,32 +290,38 @@ public class SlotClick : MonoBehaviour {
 
     IEnumerator PurchaseItem(Item item)
     {
+        int quantity = 1;
+
+        if(item.quantity > 1)
+        {
+            QuantityPrompt.instance.TriggerPrompt();
+            while (QuantityPrompt.instance.waitingForInput && PlayerState.currentState == PlayerState.PlayerStates.Prompt)
+            {
+                yield return null;
+            }
+
+            quantity = QuantityPrompt.instance.GetQuantity();
+
+            if (quantity < 1 || quantity > item.quantity)
+            {
+                Debug.Log("Invalid quantity input: " + quantity);
+                yield break; //do nothing if quantity is 0 
+            }
+        }
+
+        CheckPlayerFunds(item, quantity);
+    }
+
+    void CheckPlayerFunds(Item item, int quantity)
+    {
         PlayerWallet wallet = PlayerWallet.instance;
-        QuantityPrompt.instance.TriggerPrompt();
-
-        while (QuantityPrompt.instance.waitingForInput) //and playerstate is Prompt
-        {
-            yield return null; //should pause us
-        }
-
-        int quantity = QuantityPrompt.instance.GetQuantity();
-        
-        //will set to 0 if nothing is entered or cancel is selected
-        if(quantity == 0)
-        {
-            yield break;
-        }
 
         float price = PriceChecker.AppraiseItem(item, "Purchase") * quantity;
 
         if (price <= wallet.balance)
         {
-            wallet.Withdraw(price); 
-
-            //item.quantity = quantity;
-
-            ShopInventory.instance.Remove(item); 
-            Inventory.instance.AddItem(item); //must be after the Removal because this reassigns the slotNum
+            wallet.Withdraw(price);
+            CommitPurchase(item, quantity);
         }
         else
         {
@@ -323,24 +329,28 @@ public class SlotClick : MonoBehaviour {
         }
     }
 
-    #endregion
-
-    int PromptForQuantity()
+    //PURCHASE HELPERS
+    void CommitPurchase(Item item, int quantity)
     {
-        QuantityPrompt.instance.TriggerPrompt();
 
-        IEnumerator waitForInput = WaitForInput();
-        StartCoroutine(waitForInput);
-        Debug.Log("exiting coroutine loop");
-        return QuantityPrompt.instance.enteredAmount;
-    }
-    
-    IEnumerator WaitForInput()
-    {
-        while (QuantityPrompt.instance.waitingForInput)
+        if (item.quantity - quantity < 1)
         {
-            yield return null;
+            ShopInventory.instance.Remove(item);
         }
-        Debug.Log("exiting WaitForInput");
+        else
+        {
+            item.quantity -= quantity;
+        }
+
+        CreateNewItemForInventory(item, quantity);
     }
+
+    void CreateNewItemForInventory(Item item, int quantity)
+    {
+        Item newCopyOfItemForInventory = Instantiate(item);
+        newCopyOfItemForInventory.quantity = quantity;
+        Inventory.instance.AddItem(newCopyOfItemForInventory);
+    }
+
+    #endregion
 }
