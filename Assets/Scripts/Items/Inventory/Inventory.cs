@@ -41,7 +41,6 @@ public class Inventory : MonoBehaviour {
     {
         item = ConvertToInventoryItem(item);
 
-        Debug.Log(item.quantity);
         int leftovers = AttemptToStackItem(item);
 
         if(leftovers == 0)

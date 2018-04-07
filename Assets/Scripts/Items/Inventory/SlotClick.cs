@@ -207,7 +207,7 @@ public class SlotClick : MonoBehaviour {
         //int quantity = PromptForQuantity();
         if (item != null)
         {
-            SellItem(item); //pass quantity in also
+            StartCoroutine(SellItem(item));
         }
     }
 
@@ -248,15 +248,56 @@ public class SlotClick : MonoBehaviour {
 
     //SHOP HELPERS
 
-     void SellItem(Item item)
+    IEnumerator SellItem(Item item)
     {
-        float price = PriceChecker.AppraiseItem(item, "Sale");
+        int quantity = 1;
+        if (item.quantity > 1)
+        {
+            QuantityPrompt.instance.TriggerPrompt();
+            while (QuantityPrompt.instance.waitingForInput && PlayerState.currentState == PlayerState.PlayerStates.Prompt)
+            {
+                yield return null;
+            }
+            quantity = QuantityPrompt.instance.GetQuantity();
 
-        Inventory.instance.Remove(item);
-        ShopInventory.instance.AddToSoldSlot(item);
+            if (quantity < 1 || quantity > item.quantity)
+            {
+                Debug.Log("Invalid quantity input: " + quantity);
+                yield break; //do nothing if quantity is 0 
+            }
+        }
 
+        CommitSale(item, quantity);     
+    }
+
+
+    void CommitSale(Item item, int quantity)
+    {
+        float price = PriceChecker.AppraiseItem(item, "Sale") * quantity;
         PlayerWallet.instance.Deposit(price);
         Debug.Log("You have been credited $" + price);
+
+        CondenseStackables(item, quantity);
+
+        item.quantity = quantity;
+        ShopInventory.instance.AddToSoldSlot(item);
+    }
+
+    void CondenseStackables(Item item, int quantity)
+    {
+        Inventory inv = Inventory.instance;
+        if (item.quantity - quantity < 1)
+        {
+            inv.Remove(item);
+        }
+        else
+        {
+            Item newCopyOfItemForInventory = Instantiate(item);
+            newCopyOfItemForInventory.quantity -= quantity;
+
+            inv.Remove(item);
+            inv.AddItem(newCopyOfItemForInventory);
+        }
     }
 
     #endregion
@@ -282,7 +323,7 @@ public class SlotClick : MonoBehaviour {
 
         if (item != null)
         {
-            StartCoroutine(PurchaseItem(item)); //should have a way to exit this if player is knocked out of shopping during a purchase, no?
+            StartCoroutine(PurchaseItem(item));
         }
     }
 
@@ -350,6 +391,13 @@ public class SlotClick : MonoBehaviour {
         Item newCopyOfItemForInventory = Instantiate(item);
         newCopyOfItemForInventory.quantity = quantity;
         Inventory.instance.AddItem(newCopyOfItemForInventory);
+    }
+
+    void CreateNewItemForShop(Item item, int quantity)
+    {
+        Item newCopyOfItemForShop = Instantiate(item);
+        newCopyOfItemForShop.quantity = quantity;
+        ShopInventory.instance.AddToSoldSlot(item);
     }
 
     #endregion
