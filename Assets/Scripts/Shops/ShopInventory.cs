@@ -31,22 +31,22 @@ public class ShopInventory : MonoBehaviour {
 
     void Start()
     {
-        //fill inventory with null spaces
+        //fill shop with null spaces
         for (int i = 0; i < inventorySpace; i++)
         {
             items.Add(null);
         }
     }
 
+
     public void AddToSoldSlot(Item item)
     {
-        int lastSlot = inventorySpace - 1;
+        int lastSlot = inventorySpace - 1; 
         lastItemSold = item;
         lastItemSold.slotNum = lastSlot;
         items.Insert(lastSlot, lastItemSold);
         soldSlot.AddItem(lastItemSold);
     }
-
 
     public bool AddToFirstEmptySlot(Item item)
     {
@@ -68,20 +68,6 @@ public class ShopInventory : MonoBehaviour {
         return false;
     }
 
-    #region probably won't use these
-    public void AddToSpecificSlot(Item item)
-    {
-        int slotNum = item.slotNum.GetValueOrDefault();
-
-        items.RemoveAt(slotNum);
-        items.Insert(slotNum, item);
-
-        //Debug.Log("Instance ID of "+ items[i] + " is: " + items[i].GetInstanceID()); 
-
-        Callback();
-    }
-    #endregion
-
     Item CheckIfAlreadyInstantiated(Item item)
     {
         if (item.slotNum == null)
@@ -93,7 +79,6 @@ public class ShopInventory : MonoBehaviour {
         return item;
     }
  
-
     public void Remove(Item item)
     {
         int itemIndex = item.slotNum.GetValueOrDefault();
@@ -109,7 +94,6 @@ public class ShopInventory : MonoBehaviour {
         items.Insert(slotNum, item); //replace it with actual item
 
         items[slotNum].slotNum = slotNum; //save refrence to the slot it's been placed in
-        //Debug.Log(item.name + "'s index on load is: " + slotNum);
     }
 
     public void ClearShopInventory()
@@ -119,6 +103,7 @@ public class ShopInventory : MonoBehaviour {
             if(items[i] != null)
             {
                 Remove(items[i]);
+                Destroy(items[i]);
             }
         }
     }

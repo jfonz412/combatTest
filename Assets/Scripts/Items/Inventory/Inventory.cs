@@ -37,7 +37,7 @@ public class Inventory : MonoBehaviour {
     }
 
     //this returns the amount of leftover items that could not be added
-    public int AddItem(Item item)
+    public int AddItem(Item item) //kind of more like pickup item
     {
         item = ConvertToInventoryItem(item);
 
@@ -113,8 +113,6 @@ public class Inventory : MonoBehaviour {
         items.RemoveAt(slotNum);     
         items.Insert(slotNum, item);
 
-        //Debug.Log("Instance ID of "+ items[i] + " is: " + items[i].GetInstanceID()); 
-
         Callback();
     }
 
@@ -133,7 +131,7 @@ public class Inventory : MonoBehaviour {
     public void RemoveAndDestroy(Item item)
     {
         Remove(item);
-        Destroy(item); //this should eventually remove item from memory...
+        Destroy(item); 
     }
 
     void Callback()

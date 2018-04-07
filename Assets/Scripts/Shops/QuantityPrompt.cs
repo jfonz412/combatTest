@@ -5,8 +5,9 @@ using UnityEngine.UI;
 public class QuantityPrompt : MonoBehaviour {
 
     public GameObject promptWindow;
-    //public Text quantityInput;
+    [HideInInspector]
     public bool waitingForInput = false;
+    [HideInInspector]
     public int enteredAmount = 0;
 
     IEnumerator waitForInput;
@@ -70,7 +71,7 @@ public class QuantityPrompt : MonoBehaviour {
     {
         waitingForInput = false;
 
-        //if int not passed in just return 0
+        //if int not passed in we just return 0
         if(!int.TryParse(input.text, out enteredAmount)) 
         {
             enteredAmount = 0;
