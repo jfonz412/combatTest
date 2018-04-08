@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class MouseSlot : MonoBehaviour {
 
@@ -58,6 +57,17 @@ public class MouseSlot : MonoBehaviour {
         {
             if (currentItem != null)
                 spriteRenderer.sprite = currentItemSprite;
+        }
+    }
+
+    public void DeleteItem()
+    {
+        if(currentItem != null)
+        {
+            currentItem = null;
+            spriteRenderer.sprite = null;
+            Destroy(currentItem);
+            Debug.Log("Item destroyed");
         }
     }
 }
