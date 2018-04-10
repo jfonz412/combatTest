@@ -143,15 +143,33 @@ public class SlotClick : MonoBehaviour {
         }
     }
 
+    public void RightClickedToSell(Item item)
+    {
+        float price = PriceChecker.AppraiseItem(item, "Sale") * item.quantity;
+
+        Inventory.instance.Remove(item);
+        ShopInventory.instance.AddToSoldSlot(item);
+        PlayerWallet.instance.Deposit(price);
+        Debug.Log("Item sold");
+        
+    }
 
 
     #endregion
 
     #region Shop Slot Clicks
 
-    public  void ShopSlotRightClicked(Item item)
+    public void ShopSlotRightClicked(Item item)
     {
-        Debug.Log("Shop slot right clicked (does nothing)");
+        float price = PriceChecker.AppraiseItem(item, "Purchase") * item.quantity;
+
+        if (PlayerWallet.instance.balance >= price)
+        {
+            ShopInventory.instance.Remove(item);
+            Inventory.instance.AddItem(item);
+            PlayerWallet.instance.Withdraw(price);
+            Debug.Log("Item purchased");
+        }
     }
 
     public  void ShopSlotHoverOver(Item item)
