@@ -39,7 +39,7 @@ public class Inventory : MonoBehaviour {
     //this returns the amount of leftover items that could not be added
     public int AddItem(Item item) //kind of more like pickup item
     {
-        item = ConvertToInventoryItem(item);
+        //item = ConvertToInventoryItem(item);
 
         int leftovers = AttemptToStackItem(item);
 
