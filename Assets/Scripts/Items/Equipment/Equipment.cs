@@ -8,7 +8,8 @@ public class Equipment : Item {
 
     public override void Use()
     {
-        base.Use();
+        //base.Use();
+        Transform player = PlayerManager.instance.player.transform;
 
         Debug.Log("Equipping item");
 

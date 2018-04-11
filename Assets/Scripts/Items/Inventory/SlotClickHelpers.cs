@@ -133,7 +133,7 @@ public class SlotClickHelpers : MonoBehaviour {
         mouseSlot.UpdateItem(previousItem);     //add old item to mouseSlot
     }
 
-    //SHOP HELPERS
+    //SHOPPPING HELPERS
 
     public IEnumerator SellItem(Item item)
     {
@@ -170,6 +170,7 @@ public class SlotClickHelpers : MonoBehaviour {
         ShopInventory.instance.AddToSoldSlot(item);
     }
 
+    //this should be an inventory method, then it can be used by items and it makes more sense
     void CondenseStackables(Item item, int quantity)
     {
         Inventory inv = Inventory.instance;

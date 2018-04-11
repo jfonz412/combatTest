@@ -3,23 +3,30 @@
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")] //allows us to create Items like we can create folders, scripts, etc.
 public class Item : ScriptableObject {
 
-    [HideInInspector]
-    public Transform player;
-
     public Sprite icon = null;
     public int? slotNum; //allows the int to be null
 
     new public string name = "New Item";
+
     public float baseValue = 100f;
     public float currentValue;
+
     public int quantity = 1;
     public int maxQuantity = 99;
     public bool stackable;
 
     public virtual void Use()
     {
-        //player is always going to be the one using the item so might as well grab this here in the base item script
-        player = PlayerManager.instance.player.transform;
+        Transform player = PlayerManager.instance.player.transform;
+
+        //create seperate item classes (equipment, consumable, crafting, etc. to handle differernt use cases)
+        quantity -= 1;
+        if(quantity < 1)
+        {
+            RemoveFromInventory();
+            //effect on player
+            //message to player ("You feel better!")
+        }
         Debug.Log("Using " + name);
     }
 
@@ -41,9 +48,9 @@ public class Item : ScriptableObject {
         return spawnPoint;
     }
 
-    public void RemoveFromInventory()
+    void RemoveFromInventory()
     {
-        Inventory.instance.Remove(this);
+        Inventory.instance.RemoveAndDestroy(this);
     }
 
     public void DetermineValue(string itemLocation)
