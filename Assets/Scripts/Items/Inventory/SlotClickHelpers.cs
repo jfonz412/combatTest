@@ -164,29 +164,12 @@ public class SlotClickHelpers : MonoBehaviour {
         PlayerWallet.instance.Deposit(price);
         Debug.Log("You have been credited $" + price);
 
-        CondenseStackables(item, quantity);
+        Inventory.instance.CondenseStackables(item, quantity);
 
         item.quantity = quantity;
         ShopInventory.instance.AddToSoldSlot(item);
     }
 
-    //this should be an inventory method, then it can be used by items and it makes more sense
-    void CondenseStackables(Item item, int quantity)
-    {
-        Inventory inv = Inventory.instance;
-        if (item.quantity - quantity < 1)
-        {
-            inv.Remove(item);
-        }
-        else
-        {
-            Item newCopyOfItemForInventory = Instantiate(item);
-            newCopyOfItemForInventory.quantity -= quantity;
-
-            inv.Remove(item);
-            inv.AddItem(newCopyOfItemForInventory);
-        }
-    }
     #endregion
 
     #region ShopSlot

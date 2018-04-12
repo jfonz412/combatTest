@@ -15,18 +15,12 @@ public class Item : ScriptableObject {
     public int maxQuantity = 99;
     public bool stackable;
 
+    //create seperate item classes (equipment, consumable, crafting, etc. to handle differernt use cases)
     public virtual void Use()
     {
         Transform player = PlayerManager.instance.player.transform;
 
-        //create seperate item classes (equipment, consumable, crafting, etc. to handle differernt use cases)
-        quantity -= 1;
-        if(quantity < 1)
-        {
-            RemoveFromInventory();
-            //effect on player
-            //message to player ("You feel better!")
-        }
+        Inventory.instance.CondenseStackables(this, 1);
         Debug.Log("Using " + name);
     }
 

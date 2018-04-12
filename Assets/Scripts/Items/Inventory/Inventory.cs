@@ -162,4 +162,21 @@ public class Inventory : MonoBehaviour {
 
         return item;
     }
+
+    public void CondenseStackables(Item item, int amountRemoved)
+    {
+        //Inventory inv = Inventory.instance;
+        if (item.quantity - amountRemoved < 1)
+        {
+            Remove(item);
+        }
+        else
+        {
+            Item newCopyOfItemForInventory = Instantiate(item);
+            newCopyOfItemForInventory.quantity -= amountRemoved;
+
+            Remove(item);
+            AddItem(newCopyOfItemForInventory);
+        }
+    }
 }
