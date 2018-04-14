@@ -107,7 +107,7 @@ public class SlotClickHelpers : MonoBehaviour {
         Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");
         Item previousItem = slot.item;             //save a copy of the slotItem
         inventory.Remove(previousItem);       //remove the item in the slot 
-        mouseSlot.UpdateItem(previousItem); //place previous item in the mouseSlot            //place previous item in the mouseSlot (as an item)?
+        mouseSlot.UpdateItem(previousItem); //place previous item in the mouseSlot          
     }
 
     public void PlaceItemInEmptySlot(MouseSlot mouseSlot, InventorySlot slot)

@@ -37,7 +37,8 @@ public class Item : ScriptableObject {
     public Vector3 WindowSpawnPoint()
     {
         Vector3 spawnPoint = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        spawnPoint.y += 1f;
+        spawnPoint.y += 1.75f;
+        spawnPoint.x -= 2f;
         spawnPoint.z = 0f;
         return spawnPoint;
     }

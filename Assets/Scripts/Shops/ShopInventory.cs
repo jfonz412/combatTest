@@ -38,7 +38,6 @@ public class ShopInventory : MonoBehaviour {
         }
     }
 
-
     public void AddToSoldSlot(Item item)
     {
         int lastSlot = inventorySpace - 1; 
@@ -67,17 +66,6 @@ public class ShopInventory : MonoBehaviour {
         Debug.Log("Inventory is full");
         return false;
     }
-
-    Item CheckIfAlreadyInstantiated(Item item)
-    {
-        if (item.slotNum == null)
-        {
-            item = Instantiate(item);
-            Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
-        }
-
-        return item;
-    }
  
     public void Remove(Item item)
     {
@@ -85,14 +73,6 @@ public class ShopInventory : MonoBehaviour {
         items.RemoveAt(itemIndex);
         items.Insert(itemIndex, null);
         Callback();
-    }
-
-    void InsertItemIntoEmptySlot(Item item, int slotNum)
-    {
-        items.RemoveAt(slotNum); //remove the null item
-        items.Insert(slotNum, item); //replace it with actual item
-
-        items[slotNum].slotNum = slotNum; //save refrence to the slot it's been placed in
     }
 
     public void ClearShopInventory()
@@ -107,6 +87,26 @@ public class ShopInventory : MonoBehaviour {
         }
     }
 
+
+    Item CheckIfAlreadyInstantiated(Item item)
+    {
+        if (item.slotNum == null)
+        {
+            item = Instantiate(item);
+            Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
+        }
+
+        return item;
+    }
+
+    void InsertItemIntoEmptySlot(Item item, int slotNum)
+    {
+        items.RemoveAt(slotNum); //remove the null item
+        items.Insert(slotNum, item); //replace it with actual item
+
+        items[slotNum].slotNum = slotNum; //save refrence to the slot it's been placed in
+    }
+
     void Callback()
     {
         if (onInventoryChanged != null)
@@ -114,6 +114,4 @@ public class ShopInventory : MonoBehaviour {
             onInventoryChanged.Invoke(); //callback
         }
     }
-
-
 }

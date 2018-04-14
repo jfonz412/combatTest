@@ -42,7 +42,11 @@ public class ItemMenu : MonoBehaviour {
         {           
             myStats[0] = item.name;
             myStats[1] = "Value: " + item.currentValue.ToString();
-            myStats[2] = "Quantity: " + item.quantity.ToString();           
+            if (item.stackable)
+            {
+                myStats[2] = "Quantity: " + item.quantity.ToString();
+            }
+            myStats[3] = "This is a hardcoded description for the item. It will be replaced with a custom string, but for now I want something as long as a typical item description might be.";
         }
         return myStats;
     }

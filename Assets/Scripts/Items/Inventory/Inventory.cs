@@ -36,8 +36,8 @@ public class Inventory : MonoBehaviour {
         }
     }
 
-    //this returns the amount of leftover items that could not be added
-    public int AddItem(Item item) //kind of more like pickup item
+    //returns the amount of leftover items that could not be stacked
+    public int AddItem(Item item)
     {
         //item = ConvertToInventoryItem(item);
 
@@ -57,55 +57,6 @@ public class Inventory : MonoBehaviour {
         }
     }
 
-    int AttemptToStackItem(Item newItem)
-    {
-        for (int i = 0; i < inventorySpace; i++)
-        {
-            if(items[i] != null)
-            {
-                if (items[i].name == newItem.name)
-                {
-                    newItem.quantity = TransferQuantity(i, newItem.quantity);
-                }
-            }
-        }
-
-        return newItem.quantity;
-    }
-
-    int TransferQuantity(int slot, int newItemQuantity)
-    {
-        int maxQ = items[slot].maxQuantity;
-
-        while (items[slot].quantity != maxQ && newItemQuantity != 0) //or?
-        {
-            items[slot].quantity++;
-            newItemQuantity--;
-        }
-
-        return newItemQuantity;
-    }
-
-    bool AddToFirstEmptySlot(Item item)
-    {
-        //check if there are any empty slots/items
-        for (int i = 0; i < inventorySpace; i++)
-        {
-            if(items[i] == null)
-            {
-                item = ConvertToInventoryItem(item);
-
-                InsertItemIntoEmptySlot(item, i);
-
-                Callback();
-                return true;
-            }
-        }
-
-        Debug.Log("Inventory is full");
-        return false;
-    }
-
     public void AddToSpecificSlot(Item item)
     {
         int slotNum = item.slotNum.GetValueOrDefault();
@@ -114,6 +65,22 @@ public class Inventory : MonoBehaviour {
         items.Insert(slotNum, item);
 
         Callback();
+    }
+
+    public void CondenseStackables(Item item, int amountRemoved)
+    {
+        if (item.quantity - amountRemoved < 1)
+        {
+            Remove(item);
+        }
+        else
+        {
+            Item newCopyOfItemForInventory = Instantiate(item);
+            newCopyOfItemForInventory.quantity -= amountRemoved;
+
+            Remove(item); //and destroy?
+            AddItem(newCopyOfItemForInventory);
+        }
     }
 
     //Removes but doesn't destroy the item
@@ -134,12 +101,54 @@ public class Inventory : MonoBehaviour {
         Destroy(item); 
     }
 
-    void Callback()
+    #region private methods
+    int AttemptToStackItem(Item newItem)
     {
-        if (onInventoryChanged != null)
+        for (int i = 0; i < inventorySpace; i++)
         {
-            onInventoryChanged.Invoke(); //callback
+            if (items[i] != null)
+            {
+                if (items[i].name == newItem.name)
+                {
+                    newItem.quantity = AddQuantityToSlot(i, newItem.quantity);
+                }
+            }
         }
+
+        return newItem.quantity;
+    }
+
+    int AddQuantityToSlot(int slot, int newItemQuantity)
+    {
+        int maxQ = items[slot].maxQuantity;
+
+        while (items[slot].quantity != maxQ && newItemQuantity != 0)
+        {
+            items[slot].quantity++;
+            newItemQuantity--;
+        }
+
+        return newItemQuantity;
+    }
+
+    bool AddToFirstEmptySlot(Item item)
+    {
+        //check if there are any empty slots/items
+        for (int i = 0; i < inventorySpace; i++)
+        {
+            if (items[i] == null)
+            {
+                item = ConvertToInventoryItem(item);
+
+                InsertItemIntoEmptySlot(item, i);
+
+                Callback();
+                return true;
+            }
+        }
+
+        Debug.Log("Inventory is full");
+        return false;
     }
 
     void InsertItemIntoEmptySlot(Item item, int slotNum)
@@ -163,20 +172,12 @@ public class Inventory : MonoBehaviour {
         return item;
     }
 
-    public void CondenseStackables(Item item, int amountRemoved)
+    void Callback()
     {
-        //Inventory inv = Inventory.instance;
-        if (item.quantity - amountRemoved < 1)
+        if (onInventoryChanged != null)
         {
-            Remove(item);
-        }
-        else
-        {
-            Item newCopyOfItemForInventory = Instantiate(item);
-            newCopyOfItemForInventory.quantity -= amountRemoved;
-
-            Remove(item);
-            AddItem(newCopyOfItemForInventory);
+            onInventoryChanged.Invoke(); //callback
         }
     }
+#endregion
 }
