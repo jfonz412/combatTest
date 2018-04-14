@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 public class EquipmentStats : MonoBehaviour {
 
-    [HideInInspector]
-    public Text[] equipmentInfo = new Text[4]; //actual text items
+    Text[] equipmentInfo = new Text[5]; //actual text items
 
 
     #region Singleton 
@@ -22,8 +21,13 @@ public class EquipmentStats : MonoBehaviour {
 
     public void PopulateStats(string[] stats)
     {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            print(i);
+        }
         for (int i = 0; i < stats.Length; i++)
         {
+            //print(i);
             equipmentInfo[i] = transform.GetChild(i).GetComponent<Text>();
             equipmentInfo[i].text = stats[i];
         }      

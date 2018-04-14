@@ -17,11 +17,12 @@ public class Armor : Equipment {
     {
         base.OpenStatWindow(itemLocation);
 
-        string[] myStats = new string[4];
-        myStats[0] = "Defense: " + defense.ToString();
+        string[] myStats = new string[5];
+        myStats[0] = name;
         myStats[1] = "Condition: " + armorCondition.ToString();
         myStats[2] = "Weight: " + weight.ToString();
         myStats[3] = "Value: " + currentValue.ToString();
+        myStats[4] = "This is a hardcoded description for the item. It will be replaced with a custom string, but for now I want something as long as a typical item description might be.";
 
         EquipmentStats.instance.PopulateStats(myStats);
     }
