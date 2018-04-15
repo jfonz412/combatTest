@@ -22,7 +22,12 @@ public class Equipment : Item {
     public override void OpenStatWindow(string itemLocation)
     {
         DetermineValue(itemLocation);
-        Instantiate(Resources.Load("EquipmentStats"), InfoPanel.instance.transform.position, Quaternion.identity, InfoPanel.instance.transform);
+
+        InfoPanel panel = InfoPanel.instance;
+        if (panel != null)
+        {
+            Instantiate(Resources.Load("EquipmentStats"), panel.transform.position, Quaternion.identity, panel.transform);
+        }
     }
     
     

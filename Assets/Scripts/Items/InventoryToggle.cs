@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InventoryToggle : MonoBehaviour {
 
@@ -56,9 +54,22 @@ public class InventoryToggle : MonoBehaviour {
     {
         if (PlayerState.CheckPlayerState(invalidStates))
         {
-            inventoryUI.SetActive(false);
-            MouseSlot.instance.ToggleSprite(inventoryUI.activeSelf);
+            CloseInventory();
+        }
+
+        if(PlayerState.currentState == PlayerState.PlayerStates.Shopping)
+        {
+            OpenInventory();
         }
     }
+
+    public void OpenInventory()
+    {
+        inventoryUI.SetActive(true);
+        equipUI.SetActive(true);
+        infoPanelUI.SetActive(true);
+        MouseSlot.instance.ToggleSprite(true);
+    }
+
 
 }

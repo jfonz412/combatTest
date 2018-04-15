@@ -21,10 +21,6 @@ public class EquipmentStats : MonoBehaviour {
 
     public void PopulateStats(string[] stats)
     {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            print(i);
-        }
         for (int i = 0; i < stats.Length; i++)
         {
             //print(i);

@@ -168,7 +168,7 @@ public class SlotClick : MonoBehaviour {
             ShopInventory.instance.Remove(item);
             Inventory.instance.AddItem(item);
             PlayerWallet.instance.Withdraw(price);
-            Debug.Log("Item purchased");
+            ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
         }
     }
 

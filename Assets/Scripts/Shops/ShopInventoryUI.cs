@@ -5,6 +5,7 @@ public class ShopInventoryUI : MonoBehaviour {
 
     public Transform itemsParent;
     public GameObject shopUI;
+    public GameObject shopDialogue;
     public Text panel;
 
     ShopInventory shop;
@@ -59,7 +60,7 @@ public class ShopInventoryUI : MonoBehaviour {
     {
         //to be trigged by NPC interaction
         shopUI.SetActive(active);
-
+        shopDialogue.SetActive(active);
         CloseOpenWindows.instance.DestroyPopupMenus(); //not sure why I have this? Might not be needed now that I have states
 
         if (!active)

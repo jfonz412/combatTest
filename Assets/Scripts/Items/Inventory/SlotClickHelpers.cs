@@ -168,6 +168,8 @@ public class SlotClickHelpers : MonoBehaviour {
 
         item.quantity = quantity;
         ShopInventory.instance.AddToSoldSlot(item);
+
+        ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
     }
 
     #endregion
@@ -212,6 +214,7 @@ public class SlotClickHelpers : MonoBehaviour {
         else
         {
             Debug.Log("Insufficient funds, balance: $" + wallet.balance);
+            ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.LOW_GOLD);
         }
     }
 
@@ -229,6 +232,7 @@ public class SlotClickHelpers : MonoBehaviour {
         }
 
         CreateNewItemForInventory(item, quantity);
+        ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
     }
 
     void CreateNewItemForInventory(Item item, int quantity)

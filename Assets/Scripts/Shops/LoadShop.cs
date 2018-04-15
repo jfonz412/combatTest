@@ -2,12 +2,26 @@
 
 public class LoadShop : MonoBehaviour {
 
-    ShopInventory shop;
     public Item[] shopInventory = new Item[17];
+    ShopInventory shop;
+    ShopDialogue dialogueWindow;
+
+    [HideInInspector]
+    public enum MessageType { WELCOME, INV_FULL, LOW_GOLD, SUCCESS }
+
+    [System.Serializable]
+    public class MyShopDialogue
+    {
+        public MessageType messageType;
+        public string message;
+    }
+
+    public MyShopDialogue[] shopDialogue;
 
     void Start()
     {
         shop = ShopInventory.instance;
+        dialogueWindow = ShopDialogue.instance;
     }
 
     public void LoadShopInventory()
@@ -19,5 +33,9 @@ public class LoadShop : MonoBehaviour {
                 shop.AddToFirstEmptySlot(shopInventory[i]);
             }
         }
+
+        dialogueWindow.LoadShopDialogue(shopDialogue);
     }
+
+
 }

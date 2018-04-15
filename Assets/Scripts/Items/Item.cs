@@ -27,9 +27,13 @@ public class Item : ScriptableObject {
     public virtual void OpenStatWindow(string itemLocation)
     {
         DetermineValue(itemLocation);
-        Instantiate(Resources.Load("ItemMenu"), InfoPanel.instance.transform.position, Quaternion.identity, InfoPanel.instance.transform);
 
-        ItemMenu.instance.PopulateStats(this);
+        InfoPanel panel = InfoPanel.instance;
+        if(panel != null)
+        {
+            Instantiate(Resources.Load("ItemMenu"), panel.transform.position, Quaternion.identity, panel.transform);
+            ItemMenu.instance.PopulateStats(this);
+        }
     }
 
     void RemoveFromInventory()
