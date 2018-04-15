@@ -3,7 +3,6 @@
 public class CloseOpenWindows : MonoBehaviour {
 
     public Canvas canvas;
-    InventoryUI inventoryUI;
     EquipUI equipUI;
 
     #region Singleton
@@ -18,12 +17,6 @@ public class CloseOpenWindows : MonoBehaviour {
         instance = this;
     }
     #endregion
-
-    void Start()
-    {
-        inventoryUI = canvas.GetComponent<InventoryUI>();
-        equipUI = canvas.GetComponent<EquipUI>();
-    }
 
     public void DestroyPopupMenus()
     {
@@ -47,9 +40,7 @@ public class CloseOpenWindows : MonoBehaviour {
     public void CloseAllWindows()
     {
         DestroyPopupMenus();
-        equipUI.equipmentUI.SetActive(false);
-        inventoryUI.inventoryUI.SetActive(false);
-        MouseSlot.instance.ToggleSprite(inventoryUI.inventoryUI.activeSelf);
+        InventoryToggle.instance.CloseInventory();
         DialogueManager.instance.dialogueWindow.SetBool("isOpen", false); 
     }
 

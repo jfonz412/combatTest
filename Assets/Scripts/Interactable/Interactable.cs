@@ -30,7 +30,7 @@ public class Interactable : MonoBehaviour {
     {
         Vector3 menuSpawnPoint = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
 
-        Instantiate(Resources.Load("InteractionMenu"), menuSpawnPoint, Quaternion.identity, CanvasUI.instance.CanvasTransform); //FindObjectOfType is iffy, might not always grab proper canvas
+        Instantiate(Resources.Load("InteractionMenu"), menuSpawnPoint, Quaternion.identity, CanvasUI.instance.transform); //FindObjectOfType is iffy, might not always grab proper canvas
 
         InteractableMenu.instance.PopulateOptions(this);
     }

@@ -27,20 +27,9 @@ public class Item : ScriptableObject {
     public virtual void OpenStatWindow(string itemLocation)
     {
         DetermineValue(itemLocation);
-
-        Vector3 spawnPoint = WindowSpawnPoint();
-        Instantiate(Resources.Load("ItemMenu"), spawnPoint, Quaternion.identity, CanvasUI.instance.CanvasTransform);
+        Instantiate(Resources.Load("ItemMenu"), InfoPanel.instance.transform.position, Quaternion.identity, InfoPanel.instance.transform);
 
         ItemMenu.instance.PopulateStats(this);
-    }
-
-    public Vector3 WindowSpawnPoint()
-    {
-        Vector3 spawnPoint = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        spawnPoint.y += 1.75f;
-        spawnPoint.x -= 2f;
-        spawnPoint.z = 0f;
-        return spawnPoint;
     }
 
     void RemoveFromInventory()

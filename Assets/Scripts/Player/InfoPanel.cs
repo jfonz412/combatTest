@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 
-public class CanvasUI : MonoBehaviour {
+public class InfoPanel : MonoBehaviour {
     #region Singleton
-    public static CanvasUI instance;
+    public static InfoPanel instance;
 
     void Awake()
     {
         instance = this;
     }
     #endregion
-
 }
