@@ -150,8 +150,7 @@ public class SlotClick : MonoBehaviour {
         Inventory.instance.Remove(item);
         ShopInventory.instance.AddToSoldSlot(item);
         PlayerWallet.instance.Deposit(price);
-        Debug.Log("Item sold");
-        
+        ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
     }
 
 
@@ -163,12 +162,16 @@ public class SlotClick : MonoBehaviour {
     {
         float price = PriceChecker.AppraiseItem(item, "Purchase") * item.quantity;
 
-        if (PlayerWallet.instance.balance >= price)
+        if (PlayerWallet.instance.balance >= price && Inventory.instance.CheckInventorySpace(item))
         {
             ShopInventory.instance.Remove(item);
             Inventory.instance.AddItem(item);
             PlayerWallet.instance.Withdraw(price);
             ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
+        }
+        else
+        {
+            ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.INVAL_QNTY); //SHOULD BE "GENERIC_NO"
         }
     }
 

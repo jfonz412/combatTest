@@ -7,7 +7,7 @@ public class LoadShop : MonoBehaviour {
     ShopDialogue dialogueWindow;
 
     [HideInInspector]
-    public enum MessageType { WELCOME, INV_FULL, LOW_GOLD, SUCCESS }
+    public enum MessageType { WELCOME, INV_FULL, LOW_GOLD, SUCCESS, INVAL_QNTY }
 
     [System.Serializable]
     public class MyShopDialogue

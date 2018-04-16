@@ -150,6 +150,7 @@ public class SlotClickHelpers : MonoBehaviour {
             if (quantity < 1 || quantity > item.quantity)
             {
                 Debug.Log("Invalid quantity input: " + quantity);
+                ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.INVAL_QNTY);
                 yield break; //do nothing if quantity is 0 
             }
         }
@@ -193,6 +194,7 @@ public class SlotClickHelpers : MonoBehaviour {
             if (quantity < 1 || quantity > item.quantity)
             {
                 Debug.Log("Invalid quantity input: " + quantity);
+                ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.INVAL_QNTY);
                 yield break; //do nothing if quantity is 0 
             }
         }
@@ -208,8 +210,7 @@ public class SlotClickHelpers : MonoBehaviour {
 
         if (price <= wallet.balance)
         {
-            wallet.Withdraw(price);
-            CommitPurchase(item, quantity);
+            CommitPurchase(item, quantity, price);
         }
         else
         {
@@ -219,27 +220,43 @@ public class SlotClickHelpers : MonoBehaviour {
     }
 
     //PURCHASE HELPERS
-    void CommitPurchase(Item item, int quantity)
+    void CommitPurchase(Item item, int quantity, float price)
     {
+        PlayerWallet wallet = PlayerWallet.instance;
+        Item newItem = CreateNewItemForInventory(item, quantity);
 
+        if(Inventory.instance.CheckInventorySpace(newItem))
+        {
+            AdjustShopStock(item, quantity);
+            Inventory.instance.AddItem(newItem);
+            wallet.Withdraw(price);
+            ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
+        }
+        else
+        {
+            ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.INV_FULL);
+            //Debug.LogWarning("Item has been added to your inventory even though the inventory is full. You did not pay.");
+        }
+
+    }
+
+    void AdjustShopStock(Item item, int quantity)
+    {
         if (item.quantity - quantity < 1)
         {
-            ShopInventory.instance.Remove(item);
+            ShopInventory.instance.Remove(item); //and destroy???
         }
         else
         {
             item.quantity -= quantity;
         }
-
-        CreateNewItemForInventory(item, quantity);
-        ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
     }
 
-    void CreateNewItemForInventory(Item item, int quantity)
+    Item CreateNewItemForInventory(Item item, int quantity)
     {
-        Item newCopyOfItemForInventory = Instantiate(item);
-        newCopyOfItemForInventory.quantity = quantity;
-        Inventory.instance.AddItem(newCopyOfItemForInventory);
+        Item newItem = Instantiate(item);
+        newItem.quantity = quantity;
+        return newItem;
     }
 
     void CreateNewItemForShop(Item item, int quantity)
