@@ -225,7 +225,7 @@ public class SlotClickHelpers : MonoBehaviour {
         PlayerWallet wallet = PlayerWallet.instance;
         Item newItem = CreateNewItemForInventory(item, quantity);
 
-        if(Inventory.instance.CheckInventorySpace(newItem))
+        if(CheckInventorySpace.CheckItem(newItem))
         {
             AdjustShopStock(item, quantity);
             Inventory.instance.AddItem(newItem);

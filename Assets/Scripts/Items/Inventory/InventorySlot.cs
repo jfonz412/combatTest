@@ -32,18 +32,18 @@ public class InventorySlot : MonoBehaviour
 
     public virtual void SlotHoverOver()
     {
-        SlotClick.instance.InventorySlotHoverOver(item);
+        InvSlotClick.instance.InventorySlotHoverOver(item);
     }
 
     public virtual void SlotRightClicked()
     {
         if (PlayerState.currentState == PlayerState.PlayerStates.Shopping)
         {
-            SlotClick.instance.RightClickedToSell(item);
+            InvSlotClick.instance.RightClickedToSell(item);
         }
         else
         {
-            SlotClick.instance.InventorySlotRightClicked(item);
+            InvSlotClick.instance.InventorySlotRightClicked(item);
         }
     }
 
@@ -51,11 +51,11 @@ public class InventorySlot : MonoBehaviour
     {
         if(PlayerState.currentState == PlayerState.PlayerStates.Shopping)
         {
-            SlotClick.instance.LeftClickedToSell(this);
+            InvSlotClick.instance.LeftClickedToSell(this);
         }
         else
         {
-            SlotClick.instance.InventorySlotLeftClicked(this);
+            InvSlotClick.instance.InventorySlotLeftClicked(this);
         }
 
     }

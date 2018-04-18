@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 //THIS SCRIPT IS GETTING BIG, CONSIDER SPLITTING IT INTO 3 SEPERATE SCRIPTS?
 public class SlotClick : MonoBehaviour {
 
     SlotClickHelpers slotClickHelper;
-
+    /*
     #region Singleton
 
     public static SlotClick instance;
@@ -162,7 +161,7 @@ public class SlotClick : MonoBehaviour {
     {
         float price = PriceChecker.AppraiseItem(item, "Purchase") * item.quantity;
 
-        if (PlayerWallet.instance.balance >= price && Inventory.instance.CheckInventorySpace(item))
+        if (PlayerWallet.instance.balance >= price && CheckInventorySpace.CheckItem(item))
         {
             ShopInventory.instance.Remove(item);
             Inventory.instance.AddItem(item);
@@ -193,4 +192,5 @@ public class SlotClick : MonoBehaviour {
         }
     }
     #endregion
+    */
 }
