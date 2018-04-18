@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+//this is on pick up items because it's not worth it to have an update method
+//called on every pickup item just because they might move around a little
 public class StaticObjectDepth : MonoBehaviour {
 
     SpriteRenderer sp;

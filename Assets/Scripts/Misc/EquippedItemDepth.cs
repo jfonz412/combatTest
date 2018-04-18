@@ -12,8 +12,6 @@ public class EquippedItemDepth : MonoBehaviour {
         {
             sp = transform.GetChild(0).GetComponent<SpriteRenderer>();
         }
-        
-        //SetDepth();
     }
 
     void Update()

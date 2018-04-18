@@ -11,14 +11,15 @@ public class UnitController : MonoBehaviour
     Vector3[] path;
     int targetIndex;
 
-    float movementSpeed = 2f; //standard for npcs, make this public?
+    float baseSpeed; 
+    float currentMoveSpeed;
 
     void Start()
     {
         anim = GetComponent<UnitAnimator>();
         rb = GetComponent<Rigidbody2D>();
         sp = transform.GetChild(0).GetComponent<SpriteRenderer>();
-
+        baseSpeed = GetComponent<Stats>().speed; //down the line make this a callback where everytime speed is modified this will update as well
         SetDepth();
     }
 
@@ -31,7 +32,7 @@ public class UnitController : MonoBehaviour
     {
         if (pathSuccessful)
         {
-            movementSpeed = 2f;
+            currentMoveSpeed = baseSpeed;
             targetIndex = 0;
             path = newPath;
 
@@ -79,7 +80,7 @@ public class UnitController : MonoBehaviour
                 IsKinematic(true);
             }
        
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, movementSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, currentMoveSpeed * Time.deltaTime);
             yield return null;
         }
     }
@@ -91,7 +92,7 @@ public class UnitController : MonoBehaviour
     {
         if (CurrentNode().walkable)
         {
-            //movementSpeed = 0;
+            //currentMoveSpeed = 0;
             if (followingPath != null)
             {
                 StopCoroutine(followingPath);

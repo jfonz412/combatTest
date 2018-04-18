@@ -67,11 +67,9 @@ public class PlayerController : MonoBehaviour {
     {
         CloseOpenWindows.instance.DestroyPopupMenus();
 
-        Vector3 mouseClickPos;
-        mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        mouseClickPos.z = 0f; //make sure this stays the same
+        Vector3 mouseClickPos = GetMouseClickPosition();
 
-        if(mouseButton == 0)
+        if (mouseButton == 0)
         {
             ProcessLeftClick(mouseClickPos);
         }
@@ -79,6 +77,14 @@ public class PlayerController : MonoBehaviour {
         {
             ProcessRightClick(mouseClickPos);
         }
+    }
+
+    Vector3 GetMouseClickPosition()
+    {
+        Vector3 mouseClickPos;
+        mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        mouseClickPos.z = 0f; //make sure this stays the same
+        return mouseClickPos;
     }
 
 
