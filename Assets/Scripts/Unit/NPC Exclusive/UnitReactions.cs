@@ -83,7 +83,7 @@ public class UnitReactions : MonoBehaviour
 
     public void RunAway(Transform attacker)
     {
-        if (!runningAway) //!isDead doesn't stop zombie running
+        if (!runningAway)
         {
             runningAway = true;
             StartCoroutine(RunFromAttacker(attacker));
@@ -99,7 +99,7 @@ public class UnitReactions : MonoBehaviour
         //PathfindingManager.RequestPath(transform.position, GetPosition(attacker), unitController.OnPathFound); //makes for a quick initial reaction
 
         interactions.RemovePeacefulInteractions();
-        while (attacker)
+        while (attacker && !isDead)
         {
             if (Vector3.Distance(transform.position, attacker.transform.position) < 3f) //runaway radius hardcoded
             {

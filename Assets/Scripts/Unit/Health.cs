@@ -31,10 +31,8 @@ public class Health : MonoBehaviour
         }
         else
         {
-            //IEnumerator death = Die(attacker);
-            IEnumerator death = Death.HumanoidDeath(transform, attacker);
-            StartCoroutine(death);
-        }      
+            TriggerDeath(attacker);
+        }
     }
 
     Armor PickBodyPart()
@@ -45,5 +43,13 @@ public class Health : MonoBehaviour
 
         //Debug.Log("Attacking bodypart #" + validChoices[num]);
         return (Armor)equipmentManager.currentEquipment[validChoices[num]];
+    }
+
+    void TriggerDeath(Transform attacker)
+    {
+        unitReactions.isDead = true;
+        unitReactions.ReactToAttackAgainstSelf(attacker);
+        IEnumerator death = Death.HumanoidDeath(transform, attacker);
+        StartCoroutine(death); //must start coroutine here because Death.cs is a static class
     }
 }

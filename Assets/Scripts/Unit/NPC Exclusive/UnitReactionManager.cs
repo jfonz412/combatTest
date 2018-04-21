@@ -24,14 +24,22 @@ public class UnitReactionManager : MonoBehaviour {
         {
             UnitReactions unit = units.unitReactors[i];
 
+            if(unit.isDead && unit != null)
+            {
+                Debug.Log(unit.name + " is dead or null");
+            }
+
             if (unit.isDead || unit == null)
             {
+
                 continue;
             }
 
             if (Vector3.Distance(unit.transform.position, location) < unit.reactionRadius)
             {
+                Debug.Log(unit.name + "is in the attack radius!!!");
                 unit.ReactToAttackAgainstOther(factionID, attacker);
+                Debug.Log("Reacting");
             }
         }
     }

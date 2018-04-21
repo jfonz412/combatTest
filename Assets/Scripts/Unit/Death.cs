@@ -15,8 +15,11 @@ public class Death : MonoBehaviour {
 
     static void IncapacitateEntity(Transform victim, Transform attacker)
     {
-        UnitReactions unitReactions = victim.GetComponent<UnitReactions>();
         NPCInteraction npcInteractions = victim.GetComponent<NPCInteraction>();
+
+        //the animator should be a shell for this
+        SpriteRenderer spriteRend = victim.GetChild(0).GetComponent<SpriteRenderer>();
+        spriteRend.color = Color.grey;
 
         //stop processing clicks if player
         if (victim.name == "Player")
@@ -29,7 +32,6 @@ public class Death : MonoBehaviour {
         if (npcInteractions != null)
         {
             npcInteractions.isDead = true;
-            unitReactions.isDead = true;
         }
     }
 

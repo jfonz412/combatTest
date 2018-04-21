@@ -11,7 +11,8 @@ public class UnitController : MonoBehaviour
     Vector3[] path;
     int targetIndex;
 
-    float baseSpeed; 
+    [HideInInspector]
+    public float baseSpeed; 
     float currentMoveSpeed;
 
     void Start()
