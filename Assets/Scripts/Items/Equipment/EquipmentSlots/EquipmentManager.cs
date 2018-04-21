@@ -55,7 +55,8 @@ public class EquipmentManager : MonoBehaviour {
         int slotIndex = (int)newItem.equipSlot;
 
         currentEquipment[slotIndex] = newItem;
-        unitAnim.LoadEquipment((int)newItem.equipSlot, newItem.equipmentID);
+        //I think we can toggle this on and off to load equip sprites across the board
+        //unitAnim.LoadEquipment((int)newItem.equipSlot, newItem.equipmentID);
 
         if (onEquipmentChanged != null)
         {
@@ -108,6 +109,6 @@ public class EquipmentManager : MonoBehaviour {
                 Debug.LogError("Invalid EquipSlot");
                 break;
         }
-        unitAnim.LoadEquipment((int)oldItem.equipSlot, 0); //adds naked/unarmed to anim slot
+        //unitAnim.LoadEquipment((int)oldItem.equipSlot, 0); //adds naked/unarmed to anim slot
     }
 }

@@ -65,7 +65,7 @@ public class UnitAnimator : MonoBehaviour
             loadedEquipment.transform.SetParent(unitBody.transform);
             loadedEquipment.transform.localPosition = new Vector3(0, 0, 0);
             loadedEquipment.GetComponent<EquippedItemDepth>().myOwner = transform;
-
+            Debug.Log(animIndex);
             animators[animIndex] = loadedEquipment.GetComponent<Animator>();
             ResetAnimators();
         }
