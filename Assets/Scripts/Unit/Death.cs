@@ -17,9 +17,7 @@ public class Death : MonoBehaviour {
     {
         NPCInteraction npcInteractions = victim.GetComponent<NPCInteraction>();
 
-        //the animator should be a shell for this
-        SpriteRenderer spriteRend = victim.GetChild(0).GetComponent<SpriteRenderer>();
-        spriteRend.color = Color.grey;
+        victim.GetComponent<UnitAnimController>().Die();
 
         //stop processing clicks if player
         if (victim.name == "Player")
@@ -39,12 +37,12 @@ public class Death : MonoBehaviour {
     {
         //stop the victim
         AttackController myAttackController = victim.GetComponent<AttackController>();
-        UnitAnimator myAnim = victim.GetComponent<UnitAnimator>();
+        //UnitAnimator myAnim = victim.GetComponent<UnitAnimator>();
 
         victim.GetComponent<UnitController>().StopMoving();
 
         myAttackController.EngageTarget(false);
-        myAnim.TriggerDeathAnimation();
+        //myAnim.TriggerDeathAnimation();
 
         //stop the attacker
         attacker.GetComponent<AttackController>().EngageTarget(false);

@@ -64,7 +64,8 @@ public class NPCInteraction : Interactable
     //can be used for descriptions and observations as well
     void TriggerDialogue()
     {
-        GetComponent<UnitAnimator>().FaceDirection(transform.position, player.position);
+        //GetComponent<UnitAnimator>().FaceDirection(transform.position, player.position);
+        GetComponent<UnitAnimController>().FaceDirection(transform.position, player.position);
         DialogueManager.instance.StartDialogue(dialog);
     }
 

@@ -24,6 +24,7 @@ public class Health : MonoBehaviour
         //Debug.Log(name + " has taken " + DamageCalculator.CalculateTotalDamage(damage, myStats.baseDefense, PickBodyPart()) + " damage!");
 
         FloatingTextController.CreateFloatingText(totalDamage.ToString(), transform);
+        GetComponent<UnitAnimController>().TakeDamage(); //cache?
 
         if (currentHealth > 0.0f)
         {

@@ -5,7 +5,7 @@ public class EquipmentManager : MonoBehaviour {
     [HideInInspector]
     public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead; //only for player
  
-    UnitAnimator unitAnim;
+    //UnitAnimator unitAnim;
 
     public Equipment[] currentEquipment;
 
@@ -14,7 +14,7 @@ public class EquipmentManager : MonoBehaviour {
 
 
     void Start () {
-        unitAnim = GetComponent<UnitAnimator>();
+        //unitAnim = GetComponent<UnitAnimator>();
 
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
         currentEquipment = new Equipment[numSlots];

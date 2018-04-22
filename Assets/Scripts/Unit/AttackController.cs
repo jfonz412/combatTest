@@ -16,7 +16,7 @@ public class AttackController : MonoBehaviour {
 
     Stats myStats;
 
-    UnitAnimator anim;
+    //UnitAnimator anim;
     UnitController unit;   
 
     float myAttackStat;
@@ -25,7 +25,7 @@ public class AttackController : MonoBehaviour {
     void Start()
     {
         myStats = GetComponent<Stats>(); //need to account for stat changes
-        anim = GetComponent<UnitAnimator>();
+        //anim = GetComponent<UnitAnimator>();
         unit = GetComponent<UnitController>();
 
         equipmentManager = GetComponent<EquipmentManager>();
@@ -53,7 +53,9 @@ public class AttackController : MonoBehaviour {
     /****************** PRIVATE FUNCTIONS **************************/
     IEnumerator MoveToEngagement(Transform targetTransform)
     {
-        anim.FaceDirection(transform.position, targetTransform.position);
+        //anim.FaceDirection(transform.position, targetTransform.position);
+        GetComponent<UnitAnimController>().FaceDirection(transform.position, targetTransform.position);
+
         yield return new WaitForSeconds(equippedWeapon.speed); //initial delay to prevent enemy attack-swapping
 
         while (targetTransform)
@@ -89,8 +91,11 @@ public class AttackController : MonoBehaviour {
     void AttackAnimation(Transform targetTransform)
     {
         unit.StopMoving();
-        anim.FaceDirection(transform.position, targetTransform.position);
-        anim.TriggerAttackAnimation(equippedWeapon.attackType);
+        //anim.FaceDirection(transform.position, targetTransform.position);
+        GetComponent<UnitAnimController>().FaceDirection(transform.position, targetTransform.position);
+
+        //anim.TriggerAttackAnimation(equippedWeapon.attackType);
+        GetComponent<UnitAnimController>().Attack(); 
     }
 
 
