@@ -4,12 +4,14 @@ using UnityEngine;
 public class UnitAnimController : MonoBehaviour {
 
     SpriteRenderer spriteRend;
+    Animator anim;
     public bool faceRightAtStart;
     bool dead;
 
 	// Use this for initialization
 	void Start ()
     {
+        anim = GetComponent<Animator>();
         spriteRend = transform.GetChild(0).GetComponent<SpriteRenderer>();
         if (faceRightAtStart)
         {
@@ -36,9 +38,9 @@ public class UnitAnimController : MonoBehaviour {
 
     #region Actions and Reactions
 
-    public void Walking(bool walking)
+    public void Walking(bool isWalking)
     {
-        //bob up and down
+        anim.SetBool("isWalking", isWalking);
     }
 
     public void TakeDamage()
@@ -72,9 +74,12 @@ public class UnitAnimController : MonoBehaviour {
         spriteRend.color = Color.grey;
     }
 
+    //eventually pass equippedWeapon.type from AttackController.cs in order to get different motions
+    //for spells, ranged, etc
+    //also maybe pass direction to this method in order to get more precise looking attack movements
     public void Attack()
     {
-        //jut forward a little
+        anim.SetTrigger("strike");
     }
 
     //maybe split color changes into it's own static script?

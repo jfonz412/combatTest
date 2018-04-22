@@ -3,7 +3,7 @@ using System.Collections;
 
 public class UnitController : MonoBehaviour
 {
-    //UnitAnimator anim;
+    UnitAnimController anim;
     Rigidbody2D rb;
     SpriteRenderer sp;
 
@@ -17,7 +17,7 @@ public class UnitController : MonoBehaviour
 
     void Start()
     {
-        //anim = GetComponent<UnitAnimator>();
+        anim = GetComponent<UnitAnimController>();
         rb = GetComponent<Rigidbody2D>();
         sp = transform.GetChild(0).GetComponent<SpriteRenderer>();
         baseSpeed = GetComponent<Stats>().speed; //down the line make this a callback where everytime speed is modified this will update as well
@@ -56,10 +56,8 @@ public class UnitController : MonoBehaviour
     {
         Vector3 currentWaypoint = path[0];
 
-        //anim.FaceDirection(transform.position, currentWaypoint);
-        GetComponent<UnitAnimController>().FaceDirection(transform.position, currentWaypoint);
-
-        //anim.ToggleMovingAnimation(true);
+        anim.FaceDirection(transform.position, currentWaypoint);
+        anim.Walking(true);
 
         while (true)
         {
@@ -70,13 +68,15 @@ public class UnitController : MonoBehaviour
                 {
                     path = null;
                     targetIndex = 0;
+
                     //anim.ToggleMovingAnimation(false);
+                    anim.Walking(false);
+
                     IsKinematic(false);
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
-                //anim.FaceDirection(transform.position, currentWaypoint);
-                GetComponent<UnitAnimController>().FaceDirection(transform.position, currentWaypoint);
+                anim.FaceDirection(transform.position, currentWaypoint);
             }
 
             if (!rb.isKinematic)
@@ -106,7 +106,7 @@ public class UnitController : MonoBehaviour
                 StopCoroutine("FollowPath");              
             }
 
-            //anim.ToggleMovingAnimation(false);
+            anim.Walking(false);
             IsKinematic(false);
         }
     }
