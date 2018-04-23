@@ -29,7 +29,7 @@ public class Death : MonoBehaviour {
         //stop interactions if npc       
         if (npcInteractions != null)
         {
-            npcInteractions.isDead = true;
+            npcInteractions.SetInteractionState(NPCInteraction.InteractionState.Dead);
         }
     }
 
@@ -37,12 +37,10 @@ public class Death : MonoBehaviour {
     {
         //stop the victim
         AttackController myAttackController = victim.GetComponent<AttackController>();
-        //UnitAnimator myAnim = victim.GetComponent<UnitAnimator>();
 
         victim.GetComponent<UnitController>().StopMoving();
 
         myAttackController.EngageTarget(false);
-        //myAnim.TriggerDeathAnimation();
 
         //stop the attacker
         attacker.GetComponent<AttackController>().EngageTarget(false);

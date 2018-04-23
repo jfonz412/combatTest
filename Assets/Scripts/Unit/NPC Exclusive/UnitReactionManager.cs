@@ -24,14 +24,8 @@ public class UnitReactionManager : MonoBehaviour {
         {
             UnitReactions unit = units.unitReactors[i];
 
-            if(unit.isDead && unit != null)
-            {
-                Debug.Log(unit.name + " is dead or null");
-            }
-
             if (unit.isDead || unit == null)
             {
-
                 continue;
             }
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//the base script for all of our unity personalities
 public class UnitReactions : MonoBehaviour
 {
     public enum Factions { Townie, BigRedGang, Player };
@@ -12,6 +13,8 @@ public class UnitReactions : MonoBehaviour
 
     public float reactionRadius = 5f;
     //public float criticalHealthThreshold = 0;
+
+    //I might be able to rectify these with the similar variables in NPCInteraction.cs via an NPCState.cs of some sort
     [HideInInspector]
     public bool isDead = false;
     [HideInInspector]
@@ -31,7 +34,7 @@ public class UnitReactions : MonoBehaviour
     {
         if (factionID == (int)faction)
         {
-            ReactToFactionAttack(attacker);
+            ReactToFactionAttack(attacker); // or an ally faction
         }
         else
         {
@@ -48,6 +51,7 @@ public class UnitReactions : MonoBehaviour
             return;
         }
 
+        //code smells here, unit is not actually reacting to itself being attacked but it's own faction being attacked
         UnitReactionManager.instance.AlertEveryoneInRange((int)faction, attacker);
     }
 
@@ -77,7 +81,14 @@ public class UnitReactions : MonoBehaviour
         if (attackController.lastKnownTarget != attacker)
         {
             attackController.EngageTarget(true, attacker);
-            interactions.RemovePeacefulInteractions();
+            if(attacker.name == "Player")
+            {
+                interactions.SetInteractionState(NPCInteraction.InteractionState.FightingPlayer);
+            }
+            else
+            {
+                interactions.SetInteractionState(NPCInteraction.InteractionState.FightingNPC);
+            }
         }
     }
 
@@ -90,15 +101,21 @@ public class UnitReactions : MonoBehaviour
         }           
     }
 
-    #endregion
-
     //----------------------------------------
 
     IEnumerator RunFromAttacker(Transform attacker)
     {
         //PathfindingManager.RequestPath(transform.position, GetPosition(attacker), unitController.OnPathFound); //makes for a quick initial reaction
 
-        interactions.RemovePeacefulInteractions();
+        if (attacker.name == "Player")
+        {
+            interactions.SetInteractionState(NPCInteraction.InteractionState.FleeingPlayer);
+        }
+        else
+        {
+            interactions.SetInteractionState(NPCInteraction.InteractionState.FleeingNPC);
+        }
+
         while (attacker && !isDead)
         {
             if (Vector3.Distance(transform.position, attacker.transform.position) < 3f) //runaway radius hardcoded
@@ -169,6 +186,8 @@ public class UnitReactions : MonoBehaviour
 
         return node;
     }
+
+    #endregion
 
     //debuggin' purposes
     void OnDrawGizmosSelected()
