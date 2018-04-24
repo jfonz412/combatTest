@@ -15,7 +15,7 @@ public class Death : MonoBehaviour {
 
     static void IncapacitateEntity(Transform victim, Transform attacker)
     {
-        NPCInteraction npcInteractions = victim.GetComponent<NPCInteraction>();
+        NPCInteractionStates npcState = victim.GetComponent<NPCInteractionStates>();
 
         victim.GetComponent<UnitAnimController>().Die();
 
@@ -27,9 +27,9 @@ public class Death : MonoBehaviour {
         }
 
         //stop interactions if npc       
-        if (npcInteractions != null)
+        if (npcState != null)
         {
-            npcInteractions.SetInteractionState(NPCInteraction.InteractionState.Dead);
+            npcState.SetInteractionState(NPCInteractionStates.InteractionState.Dead);
         }
     }
 

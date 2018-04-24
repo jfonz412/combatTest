@@ -8,7 +8,7 @@ public class UnitReactions : MonoBehaviour
     public Factions faction;
 
     AttackController attackController;
-    NPCInteraction interactions;
+    NPCInteractionStates npcState;
     UnitController unitController;
 
     public float reactionRadius = 5f;
@@ -22,7 +22,7 @@ public class UnitReactions : MonoBehaviour
 
     void Start()
     {
-        interactions = transform.GetComponent<NPCInteraction>();
+        npcState = transform.GetComponent<NPCInteractionStates>();
         attackController = GetComponent<AttackController>();
         unitController = GetComponent<UnitController>();
     }
@@ -83,11 +83,11 @@ public class UnitReactions : MonoBehaviour
             attackController.EngageTarget(true, attacker);
             if(attacker.name == "Player")
             {
-                interactions.SetInteractionState(NPCInteraction.InteractionState.FightingPlayer);
+                npcState.SetInteractionState(NPCInteractionStates.InteractionState.FightingPlayer);
             }
             else
             {
-                interactions.SetInteractionState(NPCInteraction.InteractionState.FightingNPC);
+                npcState.SetInteractionState(NPCInteractionStates.InteractionState.FightingNPC);
             }
         }
     }
@@ -109,11 +109,11 @@ public class UnitReactions : MonoBehaviour
 
         if (attacker.name == "Player")
         {
-            interactions.SetInteractionState(NPCInteraction.InteractionState.FleeingPlayer);
+            npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingPlayer);
         }
         else
         {
-            interactions.SetInteractionState(NPCInteraction.InteractionState.FleeingNPC);
+            npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingNPC);
         }
 
         while (attacker && !isDead)
