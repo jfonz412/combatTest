@@ -7,12 +7,27 @@ public class NPCInteractionStates : MonoBehaviour {
     InteractionState currentState = InteractionState.Neutral; //default
     NPCInteraction npc;
 
+    InteractionState[] validDialogueStates = new InteractionState[] { InteractionState.Neutral };
+    InteractionState[] validTradeStates = new InteractionState[]    { InteractionState.Neutral };
+
+    InteractionState[] validInspectStates = new InteractionState[]  { InteractionState.Neutral,
+                                                                      InteractionState.FightingPlayer,
+                                                                      InteractionState.FleeingPlayer,
+                                                                      InteractionState.FightingNPC,
+                                                                      InteractionState.FleeingNPC,
+                                                                      InteractionState.Dead};
+
+    InteractionState[] validAttackStates = new InteractionState[]   { InteractionState.Neutral,
+                                                                      InteractionState.FightingPlayer,
+                                                                      InteractionState.FleeingPlayer,
+                                                                      InteractionState.FightingNPC,
+                                                                      InteractionState.FleeingNPC };
+
     void Start()
     {
         npc = GetComponent<NPCInteraction>();
     }
 
-    #region States
     public void SetInteractionState(InteractionState newState)
     {
         switch (newState)
@@ -25,12 +40,16 @@ public class NPCInteractionStates : MonoBehaviour {
                 break;
             case InteractionState.FightingPlayer:
                 currentState = newState;
+                npc.defaultInteraction = Interactable.DefaultInteractions.Attack;
+                Debug.Log(npc.defaultInteraction);
                 break;
             case InteractionState.FightingNPC:
                 currentState = newState;
                 break;
             case InteractionState.FleeingPlayer:
                 currentState = newState;
+                npc.defaultInteraction = Interactable.DefaultInteractions.Attack;
+                Debug.Log(npc.defaultInteraction);
                 break;
             case InteractionState.FleeingNPC:
                 currentState = newState;
@@ -47,44 +66,42 @@ public class NPCInteractionStates : MonoBehaviour {
         }
         //Debug.Log(name + " is: " + currentState);
     }
-    #endregion
 
-    #region StateReactions
-
-    public void CheckNPCInteractionState(string interaction)
+    public bool ValidateInteraction(string interaction)
     {
-        if (currentState == InteractionState.Neutral)
+        if (interaction == "Attack")
         {
-            npc.NeutralInteractions(interaction);
+            //Debug.Log("Checking attack");
+            return CheckForValidState(validAttackStates);
         }
-        else if (currentState == InteractionState.FightingPlayer)
+        else if(interaction == "Talk")
         {
-            npc.FightingPlayerInteractions(interaction);
+            //Debug.Log("Checking talk");
+            return CheckForValidState(validDialogueStates);
         }
-        else if (currentState == InteractionState.FleeingPlayer)
+        else if (interaction == "Trade")
         {
-            npc.FleeingPlayerInteractions(interaction);
+            //Debug.Log("Checking trade");
+            return CheckForValidState(validTradeStates);
         }
-        else if (currentState == InteractionState.FightingNPC)
+        else if (interaction == "Inspect")
         {
-            npc.FightingNPCInteractions(interaction);
+            //Debug.Log("Checking Inspect");
+            return CheckForValidState(validInspectStates);
         }
-        else if (currentState == InteractionState.FleeingNPC)
-        {
-            npc.FleeingNPCInteractions(interaction);
-        }
-        else if (currentState == InteractionState.Talking)
-        {
-            Debug.Log("Talking NPCInteraction state not implemented");
-        }
-        else if (currentState == InteractionState.Trading)
-        {
-            Debug.Log("Trading NPCInteraction state not implemented");
-        }
-        else if (currentState == InteractionState.Dead)
-        {
-            return;
-        }
+        return false;
     }
-    #endregion
+
+    bool CheckForValidState(InteractionState[] validStates)
+    {
+        for (int i = 0; i < validStates.Length; i++)
+        {
+            if (currentState == validStates[i])
+            {
+                return true;
+            }
+        }
+        Debug.Log("You cannot do this right now");
+        return false;
+    }
 }

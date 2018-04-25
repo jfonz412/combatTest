@@ -24,7 +24,7 @@ public class UnitAnimController : MonoBehaviour {
     public void FaceDirection(Vector2 startPos, Vector2 endPos) //or transform
     {
         Vector2 relativePos = endPos - startPos;
-        Debug.Log(Mathf.Sign(relativePos.x));
+        //Debug.Log(Mathf.Sign(relativePos.x));
 
         if (Mathf.Sign(relativePos.x) == 1)
         {

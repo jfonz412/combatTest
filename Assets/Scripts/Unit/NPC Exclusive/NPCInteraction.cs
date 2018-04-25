@@ -16,7 +16,37 @@ public class NPCInteraction : Interactable
 
     public override void Interaction(string interaction)
     {
-        myState.CheckNPCInteractionState(interaction);
+        //myState.CheckNPCInteractionState(interaction);
+
+        base.Interaction(interaction); //gets the reference to the player
+
+        if (interaction == "Default")
+        {
+            interaction = defaultInteraction.ToString();
+            myState.ValidateInteraction(interaction);
+        }
+
+        switch (interaction)
+        {
+            case "Attack":
+                if (myState.ValidateInteraction(interaction))
+                    TriggerAttack();
+                break;
+            case "Talk":
+                if (myState.ValidateInteraction(interaction))
+                    TriggerDialogue();
+                break;
+            case "Trade":
+                if (myState.ValidateInteraction(interaction))
+                    TriggerTrade();
+                break;
+            case "Inspect":
+                if (myState.ValidateInteraction(interaction))
+                    InspectObject();
+                break;
+            default:
+                break;
+        }
     }
 
 
@@ -52,152 +82,5 @@ public class NPCInteraction : Interactable
         }
        
     }
-    #endregion
-
-    #region Interaction Types
-    public void NeutralInteractions(string interaction)
-    {
-
-        base.Interaction(interaction); //gets the reference to the player
-
-        if (interaction == "Default")
-        {
-            interaction = defaultInteraction.ToString();
-        }
-
-        switch (interaction)
-        {
-            case "Attack":
-                TriggerAttack();
-                break;
-            case "Talk":
-                TriggerDialogue();
-                break;
-            case "Trade":
-                TriggerTrade();
-                break;
-            case "Inspect":
-                InspectObject();
-                break;
-            default:
-                break;
-        }
-
-    }
-
-    public void FightingPlayerInteractions(string interaction)
-    {
-        base.Interaction(interaction); //gets the reference to the player
-        defaultInteraction = DefaultInteractions.Attack;
-
-        if (interaction == "Default")
-        {
-            interaction = defaultInteraction.ToString();
-        }
-
-        switch (interaction)
-        {
-            case "Attack":
-                TriggerAttack();
-                break;
-            case "Talk":
-                Debug.Log("This NPC doesn't want to talk to you!");
-                break;
-            case "Trade":
-                Debug.Log("This NPC doesn't want to trade to you!");
-                break;
-            case "Inspect":
-                Debug.Log("You can't inspect them right now...");
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void FleeingPlayerInteractions(string interaction)
-    {
-        base.Interaction(interaction); //gets the reference to the player
-        defaultInteraction = DefaultInteractions.Attack;
-
-        if (interaction == "Default")
-        {
-            interaction = defaultInteraction.ToString();
-        }
-
-        switch (interaction)
-        {
-            case "Attack":
-                TriggerAttack();
-                break;
-            case "Talk":
-                Debug.Log("This NPC doesn't want to talk to you!");
-                break;
-            case "Trade":
-                Debug.Log("This NPC doesn't want to trade to you!");
-                break;
-            case "Inspect":
-                Debug.Log("You can't inspect them right now...");
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void FightingNPCInteractions(string interaction)
-    {
-        base.Interaction(interaction); //gets the reference to the player
-
-        if (interaction == "Default")
-        {
-            interaction = defaultInteraction.ToString();
-        }
-
-        switch (interaction)
-        {
-            case "Attack":
-                TriggerAttack();
-                break;
-            case "Talk":
-                Debug.Log("This NPC can't talk to you!");
-                break;
-            case "Trade":
-                Debug.Log("This NPC can't trade to you!");
-                break;
-            case "Inspect":
-                InspectObject();
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void FleeingNPCInteractions(string interaction)
-    {
-        base.Interaction(interaction); //gets the reference to the player
-
-        if (interaction == "Default")
-        {
-            interaction = defaultInteraction.ToString();
-        }
-
-        switch (interaction)
-        {
-            case "Attack":
-                TriggerAttack();
-                break;
-            case "Talk":
-                Debug.Log("This NPC can't talk to you!");
-                break;
-            case "Trade":
-                Debug.Log("This NPC can't trade to you!");
-                break;
-            case "Inspect":
-                InspectObject();
-                break;
-            default:
-                break;
-        }
-    }
-
     #endregion
 }
