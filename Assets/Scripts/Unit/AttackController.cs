@@ -53,13 +53,15 @@ public class AttackController : MonoBehaviour {
     /****************** PRIVATE FUNCTIONS **************************/
     IEnumerator MoveToEngagement(Transform targetTransform)
     {
+        Collider2D c = GetComponent<Collider2D>();
+
         anim.FaceDirection(transform.position, targetTransform.position);
 
         yield return new WaitForSeconds(equippedWeapon.speed); //initial delay to prevent enemy attack-swapping
 
         while (targetTransform)
         {
-            if (Vector3.Distance(transform.position, lastKnownTarget.position) > equippedWeapon.range) //and targetTransform != null ?
+            if (!c.IsTouching(targetTransform.GetComponent<Collider2D>())) //Vector3.Distance(transform.position, lastKnownTarget.position) > equippedWeapon.range
             { 
                 lastKnownTarget = targetTransform;
                 
