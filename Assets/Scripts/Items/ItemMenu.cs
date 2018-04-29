@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class ItemMenu : MonoBehaviour {
 
     [HideInInspector]
-    public Text[] equipmentInfo = new Text[4]; 
+    public Text[] textBoxes = new Text[4]; 
 
     #region Singleton 
     [HideInInspector]
@@ -19,14 +19,14 @@ public class ItemMenu : MonoBehaviour {
     }
     #endregion
 
-    public void PopulateStats(Item item)
+    public void PopulateInfo(string[] itemInfo)
     {
-        string[] stats = GetItemStats(item);
+        //string[] stats = GetItemStats(item);
 
-        for (int i = 0; i < stats.Length; i++)
+        for (int i = 0; i < itemInfo.Length; i++)
         {
-            equipmentInfo[i] = transform.GetChild(i).GetComponent<Text>();
-            equipmentInfo[i].text = stats[i];
+            textBoxes[i] = transform.GetChild(i).GetComponent<Text>();
+            textBoxes[i].text = itemInfo[i];
         }
     }
 
@@ -35,22 +35,4 @@ public class ItemMenu : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    string[] GetItemStats(Item item)
-    {
-        string[] myStats = new string[4];
-        if (item != null)
-        {           
-            if (item.stackable)
-            {
-                myStats[0] = item.name + " (" + item.quantity.ToString() + ")";
-            }
-            else
-            {
-                myStats[0] = item.name;
-            }
-            myStats[1] = "Value: " + item.currentValue.ToString();
-            myStats[3] = "This is a hardcoded description for the item. It will be replaced with a custom string, but for now I want something as long as a typical item description might be.";
-        }
-        return myStats;
-    }
 }

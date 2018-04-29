@@ -6,15 +6,13 @@ public class Equipment : Item {
     public EquipmentSlot equipSlot;
     public int equipmentID; //it's ID for the resources folder
 
-    public override void Use()
+    public override void Use() //RMB
     {
-        //base.Use();
-        Transform player = PlayerManager.instance.player.transform;
-
+        base.Use();
         Debug.Log("Equipping item");
 
         //the only entity that will equipping items after loading the scene is the player
-        EquipmentManager manager = player.GetComponent<EquipmentManager>();
+        EquipmentManager manager = user.GetComponent<EquipmentManager>();
 
         manager.FastEquip(this);
     }

@@ -4,13 +4,19 @@
 public class Weapon : Equipment {
 
     #region Stats
-    //these are only public so they can be editted in the inspector
-    public float weaponCondition = 1; //1 is undamaged
-	public float softness = 1; //1 is max hardness, the harder the better (should be hardness I think, makes more sense)
-	public float sharpness = 1; //the sharper the better
-	public float weight = 1; //the heavier the better
+    public enum ToolType { Pick, Axe, NA };
+    public ToolType myToolType;
 
-	public string attackType; // cast, slash, thrust
+    public string attackType; // cast, slash, thrust
+
+    [SerializeField]
+    private float weaponCondition = 1; //1 is undamaged
+    [SerializeField]
+    private float softness = 1; //1 is max hardness, the harder the better (should be hardness I think, makes more sense)
+    [SerializeField]
+    private float sharpness = 1; //the sharper the better
+    [SerializeField]
+    private float weight = 1; //the heavier the better
     #endregion
 
     public float range{
@@ -47,7 +53,7 @@ public class Weapon : Equipment {
         myStats[1] = "Condition: " + weaponCondition.ToString();
         myStats[2] = "Weight: " + weight.ToString();
         myStats[3] = "Value: " + currentValue.ToString();
-        myStats[4] = "This is a hardcoded description for the item. It will be replaced with a custom string, but for now I want something as long as a typical item description might be.";
+        myStats[4] = myDescription;
 
         EquipmentStats.instance.PopulateStats(myStats);
     }

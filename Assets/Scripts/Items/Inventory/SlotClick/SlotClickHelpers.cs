@@ -87,7 +87,7 @@ public class SlotClickHelpers : MonoBehaviour {
     {
         if (mouseItemEquipSlot != slot.equipSlot)
         {
-            Debug.Log("WRONG EQUIP SLOT ");
+            Debug.Log("WRONG EQUIP SLOT");
             return false;
         }
         else

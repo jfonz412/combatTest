@@ -116,15 +116,16 @@ public class UnitController : MonoBehaviour
         return Grid.instance.NodeAtWorldPosition(transform.position);
     }
 
+    //diabling for now...if a unit gets stuck, figure out a way to tell and then turn OFF Kinematic AND turn OFF Trigger
     void IsKinematic(bool toggleOn)
     {
         if (toggleOn)
         {
-            rb.isKinematic = true; 
+            //rb.isKinematic = true; 
         }
         else
         {
-            rb.isKinematic = false;
+            //rb.isKinematic = false;
         }
     }
 
