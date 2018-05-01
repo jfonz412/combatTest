@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 
@@ -98,16 +99,24 @@ public class PlayerController : MonoBehaviour {
         Instantiate(clickMarker, mouseClickPos, Quaternion.identity);
     }
 
-
     void ProcessRightClick(Vector3 mouseClickPos) //Brings up interaction options menu
     {
         RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
+        List<Collider2D> interactablesFound = CheckForUnits(mouseClickPos);
 
-        Collider2D collider = hit.collider;
-        if (collider)
+        if(interactablesFound.Count <= 1)
         {
-            CheckForInteractableMenu(collider);
+            Collider2D collider = hit.collider;
+            if (collider)
+            {
+                CheckForInteractableMenu(collider);
+            }
         }
+        else
+        {
+            SelectInteractable.SpawnMenu(interactablesFound);
+        }
+
     }
 
 
@@ -144,8 +153,29 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    // RIGHT CLICK HELPER
-    void CheckForInteractableMenu(Collider2D collider)
+    // RIGHT CLICK HELPERS
+
+    List<Collider2D> CheckForUnits(Vector3 mouseClickPos)
+    {
+        List<Collider2D> interactables = new List<Collider2D>();
+        Debug.Log("Checking for interactables");
+        RaycastHit2D[] hits = Physics2D.RaycastAll(mouseClickPos, Vector2.zero);
+        
+        for (int i = 0; i < hits.Length; i++)
+        {
+            Collider2D col = hits[i].collider;
+            if (col != null)
+            {
+                interactables.Add(col);
+            }
+        }
+
+        return interactables;
+    }
+
+
+    //make public to expose to Unit Menu buttons, which will pass the collider into this method 
+    public void CheckForInteractableMenu(Collider2D collider)
     {
         Interactable interactable;
 

@@ -20,20 +20,25 @@ public class CloseOpenWindows : MonoBehaviour {
 
     public void DestroyPopupMenus()
     {
+        //make this a static class?
         if (InteractableMenu.instance != null)
         {
             InteractableMenu.instance.CloseMenu();
         }
 
+        //make this a static class?
         if (EquipmentStats.instance != null)
         {
             EquipmentStats.instance.CloseMenu();
         }
 
+        //make this a static class?
         if (ItemMenu.instance != null)
         {
             ItemMenu.instance.CloseMenu();
         }
+
+        SelectInteractable.Destroy();
     }
 
     //closes any inventory, equipment, dialogue, and popup windows that may be open
