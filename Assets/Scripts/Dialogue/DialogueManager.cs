@@ -15,25 +15,11 @@ public class DialogueManager : MonoBehaviour {
 
     Queue<string> sentences;
 
-    #region Singleton
-
-    public static DialogueManager instance;
-    void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogWarning("More than one instance of DialogueManager found");
-            return;
-        }
-        instance = this;
-    }
-    #endregion
 
     // Use this for initialization
     void Start () {
         sentences = new Queue<string>();
 	}
-
 
     public void StartDialogue(Dialogue dialogue)
     {

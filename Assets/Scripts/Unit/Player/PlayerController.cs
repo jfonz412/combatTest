@@ -35,13 +35,6 @@ public class PlayerController : MonoBehaviour {
         {
             MovePlayer();
         }
-
-            //FOR DEBUGGING 
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.Log(PlayerState.currentState);
-            }
-        
     }
 
     //this will prevent all movement, popups, and interactions during certain states
@@ -66,7 +59,7 @@ public class PlayerController : MonoBehaviour {
 
     void ProcessClick(int mouseButton)
     {
-        CloseOpenWindows.instance.DestroyPopupMenus();
+        ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus();
 
         Vector3 mouseClickPos = GetMouseClickPosition();
 
@@ -174,7 +167,7 @@ public class PlayerController : MonoBehaviour {
     }
 
 
-    //make public to expose to Unit Menu buttons, which will pass the collider into this method 
+    //made public to expose to Unit Menu buttons, which will pass the collider into this method 
     public void CheckForInteractableMenu(Collider2D collider)
     {
         Interactable interactable;

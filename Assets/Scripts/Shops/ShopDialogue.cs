@@ -6,21 +6,6 @@ public class ShopDialogue : MonoBehaviour {
     public Text currentMessage;
     LoadShop.MyShopDialogue[] currentDialogue;
 
-    #region Singleton
-
-    public static ShopDialogue instance;
-
-    void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogWarning("More than one instance of ShopDialogue found");
-            return;
-        }
-        instance = this;
-    }
-    #endregion
-
     public void LoadShopDialogue(LoadShop.MyShopDialogue[] dialogue)
     {
         currentDialogue = dialogue;

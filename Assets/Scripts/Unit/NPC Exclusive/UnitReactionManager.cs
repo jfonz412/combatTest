@@ -4,16 +4,6 @@ public class UnitReactionManager : MonoBehaviour {
 
     public UnitReactors units;
 
-    #region Singleton
-    public static UnitReactionManager instance;
-
-    void Awake()
-    {
-        instance = this;
-    }
-    #endregion
-
-
     //this is called by a unit when it is attacked (UnitReactions.ReactToAttackAgainstSelf())
     public void AlertEveryoneInRange(int factionID, Transform attacker)
     {

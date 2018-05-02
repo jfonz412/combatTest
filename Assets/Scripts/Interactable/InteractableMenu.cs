@@ -10,7 +10,7 @@ public class InteractableMenu : MonoBehaviour {
     PlayerController player;
 
 #region Singleton 
-    [HideInInspector]
+
     public static InteractableMenu instance;
     void Awake()
     {
@@ -24,7 +24,7 @@ public class InteractableMenu : MonoBehaviour {
 
     void Start()
     {
-        player = PlayerManager.instance.player.GetComponent<PlayerController>();
+        player = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<PlayerController>();
     }
 
     public void PopulateOptions(Interactable interactable)

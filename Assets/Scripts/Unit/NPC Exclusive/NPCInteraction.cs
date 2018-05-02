@@ -56,7 +56,8 @@ public class NPCInteraction : Interactable
     void TriggerDialogue()
     {
         GetComponent<UnitAnimController>().FaceDirection(transform.position, player.position);
-        DialogueManager.instance.StartDialogue(dialog);
+        //DialogueManager.instance.StartDialogue(dialog);
+        ScriptToolbox.GetInstance().GetDialogueManager().StartDialogue(dialog);
     }
 
     void TriggerAttack()

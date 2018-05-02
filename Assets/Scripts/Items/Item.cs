@@ -21,7 +21,7 @@ public class Item : ScriptableObject {
     //create seperate item classes (equipment, consumable, crafting, etc. to handle differernt use cases)
     public virtual void Use() //RMB
     {
-        user = PlayerManager.instance.player.transform;
+        user = ScriptToolbox.GetInstance().GetPlayerManager().player.transform;
     }
 
     public virtual void OpenStatWindow(string itemLocation)

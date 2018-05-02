@@ -21,7 +21,7 @@ public class LoadShop : MonoBehaviour {
     void Start()
     {
         shop = ShopInventory.instance;
-        dialogueWindow = ShopDialogue.instance;
+        dialogueWindow = ScriptToolbox.GetInstance().GetShopDialogue();
     }
 
     public void LoadShopInventory()

@@ -36,7 +36,7 @@ public class InventoryToggle : MonoBehaviour {
             infoPanelUI.SetActive(inventoryUI.activeSelf);
             MouseSlot.instance.ToggleSprite(inventoryUI.activeSelf);
 
-            CloseOpenWindows.instance.DestroyPopupMenus();
+            ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus();
         }
 
         CheckForValidPlayerState();

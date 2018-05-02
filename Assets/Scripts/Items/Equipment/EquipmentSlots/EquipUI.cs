@@ -8,7 +8,7 @@ public class EquipUI : MonoBehaviour {
 
     void Start()
     {
-        equipmentManager = PlayerManager.instance.player.GetComponent<EquipmentManager>();
+        equipmentManager = ScriptToolbox.GetInstance().GetPlayerManager().player.transform.GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += UpdateUI;
         slots = equipParent.GetComponentsInChildren<EquipSlot>();
         AssignSlotNums();

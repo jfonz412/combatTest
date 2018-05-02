@@ -23,7 +23,7 @@ public class Death : MonoBehaviour {
         if (victim.name == "Player")
         {
             PlayerState.SetPlayerState(PlayerState.PlayerStates.Dead);
-            CloseOpenWindows.instance.CloseAllWindows();
+            ScriptToolbox.GetInstance().GetWindowCloser().CloseAllWindows();
         }
 
         //stop interactions if npc       

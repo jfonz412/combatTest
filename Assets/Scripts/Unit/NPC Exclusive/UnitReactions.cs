@@ -47,12 +47,12 @@ public class UnitReactions : MonoBehaviour
     {
         if (name == "Player")
         {
-            CloseOpenWindows.instance.KnockPlayerOutOfDialogue();
+            ScriptToolbox.GetInstance().GetWindowCloser().KnockPlayerOutOfDialogue();
             return;
         }
 
         //code smells here, unit is not actually reacting to itself being attacked but it's own faction being attacked
-        UnitReactionManager.instance.AlertEveryoneInRange((int)faction, attacker);
+        ScriptToolbox.GetInstance().GetUnitReactionManager().AlertEveryoneInRange((int)faction, attacker);
     }
 
 

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
 public class ShopSlotClick : MonoBehaviour {
-    SlotClickHelpers slotClickHelper;
+
+    private SlotClickHelpers slotClickHelper;
+    private PlayerWallet playerWallet;
 
     #region Singleton
 
@@ -21,6 +23,7 @@ public class ShopSlotClick : MonoBehaviour {
     void Start()
     {
         slotClickHelper = SlotClickHelpers.instance;
+        playerWallet = ScriptToolbox.GetInstance().GetPlayerWallet();
     }
 
 
@@ -28,18 +31,20 @@ public class ShopSlotClick : MonoBehaviour {
 
     public void ShopSlotRightClicked(Item item)
     {
+        ShopDialogue shopDialogue = ScriptToolbox.GetInstance().GetShopDialogue();
+
         float price = PriceChecker.AppraiseItem(item, "Purchase") * item.quantity;
 
-        if (PlayerWallet.instance.balance >= price && CheckInventorySpace.CheckItem(item))
+        if (playerWallet.balance >= price && CheckInventorySpace.CheckItem(item))
         {
             ShopInventory.instance.Remove(item);
             Inventory.instance.AddItem(item);
-            PlayerWallet.instance.Withdraw(price);
-            ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
+            playerWallet.Withdraw(price);
+            shopDialogue.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
         }
         else
         {
-            ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.INVAL_QNTY); //SHOULD BE "GENERIC_NO"
+            shopDialogue.SetCurrentMessage(LoadShop.MessageType.INVAL_QNTY); //SHOULD BE "GENERIC_NO"
         }
     }
 

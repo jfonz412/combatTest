@@ -12,7 +12,7 @@ public class EquipSlot : InventorySlot {
 
     void Start()
     {
-        equipmentManager = PlayerManager.instance.player.GetComponent<EquipmentManager>();
+        equipmentManager = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<EquipmentManager>();
     }
 
     public void AddEquipment(Equipment newItem)

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class SlotClickHelpers : MonoBehaviour {
 
+    private PlayerWallet playerWallet;
+    private ShopDialogue shopDialogue;
+
     #region Singleton
 
     public static SlotClickHelpers instance;
@@ -17,6 +20,12 @@ public class SlotClickHelpers : MonoBehaviour {
         instance = this;
     }
     #endregion
+
+    void Start()
+    {
+        playerWallet = ScriptToolbox.GetInstance().GetPlayerWallet();
+        shopDialogue = ScriptToolbox.GetInstance().GetShopDialogue();
+    }
 
     #region EquipSlot
     //HELPERS
@@ -150,7 +159,7 @@ public class SlotClickHelpers : MonoBehaviour {
             if (quantity < 1 || quantity > item.quantity)
             {
                 Debug.Log("Invalid quantity input: " + quantity);
-                ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.INVAL_QNTY);
+                shopDialogue.SetCurrentMessage(LoadShop.MessageType.INVAL_QNTY);
                 yield break; //do nothing if quantity is 0 
             }
         }
@@ -162,7 +171,7 @@ public class SlotClickHelpers : MonoBehaviour {
     void CommitSale(Item item, int quantity)
     {
         float price = PriceChecker.AppraiseItem(item, "Sale") * quantity;
-        PlayerWallet.instance.Deposit(price);
+        playerWallet.Deposit(price);
         Debug.Log("You have been credited $" + price);
 
         Inventory.instance.CondenseStackables(item, quantity);
@@ -170,7 +179,7 @@ public class SlotClickHelpers : MonoBehaviour {
         item.quantity = quantity;
         ShopInventory.instance.AddToSoldSlot(item);
 
-        ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
+        shopDialogue.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
     }
 
     #endregion
@@ -194,7 +203,7 @@ public class SlotClickHelpers : MonoBehaviour {
             if (quantity < 1 || quantity > item.quantity)
             {
                 Debug.Log("Invalid quantity input: " + quantity);
-                ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.INVAL_QNTY);
+                shopDialogue.SetCurrentMessage(LoadShop.MessageType.INVAL_QNTY);
                 yield break; //do nothing if quantity is 0 
             }
         }
@@ -204,37 +213,34 @@ public class SlotClickHelpers : MonoBehaviour {
 
     void CheckPlayerFunds(Item item, int quantity)
     {
-        PlayerWallet wallet = PlayerWallet.instance;
-
         float price = PriceChecker.AppraiseItem(item, "Purchase") * quantity;
 
-        if (price <= wallet.balance)
+        if (price <= playerWallet.balance)
         {
             CommitPurchase(item, quantity, price);
         }
         else
         {
-            Debug.Log("Insufficient funds, balance: $" + wallet.balance);
-            ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.LOW_GOLD);
+            Debug.Log("Insufficient funds, balance: $" + playerWallet.balance);
+            shopDialogue.SetCurrentMessage(LoadShop.MessageType.LOW_GOLD);
         }
     }
 
     //PURCHASE HELPERS
     void CommitPurchase(Item item, int quantity, float price)
     {
-        PlayerWallet wallet = PlayerWallet.instance;
         Item newItem = CreateNewItemForInventory(item, quantity);
 
         if(CheckInventorySpace.CheckItem(newItem))
         {
             AdjustShopStock(item, quantity);
             Inventory.instance.AddItem(newItem);
-            wallet.Withdraw(price);
-            ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
+            playerWallet.Withdraw(price);
+            shopDialogue.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
         }
         else
         {
-            ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.INV_FULL);
+            shopDialogue.SetCurrentMessage(LoadShop.MessageType.INV_FULL);
             //Debug.LogWarning("Item has been added to your inventory even though the inventory is full. You did not pay.");
         }
 

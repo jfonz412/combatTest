@@ -61,12 +61,15 @@ public class ShopInventoryUI : MonoBehaviour {
         //to be trigged by NPC interaction
         shopUI.SetActive(active);
         shopDialogue.SetActive(active);
-        CloseOpenWindows.instance.DestroyPopupMenus(); //not sure why I have this? Might not be needed now that I have states
 
         if (!active)
         {
             PlayerState.SetPlayerState(PlayerState.PlayerStates.Idle);
             shop.ClearShopInventory();
+        }
+        else
+        {
+            ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus(); 
         }
     }
 

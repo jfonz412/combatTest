@@ -4,7 +4,8 @@ using UnityEngine.EventSystems;
 
 public class ClickCheck : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    InventorySlot slot;
+    private InventorySlot slot;
+    private CloseOpenWindows windowCloser;
 
     PlayerState.PlayerStates[] invalidStates = new PlayerState.PlayerStates[]
 {
@@ -16,17 +17,18 @@ public class ClickCheck : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     void Start()
     {
         slot = GetComponentInParent<InventorySlot>();
+        windowCloser = ScriptToolbox.GetInstance().GetWindowCloser();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        CloseOpenWindows.instance.DestroyPopupMenus();
+        windowCloser.DestroyPopupMenus();
         slot.SlotHoverOver();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        CloseOpenWindows.instance.DestroyPopupMenus();
+        windowCloser.DestroyPopupMenus();
     }
 
     public void OnPointerClick(PointerEventData pointerEventData)
@@ -36,7 +38,7 @@ public class ClickCheck : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             return;
         }
 
-        CloseOpenWindows.instance.DestroyPopupMenus();
+        windowCloser.DestroyPopupMenus();
 
         if (pointerEventData.button == PointerEventData.InputButton.Right)
         {

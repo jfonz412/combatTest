@@ -89,8 +89,8 @@ public class InvSlotClick : MonoBehaviour {
 
         Inventory.instance.Remove(item);
         ShopInventory.instance.AddToSoldSlot(item);
-        PlayerWallet.instance.Deposit(price);
-        ShopDialogue.instance.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
+        ScriptToolbox.GetInstance().GetPlayerWallet().Deposit(price);
+        ScriptToolbox.GetInstance().GetShopDialogue().SetCurrentMessage(LoadShop.MessageType.SUCCESS);
     }
 
 

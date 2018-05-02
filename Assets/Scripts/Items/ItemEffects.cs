@@ -18,7 +18,7 @@ public class ItemEffects : MonoBehaviour {
 
     static void HealPlayer()
     {
-        Health health = PlayerManager.instance.player.GetComponent<Health>();
+        Health health = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Health>();
         health.currentHealth += 25f; //replace this with health method that "fixes" player
     }
 

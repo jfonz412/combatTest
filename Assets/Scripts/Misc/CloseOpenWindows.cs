@@ -3,36 +3,30 @@
 public class CloseOpenWindows : MonoBehaviour {
 
     public Canvas canvas;
-    EquipUI equipUI;
+    private EquipUI equipUI;
+    private ScriptToolbox toolbox;
 
-    #region Singleton
-    public static CloseOpenWindows instance;
-
-    void Awake()
+    void Start()
     {
-        if (instance != null)
-        {
-            return;
-        }
-        instance = this;
+        toolbox = ScriptToolbox.GetInstance();
+        //inventoryManager = InventoryManager.GetInstance();
     }
-    #endregion
 
     public void DestroyPopupMenus()
     {
-        //make this a static class?
+        //these are probably fine as singletons, the alternative would be to have these be in the toolbox, and they talk to 
+        //a script that is on the actual gameobject and can access the children. It will decouple things slightly
+
         if (InteractableMenu.instance != null)
         {
             InteractableMenu.instance.CloseMenu();
         }
 
-        //make this a static class?
         if (EquipmentStats.instance != null)
         {
             EquipmentStats.instance.CloseMenu();
         }
 
-        //make this a static class?
         if (ItemMenu.instance != null)
         {
             ItemMenu.instance.CloseMenu();
@@ -46,13 +40,13 @@ public class CloseOpenWindows : MonoBehaviour {
     {
         DestroyPopupMenus();
         InventoryToggle.instance.CloseInventory();
-        DialogueManager.instance.dialogueWindow.SetBool("isOpen", false); 
+        toolbox.GetDialogueManager().dialogueWindow.SetBool("isOpen", false);
     }
 
     public void KnockPlayerOutOfDialogue()
     {
         PlayerState.SetPlayerState(PlayerState.PlayerStates.Idle);
-        DialogueManager.instance.dialogueWindow.SetBool("isOpen", false);
+        toolbox.GetDialogueManager().dialogueWindow.SetBool("isOpen", false);
         ShopInventoryUI.instance.ShopUIToggle(false);
     }
 }

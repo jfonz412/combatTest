@@ -21,8 +21,6 @@ public class ItemMenu : MonoBehaviour {
 
     public void PopulateInfo(string[] itemInfo)
     {
-        //string[] stats = GetItemStats(item);
-
         for (int i = 0; i < itemInfo.Length; i++)
         {
             textBoxes[i] = transform.GetChild(i).GetComponent<Text>();

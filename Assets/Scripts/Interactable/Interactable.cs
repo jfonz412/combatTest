@@ -17,7 +17,7 @@ public class Interactable : MonoBehaviour {
     public virtual void Interaction(string interaction)
     {
         //cache the player, or is it better to just get the singleton's reference when I need it?
-        player = PlayerManager.instance.player.transform;
+        player = ScriptToolbox.GetInstance().GetPlayerManager().player.transform;
     }
 
     //maybe have this trigger dialogue window with italicized text
