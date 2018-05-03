@@ -21,7 +21,7 @@ public class InvSlotClick : MonoBehaviour {
 
     void Start()
     {
-        slotClickHelper = SlotClickHelpers.instance;
+        slotClickHelper = InventoryManager.GetInstance().GetSlotClickHelpers();
     }
 
     #region Inventory Slot Clicks
@@ -87,10 +87,10 @@ public class InvSlotClick : MonoBehaviour {
     {
         float price = PriceChecker.AppraiseItem(item, "Sale") * item.quantity;
 
-        Inventory.instance.Remove(item);
-        ShopInventory.instance.AddToSoldSlot(item);
+        InventoryManager.GetInstance().GetInventory().Remove(item);
+        InventoryManager.GetInstance().GetShopInventory().AddToSoldSlot(item);
         ScriptToolbox.GetInstance().GetPlayerWallet().Deposit(price);
-        ScriptToolbox.GetInstance().GetShopDialogue().SetCurrentMessage(LoadShop.MessageType.SUCCESS);
+        InventoryManager.GetInstance().GetShopDialogue().SetCurrentMessage(LoadShop.MessageType.SUCCESS);
     }
 
 

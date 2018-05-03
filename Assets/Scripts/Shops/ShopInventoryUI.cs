@@ -29,7 +29,7 @@ public class ShopInventoryUI : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        shop = ShopInventory.instance;
+        shop = InventoryManager.GetInstance().GetShopInventory();
         shop.onInventoryChanged += UpdateUI;
         slots = itemsParent.GetComponentsInChildren<ShopSlot>();
         AssignSlotNums();

@@ -2,10 +2,15 @@
 
 public class CheckInventorySpace : MonoBehaviour {
 
-    #region Check for open spaces
+    private Inventory inv;
+
+    void Start()
+    {
+        inv = InventoryManager.GetInstance().GetInventory();
+    }
 
     //USED BY SlotClick.cs and SlotClickHelper.cs
-    public static bool CheckItem(Item item)
+    public bool CheckItem(Item item)
     {
         int leftovers = CheckOccupiedSpaces(item);
 
@@ -26,10 +31,8 @@ public class CheckInventorySpace : MonoBehaviour {
         }
     }
 
-    static bool EmptySlots()
+    bool EmptySlots()
     {
-        Inventory inv = Inventory.instance;
-
         for (int i = 0; i < inv.inventorySpace; i++)
         {
             if (inv.items[i] == null)
@@ -40,9 +43,8 @@ public class CheckInventorySpace : MonoBehaviour {
         return false;
     }
 
-    static int CheckOccupiedSpaces(Item item)
+    int CheckOccupiedSpaces(Item item)
     {
-        Inventory inv = Inventory.instance;
 
         int newItemQ = item.quantity;
         for (int i = 0; i < inv.inventorySpace; i++)
@@ -64,5 +66,4 @@ public class CheckInventorySpace : MonoBehaviour {
         }
         return newItemQ;
     }
-    #endregion
 }

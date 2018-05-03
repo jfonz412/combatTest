@@ -12,19 +12,19 @@ public class EquipmentManager : MonoBehaviour {
     public delegate void OnEquipmentChanged(Equipment oldItem, Equipment newItem);
     public OnEquipmentChanged onEquipmentChanged;
 
+    private Inventory inv;
 
     void Start () {
         //unitAnim = GetComponent<UnitAnimator>();
 
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
         currentEquipment = new Equipment[numSlots];
+        inv = InventoryManager.GetInstance().GetInventory();
     }
 
     //Right clicks
     public void FastEquip(Equipment newItem)
     {
-        Inventory inv = Inventory.instance;
-
         int slotNum = (int)newItem.equipSlot;
         Equipment oldItem = currentEquipment[slotNum];
 
@@ -41,8 +41,6 @@ public class EquipmentManager : MonoBehaviour {
     //Right clicks
     public void FastUnequip(Equipment item)
     {
-        Inventory inv = Inventory.instance;
-
         if (item.equipmentID != 0) //0 is unarmed/naked
         {
             Unequip((int)item.equipSlot);

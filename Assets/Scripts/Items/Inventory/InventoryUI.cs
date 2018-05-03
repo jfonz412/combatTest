@@ -10,7 +10,7 @@ public class InventoryUI : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        inventory = Inventory.instance;
+        inventory = InventoryManager.GetInstance().GetInventory();
         inventory.onInventoryChanged += UpdateUI;
         slots = itemsParent.GetComponentsInChildren<InventorySlot>();
         AssignSlotNums();

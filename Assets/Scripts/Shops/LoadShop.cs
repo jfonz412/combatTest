@@ -20,8 +20,8 @@ public class LoadShop : MonoBehaviour {
 
     void Start()
     {
-        shop = ShopInventory.instance;
-        dialogueWindow = ScriptToolbox.GetInstance().GetShopDialogue();
+        shop = InventoryManager.GetInstance().GetShopInventory();
+        dialogueWindow = InventoryManager.GetInstance().GetShopDialogue();
     }
 
     public void LoadShopInventory()

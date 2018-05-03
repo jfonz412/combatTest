@@ -37,17 +37,17 @@ public class EquipSlot : InventorySlot {
 
     public override void SlotHoverOver()
     {
-        EquipSlotClick.instance.EquipSlotHoverOver(this);
+        InventoryManager.GetInstance().GetEquipSlotClick().EquipSlotHoverOver(this);
     }
 
     public override void SlotRightClicked()
     {
-        EquipSlotClick.instance.EquipSlotRightClicked(this);
+        InventoryManager.GetInstance().GetEquipSlotClick().EquipSlotRightClicked(this);
     }
 
     public override void SlotLeftClicked()
     {
-        EquipSlotClick.instance.EquipSlotLeftClicked(this);
+        InventoryManager.GetInstance().GetEquipSlotClick().EquipSlotLeftClicked(this);
     }
 }
 

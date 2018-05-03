@@ -5,24 +5,9 @@ public class ShopSlotClick : MonoBehaviour {
     private SlotClickHelpers slotClickHelper;
     private PlayerWallet playerWallet;
 
-    #region Singleton
-
-    public static ShopSlotClick instance;
-
-    void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogWarning("More than one instance of SlotClick found");
-            return;
-        }
-        instance = this;
-    }
-    #endregion
-
     void Start()
     {
-        slotClickHelper = SlotClickHelpers.instance;
+        slotClickHelper = InventoryManager.GetInstance().GetSlotClickHelpers();
         playerWallet = ScriptToolbox.GetInstance().GetPlayerWallet();
     }
 
@@ -31,14 +16,15 @@ public class ShopSlotClick : MonoBehaviour {
 
     public void ShopSlotRightClicked(Item item)
     {
-        ShopDialogue shopDialogue = ScriptToolbox.GetInstance().GetShopDialogue();
+        ShopDialogue shopDialogue = InventoryManager.GetInstance().GetShopDialogue();
+        CheckInventorySpace invCheck = InventoryManager.GetInstance().GetInventorySpaceChecker();
 
         float price = PriceChecker.AppraiseItem(item, "Purchase") * item.quantity;
 
-        if (playerWallet.balance >= price && CheckInventorySpace.CheckItem(item))
+        if (playerWallet.balance >= price && invCheck.CheckItem(item))
         {
-            ShopInventory.instance.Remove(item);
-            Inventory.instance.AddItem(item);
+            InventoryManager.GetInstance().GetShopInventory().Remove(item);
+            InventoryManager.GetInstance().GetInventory().AddItem(item);
             playerWallet.Withdraw(price);
             shopDialogue.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
         }

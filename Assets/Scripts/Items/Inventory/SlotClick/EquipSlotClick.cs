@@ -4,24 +4,10 @@ public class EquipSlotClick : MonoBehaviour {
 
     SlotClickHelpers slotClickHelper;
 
-    #region Singleton
-
-    public static EquipSlotClick instance;
-
-    void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogWarning("More than one instance of SlotClick found");
-            return;
-        }
-        instance = this;
-    }
-    #endregion
 
     void Start()
     {
-        slotClickHelper = SlotClickHelpers.instance;
+        slotClickHelper = InventoryManager.GetInstance().GetSlotClickHelpers();
     }
 
     #region Equip Slot Clicks

@@ -37,7 +37,7 @@ public class Item : ScriptableObject {
 
     void RemoveFromInventory()
     {
-        Inventory.instance.RemoveAndDestroy(this);
+        InventoryManager.GetInstance().GetInventory().RemoveAndDestroy(this);
     }
 
     public void DetermineValue(string itemLocation)

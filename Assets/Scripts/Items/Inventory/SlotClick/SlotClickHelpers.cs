@@ -5,27 +5,19 @@ public class SlotClickHelpers : MonoBehaviour {
 
     private PlayerWallet playerWallet;
     private ShopDialogue shopDialogue;
-
-    #region Singleton
-
-    public static SlotClickHelpers instance;
-
-    void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogWarning("More than one instance of SlotClickHelpers found");
-            return;
-        }
-        instance = this;
-    }
-    #endregion
+    private Inventory inv;
+    private ShopInventory shop;
+    private QuantityPrompt qntyPrompt;
 
     void Start()
     {
         playerWallet = ScriptToolbox.GetInstance().GetPlayerWallet();
-        shopDialogue = ScriptToolbox.GetInstance().GetShopDialogue();
+        inv = InventoryManager.GetInstance().GetInventory();
+        shop = InventoryManager.GetInstance().GetShopInventory();
+        shopDialogue = InventoryManager.GetInstance().GetShopDialogue();
+        qntyPrompt = InventoryManager.GetInstance().GetQuantityPrompt();
     }
+
 
     #region EquipSlot
     //HELPERS
@@ -111,34 +103,30 @@ public class SlotClickHelpers : MonoBehaviour {
 
     public void PickUpItemIntoEmptyMouseSlot(MouseSlot mouseSlot, InventorySlot slot)
     {
-        Inventory inventory = Inventory.instance;
-
         Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");
         Item previousItem = slot.item;             //save a copy of the slotItem
-        inventory.Remove(previousItem);       //remove the item in the slot 
+        inv.Remove(previousItem);       //remove the item in the slot 
         mouseSlot.UpdateItem(previousItem); //place previous item in the mouseSlot          
     }
 
     public void PlaceItemInEmptySlot(MouseSlot mouseSlot, InventorySlot slot)
     {
-        Inventory inventory = Inventory.instance;
         Item mouseItem = mouseSlot.currentItem;
 
         Debug.Log("PLACING ITEM IN EMPTY SLOT");
         mouseItem.slotNum = slot.slotNum; //assign item's slotNum to this slot
-        inventory.AddToSpecificSlot(mouseItem); //drop item in slot
+        inv.AddToSpecificSlot(mouseItem); //drop item in slot
         mouseSlot.UpdateItem(null); //clear mouseSlot's item
     }
 
     public void SwapItems(MouseSlot mouseSlot, InventorySlot slot)
     {
-        Inventory inventory = Inventory.instance;
         Item mouseItem = mouseSlot.currentItem;
         Item previousItem = slot.item;
 
         Debug.Log("SWAPPING ITEMS");
         mouseItem.slotNum = slot.slotNum;              //assign item's slotNum to this slot
-        inventory.AddToSpecificSlot(mouseItem);   //drop item in slot, removing old item is taken care of here too
+        inv.AddToSpecificSlot(mouseItem);   //drop item in slot, removing old item is taken care of here too
         mouseSlot.UpdateItem(previousItem);     //add old item to mouseSlot
     }
 
@@ -149,12 +137,12 @@ public class SlotClickHelpers : MonoBehaviour {
         int quantity = 1;
         if (item.quantity > 1)
         {
-            QuantityPrompt.instance.TriggerPrompt();
-            while (QuantityPrompt.instance.waitingForInput && PlayerState.currentState == PlayerState.PlayerStates.Prompt)
+            qntyPrompt.TriggerPrompt();
+            while (qntyPrompt.waitingForInput && PlayerState.currentState == PlayerState.PlayerStates.Prompt)
             {
                 yield return null;
             }
-            quantity = QuantityPrompt.instance.GetQuantity();
+            quantity = qntyPrompt.GetQuantity();
 
             if (quantity < 1 || quantity > item.quantity)
             {
@@ -174,10 +162,10 @@ public class SlotClickHelpers : MonoBehaviour {
         playerWallet.Deposit(price);
         Debug.Log("You have been credited $" + price);
 
-        Inventory.instance.CondenseStackables(item, quantity);
+        inv.CondenseStackables(item, quantity);
 
         item.quantity = quantity;
-        ShopInventory.instance.AddToSoldSlot(item);
+        shop.AddToSoldSlot(item);
 
         shopDialogue.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
     }
@@ -192,13 +180,13 @@ public class SlotClickHelpers : MonoBehaviour {
 
         if (item.quantity > 1)
         {
-            QuantityPrompt.instance.TriggerPrompt();
-            while (QuantityPrompt.instance.waitingForInput && PlayerState.currentState == PlayerState.PlayerStates.Prompt)
+            qntyPrompt.TriggerPrompt();
+            while (qntyPrompt.waitingForInput && PlayerState.currentState == PlayerState.PlayerStates.Prompt)
             {
                 yield return null;
             }
 
-            quantity = QuantityPrompt.instance.GetQuantity();
+            quantity = qntyPrompt.GetQuantity();
 
             if (quantity < 1 || quantity > item.quantity)
             {
@@ -231,10 +219,10 @@ public class SlotClickHelpers : MonoBehaviour {
     {
         Item newItem = CreateNewItemForInventory(item, quantity);
 
-        if(CheckInventorySpace.CheckItem(newItem))
+        if(InventoryManager.GetInstance().GetInventorySpaceChecker().CheckItem(newItem))
         {
             AdjustShopStock(item, quantity);
-            Inventory.instance.AddItem(newItem);
+            inv.AddItem(newItem);
             playerWallet.Withdraw(price);
             shopDialogue.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
         }
@@ -250,7 +238,7 @@ public class SlotClickHelpers : MonoBehaviour {
     {
         if (item.quantity - quantity < 1)
         {
-            ShopInventory.instance.Remove(item); //and destroy???
+            shop.Remove(item); //and destroy???
         }
         else
         {
@@ -269,7 +257,7 @@ public class SlotClickHelpers : MonoBehaviour {
     {
         Item newCopyOfItemForShop = Instantiate(item);
         newCopyOfItemForShop.quantity = quantity;
-        ShopInventory.instance.AddToSoldSlot(item);
+        shop.AddToSoldSlot(item);
     }
 
     #endregion

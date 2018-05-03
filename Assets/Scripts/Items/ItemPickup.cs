@@ -39,7 +39,7 @@ public class ItemPickup : Interactable {
     void PickUp()
     {
         //Debug.Log("Picking up " + item.name);
-        int itemsLeftAfterPickup = Inventory.instance.AddItem(item);
+        int itemsLeftAfterPickup = InventoryManager.GetInstance().GetInventory().AddItem(item);
 
         if (itemsLeftAfterPickup == 0)
         {

@@ -11,22 +11,6 @@ public class Inventory : MonoBehaviour {
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChanged;
 
-    #region Singleton
-    //insures that we can easily access the inventory, and that there is only one 
-    //inventory at all times
-    public static Inventory instance;
-
-    void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogWarning("More than one instance of inventory found");
-            return;
-        }
-        instance = this;
-    }
-    #endregion
-
     void Start()
     {
         //fill inventory with null spaces

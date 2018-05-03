@@ -10,7 +10,7 @@ public class Consumable : Item {
     {
         base.Use();
         ItemEffects.TriggerEffect(myEffect);
-        Inventory.instance.CondenseStackables(this, 1);
+        InventoryManager.GetInstance().GetInventory().CondenseStackables(this, 1);
         Debug.Log("Using " + name);
     }
 
