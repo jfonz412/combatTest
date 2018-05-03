@@ -3,8 +3,8 @@
 public class LoadShop : MonoBehaviour {
 
     public Item[] shopInventory = new Item[17];
-    ShopInventory shop;
-    ShopDialogue dialogueWindow;
+    private ShopInventory shop;
+    private ShopDialogue dialogueWindow;
 
     [HideInInspector]
     public enum MessageType { WELCOME, INV_FULL, LOW_GOLD, SUCCESS, INVAL_QNTY }
@@ -30,7 +30,7 @@ public class LoadShop : MonoBehaviour {
         {
             if(shopInventory[i] != null)
             {
-                shop.AddToFirstEmptySlot(shopInventory[i]);
+                InventoryManager.GetInstance().GetShopInventory().AddToFirstEmptySlot(shopInventory[i]);
             }
         }
 

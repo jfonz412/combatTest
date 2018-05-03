@@ -8,8 +8,8 @@ public class ShopInventoryUI : MonoBehaviour {
     public GameObject shopDialogue;
     public Text panel;
 
-    ShopInventory shop;
-    ShopSlot[] slots;
+    private ShopInventory shop;
+    private ShopSlot[] slots;
 
     #region Singleton
 

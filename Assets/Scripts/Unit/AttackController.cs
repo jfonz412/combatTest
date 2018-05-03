@@ -1,25 +1,26 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackController : MonoBehaviour {
 
     [HideInInspector]
     public Transform lastKnownTarget = null;
-    IEnumerator engagingEntity;
 
-    Health targetHealth;
+    private IEnumerator engagingEntity;
 
-    EquipmentManager equipmentManager;
-    Weapon equippedWeapon;
-    int weaponIndex = (int)EquipmentSlot.MainHand;
+    private Health targetHealth;
 
-    Stats myStats;
+    private EquipmentManager equipmentManager;
+    private Weapon equippedWeapon;
+    private int weaponIndex = (int)EquipmentSlot.MainHand;
 
-    UnitAnimController anim;
-    UnitController unit;   
+    private Stats myStats;
 
-    float myAttackStat;
+    private UnitAnimController anim;
+    private UnitController unit;
+    private AttackTimer attackTimer;
+
+    private float myAttackStat;
     
 
     void Start()
@@ -27,6 +28,7 @@ public class AttackController : MonoBehaviour {
         myStats = GetComponent<Stats>(); //need to account for stat changes
         anim = GetComponent<UnitAnimController>();
         unit = GetComponent<UnitController>();
+        attackTimer = GetComponent<AttackTimer>();
 
         equipmentManager = GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += SwapWeapons;
@@ -53,15 +55,16 @@ public class AttackController : MonoBehaviour {
     /****************** PRIVATE FUNCTIONS **************************/
     IEnumerator MoveToEngagement(Transform targetTransform)
     {
+        bool inRange;
         Collider2D c = GetComponent<Collider2D>();
 
         anim.FaceDirection(transform.position, targetTransform.position);
 
-        yield return new WaitForSeconds(equippedWeapon.speed); //initial delay to prevent enemy attack-swapping
-
         while (targetTransform)
         {
-            if (!c.IsTouching(targetTransform.GetComponent<Collider2D>())) //Vector3.Distance(transform.position, lastKnownTarget.position) > equippedWeapon.range
+            //eventually this will be a function that will check if ranged or melee, then decide if in range or not
+            inRange = !c.IsTouching(targetTransform.GetComponent<Collider2D>()); //this would just be for melee
+            if (inRange) 
             { 
                 lastKnownTarget = targetTransform;
                 
@@ -70,9 +73,11 @@ public class AttackController : MonoBehaviour {
             }
             else
             {
+                yield return new WaitForSeconds(attackTimer.Timer());
+                attackTimer.ResetAttackTimer(equippedWeapon.speed);
+
                 StopAndAttack(targetTransform);
                 lastKnownTarget = targetTransform;
-                yield return new WaitForSeconds(equippedWeapon.speed + Random.Range(0.0f, 0.2f));
             }
             yield return null;
         }
