@@ -19,7 +19,7 @@ public class ItemEffects : MonoBehaviour {
     static void HealPlayer()
     {
         Health health = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Health>();
-        health.currentHealth += 25f; //replace this with health method that "fixes" player
+        health.ExternalHealthAdjustment(25f); //replace this with health method that "fixes" player
     }
 
     static void BoostAttack()

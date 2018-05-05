@@ -3,20 +3,24 @@ using System.Collections;
 
 public class Health : MonoBehaviour
 {
-    public float currentHealth; //do not touch, just so I can see it
-    EquipmentManager equipmentManager;
-    UnitReactions unitReactions;
-    Stats myStats;
+    [SerializeField]
+    private float currentHealth; //do not touch, just so I can see it
 
-    void Start()
+    private EquipmentManager equipmentManager;
+    private UnitReactions unitReactions;
+    private Death deathController;
+    private Stats myStats;
+
+    private void Start()
     {
         equipmentManager = GetComponent<EquipmentManager>();
         myStats = GetComponent<Stats>();
         currentHealth = myStats.baseHp;
         unitReactions = GetComponent<UnitReactions>();
+        deathController = GetComponent<Death>();
     }
 
-    public void TakeDamage(float damage, Transform attacker)
+    public void TakeDamage(float damage, Transform myAttacker)
     {
         float totalDamage = DamageCalculator.CalculateTotalDamage(damage, myStats.baseDefense, PickBodyPart());
 
@@ -28,11 +32,11 @@ public class Health : MonoBehaviour
 
         if (currentHealth > 0.0f)
         {
-            unitReactions.ReactToAttackAgainstSelf(attacker);           
+            unitReactions.ReactToAttackAgainstSelf(myAttacker);           
         }
         else
         {
-            TriggerDeath(attacker);
+            TriggerDeath(myAttacker);
         }
     }
 
@@ -46,11 +50,15 @@ public class Health : MonoBehaviour
         return (Armor)equipmentManager.currentEquipment[validChoices[num]];
     }
 
-    void TriggerDeath(Transform attacker)
+    void TriggerDeath(Transform myAttacker)
     {
-        unitReactions.isDead = true;
-        unitReactions.ReactToAttackAgainstSelf(attacker);
-        IEnumerator death = Death.HumanoidDeath(transform, attacker);
-        StartCoroutine(death); //must start coroutine here because Death.cs is a static class
+        unitReactions.isDead = true; //stop reacting
+        unitReactions.ReactToAttackAgainstSelf(myAttacker); //actually alerts others, and since this unit is dead UnitReactionManager should skip over it
+        deathController.Die(myAttacker);
+    }
+
+    public void ExternalHealthAdjustment(float amount)
+    {
+        currentHealth += amount;
     }
 }

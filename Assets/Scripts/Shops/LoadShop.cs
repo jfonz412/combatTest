@@ -30,7 +30,7 @@ public class LoadShop : MonoBehaviour {
         {
             if(shopInventory[i] != null)
             {
-                InventoryManager.GetInstance().GetShopInventory().AddToFirstEmptySlot(shopInventory[i]);
+                shop.AddToFirstEmptySlot(shopInventory[i]);
             }
         }
 

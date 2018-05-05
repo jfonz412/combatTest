@@ -5,14 +5,15 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 
-    public GameObject clickMarker;
+    [SerializeField]
+    private GameObject clickMarker;
 
-    UnitController unitController;
-    AttackController attackController;
+    private UnitController unitController;
+    private AttackController attackController;
 
-    IEnumerator movingToInteraction = null;
+    private IEnumerator movingToInteraction = null;
 
-    PlayerState.PlayerStates[] movementImparingStates = new PlayerState.PlayerStates[] 
+    private PlayerState.PlayerStates[] movementImparingStates = new PlayerState.PlayerStates[] 
     {
         PlayerState.PlayerStates.Shopping,
         PlayerState.PlayerStates.Speaking,
@@ -21,16 +22,15 @@ public class PlayerController : MonoBehaviour {
     };
 
 
-
-	void Start () {
+    private void Start () {
         FloatingTextController.Initialize(); //just needs to be initialized somewhere
         unitController = GetComponent<UnitController>();
         attackController = GetComponent<AttackController>();
     }
 
-    
+
     // Update is called once per frame
-    void Update () {
+    private void Update () {
         if (!Incapcitated())
         {
             MovePlayer();
@@ -38,12 +38,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     //this will prevent all movement, popups, and interactions during certain states
-    bool Incapcitated()
+    private bool Incapcitated()
     {
         return PlayerState.CheckPlayerState(movementImparingStates);
     }
-	
-	void MovePlayer(){
+
+    private void MovePlayer(){
         if (!EventSystem.current.IsPointerOverGameObject()) //check if mouse is over UI element
         {
             if (Input.GetMouseButtonDown(0))
@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour {
         }
 	}
 
-    void ProcessClick(int mouseButton)
+    private void ProcessClick(int mouseButton)
     {
         ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus();
 
@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    Vector3 GetMouseClickPosition()
+    private Vector3 GetMouseClickPosition()
     {
         Vector3 mouseClickPos;
         mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour {
 
     /************************************ LEFT AND RIGHT CLICKS *******************************/
 
-    void ProcessLeftClick(Vector3 mouseClickPos)
+    private void ProcessLeftClick(Vector3 mouseClickPos)
     {
         RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
 
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour {
         Instantiate(clickMarker, mouseClickPos, Quaternion.identity);
     }
 
-    void ProcessRightClick(Vector3 mouseClickPos) //Brings up interaction options menu
+    private void ProcessRightClick(Vector3 mouseClickPos) //Brings up interaction options menu
     {
         RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
         List<Collider2D> interactablesFound = CheckForUnits(mouseClickPos);
@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour {
     #region Click Helpers
 
     // LEFT CLICK HELPERS
-    void CheckHit(RaycastHit2D hit, Vector3 location)
+    private void CheckHit(RaycastHit2D hit, Vector3 location)
     {
         Collider2D collider = hit.collider;
         if (collider)
@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void CheckCollider(Collider2D collider, Vector3 location)
+    private void CheckCollider(Collider2D collider, Vector3 location)
     {
         Interactable interactable;
 
@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour {
 
     // RIGHT CLICK HELPERS
 
-    List<Collider2D> CheckForUnits(Vector3 mouseClickPos)
+    private List<Collider2D> CheckForUnits(Vector3 mouseClickPos)
     {
         List<Collider2D> interactables = new List<Collider2D>();
         Debug.Log("Checking for interactables");
@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour {
         StartCoroutine(movingToInteraction);
     }
 
-    IEnumerator MoveToInteraction(Interactable interactable, string interaction)
+    private IEnumerator MoveToInteraction(Interactable interactable, string interaction)
     {
         Collider2D c = GetComponent<Collider2D>();
 
@@ -229,7 +229,7 @@ public class PlayerController : MonoBehaviour {
         yield break;
     }
 
-    void StopPreviousInteraction()
+    private void StopPreviousInteraction()
     {
         if (movingToInteraction != null)
         {

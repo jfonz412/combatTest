@@ -3,46 +3,39 @@ using UnityEngine;
 
 public class Death : MonoBehaviour {
 
-    public static IEnumerator HumanoidDeath(Transform victim, Transform attacker)
-    {
-        StopAllCombat(victim, attacker);
-        IncapacitateEntity(victim, attacker);
+    [SerializeField]
+    private GameObject deathItem;
 
-        //extend death animation before destroy
-        yield return new WaitForSeconds(6f);
-        Destroy(victim.gameObject);
+    public void Die(Transform myAttacker)
+    {
+        StartCoroutine(DeathProcess(myAttacker)); 
     }
 
-    static void IncapacitateEntity(Transform victim, Transform attacker)
+    private IEnumerator DeathProcess(Transform myAttacker)
     {
-        NPCInteractionStates npcState = victim.GetComponent<NPCInteractionStates>();
+        StopAllCombat(myAttacker);
+        DropDeathItem();
 
-        victim.GetComponent<UnitAnimController>().Die();
+        yield return new WaitForSeconds(6f); //extend death animation before destroy
+        Destroy(gameObject);
+    }
 
-        //stop processing clicks if player
-        if (victim.name == "Player")
+    private void DropDeathItem()
+    {
+        if (deathItem != null)
         {
-            PlayerState.SetPlayerState(PlayerState.PlayerStates.Dead);
-            ScriptToolbox.GetInstance().GetWindowCloser().CloseAllWindows();
-        }
-
-        //stop interactions if npc       
-        if (npcState != null)
-        {
-            npcState.SetInteractionState(NPCInteractionStates.InteractionState.Dead);
+            Instantiate(deathItem, transform.position, Quaternion.identity);
         }
     }
 
-    static void StopAllCombat(Transform victim, Transform attacker)
+    public virtual void StopAllCombat(Transform myAttacker)
     {
-        //stop the victim
-        AttackController myAttackController = victim.GetComponent<AttackController>();
+        //stop this unit
+        GetComponent<UnitController>().StopMoving();
+        GetComponent<AttackController>().EngageTarget(false); //shouldnt this go first?
+        GetComponent<UnitAnimController>().Die();
 
-        victim.GetComponent<UnitController>().StopMoving();
-
-        myAttackController.EngageTarget(false);
-
-        //stop the attacker
-        attacker.GetComponent<AttackController>().EngageTarget(false);
+        //stop myAttacker
+        myAttacker.GetComponent<AttackController>().EngageTarget(false);
     }
 }

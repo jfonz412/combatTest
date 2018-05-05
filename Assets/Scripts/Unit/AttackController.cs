@@ -63,8 +63,9 @@ public class AttackController : MonoBehaviour {
         while (targetTransform)
         {
             //eventually this will be a function that will check if ranged or melee, then decide if in range or not
-            inRange = !c.IsTouching(targetTransform.GetComponent<Collider2D>()); //this would just be for melee
-            if (inRange) 
+            inRange = c.IsTouching(targetTransform.GetComponent<Collider2D>()); //this would just be for melee
+
+            if (!inRange) 
             { 
                 lastKnownTarget = targetTransform;
                 
@@ -73,11 +74,17 @@ public class AttackController : MonoBehaviour {
             }
             else
             {
+                Attack(targetTransform);
                 yield return new WaitForSeconds(attackTimer.Timer());
-                attackTimer.ResetAttackTimer(equippedWeapon.speed);
 
-                StopAndAttack(targetTransform);
-                lastKnownTarget = targetTransform;
+                /*
+                //this never pauses the coRoutine so it just spins faster and faster as we reset the coRoutine(?)
+                if(attackTimer.Timer() <= 0)
+                {
+                    Attack(targetTransform);
+                    lastKnownTarget = targetTransform;
+                }
+                */
             }
             yield return null;
         }
@@ -85,19 +92,24 @@ public class AttackController : MonoBehaviour {
     }
 
 #region Helper Functions
-    void StopAndAttack(Transform targetTransform)
+    void Attack(Transform targetTransform)
     {
         float damage = DamageCalculator.CalculateDamageDealt(myStats.baseAttack, equippedWeapon.totalAttack);
 
         AttackAnimation(targetTransform);
         targetHealth.TakeDamage(damage, transform);
+
+        attackTimer.ResetAttackTimer(equippedWeapon.speed);
     }
 
 
     void AttackAnimation(Transform targetTransform)
     {
         unit.StopMoving();
-        anim.FaceDirection(transform.position, targetTransform.position);
+
+        if(targetTransform != null)
+            anim.FaceDirection(transform.position, targetTransform.position);
+
         anim.Attack(); //equippedWeapon.attackType
     }
 

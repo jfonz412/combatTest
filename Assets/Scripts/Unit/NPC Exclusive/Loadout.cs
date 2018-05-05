@@ -2,7 +2,7 @@
 
 public class Loadout : MonoBehaviour {
     public Equipment[] defaultLoadout = new Equipment[6]; //num of equipslots 
-    EquipmentManager equipmentManager;
+    private EquipmentManager equipmentManager;
 
     void Start()
     {

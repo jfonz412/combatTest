@@ -4,8 +4,8 @@ public class NPCInteraction : Interactable
 {
     public Dialogue dialog; //contains fields for name and text
 
-    LoadShop myShop;
-    NPCInteractionStates myState;
+    private LoadShop myShop;
+    private NPCInteractionStates myState;
 
     void Start()
     {
@@ -75,7 +75,7 @@ public class NPCInteraction : Interactable
         {
             ShopInventoryUI.instance.OpenShop(name);
             myShop.LoadShopInventory();
-            PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping);
+            PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping); //maybe 
         }
         else
         {

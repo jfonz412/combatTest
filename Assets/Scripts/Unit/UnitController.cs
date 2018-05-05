@@ -3,17 +3,18 @@ using System.Collections;
 
 public class UnitController : MonoBehaviour
 {
-    UnitAnimController anim;
-    Rigidbody2D rb;
-    SpriteRenderer sp;
-
-    IEnumerator followingPath;
-    Vector3[] path;
-    int targetIndex;
-
     [HideInInspector]
-    public float baseSpeed; 
-    float currentMoveSpeed;
+    public float baseSpeed; //who needs to see this?
+
+    private UnitAnimController anim;
+    private Rigidbody2D rb;
+    private SpriteRenderer sp;
+
+    private IEnumerator followingPath;
+    private Vector3[] path;
+    private int targetIndex;
+
+    private float currentMoveSpeed;
 
     void Start()
     {
@@ -106,6 +107,9 @@ public class UnitController : MonoBehaviour
                 StopCoroutine("FollowPath");              
             }
 
+            path = null;
+            targetIndex = 0;
+
             anim.Walking(false);
             IsKinematic(false);
         }
@@ -116,7 +120,7 @@ public class UnitController : MonoBehaviour
         return Grid.instance.NodeAtWorldPosition(transform.position);
     }
 
-    //diabling for now...if a unit gets stuck, figure out a way to tell and then turn OFF Kinematic AND turn OFF Trigger
+    //diabling for now...if a unit gets stuck, figure out a way to alert UnitController and then turn OFF Kinematic AND turn OFF Trigger
     void IsKinematic(bool toggleOn)
     {
         if (toggleOn)
@@ -134,6 +138,7 @@ public class UnitController : MonoBehaviour
         sp.sortingOrder = (int)Mathf.RoundToInt(-transform.position.y * 1000);
     }
 
+    /*
     public void OnDrawGizmos()
     {
         if (path != null)
@@ -154,5 +159,6 @@ public class UnitController : MonoBehaviour
             }
         }
     }
+    */
 }
 
