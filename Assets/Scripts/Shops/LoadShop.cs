@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class LoadShop : MonoBehaviour {
 
-    public Item[] shopInventory = new Item[17];
+    [SerializeField]
+    private List<Item> shopInventory = new List<Item>();
     private ShopInventory shop;
     private ShopDialogue dialogueWindow;
 
@@ -26,16 +28,13 @@ public class LoadShop : MonoBehaviour {
 
     public void LoadShopInventory()
     {
-        for (int i = 0; i < shopInventory.Length; i++)
-        {
-            if(shopInventory[i] != null)
-            {
-                shop.AddToFirstEmptySlot(shopInventory[i]);
-            }
-        }
-
+        shop.LoadShopInventory(shopInventory, this);
         dialogueWindow.LoadShopDialogue(shopDialogue);
     }
 
-
+    public void UpdateInventory(List<Item> items)
+    {
+        Debug.Log("Updating NPC shop's inventory" + items[1]);
+        shopInventory = new List<Item>(items);
+    }
 }

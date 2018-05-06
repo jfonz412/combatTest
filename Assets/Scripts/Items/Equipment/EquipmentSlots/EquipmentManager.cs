@@ -41,11 +41,8 @@ public class EquipmentManager : MonoBehaviour {
     //Right clicks
     public void FastUnequip(Equipment item)
     {
-        if (item.equipmentID != 0) //0 is unarmed/naked
-        {
-            Unequip((int)item.equipSlot);
-            inv.AddItem(item);
-        }
+        Unequip((int)item.equipSlot);
+        inv.AddItem(item);
     }
 
     public void Equip (Equipment newItem) {
@@ -53,12 +50,13 @@ public class EquipmentManager : MonoBehaviour {
         int slotIndex = (int)newItem.equipSlot;
 
         currentEquipment[slotIndex] = newItem;
-        //I think we can toggle this on and off to load equip sprites across the board
-        //unitAnim.LoadEquipment((int)newItem.equipSlot, newItem.equipmentID);
 
-        if (onEquipmentChanged != null)
+        if (newItem.equipmentID != 0) //0 is unarmed/naked, we don't want this actually added to the UI slot
         {
-            onEquipmentChanged.Invoke(oldItem, newItem);
+            if (onEquipmentChanged != null)
+            {
+                onEquipmentChanged.Invoke(oldItem, newItem);
+            }
         }
     }
 
