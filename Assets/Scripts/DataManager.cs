@@ -1,32 +1,23 @@
-﻿using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DataManager : MonoBehaviour {
-    public void SavePlayerData(PlayerData data)
-    {
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/playerData.dat");
-        bf.Serialize(file, data);
-        file.Close();
-    }
+    public PlayerSaveData ps;
 
-    public PlayerData LoadPlayerData()
+    //DEBUGGING
+    void Update()
     {
-        PlayerData data = new PlayerData();
-
-        if (File.Exists(Application.persistentDataPath + "/playerData.dat"))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/playerData.dat", FileMode.Open);
-            data = (PlayerData)bf.Deserialize(file);
-            file.Close();
-        }
-        else
-        {
-            Debug.LogWarning("Player save data not found!");
+            Debug.Log("Attempting to save data");
+            ps.SaveData();
         }
 
-        return data;
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Debug.Log("Attempting to load data");
+            ps.LoadData();
+        }
     }
+
+    //this class will call all saved objects to save and load on demand
 }

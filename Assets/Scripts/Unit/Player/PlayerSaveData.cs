@@ -1,38 +1,19 @@
 ﻿using System;
-using UnityEngine;
 
-public class PlayerSaveData : MonoBehaviour {
-    private DataManager dataManager;
+public class PlayerSaveData : Data {
+    private string fileName = "/playerData.dat";
 
-	// Use this for initialization
-	void Start () {
-        dataManager = ApplicationManager.GetInstance().GetDataManager();
-	}
-
-    void Update()
+    public override void SaveData()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            SavePlayerData();
-        }
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            LoadPlayerData();
-        }
-    }
-	
-    public void SavePlayerData()
-    {
-        Debug.Log("Saving player data");
+        base.SaveData();
         PlayerData data = PackagePlayerData();
-        dataManager.SavePlayerData(data);
+        SaveDataToFile(data, fileName);
     }
 
-    public void LoadPlayerData()
+    public override void LoadData()
     {
-        Debug.Log("Loading player data");
-        PlayerData data = dataManager.LoadPlayerData();
+        base.LoadData();
+        PlayerData data = LoadDataFromFile(fileName);
         Health playerHealth = GetComponent<Health>();
         playerHealth.ExternalHealthAdjustment(data.currentHealth);
     }
