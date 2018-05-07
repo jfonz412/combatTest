@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Data : MonoBehaviour {
 
+    void Start()
+    {
+        ApplicationManager.GetInstance().GetDataManager().AddToDataManager(this);
+    }
+
     public virtual void SaveData()
     {
         Debug.Log("Saving player data");
@@ -14,7 +19,7 @@ public class Data : MonoBehaviour {
         Debug.Log("Loading player data");
     }
 
-    public virtual void SaveDataToFile(PlayerData data, string fileName)
+    protected void SaveDataToFile(PlayerData data, string fileName)
     {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + fileName);
@@ -22,7 +27,7 @@ public class Data : MonoBehaviour {
         file.Close();
     }
 
-    public virtual PlayerData LoadDataFromFile(string fileName)
+    protected PlayerData LoadDataFromFile(string fileName)
     {
         PlayerData data = new PlayerData();
 

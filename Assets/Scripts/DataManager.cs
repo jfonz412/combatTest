@@ -1,23 +1,45 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class DataManager : MonoBehaviour {
-    public PlayerSaveData ps;
+    [SerializeField]
+    private List<Data> saveData; //data collected from the current scene
 
     //DEBUGGING
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             Debug.Log("Attempting to save data");
-            ps.SaveData();
+            SaveData();
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             Debug.Log("Attempting to load data");
-            ps.LoadData();
+            LoadData();
         }
     }
 
-    //this class will call all saved objects to save and load on demand
+    public void AddToDataManager(Data data)
+    {
+        saveData.Add(data);
+    }
+
+    //will eventually make these public
+    private void SaveData()
+    {
+        for (int i = 0; i < saveData.Count; i++)
+        {
+            saveData[i].SaveData();
+        }
+    }
+
+    private void LoadData()
+    {
+        for (int i = 0; i < saveData.Count; i++)
+        {
+            saveData[i].LoadData();
+        }
+    }
 }
