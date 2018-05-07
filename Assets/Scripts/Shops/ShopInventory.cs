@@ -5,7 +5,7 @@ public class ShopInventory : MonoBehaviour {
 
     public List<Item> items = new List<Item>();
     public int inventorySpace;
-    public LoadShop currentLoadedShop;
+    private LoadShop currentLoadedShop;
 
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChanged;
@@ -116,6 +116,8 @@ public class ShopInventory : MonoBehaviour {
 
     private void UpdateNPCShopInventory()
     {
-        currentLoadedShop.UpdateInventory(items);
+        if(currentLoadedShop != null)
+            currentLoadedShop.UpdateInventory(items);
+        currentLoadedShop = null;
     }
 }

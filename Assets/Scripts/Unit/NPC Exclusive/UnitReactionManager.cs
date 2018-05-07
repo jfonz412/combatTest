@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class UnitReactionManager : MonoBehaviour {
 
-    public UnitReactors units;
+    [SerializeField]
+    private List<UnitReactions> units;
 
     //this is called by a unit when it is attacked (UnitReactions.ReactToAttackAgainstSelf())
     public void AlertEveryoneInRange(int factionID, Transform attacker)
@@ -10,21 +12,26 @@ public class UnitReactionManager : MonoBehaviour {
         Vector3 location = attacker.position;
 
         //Debug.Log("Alerting others in range");
-        for(int i = 0; i < units.unitReactors.Length; i++)
+        for (int i = 0; i < units.Count; i++)
         {
-            UnitReactions unit = units.unitReactors[i];
+            UnitReactions unit = units[i];
 
             if (unit.isDead || unit == null)
             {
+                units.RemoveAt(i); //added, may or may not work
                 continue;
             }
 
             if (Vector3.Distance(unit.transform.position, location) < unit.reactionRadius)
             {
-                Debug.Log(unit.name + "is in the attack radius!!!");
                 unit.ReactToAttackAgainstOther(factionID, attacker);
-                Debug.Log("Reacting");
             }
         }
+    }
+
+    public void AddUnitToReactionManager(UnitReactions unit)
+    {
+        Debug.Log(unit);
+        units.Add(unit);
     }
 }

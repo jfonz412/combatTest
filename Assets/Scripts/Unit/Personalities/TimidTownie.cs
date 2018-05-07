@@ -7,13 +7,13 @@ public class TimidTownie : UnitReactions  {
         RunAway(attacker);
     }
 
-    public override void ReactToFactionAttack(Transform attacker = null)
+    protected override void ReactToFactionAttack(Transform attacker = null)
     {
         base.ReactToFactionAttack(attacker);
         RunAway(attacker);
     }
 
-    public override void ReactToNonFactionAttack(Transform attacker = null)
+    protected override void ReactToNonFactionAttack(Transform attacker = null)
     {
         base.ReactToNonFactionAttack(attacker);
         RunAway(attacker);

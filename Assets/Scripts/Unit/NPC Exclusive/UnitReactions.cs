@@ -7,9 +7,9 @@ public class UnitReactions : MonoBehaviour
     public enum Factions { Townie, BigRedGang, Player };
     public Factions faction;
 
-    AttackController attackController;
-    NPCInteractionStates npcState;
-    UnitController unitController;
+    private AttackController attackController;
+    private NPCInteractionStates npcState;
+    private UnitController unitController;
 
     public float reactionRadius = 5f;
     //public float criticalHealthThreshold = 0;
@@ -25,6 +25,7 @@ public class UnitReactions : MonoBehaviour
         npcState = transform.GetComponent<NPCInteractionStates>();
         attackController = GetComponent<AttackController>();
         unitController = GetComponent<UnitController>();
+        ScriptToolbox.GetInstance().GetUnitReactionManager().AddUnitToReactionManager(this);
     }
 
     /***-----------------------------------------NPC FUNCTIONS----------------------------------------------- ***/
@@ -56,7 +57,7 @@ public class UnitReactions : MonoBehaviour
     }
 
 
-    public virtual void ReactToFactionAttack(Transform attacker = null)
+    protected virtual void ReactToFactionAttack(Transform attacker = null)
     {
         if (name == "Player")
         {
@@ -64,7 +65,7 @@ public class UnitReactions : MonoBehaviour
         }
     }
 
-    public virtual void ReactToNonFactionAttack(Transform attacker = null)
+    protected virtual void ReactToNonFactionAttack(Transform attacker = null)
     {
         if (name == "Player")
         {
@@ -75,7 +76,7 @@ public class UnitReactions : MonoBehaviour
     //possibly give these their own script?
     #region Possible Reactions
 
-    public void Fight(Transform attacker)
+    protected void Fight(Transform attacker)
     {
         //target the last unit that attacked it while preventing attacking the same target everytime unit is damaged
         if (attackController.lastKnownTarget != attacker)
@@ -92,7 +93,7 @@ public class UnitReactions : MonoBehaviour
         }
     }
 
-    public void RunAway(Transform attacker)
+    protected void RunAway(Transform attacker)
     {
         if (!runningAway)
         {
@@ -103,7 +104,7 @@ public class UnitReactions : MonoBehaviour
 
     //----------------------------------------
 
-    IEnumerator RunFromAttacker(Transform attacker)
+    private IEnumerator RunFromAttacker(Transform attacker)
     {
         //PathfindingManager.RequestPath(transform.position, GetPosition(attacker), unitController.OnPathFound); //makes for a quick initial reaction
 
@@ -132,7 +133,7 @@ public class UnitReactions : MonoBehaviour
         yield break;
     }
 
-    Vector3 GetPosition(Transform attacker)
+    private Vector3 GetPosition(Transform attacker)
     {
         Node node;
         int attempts = 0;
@@ -161,7 +162,7 @@ public class UnitReactions : MonoBehaviour
         return node.worldPos;     
     }
 
-    Node NodeOppositeAttacker(Transform attacker)
+    private Node NodeOppositeAttacker(Transform attacker)
     {
         float deviation = Random.Range(0f, 0.9f); 
 
@@ -175,7 +176,7 @@ public class UnitReactions : MonoBehaviour
         return node;
     }
 
-    Node RandomNode()
+    private Node RandomNode()
     {
         float x = transform.position.x;
         float y = transform.position.y;
@@ -190,7 +191,7 @@ public class UnitReactions : MonoBehaviour
     #endregion
 
     //debuggin' purposes
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, reactionRadius);

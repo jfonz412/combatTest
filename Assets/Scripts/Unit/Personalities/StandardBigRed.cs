@@ -8,13 +8,13 @@ public class StandardBigRed : UnitReactions {
         Fight(attacker);
     }
 
-    public override void ReactToFactionAttack(Transform attacker = null)
+    protected override void ReactToFactionAttack(Transform attacker = null)
     {
         base.ReactToFactionAttack(attacker);
         Fight(attacker);
     }
 
-    public override void ReactToNonFactionAttack(Transform attacker = null)
+    protected override void ReactToNonFactionAttack(Transform attacker = null)
     {
         base.ReactToNonFactionAttack(attacker);
         return;
