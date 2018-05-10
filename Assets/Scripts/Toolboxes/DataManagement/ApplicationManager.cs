@@ -4,6 +4,7 @@ public class ApplicationManager : MonoBehaviour {
     private static ApplicationManager instance;
     private DataManager dataManager;
     private LevelManager levelManager;
+    private SceneMusic sceneMusic;
 
     #region Singleton
     private void Awake()
@@ -39,5 +40,16 @@ public class ApplicationManager : MonoBehaviour {
     public LevelManager GetLevelManager()
     {
         return levelManager;
+    }
+
+    public SceneMusic GetSceneMusic()
+    {
+        //this MIGHT take care of some of the script order issues I'm having...or it might make it worse, not sure yet
+        //I think overall it will cut down on the missing scripts because AppManager doesn't have to be created last?
+        if(sceneMusic == null)
+        {
+            sceneMusic = GetComponent<SceneMusic>();
+        }
+        return sceneMusic;
     }
 }
