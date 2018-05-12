@@ -20,21 +20,15 @@ public class LoadShop : MonoBehaviour {
 
     public MyShopDialogue[] shopDialogue;
 
-    void Start()
-    {
-        shop = InventoryManager.GetInstance().GetShopInventory();
-        dialogueWindow = InventoryManager.GetInstance().GetShopDialogue();
-    }
-
     public void LoadShopInventory()
     {
-        shop.LoadShopInventory(shopInventory, this);
-        dialogueWindow.LoadShopDialogue(shopDialogue);
+        InventoryManager.GetInstance().GetShopInventory().LoadShopInventory(shopInventory, this);
+        InventoryManager.GetInstance().GetShopDialogue().LoadShopDialogue(shopDialogue);
     }
 
     public void UpdateInventory(List<Item> items)
     {
-        Debug.Log("Updating NPC shop's inventory" + items[1]);
+        //Debug.Log("Updating NPC shop's inventory" + items[1]);
         shopInventory = new List<Item>(items);
     }
 }

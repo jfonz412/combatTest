@@ -21,18 +21,17 @@ public class AttackController : MonoBehaviour {
     private AttackTimer attackTimer;
 
     private float myAttackStat;
-    
 
-    void Start()
+
+    private void Start()
     {
-        myStats = GetComponent<Stats>(); //need to account for stat changes
+        myStats = GetComponent<Stats>(); 
         anim = GetComponent<UnitAnimController>();
         unit = GetComponent<UnitController>();
         attackTimer = GetComponent<AttackTimer>();
 
         equipmentManager = GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += SwapWeapons;
-        SwapWeapons(null, null); //load whatever weapon is already equipped
     }
 
 
@@ -53,7 +52,7 @@ public class AttackController : MonoBehaviour {
     }
 
     /****************** PRIVATE FUNCTIONS **************************/
-    IEnumerator MoveToEngagement(Transform targetTransform)
+    private IEnumerator MoveToEngagement(Transform targetTransform)
     {
         bool inRange;
         Collider2D c = GetComponent<Collider2D>();
@@ -76,24 +75,20 @@ public class AttackController : MonoBehaviour {
             {
                 Attack(targetTransform);
                 yield return new WaitForSeconds(attackTimer.Timer());
-
-                /*
-                //this never pauses the coRoutine so it just spins faster and faster as we reset the coRoutine(?)
-                if(attackTimer.Timer() <= 0)
-                {
-                    Attack(targetTransform);
-                    lastKnownTarget = targetTransform;
-                }
-                */
             }
             yield return null;
         }
         yield break;
     }
 
-#region Helper Functions
-    void Attack(Transform targetTransform)
+    #region Helper Functions
+    private void Attack(Transform targetTransform)
     {
+        if(equippedWeapon == null)
+        {
+            SwapWeapons(null, null); //load whatever weapon is already equipped
+        }
+
         float damage = DamageCalculator.CalculateDamageDealt(myStats.baseAttack, equippedWeapon.totalAttack);
 
         AttackAnimation(targetTransform);
@@ -103,7 +98,7 @@ public class AttackController : MonoBehaviour {
     }
 
 
-    void AttackAnimation(Transform targetTransform)
+    private void AttackAnimation(Transform targetTransform)
     {
         unit.StopMoving();
 
@@ -114,8 +109,7 @@ public class AttackController : MonoBehaviour {
     }
 
 
-
-    void StopEngagingEnemy()
+    private void StopEngagingEnemy()
     {
         if (engagingEntity != null)
         {
@@ -123,7 +117,7 @@ public class AttackController : MonoBehaviour {
         }
     }
 
-    void EngageNewEnemy(Transform targetTransform)
+    private void EngageNewEnemy(Transform targetTransform)
     {     
         targetHealth = lastKnownTarget.GetComponent<Health>();
         engagingEntity = MoveToEngagement(targetTransform);
@@ -131,10 +125,10 @@ public class AttackController : MonoBehaviour {
         StartCoroutine(engagingEntity);
     }
 
-#endregion
+    #endregion
 
     //Player callback for weapon swaps (called from EquipmentManager)
-    void SwapWeapons(Equipment oldItem, Equipment newItem)
+    private void SwapWeapons(Equipment oldItem, Equipment newItem)
     {
         equippedWeapon = (Weapon)equipmentManager.currentEquipment[weaponIndex];
     }

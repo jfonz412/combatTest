@@ -49,6 +49,7 @@ public class UnitReactions : MonoBehaviour
         if (name == "Player")
         {
             ScriptToolbox.GetInstance().GetWindowCloser().KnockPlayerOutOfDialogue();
+            ScriptToolbox.GetInstance().GetUnitReactionManager().AlertEveryoneInRange((int)faction, attacker);
             return;
         }
 
@@ -93,29 +94,39 @@ public class UnitReactions : MonoBehaviour
         }
     }
 
-    protected void RunAway(Transform attacker)
+    protected void RunAwayFromFactionAttack(Transform attacker)
     {
         if (!runningAway)
         {
             runningAway = true;
+
+            if (attacker.name == "Player")
+            {
+                npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingPlayer);
+            }
+            else
+            {
+                npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingNPC);
+            }
+
             StartCoroutine(RunFromAttacker(attacker));
         }           
     }
 
-    //----------------------------------------
+    //if general violence occurs, unit will run away and will not interact with trading or talking
+    protected void RunAwayFromNonFactionAttack(Transform attacker)
+    {
+        if (!runningAway)
+        {
+            runningAway = true;
+            npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingNPC);
+            StartCoroutine(RunFromAttacker(attacker));
+        }
+    }
 
     private IEnumerator RunFromAttacker(Transform attacker)
     {
         //PathfindingManager.RequestPath(transform.position, GetPosition(attacker), unitController.OnPathFound); //makes for a quick initial reaction
-
-        if (attacker.name == "Player")
-        {
-            npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingPlayer);
-        }
-        else
-        {
-            npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingNPC);
-        }
 
         while (attacker && !isDead)
         {

@@ -17,6 +17,7 @@ public class BraveTownie : UnitReactions {
     protected override void ReactToNonFactionAttack(Transform attacker = null)
     {
         base.ReactToNonFactionAttack(attacker);
+        //do nothing
         return;
     }
 }

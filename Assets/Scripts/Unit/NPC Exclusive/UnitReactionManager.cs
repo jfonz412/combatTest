@@ -31,7 +31,7 @@ public class UnitReactionManager : MonoBehaviour {
 
     public void AddUnitToReactionManager(UnitReactions unit)
     {
-        Debug.Log(unit);
+        //Debug.Log(unit);
         units.Add(unit);
     }
 }

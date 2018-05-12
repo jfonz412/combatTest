@@ -14,11 +14,15 @@ public class EquipmentManager : MonoBehaviour {
 
     private Inventory inv;
 
-    void Start () {
-        //unitAnim = GetComponent<UnitAnimator>();
-
+    void Awake()
+    {
+        //moved to awake to ensure it loaded before Loadout tries to equip items
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
         currentEquipment = new Equipment[numSlots];
+    }
+
+    void Start ()
+    {
         inv = InventoryManager.GetInstance().GetInventory();
     }
 
