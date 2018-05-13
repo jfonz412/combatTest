@@ -10,7 +10,7 @@ public class SetStartVolume : MonoBehaviour
     {
         musicManager = GetComponent<MusicManager>();
         volume = PlayerPrefsManager.GetMasterVolume();
-        Debug.Log(volume);
+        //Debug.Log(volume);
         musicManager.ChangeVolume(volume); 
     }
 }
