@@ -34,6 +34,10 @@ public class ApplicationManager : MonoBehaviour {
 
     public DataManager GetDataManager()
     {
+        if (dataManager == null)
+        {
+            dataManager = GetComponent<DataManager>();
+        }
         return dataManager;
     }
 

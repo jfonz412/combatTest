@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour {
     [SerializeField]
-    private List<DataController> saveData; //data collected from the current scene
+    private List<DataController> dataControllers; //data collected from the current scene
 
     //DEBUGGING
     private void Update()
@@ -21,25 +21,25 @@ public class DataManager : MonoBehaviour {
         }
     }
 
-    public void AddToDataManager(DataController data)
+    public void AddToDataManager(DataController dataController)
     {
-        saveData.Add(data);
+        dataControllers.Add(dataController);
     }
 
     //will eventually make these public
     private void SaveData()
     {
-        for (int i = 0; i < saveData.Count; i++)
+        for (int i = 0; i < dataControllers.Count; i++)
         {
-            saveData[i].SaveData();
+            dataControllers[i].SaveData();
         }
     }
 
     private void LoadData()
     {
-        for (int i = 0; i < saveData.Count; i++)
+        for (int i = 0; i < dataControllers.Count; i++)
         {
-            saveData[i].LoadData();
+            dataControllers[i].LoadData();
         }
     }
 }

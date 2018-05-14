@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using System;
 
 public class PlayerSaveData : DataController {
     private string fileName = "/playerData.dat";
@@ -16,7 +13,7 @@ public class PlayerSaveData : DataController {
     public override void LoadData()
     {
         base.LoadData();
-        PlayerData data = LoadDataFromFile(fileName);
+        PlayerData data = (PlayerData)LoadDataFromFile(fileName);
         ApplyDataToPlayer(data);
     }
 
@@ -32,39 +29,10 @@ public class PlayerSaveData : DataController {
         Health playerHealth = GetComponent<Health>();
         playerHealth.ExternalHealthAdjustment(data.currentHealth);
     }
-
-    #region Serialization
-    private void SaveDataToFile(PlayerData data, string fileName)
-    {
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + fileName);
-        bf.Serialize(file, data);
-        file.Close();
-    }
-
-    private PlayerData LoadDataFromFile(string fileName)
-    {
-        PlayerData data = new PlayerData();
-
-        if (File.Exists(Application.persistentDataPath + fileName))
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + fileName, FileMode.Open);
-            data = (PlayerData)bf.Deserialize(file);
-            file.Close();
-        }
-        else
-        {
-            Debug.LogWarning("Player save data not found!");
-        }
-
-        return data;
-    }
-    #endregion
 }
 
 [Serializable]
-public struct PlayerData
+public class PlayerData : Data
 {
     public float currentHealth;
     public string currentScene;
