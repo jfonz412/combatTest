@@ -1,20 +1,29 @@
 ﻿using System;
+using System.IO;
+using UnityEngine;
 
 public class NPCSaveData : DataController {
 
-    public override void SaveData()
+    public override string SaveData()
     {
         base.SaveData();
-
         NPCData data = PackageNPCData();
         SaveDataToFile(data, GetFileName());
+        return GetFileName();
     }
 
     public override void LoadData()
     {
         base.LoadData();
-        NPCData data = (NPCData)LoadDataFromFile(GetFileName());
-        ApplyDataToNPC(data);
+        if (File.Exists(Application.persistentDataPath + GetFileName()))
+        {
+            NPCData data = (NPCData)LoadDataFromFile(GetFileName());
+            ApplyDataToNPC(data);
+        }
+        else
+        {
+            Debug.LogWarning(gameObject.name + " save data not found!");
+        }
     }
 
     //MAKE THIS OVERRIDE?
@@ -34,8 +43,9 @@ public class NPCSaveData : DataController {
 
     private string GetFileName()
     {
-        UnityEngine.Debug.Log("/NPC_" + gameObject.name + ".dat"); //should probably add an ID to this as well
-        return "/NPC_" + gameObject.name + ".dat";
+        string filePath = "/NPC_" + gameObject.name + ".dat";
+        //UnityEngine.Debug.Log(filePath); //should probably add an ID to this as well
+        return filePath;
     }
 }
 

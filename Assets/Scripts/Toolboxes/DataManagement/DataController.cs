@@ -3,23 +3,26 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public class DataController : MonoBehaviour {
+    protected static string fileDirectory = "/GameSave";
 
     void Start()
     {
-        Debug.Log(this);
-        Debug.Log(ApplicationManager.GetInstance());
-        Debug.Log(ApplicationManager.GetInstance().GetDataManager());
+        //Debug.Log(this);
+        //Debug.Log(ApplicationManager.GetInstance());
+        //Debug.Log(ApplicationManager.GetInstance().GetDataManager());
         ApplicationManager.GetInstance().GetDataManager().AddToDataManager(this);
     }
 
-    public virtual void SaveData()
+    public virtual string SaveData()
     {
+        string fileName = "";
         Debug.Log("Saving player data");
+        return fileName;
     }
 
     public virtual void LoadData()
     {
-        Debug.Log("Loading player data");
+        Debug.Log("Loading " + gameObject.name);
     }
 
     protected virtual void ApplyData(Data data) 
@@ -41,18 +44,11 @@ public class DataController : MonoBehaviour {
     {
         Data data = new Data();
 
-        if (File.Exists(Application.persistentDataPath + fileName))
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + fileName, FileMode.Open);
-            data = (Data)bf.Deserialize(file);
-            file.Close();
-        }
-        else
-        {
-            Debug.LogWarning("Player save data not found!");
-        }
-
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Open(Application.persistentDataPath + fileName, FileMode.Open);
+        data = (Data)bf.Deserialize(file);
+        file.Close();
+        
         return data;
     }
     #endregion
