@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Health : MonoBehaviour
 {
@@ -40,25 +39,35 @@ public class Health : MonoBehaviour
         }
     }
 
-    Armor PickBodyPart()
+    private Armor PickBodyPart()
     {
         //EquipmentSlot { Head, Chest, Legs, MainHand, OffHand, Feet}
         int[] validChoices = new int[] { 0, 1, 2, 5 };
         int num = Random.Range(0, validChoices.Length);
 
         //Debug.Log("Attacking bodypart #" + validChoices[num]);
-        return (Armor)equipmentManager.currentEquipment[validChoices[num]];
+        return (Armor)equipmentManager.EquipmentFromSlot(validChoices[num]);
     }
 
-    void TriggerDeath(Transform myAttacker)
+    private void TriggerDeath(Transform myAttacker)
     {
         unitReactions.isDead = true; //stop reacting
         unitReactions.ReactToAttackAgainstSelf(myAttacker); //actually alerts others, and since this unit is dead UnitReactionManager should skip over it
         deathController.Die(myAttacker);
     }
 
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
     public void ExternalHealthAdjustment(float amount)
     {
         currentHealth += amount;
+    }
+
+    public void ApplyCurrentHealth(float loadedHealthValue)
+    {
+        currentHealth = loadedHealthValue;
     }
 }

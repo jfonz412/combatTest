@@ -11,6 +11,7 @@ public class DataController : MonoBehaviour {
         //Debug.Log(ApplicationManager.GetInstance());
         //Debug.Log(ApplicationManager.GetInstance().GetDataManager());
         ApplicationManager.GetInstance().GetDataManager().AddToDataManager(this);
+        GatherComponents();
     }
 
     public virtual string SaveData()
@@ -23,6 +24,11 @@ public class DataController : MonoBehaviour {
     public virtual void LoadData()
     {
         Debug.Log("Loading " + gameObject.name);
+    }
+
+    protected virtual void GatherComponents()
+    {
+        Debug.Log("Gathering components");
     }
 
     protected virtual void ApplyData(Data data) 

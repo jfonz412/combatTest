@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-//[CreateAssetMenu(fileName = "New Equipment", menuName = "Inventory/Equipment")]
 public class Equipment : Item {
 
     public EquipmentSlot equipSlot;
@@ -24,7 +23,7 @@ public class Equipment : Item {
         InfoPanel panel = InfoPanel.instance;
         if (panel != null)
         {
-            Instantiate(Resources.Load("EquipmentStats"), panel.transform.position, Quaternion.identity, panel.transform);
+            Instantiate(Resources.Load("PopUps/EquipmentStats"), panel.transform.position, Quaternion.identity, panel.transform);
         }
     }
     

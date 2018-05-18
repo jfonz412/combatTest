@@ -3,6 +3,9 @@ using System.IO;
 using UnityEngine;
 
 public class NPCSaveData : DataController {
+    private Health health;
+    //private EquipmentManager equipmentManager;
+    //private Loadout loadOut;
 
     public override string SaveData()
     {
@@ -26,19 +29,29 @@ public class NPCSaveData : DataController {
         }
     }
 
+    protected override void GatherComponents()
+    {
+        base.GatherComponents();
+        health = GetComponent<Health>();
+        //equipmentManager = GetComponent<EquipmentManager>();
+        //loadOut = GetComponent<Loadout>();
+        //inventory = GetComponent<Inventory>();
+    }
+
     //MAKE THIS OVERRIDE?
     private NPCData PackageNPCData()
     {
         NPCData data = new NPCData();
-        data.currentHealth = 1000f;
+        data.currentHealth = health.GetCurrentHealth();
+        //data.currentEquipment = equipmentManager.GetCurrentEquipment();
         return data;
     }
 
     //MAKE THIS OVERRIDE?
     private void ApplyDataToNPC(NPCData data)
     {
-        Health playerHealth = GetComponent<Health>();
-        playerHealth.ExternalHealthAdjustment(data.currentHealth);
+        health.ApplyCurrentHealth(data.currentHealth);
+        //loadOut.LoadEquipment(data.currentEquipment);
     }
 
     private string GetFileName()
@@ -53,4 +66,5 @@ public class NPCSaveData : DataController {
 public class NPCData : Data
 {
     public float currentHealth;
+    //public Equipment[] currentEquipment;
 }

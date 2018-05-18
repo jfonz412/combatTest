@@ -19,7 +19,7 @@ public class EquipUI : MonoBehaviour {
         if (newItem != null)
         { 
             int slotNum = (int)newItem.equipSlot;
-            slots[slotNum].AddEquipment(equipmentManager.currentEquipment[slotNum]);
+            slots[slotNum].AddEquipment(equipmentManager.EquipmentFromSlot(slotNum));
         }
         else
         {

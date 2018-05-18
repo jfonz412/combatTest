@@ -31,11 +31,11 @@ public class Item : ScriptableObject {
         InfoPanel panel = InfoPanel.instance;
         if(panel != null)
         {
-            Instantiate(Resources.Load("ItemMenu"), panel.transform.position, Quaternion.identity, panel.transform);
+            Instantiate(Resources.Load("PopUps/ItemMenu"), panel.transform.position, Quaternion.identity, panel.transform);
         }
     }
 
-    void RemoveFromInventory()
+    private void RemoveFromInventory()
     {
         InventoryManager.GetInstance().GetInventory().RemoveAndDestroy(this);
     }

@@ -3,25 +3,26 @@
 public class EquipmentManager : MonoBehaviour {
 
     [HideInInspector]
-    public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead; //only for player
+    public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead; //only for player, what is this for..?
  
     //UnitAnimator unitAnim;
 
-    public Equipment[] currentEquipment;
+    [SerializeField]
+    private Equipment[] currentEquipment;
 
     public delegate void OnEquipmentChanged(Equipment oldItem, Equipment newItem);
     public OnEquipmentChanged onEquipmentChanged;
 
     private Inventory inv;
 
-    void Awake()
+    private void Awake()
     {
         //moved to awake to ensure it loaded before Loadout tries to equip items
         int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
         currentEquipment = new Equipment[numSlots];
     }
 
-    void Start ()
+    private void Start ()
     {
         inv = InventoryManager.GetInstance().GetInventory();
     }
@@ -51,6 +52,7 @@ public class EquipmentManager : MonoBehaviour {
 
     public void Equip (Equipment newItem) {
         Equipment oldItem = null;
+
         int slotIndex = (int)newItem.equipSlot;
 
         currentEquipment[slotIndex] = newItem;
@@ -110,5 +112,15 @@ public class EquipmentManager : MonoBehaviour {
                 break;
         }
         //unitAnim.LoadEquipment((int)oldItem.equipSlot, 0); //adds naked/unarmed to anim slot
+    }
+
+    public Equipment EquipmentFromSlot(int slotNum)
+    { 
+        return currentEquipment[slotNum];
+    }
+
+    public Equipment[] GetCurrentEquipment()
+    {
+        return currentEquipment;
     }
 }
