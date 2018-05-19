@@ -33,4 +33,10 @@ public class Armor : Equipment {
 
         return myStats;
     }
+
+    public override string GetResourcePath()
+    {
+        string directory = "Items/Armor/";
+        return directory + myFileName;
+    }
 }

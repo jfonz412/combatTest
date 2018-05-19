@@ -2,6 +2,8 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class DataManager : MonoBehaviour {
     [SerializeField]
@@ -15,23 +17,24 @@ public class DataManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             Debug.Log("Attempting to save data");
-            SaveData();
+            SaveAllData();
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             Debug.Log("Attempting to load data");
-            LoadData();
+            LoadAllData();
         }
     }
 
-    public void AddToDataManager(DataController dataController)
+    public void Load(DataController dataController)
     {
         dataControllers.Add(dataController);
+        dataController.LoadData();
     }
 
     //will eventually make these public
-    private void SaveData()
+    private void SaveAllData()
     {
         for (int i = 0; i < dataControllers.Count; i++)
         {
@@ -80,8 +83,10 @@ public class DataManager : MonoBehaviour {
         Debug.LogFormat("#AfterDeletion - File at {0} exists: {1}", filePath, File.Exists(filePath));
     }
 
-    private void LoadData()
+    private void LoadAllData()
     {
+        Debug.Log("Loading data");
+
         for (int i = 0; i < dataControllers.Count; i++)
         {
             dataControllers[i].LoadData();

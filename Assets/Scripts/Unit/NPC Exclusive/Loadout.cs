@@ -2,54 +2,42 @@
 
 public class Loadout : MonoBehaviour {
     [SerializeField]
-    private Equipment[] defaultLoadout = new Equipment[6]; //num of equipslots 
-    private EquipmentManager equipmentManager;
+    private Equipment[] loadout = new Equipment[6]; //num of equipslots 
 
-    private void Start()
+    //called on load for NPCs, called after EquipUI delegate assigned for player
+    public void EquipLoadout()
     {
-        equipmentManager = GetComponent<EquipmentManager>();
-        LoadDefaultEquipment();
-    }
+        EquipmentManager equipmentManager = GetComponent<EquipmentManager>();
 
-    // will be called when the scene is loaded
-    public void LoadEquipment(int[] equipmentIDs = null)
-    {
-        equipmentIDs = null; //REMOVE THIS LINE
-
-        if (equipmentIDs == null)
+        for (int i = 0; i < loadout.Length; i++)
         {
-            LoadDefaultEquipment();
-        }
-        else
-        {
-            Equipment[] equipment = GetEquipmentFromIDs(equipmentIDs);
-
-            for (int i = 0; i < defaultLoadout.Length; i++)
-            {
-                equipmentManager.Equip(equipment[i]);
-            }
+            equipmentManager.Equip(loadout[i]);
         }
     }
 
-    private Equipment[] GetEquipmentFromIDs(int[] equipmentIDs)
+    public void LoadSavedEquipment(string[] equipmentNames = null)
+    {
+        if (equipmentNames == null)
+        {
+            return;
+        }
+        else 
+        {
+            loadout = GetEquipmentFromNames(equipmentNames);
+        }
+    }
+
+    private Equipment[] GetEquipmentFromNames(string[] equipmentNames)
     {
         Equipment[] equipment = new Equipment[6];
 
-        for (int i = 0; i < equipmentIDs.Length; i++)
+        for (int i = 0; i < equipmentNames.Length; i++)
         {
-            //get equipment by using ID using EquipmentList
+            Debug.Log(equipmentNames[i]);
+            equipment[i] = (Equipment)Instantiate(Resources.Load(equipmentNames[i]));
+            Debug.Log(equipment[i]);
         }
 
         return equipment;
     }
-
-    private void LoadDefaultEquipment()
-    {
-        for (int i = 0; i < defaultLoadout.Length; i++)
-        {
-            equipmentManager.Equip(defaultLoadout[i]);
-        }
-    }
-
-
 }

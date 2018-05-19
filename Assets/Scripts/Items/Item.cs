@@ -5,6 +5,9 @@ public class Item : ScriptableObject {
     [HideInInspector]
     public Transform user;
 
+    [SerializeField]
+    protected string myFileName; //DO NOT FUCKING TOUCH!!!! RISK ERASING ALL FILENAMES IN INSPECTOR
+
     public Sprite icon = null;
     public int? slotNum; //allows the int to be null
 
@@ -50,5 +53,11 @@ public class Item : ScriptableObject {
         {
             currentValue = PriceChecker.AppraiseItem(this, "Sale");
         }
+    }
+
+    public virtual string GetResourcePath()
+    {
+        string directory = "Items/Consumables/";
+        return directory + myFileName;
     }
 }

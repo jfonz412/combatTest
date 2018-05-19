@@ -57,4 +57,10 @@ public class Weapon : Equipment {
 
         EquipmentStats.instance.PopulateStats(myStats);
     }
+
+    public override string GetResourcePath()
+    {
+        string directory = "Items/Weapons/";
+        return directory + myFileName;
+    }
 }

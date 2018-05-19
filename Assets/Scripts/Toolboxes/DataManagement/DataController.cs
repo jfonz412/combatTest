@@ -10,30 +10,30 @@ public class DataController : MonoBehaviour {
         //Debug.Log(this);
         //Debug.Log(ApplicationManager.GetInstance());
         //Debug.Log(ApplicationManager.GetInstance().GetDataManager());
-        ApplicationManager.GetInstance().GetDataManager().AddToDataManager(this);
         GatherComponents();
+        ApplicationManager.GetInstance().GetDataManager().Load(this);
     }
 
     public virtual string SaveData()
     {
         string fileName = "";
-        Debug.Log("Saving player data");
+        //Debug.Log("Saving player data");
         return fileName;
     }
 
     public virtual void LoadData()
     {
-        Debug.Log("Loading " + gameObject.name);
+        //Debug.Log("Loading " + gameObject.name);
     }
 
     protected virtual void GatherComponents()
     {
-        Debug.Log("Gathering components");
+        //Debug.Log("Gathering components");
     }
 
     protected virtual void ApplyData(Data data) 
     {
-        Debug.Log("Applying data to " + gameObject.name);
+        //Debug.Log("Applying data to " + gameObject.name);
     }
 
     //move this back to DataController base class after figuring out PlayerData : Data inheritance

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerSaveData : DataController {
     private Health health;
@@ -24,6 +23,7 @@ public class PlayerSaveData : DataController {
         base.LoadData();
         if(File.Exists(Application.persistentDataPath + fileName))
         {
+            Debug.Log("Loading Player");
             PlayerData data = (PlayerData)LoadDataFromFile(fileName);
             ApplyDataToPlayer(data);
         }
@@ -45,35 +45,17 @@ public class PlayerSaveData : DataController {
     private PlayerData PackagePlayerData()
     {
         PlayerData data = new PlayerData();
-        data.currentScene = SceneManager.GetActiveScene().name; //maybe make this listen for scene change and make it a class var?
-        //inventory
-        //equipment (loadout)
-        //position
+        data.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; 
 
         data.currentHealth = health.GetCurrentHealth();
-        data.currentEquipment = GetEquipmentIDs();
+        data.currentEquipment = equipmentManager.GetEquipmentNames();
         return data;
     }
 
     private void ApplyDataToPlayer(PlayerData data)
     {
         health.ApplyCurrentHealth(data.currentHealth);
-        loadOut.LoadEquipment(data.currentEquipment);
-    }
-
-    private int[] GetEquipmentIDs()
-    {
-        Equipment[] equipment = equipmentManager.GetCurrentEquipment();
-
-        //should be a dictionary so I can store the ID and condition...or a struct that can store all kinds of data
-        int[] equipmentIDs = new int[6];
-
-        for (int i = 0; i < equipment.Length; i++)
-        {
-            equipmentIDs[i] = equipment[i].equipmentID;
-        }
-
-        return equipmentIDs;
+        loadOut.LoadSavedEquipment(data.currentEquipment);
     }
 }
 
@@ -82,6 +64,6 @@ public class PlayerData : Data
 {
     public float currentHealth;
     public string currentScene;
-    public int[] currentEquipment;
+    public string[] currentEquipment;
     public Inventory[] currentInventory;
 }

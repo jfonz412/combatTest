@@ -54,7 +54,6 @@ public class EquipmentManager : MonoBehaviour {
         Equipment oldItem = null;
 
         int slotIndex = (int)newItem.equipSlot;
-
         currentEquipment[slotIndex] = newItem;
 
         if (newItem.equipmentID != 0) //0 is unarmed/naked, we don't want this actually added to the UI slot
@@ -119,8 +118,16 @@ public class EquipmentManager : MonoBehaviour {
         return currentEquipment[slotNum];
     }
 
-    public Equipment[] GetCurrentEquipment()
+    public string[] GetEquipmentNames()
     {
-        return currentEquipment;
+        //should be a dictionary so I can store the ID and condition...or a struct that can store all kinds of data
+        string[] equipmentNames = new string[6];
+
+        for (int i = 0; i < currentEquipment.Length; i++)
+        {
+            equipmentNames[i] = currentEquipment[i].GetResourcePath();
+        }
+
+        return equipmentNames;
     }
 }

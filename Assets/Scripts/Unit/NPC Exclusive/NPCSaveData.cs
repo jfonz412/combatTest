@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class NPCSaveData : DataController {
     private Health health;
-    //private EquipmentManager equipmentManager;
-    //private Loadout loadOut;
+    private Loadout loadOut;
 
     public override string SaveData()
     {
@@ -33,9 +32,7 @@ public class NPCSaveData : DataController {
     {
         base.GatherComponents();
         health = GetComponent<Health>();
-        //equipmentManager = GetComponent<EquipmentManager>();
-        //loadOut = GetComponent<Loadout>();
-        //inventory = GetComponent<Inventory>();
+        loadOut = GetComponent<Loadout>();
     }
 
     //MAKE THIS OVERRIDE?
@@ -43,7 +40,6 @@ public class NPCSaveData : DataController {
     {
         NPCData data = new NPCData();
         data.currentHealth = health.GetCurrentHealth();
-        //data.currentEquipment = equipmentManager.GetCurrentEquipment();
         return data;
     }
 
@@ -51,7 +47,7 @@ public class NPCSaveData : DataController {
     private void ApplyDataToNPC(NPCData data)
     {
         health.ApplyCurrentHealth(data.currentHealth);
-        //loadOut.LoadEquipment(data.currentEquipment);
+        loadOut.EquipLoadout();
     }
 
     private string GetFileName()
@@ -66,5 +62,5 @@ public class NPCSaveData : DataController {
 public class NPCData : Data
 {
     public float currentHealth;
-    //public Equipment[] currentEquipment;
+    public string[] currentEquipment;
 }
