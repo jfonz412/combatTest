@@ -85,8 +85,21 @@ public class Inventory : MonoBehaviour {
         Destroy(item); 
     }
 
+    public string[] GetItemNames()
+    {
+        string[] itemNames = new string[items.Count];
+        for(int i = 0; i < items.Count; i++)
+        {
+            if (items[i] != null)
+                itemNames[i] = items[i].GetResourcePath();
+            Debug.Log(itemNames[i]);
+        }
+
+        return itemNames;
+    }
+
     #region private methods
-    int AttemptToStackItem(Item newItem)
+    private int AttemptToStackItem(Item newItem)
     {
         for (int i = 0; i < inventorySpace; i++)
         {
@@ -102,7 +115,7 @@ public class Inventory : MonoBehaviour {
         return newItem.quantity;
     }
 
-    int AddQuantityToSlot(int slot, int newItemQuantity)
+    private int AddQuantityToSlot(int slot, int newItemQuantity)
     {
         int maxQ = items[slot].maxQuantity;
 
@@ -115,7 +128,7 @@ public class Inventory : MonoBehaviour {
         return newItemQuantity;
     }
 
-    bool AddToFirstEmptySlot(Item item)
+    private bool AddToFirstEmptySlot(Item item)
     {
         //check if there are any empty slots/items
         for (int i = 0; i < inventorySpace; i++)
@@ -135,7 +148,7 @@ public class Inventory : MonoBehaviour {
         return false;
     }
 
-    void InsertItemIntoEmptySlot(Item item, int slotNum)
+    private void InsertItemIntoEmptySlot(Item item, int slotNum)
     {
         items.RemoveAt(slotNum); //remove the null item
         items.Insert(slotNum, item); //replace it with actual item
@@ -143,7 +156,7 @@ public class Inventory : MonoBehaviour {
         items[slotNum].slotNum = slotNum; //save refrence to the slot it's been placed in
     }
 
-    Item ConvertToInventoryItem(Item item)
+    private Item ConvertToInventoryItem(Item item)
     {
         //if slotNum is null then it has not been in our inventory needs an instance
         //otherwise we do not create a new instance and simply use the item as it is
@@ -156,7 +169,7 @@ public class Inventory : MonoBehaviour {
         return item;
     }
 
-    void Callback()
+    private void Callback()
     {
         if (onInventoryChanged != null)
         {
