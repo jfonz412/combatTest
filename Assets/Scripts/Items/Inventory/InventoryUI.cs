@@ -45,14 +45,21 @@ public class InventoryUI : MonoBehaviour {
     private void LoadInventory()
     {
         //this must happen here because we have to wait for the callback to be loaded
-        string[] items = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<PlayerSaveData>().GetCurrentInventory(); 
+        PlayerSaveData playerData = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<PlayerSaveData>();
+        SavedItem[] items = playerData.GetSavedInventory();
+
+        if (items == null)
+            return;
+
         for (int i = 0; i < items.Length - 1; i++)
         {
-            if (items[i] != null)
-            {
-                Debug.Log(items[i]);
-                inventory.AddItem((Item)Instantiate(Resources.Load(items[i]))); //needs to wait for the callback
-            }
+            if (items[i].fileName == null)
+                continue;
+
+            Debug.Log("Loading " + items[i].fileName + " from saved invetory items" );
+            Item item  = (Item)Instantiate(Resources.Load(items[i].fileName)); //needs to wait for the callback
+            item.quantity = items[i].quantity;
+            inventory.AddItem(item);
         }
 
     }

@@ -26,6 +26,8 @@ public class NPCSaveData : DataController {
         {
             Debug.LogWarning(gameObject.name + " save data not found!");
         }
+
+        loadOut.EquipLoadout();
     }
 
     protected override void GatherComponents()
@@ -47,7 +49,6 @@ public class NPCSaveData : DataController {
     private void ApplyDataToNPC(NPCData data)
     {
         health.ApplyCurrentHealth(data.currentHealth);
-        loadOut.EquipLoadout();
     }
 
     private string GetFileName()
@@ -62,5 +63,4 @@ public class NPCSaveData : DataController {
 public class NPCData : Data
 {
     public float currentHealth;
-    public string[] currentEquipment;
 }

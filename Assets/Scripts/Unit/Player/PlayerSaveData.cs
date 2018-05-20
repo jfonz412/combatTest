@@ -7,7 +7,7 @@ public class PlayerSaveData : DataController {
     private EquipmentManager equipmentManager;
     private Loadout loadOut;
     private Inventory inventory;
-    private string[] myInventory;
+    private SavedItem[] myInventory;
 
     private string fileName = "/playerData.dat";
 
@@ -34,7 +34,7 @@ public class PlayerSaveData : DataController {
         }
     }
 
-    public string[] GetCurrentInventory()
+    public SavedItem[] GetSavedInventory()
     {
         return myInventory;
     }
@@ -55,7 +55,7 @@ public class PlayerSaveData : DataController {
 
         data.currentHealth = health.GetCurrentHealth();
         data.currentEquipment = equipmentManager.GetEquipmentNames();
-        data.currentInventory = inventory.GetItemNames();
+        data.currentInventory = inventory.GetItemInfo();
         return data;
     }
 
@@ -73,5 +73,12 @@ public class PlayerData : Data
     public float currentHealth;
     public string currentScene;
     public string[] currentEquipment;
-    public string[] currentInventory;
+    public SavedItem[] currentInventory;
+}
+
+[Serializable]
+public struct SavedItem
+{
+    public string fileName;
+    public int quantity;
 }

@@ -85,17 +85,19 @@ public class Inventory : MonoBehaviour {
         Destroy(item); 
     }
 
-    public string[] GetItemNames()
+    public SavedItem[] GetItemInfo()
     {
-        string[] itemNames = new string[items.Count];
-        for(int i = 0; i < items.Count; i++)
+        SavedItem[] itemInfo = new SavedItem[items.Count];
+
+        for (int i = 0; i < items.Count; i++)
         {
             if (items[i] != null)
-                itemNames[i] = items[i].GetResourcePath();
-            Debug.Log(itemNames[i]);
+            {
+                itemInfo[i].fileName = items[i].GetResourcePath();
+                itemInfo[i].quantity = items[i].quantity;
+            }
         }
-
-        return itemNames;
+        return itemInfo;
     }
 
     #region private methods
