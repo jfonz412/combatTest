@@ -14,7 +14,7 @@ public class ShopDialogue : MonoBehaviour {
             if(currentDialogue[i].messageType == LoadShop.MessageType.WELCOME)
             {
                 currentMessage.text = currentDialogue[i].message;
-                Debug.Log(currentDialogue[i].message);
+                //Debug.Log(currentDialogue[i].message);
             }
         }
     }
@@ -26,7 +26,7 @@ public class ShopDialogue : MonoBehaviour {
             if (currentDialogue[i].messageType == type)
             {
                 currentMessage.text = currentDialogue[i].message;
-                Debug.Log(currentDialogue[i].message);
+                //Debug.Log(currentDialogue[i].message);
             }
         }
     }

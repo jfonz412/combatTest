@@ -2,7 +2,6 @@
 using UnityEngine;
 
 public class LoadShop : MonoBehaviour {
-
     [SerializeField]
     private List<Item> shopInventory = new List<Item>();
     private ShopInventory shop;
@@ -30,5 +29,21 @@ public class LoadShop : MonoBehaviour {
     {
         //Debug.Log("Updating NPC shop's inventory" + items[1]);
         shopInventory = new List<Item>(items);
+    }
+
+    public SavedItem[] GetCurrentInventory()
+    {
+        SavedItem[] itemInfo = new SavedItem[shopInventory.Count];
+
+        for (int i = 0; i < shopInventory.Count; i++)
+        {
+            if (shopInventory[i] != null)
+            {
+                itemInfo[i].fileName = shopInventory[i].GetResourcePath();
+                itemInfo[i].quantity = shopInventory[i].quantity;
+                Debug.Log("saved shop inventory " + itemInfo[i].fileName);
+            }
+        }
+        return itemInfo;
     }
 }

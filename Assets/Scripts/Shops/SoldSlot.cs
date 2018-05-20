@@ -1,4 +1,12 @@
-﻿public class SoldSlot : ShopSlot {
-    //Hi. This class doesn't do anything different from ShopSlot, it just needed to be my designated sold item spot.
-    //Good luck with the rest of the project you crazy bastard.
+﻿using UnityEngine.UI;
+using UnityEngine;
+
+public class SoldSlot : ShopSlot {
+    private Button button;
+
+    private void Start()
+    {
+        button = transform.GetChild(0).GetComponent<Button>();
+        button.onClick.AddListener(InventoryManager.GetInstance().GetShopInventory().ClearLastItemSold);
+    }
 }

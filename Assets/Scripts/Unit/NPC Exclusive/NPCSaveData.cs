@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class NPCSaveData : DataController {
     private Health health;
     private Loadout loadOut;
+    private LoadShop myShop;
 
     public override string SaveData()
     {
@@ -35,13 +37,20 @@ public class NPCSaveData : DataController {
         base.GatherComponents();
         health = GetComponent<Health>();
         loadOut = GetComponent<Loadout>();
+        myShop = GetComponent<LoadShop>(); //may be null
     }
 
     //MAKE THIS OVERRIDE?
     private NPCData PackageNPCData()
     {
         NPCData data = new NPCData();
+
         data.currentHealth = health.GetCurrentHealth();
+        if (myShop != null)
+        {
+            data.currentShopInventory = myShop.GetCurrentInventory();
+        }
+
         return data;
     }
 
@@ -49,13 +58,43 @@ public class NPCSaveData : DataController {
     private void ApplyDataToNPC(NPCData data)
     {
         health.ApplyCurrentHealth(data.currentHealth);
+
+        if (myShop != null)
+        {
+            myShop.UpdateInventory(UnpackSavedShopInventory(data.currentShopInventory));
+        }
     }
 
     private string GetFileName()
     {
         string filePath = "/NPC_" + gameObject.name + ".dat";
-        //UnityEngine.Debug.Log(filePath); //should probably add an ID to this as well
         return filePath;
+    }
+
+    private List<Item> UnpackSavedShopInventory(SavedItem[] savedInventory)
+    {
+        Debug.Log("Unpacking shop inventory for " + gameObject.name);
+        List<Item> loadedItems = new List<Item>();
+
+        if (savedInventory == null)
+        {
+            Debug.Log("savedInventory is null for " + gameObject.name);
+            return loadedItems;
+        }
+            
+
+        for (int i = 0; i < savedInventory.Length - 1; i++)
+        {
+            if (savedInventory[i].fileName == null)
+                continue;
+
+            Item item = (Item)Instantiate(Resources.Load(savedInventory[i].fileName)); 
+            item.quantity = savedInventory[i].quantity;
+
+            loadedItems.Add(item);
+            Debug.Log(item);
+        }
+        return loadedItems;
     }
 }
 
@@ -63,4 +102,5 @@ public class NPCSaveData : DataController {
 public class NPCData : Data
 {
     public float currentHealth;
+    public SavedItem[] currentShopInventory;
 }

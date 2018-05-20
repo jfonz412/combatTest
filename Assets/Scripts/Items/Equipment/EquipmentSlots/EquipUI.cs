@@ -19,7 +19,7 @@ public class EquipUI : MonoBehaviour {
 
     void UpdateUI(Equipment oldItem, Equipment newItem)
     {
-        Debug.Log("Updating " + gameObject + " with " + newItem);
+        //Debug.Log("Updating " + gameObject + " with " + newItem);
         if (newItem != null)
         { 
             int slotNum = (int)newItem.equipSlot;

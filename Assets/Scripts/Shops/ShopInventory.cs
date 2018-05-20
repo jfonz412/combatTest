@@ -37,6 +37,9 @@ public class ShopInventory : MonoBehaviour {
 
     public void AddToSoldSlot(Item item)
     {
+        if (lastItemSold != null)
+            AddToFirstEmptySlot(lastItemSold);
+
         int lastSlot = inventorySpace - 1; 
         lastItemSold = item;
         lastItemSold.slotNum = lastSlot;
@@ -84,6 +87,13 @@ public class ShopInventory : MonoBehaviour {
                 Destroy(items[i]);
             }
         }
+    }
+
+    //called by SoldSlot's button when it is clicked to clear last item sold
+    public void ClearLastItemSold()
+    {
+        Debug.Log("Clearing last item sold");
+        lastItemSold = null;
     }
 
 

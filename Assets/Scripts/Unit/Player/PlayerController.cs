@@ -151,7 +151,7 @@ public class PlayerController : MonoBehaviour {
     private List<Collider2D> CheckForUnits(Vector3 mouseClickPos)
     {
         List<Collider2D> interactables = new List<Collider2D>();
-        Debug.Log("Checking for interactables");
+        //Debug.Log("Checking for interactables");
         RaycastHit2D[] hits = Physics2D.RaycastAll(mouseClickPos, Vector2.zero);
         
         for (int i = 0; i < hits.Length; i++)
