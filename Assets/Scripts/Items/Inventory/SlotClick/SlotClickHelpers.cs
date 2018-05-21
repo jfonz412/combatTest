@@ -159,15 +159,23 @@ public class SlotClickHelpers : MonoBehaviour {
     void CommitSale(Item item, int quantity)
     {
         float price = PriceChecker.AppraiseItem(item, "Sale") * quantity;
-        playerWallet.Deposit(price);
-        Debug.Log("You have been credited $" + price);
 
-        inv.CondenseStackables(item, quantity);
+        if(shop.CheckSpaceAndGold(item, quantity, price))
+        {
+            playerWallet.Deposit(price);
+            Debug.Log("You have been credited $" + price);
 
-        item.quantity = quantity;
-        shop.AddToSoldSlot(item);
+            inv.CondenseStackables(item, quantity);
 
-        shopDialogue.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
+            item.quantity = quantity;
+            shop.AddItem(item);
+
+            shopDialogue.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
+        }
+        else
+        {
+            shopDialogue.SetCurrentMessage(LoadShop.MessageType.INVAL_QNTY);
+        }
     }
 
     #endregion
@@ -251,13 +259,6 @@ public class SlotClickHelpers : MonoBehaviour {
         Item newItem = Instantiate(item);
         newItem.quantity = quantity;
         return newItem;
-    }
-
-    void CreateNewItemForShop(Item item, int quantity)
-    {
-        Item newCopyOfItemForShop = Instantiate(item);
-        newCopyOfItemForShop.quantity = quantity;
-        shop.AddToSoldSlot(item);
     }
 
     #endregion

@@ -85,14 +85,22 @@ public class InvSlotClick : MonoBehaviour {
 
     public void RightClickedToSell(Item item)
     {
-        float price = PriceChecker.AppraiseItem(item, "Sale") * item.quantity;
+        if(item != null)
+        {
+            float price = PriceChecker.AppraiseItem(item, "Sale") * item.quantity;
 
-        InventoryManager.GetInstance().GetInventory().Remove(item);
-        InventoryManager.GetInstance().GetShopInventory().AddToSoldSlot(item);
-        ScriptToolbox.GetInstance().GetPlayerWallet().Deposit(price);
-        InventoryManager.GetInstance().GetShopDialogue().SetCurrentMessage(LoadShop.MessageType.SUCCESS);
+            if (InventoryManager.GetInstance().GetShopInventory().CheckSpaceAndGold(item, item.quantity, price))
+            {
+                InventoryManager.GetInstance().GetInventory().Remove(item);
+                InventoryManager.GetInstance().GetShopInventory().AddItem(item); //needs to account for quantity
+                ScriptToolbox.GetInstance().GetPlayerWallet().Deposit(price);
+                InventoryManager.GetInstance().GetShopDialogue().SetCurrentMessage(LoadShop.MessageType.SUCCESS);
+            }
+            else
+            {
+                InventoryManager.GetInstance().GetShopDialogue().SetCurrentMessage(LoadShop.MessageType.INVAL_QNTY);
+            }
+        }
     }
-
-
     #endregion
 }

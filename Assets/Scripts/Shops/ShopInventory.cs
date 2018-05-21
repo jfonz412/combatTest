@@ -4,7 +4,7 @@ using UnityEngine;
 public class ShopInventory : MonoBehaviour {
 
     public List<Item> items = new List<Item>();
-    public int inventorySpace;
+    public int inventorySpace = 18;
     private LoadShop currentLoadedShop;
 
     public delegate void OnInventoryChanged();
@@ -35,16 +35,75 @@ public class ShopInventory : MonoBehaviour {
         currentLoadedShop = npcShop;
     }
 
-    public void AddToSoldSlot(Item item)
+    public void Remove(Item item)
     {
-        if (lastItemSold != null)
-            AddToFirstEmptySlot(lastItemSold);
+        int itemIndex = item.slotNum.GetValueOrDefault();
+        items.RemoveAt(itemIndex);
+        items.Insert(itemIndex, null);
+        Callback();
+    }
 
-        int lastSlot = inventorySpace - 1; 
-        lastItemSold = item;
-        lastItemSold.slotNum = lastSlot;
-        items.Insert(lastSlot, lastItemSold);
-        soldSlot.AddItem(lastItemSold);
+    public void ClearShopInventory()
+    {
+        UpdateNPCShopInventory();
+
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i] != null)
+            {
+                Remove(items[i]);
+                Destroy(items[i]);
+            }
+        }
+    }
+
+    //this assumes CheckSpaceAndGold() has been ran for this item, if it has slotClicks will use this to add items
+    public void AddItem(Item item)
+    {
+        //item = ConvertToInventoryItem(item);
+
+        int leftovers = AttemptToStackItem(item);
+
+        if (leftovers == 0)
+        {
+            return;
+        }
+        else
+        {
+            AddToFirstEmptySlot(item);
+        }
+    }
+
+    private int AttemptToStackItem(Item newItem)
+    {
+        if (!newItem.stackable)
+            return newItem.quantity;
+
+        for (int i = 0; i < inventorySpace; i++)
+        {
+            if (items[i] != null)
+            {
+                if (items[i].name == newItem.name)
+                {
+                    newItem.quantity = AddQuantityToSlot(i, newItem.quantity);
+                }
+            }
+        }
+
+        return newItem.quantity;
+    }
+
+    private int AddQuantityToSlot(int slot, int newItemQuantity)
+    {
+        int maxQ = items[slot].maxQuantity;
+
+        while (items[slot].quantity != maxQ && newItemQuantity != 0)
+        {
+            items[slot].quantity++;
+            newItemQuantity--;
+        }
+
+        return newItemQuantity;
     }
 
     private bool AddToFirstEmptySlot(Item item)
@@ -66,36 +125,6 @@ public class ShopInventory : MonoBehaviour {
         Debug.Log("Inventory is full");
         return false;
     }
- 
-    public void Remove(Item item)
-    {
-        int itemIndex = item.slotNum.GetValueOrDefault();
-        items.RemoveAt(itemIndex);
-        items.Insert(itemIndex, null);
-        Callback();
-    }
-
-    public void ClearShopInventory()
-    {
-        UpdateNPCShopInventory();
-
-        for(int i = 0; i<items.Count; i++)
-        {
-            if(items[i] != null)
-            {
-                Remove(items[i]);
-                Destroy(items[i]);
-            }
-        }
-    }
-
-    //called by SoldSlot's button when it is clicked to clear last item sold
-    public void ClearLastItemSold()
-    {
-        Debug.Log("Clearing last item sold");
-        lastItemSold = null;
-    }
-
 
     private Item CheckIfAlreadyInstantiated(Item item)
     {
@@ -130,4 +159,71 @@ public class ShopInventory : MonoBehaviour {
             currentLoadedShop.UpdateInventory(items);
         currentLoadedShop = null;
     }
+
+    #region CHECK IF WE CAN PURCHASE ITEM
+    public bool CheckSpaceAndGold(Item item, int quantity, float price)
+    {
+        //if price <= shopGold
+        return CheckForSpace(item, quantity);
+    }
+
+    private bool CheckForSpace(Item item, int quantity)
+    {
+        int leftovers = CheckOccupiedSpaces(item, quantity);
+
+        if (leftovers == 0)
+        {
+            Debug.Log("Item will fit (CheckOccupiedSpaces()");
+            return true;
+        }
+        else if (EmptySlots())
+        {
+            Debug.Log("Item will fit (EmpytSlots())");
+            return true;
+        }
+        else
+        {
+            Debug.Log("Item will NOT fit");
+            return false;
+        }
+    }
+
+    private bool EmptySlots()
+    {
+        for (int i = 0; i < inventorySpace; i++)
+        {
+            if (items[i] == null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int CheckOccupiedSpaces(Item item, int newItemQ)
+    {
+        if (!item.stackable)
+            return newItemQ;
+
+        //int newItemQ = item.quantity;
+        for (int i = 0; i < inventorySpace; i++)
+        {
+            if (items[i] != null)
+            {
+                if (items[i].name == item.name)
+                {
+                    int q = items[i].quantity;
+                    int maxQ = items[i].maxQuantity;
+
+                    while (q != maxQ && newItemQ != 0)
+                    {
+                        q++;
+                        newItemQ--;
+                    }
+                }
+            }
+        }
+        return newItemQ;
+    }
+    #endregion
 }

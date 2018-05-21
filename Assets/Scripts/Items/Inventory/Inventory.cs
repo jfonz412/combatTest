@@ -71,7 +71,7 @@ public class Inventory : MonoBehaviour {
     public void Remove(Item item) 
     {
         int itemIndex = item.slotNum.GetValueOrDefault();
-     
+        Debug.Log(itemIndex);
         items.RemoveAt(itemIndex);
         items.Insert(itemIndex, null);
 
@@ -101,8 +101,12 @@ public class Inventory : MonoBehaviour {
     }
 
     #region private methods
+
     private int AttemptToStackItem(Item newItem)
     {
+        if (!newItem.stackable)
+            return newItem.quantity;
+
         for (int i = 0; i < inventorySpace; i++)
         {
             if (items[i] != null)

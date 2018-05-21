@@ -71,6 +71,8 @@ public class ShopInventoryUI : MonoBehaviour {
         {
             ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus(); 
         }
+
+        //shop.ClearLastItemSold();
     }
 
     void AssignSlotNums()

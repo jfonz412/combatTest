@@ -45,6 +45,10 @@ public class CheckInventorySpace : MonoBehaviour {
         SetInventory();
 
         int newItemQ = item.quantity;
+
+        if (!item.stackable)
+            return newItemQ;
+
         for (int i = 0; i < inv.inventorySpace; i++)
         {
             if (inv.items[i] != null)
