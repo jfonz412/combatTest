@@ -73,9 +73,9 @@ public class NPCInteraction : Interactable
     {
         if(myShop != null)
         {
+            PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping);
             ShopInventoryUI.instance.OpenShop(name);
             myShop.LoadShopInventory();
-            PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping); //maybe 
         }
         else
         {

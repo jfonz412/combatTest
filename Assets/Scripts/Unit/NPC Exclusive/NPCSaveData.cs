@@ -73,17 +73,17 @@ public class NPCSaveData : DataController {
 
     private List<Item> UnpackSavedShopInventory(SavedItem[] savedInventory)
     {
-        Debug.Log("Unpacking shop inventory for " + gameObject.name);
+        //Debug.Log("Unpacking shop inventory for " + gameObject.name);
         List<Item> loadedItems = new List<Item>();
 
         if (savedInventory == null)
         {
-            Debug.Log("savedInventory is null for " + gameObject.name);
+            //Debug.Log("savedInventory is null for " + gameObject.name);
             return loadedItems;
         }
             
 
-        for (int i = 0; i < savedInventory.Length - 1; i++)
+        for (int i = 0; i < savedInventory.Length; i++)
         {
             if (savedInventory[i].fileName == null)
                 continue;
@@ -92,7 +92,7 @@ public class NPCSaveData : DataController {
             item.quantity = savedInventory[i].quantity;
 
             loadedItems.Add(item);
-            Debug.Log(item);
+            //Debug.Log(item);
         }
         return loadedItems;
     }

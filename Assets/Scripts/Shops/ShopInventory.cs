@@ -10,8 +10,8 @@ public class ShopInventory : MonoBehaviour {
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChanged;
 
-    public SoldSlot soldSlot;
-    private Item lastItemSold;
+    //public SoldSlot soldSlot;
+    //private Item lastItemSold;
 
     void Start()
     {

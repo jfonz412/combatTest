@@ -48,6 +48,13 @@ public class Weapon : Equipment {
     {
         base.OpenStatWindow(itemLocation);
 
+        EquipmentStats window = EquipmentStats.instance;
+        if(window != null)
+            window.PopulateStats(PackageMyInfo());
+    }
+
+    private string[] PackageMyInfo()
+    {
         string[] myStats = new string[5];
         myStats[0] = name;
         myStats[1] = "Condition: " + weaponCondition.ToString();
@@ -55,8 +62,9 @@ public class Weapon : Equipment {
         myStats[3] = "Value: " + currentValue.ToString();
         myStats[4] = myDescription;
 
-        EquipmentStats.instance.PopulateStats(myStats);
+        return myStats;
     }
+
 
     public override string GetResourcePath()
     {

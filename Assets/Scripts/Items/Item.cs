@@ -30,12 +30,10 @@ public class Item : ScriptableObject {
     public virtual void OpenStatWindow(string itemLocation)
     {
         DetermineValue(itemLocation);
-
         InfoPanel panel = InfoPanel.instance;
-        if(panel != null)
-        {
+
+        if (panel != null)
             Instantiate(Resources.Load("PopUps/ItemMenu"), panel.transform.position, Quaternion.identity, panel.transform);
-        }
     }
 
     private void RemoveFromInventory()

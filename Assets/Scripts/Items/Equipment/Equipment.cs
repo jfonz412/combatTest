@@ -21,10 +21,9 @@ public class Equipment : Item {
         DetermineValue(itemLocation);
 
         InfoPanel panel = InfoPanel.instance;
-        if (panel != null)
-        {
+
+        if(panel != null)
             Instantiate(Resources.Load("PopUps/EquipmentStats"), panel.transform.position, Quaternion.identity, panel.transform);
-        }
     }
     
     

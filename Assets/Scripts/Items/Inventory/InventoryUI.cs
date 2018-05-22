@@ -41,7 +41,7 @@ public class InventoryUI : MonoBehaviour {
         }
     }
 
-    //on scene load
+    //on scene load, load saved inventory
     private void LoadInventory()
     {
         //this must happen here because we have to wait for the callback to be loaded

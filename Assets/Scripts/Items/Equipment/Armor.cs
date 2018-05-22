@@ -19,7 +19,10 @@ public class Armor : Equipment {
     public override void OpenStatWindow(string itemLocation)
     {
         base.OpenStatWindow(itemLocation);
-        EquipmentStats.instance.PopulateStats(PackageMyInfo());
+
+        EquipmentStats window = EquipmentStats.instance;
+        if (window != null)
+            window.PopulateStats(PackageMyInfo());
     }
 
     string[] PackageMyInfo()

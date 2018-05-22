@@ -17,7 +17,10 @@ public class Consumable : Item {
     public override void OpenStatWindow(string itemLocation)
     {
         base.OpenStatWindow(itemLocation);
-        ItemMenu.instance.PopulateInfo(PackageItemInfo());
+
+        ItemMenu window = ItemMenu.instance;
+        if (window != null)
+            window.PopulateInfo(PackageItemInfo());
     }
 
     string[] PackageItemInfo()
