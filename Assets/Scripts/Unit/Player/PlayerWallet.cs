@@ -2,13 +2,9 @@
 using UnityEngine.UI;
 
 public class PlayerWallet : MonoBehaviour {
-    public float balance = 0f;
-    public Text displayedAmount;
 
-    void Start()
-    {
-        UpdateDisplayedAmount();
-    }
+    private float balance;
+    public Text displayedAmount;
 
     public void Withdraw(float withdrawl)
     {
@@ -22,8 +18,26 @@ public class PlayerWallet : MonoBehaviour {
         UpdateDisplayedAmount();
     }
 
-    void UpdateDisplayedAmount()
+    private void UpdateDisplayedAmount()
     {
         displayedAmount.text = " " + balance.ToString() + "g"; //will need to format this number eventually
+    }
+
+    public void LoadSavedBalance(float savedBalance = -1f)
+    {
+        if(savedBalance == -1)
+        {
+            balance = 500f;
+        }
+        else
+        {
+            balance = savedBalance;
+        }
+        UpdateDisplayedAmount();
+    }
+
+    public float GetCurrentBalance()
+    {
+        return balance;
     }
 }

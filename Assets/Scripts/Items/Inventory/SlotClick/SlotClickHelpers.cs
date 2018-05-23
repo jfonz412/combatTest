@@ -211,13 +211,13 @@ public class SlotClickHelpers : MonoBehaviour {
     {
         float price = PriceChecker.AppraiseItem(item, "Purchase") * quantity;
 
-        if (price <= playerWallet.balance)
+        if (price <= playerWallet.GetCurrentBalance())
         {
             CommitPurchase(item, quantity, price);
         }
         else
         {
-            Debug.Log("Insufficient funds, balance: $" + playerWallet.balance);
+            Debug.Log("Insufficient funds, balance: $" + playerWallet.GetCurrentBalance());
             shopDialogue.SetCurrentMessage(LoadShop.MessageType.LOW_GOLD);
         }
     }

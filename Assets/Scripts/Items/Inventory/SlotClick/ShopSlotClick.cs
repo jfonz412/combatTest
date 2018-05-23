@@ -21,7 +21,7 @@ public class ShopSlotClick : MonoBehaviour {
 
         float price = PriceChecker.AppraiseItem(item, "Purchase") * item.quantity;
 
-        if (playerWallet.balance >= price && invCheck.CheckItem(item))
+        if (playerWallet.GetCurrentBalance() >= price && invCheck.CheckItem(item))
         {
             InventoryManager.GetInstance().GetShopInventory().Remove(item);
             InventoryManager.GetInstance().GetInventory().AddItem(item);

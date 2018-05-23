@@ -45,6 +45,9 @@ public class NPCSaveData : DataController {
     {
         NPCData data = new NPCData();
 
+        Vector3 pos = transform.position;
+        data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
+
         data.currentHealth = health.GetCurrentHealth();
         if (myShop != null)
         {
@@ -57,6 +60,7 @@ public class NPCSaveData : DataController {
     //MAKE THIS OVERRIDE?
     private void ApplyDataToNPC(NPCData data)
     {
+        transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
         health.ApplyCurrentHealth(data.currentHealth);
 
         if (myShop != null)
@@ -101,6 +105,7 @@ public class NPCSaveData : DataController {
 [Serializable]
 public class NPCData : Data
 {
+    public SavedPosition currentPosition;
     public float currentHealth;
     public SavedItem[] currentShopInventory;
 }
