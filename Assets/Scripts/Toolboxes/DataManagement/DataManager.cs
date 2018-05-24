@@ -11,40 +11,47 @@ public class DataManager : MonoBehaviour {
     private List<string> fileNames = new List<string>(); //to track the files to be deleted if created a new game
     private static string savedFilesList = "/savedFiles.dat";
 
-    //DEBUGGING
-    private void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            Debug.Log("Attempting to save data");
-            SaveAllData();
-        }
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            Debug.Log("Attempting to load data");
-            LoadAllData();
-        }
+        SceneManager.activeSceneChanged += ClearControllers; //should hopefully happen before new controllers get loaded...
     }
 
-    public void Load(DataController dataController)
+    private void ClearControllers(Scene arg0, Scene arg1)
+    {
+        Debug.Log("Creating new dataControllers list");
+        dataControllers = new List<DataController>();
+    }
+
+    public void LoadDataController(DataController dataController)
     {
         dataControllers.Add(dataController);
         dataController.LoadData();
     }
 
     //will eventually make these public
-    private void SaveAllData()
+    public void SaveAllData()
     {
+        Debug.Log("Save all data " + dataControllers.Count);
         for (int i = 0; i < dataControllers.Count; i++)
         {
             string returnedFile = dataControllers[i].SaveData();
             Debug.Log(returnedFile);
             fileNames.Add(returnedFile);
+            //Debug.Log("Saving " + dataControllers[i]);
         }
 
         //after data is saved, the file name is copied in our list of saved files
         SerializeFileNames();
+    }
+
+    public void LoadAllData()
+    {
+        Debug.Log("Loading data");
+
+        for (int i = 0; i < dataControllers.Count; i++)
+        {
+            dataControllers[i].LoadData();
+        }
     }
 
     private void SerializeFileNames()
@@ -81,15 +88,5 @@ public class DataManager : MonoBehaviour {
         Debug.LogFormat("#BeforeDeletion - File at {0} exists: {1}", filePath, File.Exists(filePath));
         File.Delete(filePath);
         Debug.LogFormat("#AfterDeletion - File at {0} exists: {1}", filePath, File.Exists(filePath));
-    }
-
-    private void LoadAllData()
-    {
-        Debug.Log("Loading data");
-
-        for (int i = 0; i < dataControllers.Count; i++)
-        {
-            dataControllers[i].LoadData();
-        }
     }
 }

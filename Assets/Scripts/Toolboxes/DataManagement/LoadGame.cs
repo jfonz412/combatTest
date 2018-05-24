@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine.SceneManagement;
 
 public class LoadGame : MonoBehaviour {
     private Button button;
@@ -15,6 +16,7 @@ public class LoadGame : MonoBehaviour {
     private void LoadScene()
     {
         string scene = RetrieveSceneFromPlayerData();
+        Time.timeScale = 1; //in case we are coming from the pause screen
         ApplicationManager.GetInstance().GetLevelManager().LoadScene(scene);
         Debug.Log("Loading: " + scene);
     }
@@ -29,7 +31,7 @@ public class LoadGame : MonoBehaviour {
         else
         {
             Debug.Log("No player data found");
-            return "Options";
+            return SceneManager.GetActiveScene().name;
         }
     }
 

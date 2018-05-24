@@ -11,7 +11,7 @@ public class DataController : MonoBehaviour {
         //Debug.Log(ApplicationManager.GetInstance());
         //Debug.Log(ApplicationManager.GetInstance().GetDataManager());
         GatherComponents();
-        ApplicationManager.GetInstance().GetDataManager().Load(this);
+        ApplicationManager.GetInstance().GetDataManager().LoadDataController(this);
     }
 
     public virtual string SaveData()

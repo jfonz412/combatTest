@@ -23,7 +23,10 @@ public class PlayerSaveData : DataController {
     public override void LoadData()
     {
         base.LoadData();
-        if(File.Exists(Application.persistentDataPath + fileName))
+
+        wallet.LoadSavedBalance(); //to display wallet amount on new game, otherwise this is only called in ApplyPlayerData()
+
+        if (File.Exists(Application.persistentDataPath + fileName))
         {
             Debug.Log("Loading Player");
             PlayerData data = (PlayerData)LoadDataFromFile(fileName);
