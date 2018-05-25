@@ -24,10 +24,12 @@ public class InventoryManager : MonoBehaviour {
             return;
         }
         instance = this;
+
+        GatherComponents();
     }
     #endregion
 
-    void Start()
+    private void GatherComponents()
     {
         inventory = GetComponent<Inventory>();
         shop = GetComponent<ShopInventory>();

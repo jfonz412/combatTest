@@ -21,6 +21,7 @@ public class ApplicationManager : MonoBehaviour {
     }
     #endregion
 
+    //leave these in Start() because I want them to load after the other Toolboxes gather their components
     private void Start()
     {
         dataManager = GetComponent<DataManager>();

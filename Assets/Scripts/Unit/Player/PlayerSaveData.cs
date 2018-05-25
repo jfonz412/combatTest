@@ -56,7 +56,7 @@ public class PlayerSaveData : DataController {
     private PlayerData PackagePlayerData()
     {
         PlayerData data = new PlayerData();
-        data.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        //data.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
 
         Vector3 pos = transform.position;
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
@@ -70,11 +70,12 @@ public class PlayerSaveData : DataController {
 
     private void ApplyDataToPlayer(PlayerData data)
     {
-        transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
         health.ApplyCurrentHealth(data.currentHealth);
         loadOut.LoadSavedEquipment(data.currentEquipment);
         myInventory = data.currentInventory; //temporarily cache this so InventoryUI can grab it when it is ready
         wallet.LoadSavedBalance(data.currentGold);
+        transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
+        Debug.Log("Saved player pos: " + data.currentPosition.x + ", " + data.currentPosition.y);
     }
 }
 
@@ -82,7 +83,7 @@ public class PlayerSaveData : DataController {
 public class PlayerData : Data
 {
     public float currentHealth;
-    public string currentScene;
+    //public string currentScene;
     public string[] currentEquipment;
     public float currentGold;
     public SavedItem[] currentInventory;

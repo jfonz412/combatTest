@@ -19,10 +19,12 @@ public class ScriptToolbox : MonoBehaviour {
             return;
         }
         instance = this;
+
+        GatherComponents();
     } 
     #endregion
 
-    void Start()
+    private void GatherComponents()
     {
         dialogueManager = GetComponent<DialogueManager>();
         windowCloser = GetComponent<CloseOpenWindows>();

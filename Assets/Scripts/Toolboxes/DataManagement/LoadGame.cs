@@ -15,43 +15,59 @@ public class LoadGame : MonoBehaviour {
 
     private void LoadScene()
     {
-        string scene = RetrieveSceneFromPlayerData();
-        Time.timeScale = 1; //in case we are coming from the pause screen
-        ApplicationManager.GetInstance().GetLevelManager().LoadScene(scene);
-        Debug.Log("Loading: " + scene);
+        if (SavedGameAvailable())
+        {
+            string scene = RetrieveSavedScene();
+            Time.timeScale = 1; //in case we are coming from the pause screen
+            ApplicationManager.GetInstance().GetLevelManager().LoadScene(scene);
+            Debug.Log("Loading: " + scene);
+        }
     }
 
-    private string RetrieveSceneFromPlayerData()
+    private string RetrieveSavedScene()
     {
-        PlayerData data = UnpackPlayerData();
-        if(data.currentScene != null)
+        string scene = GetSceneString();
+
+        if(scene == "")
         {
-            return data.currentScene;
+            Debug.Log("No saved scene found, loading active scene");
+            return SceneManager.GetActiveScene().name;
         }
         else
         {
-            Debug.Log("No player data found");
-            return SceneManager.GetActiveScene().name;
+            return scene;
         }
     }
 
-    private PlayerData UnpackPlayerData()
+    private string GetSceneString()
     {
-        PlayerData data = new PlayerData();
-        string fileName = "/playerData.dat";
+        string fileName = "/currentScene.dat";
+        string scene = "";
 
         if (File.Exists(Application.persistentDataPath + fileName))
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + fileName, FileMode.Open);
-            data = (PlayerData)bf.Deserialize(file);
+            scene = (string)bf.Deserialize(file);
             file.Close();
         }
         else
         {
-            Debug.LogWarning("Player save data not found!");
+            Debug.LogWarning("Save Scene file not found!");
         }
 
-        return data;
+        return scene;
+    }
+
+    private bool SavedGameAvailable()
+    {
+        if (File.Exists(Application.persistentDataPath + "/playerData.dat"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
