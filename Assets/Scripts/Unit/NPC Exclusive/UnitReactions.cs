@@ -14,11 +14,10 @@ public class UnitReactions : MonoBehaviour
     public float reactionRadius = 5f;
     //public float criticalHealthThreshold = 0;
 
-    //I might be able to rectify these with the similar variables in NPCInteraction.cs via an NPCState.cs of some sort
     [HideInInspector]
     public bool isDead = false;
     [HideInInspector]
-    public bool runningAway = false;
+    public bool runningAway = false; //make protected?
 
     void Start()
     {

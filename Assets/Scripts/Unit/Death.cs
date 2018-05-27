@@ -17,7 +17,8 @@ public class Death : MonoBehaviour {
         DropDeathItem();
 
         yield return new WaitForSeconds(6f); //extend death animation before destroy
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     private void DropDeathItem()
@@ -32,7 +33,7 @@ public class Death : MonoBehaviour {
     {
         //stop this unit
         GetComponent<UnitController>().StopMoving();
-        GetComponent<AttackController>().EngageTarget(false); //shouldnt this go first?
+        GetComponent<AttackController>().EngageTarget(false); //should this go first?
         GetComponent<UnitAnimController>().Die();
 
         //stop myAttacker

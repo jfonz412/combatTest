@@ -7,9 +7,6 @@ public class DataController : MonoBehaviour {
 
     void Start()
     {
-        //Debug.Log(this);
-        //Debug.Log(ApplicationManager.GetInstance());
-        //Debug.Log(ApplicationManager.GetInstance().GetDataManager());
         GatherComponents();
         ApplicationManager.GetInstance().GetDataManager().LoadDataController(this);
     }

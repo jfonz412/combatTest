@@ -7,6 +7,7 @@ public class NPCSaveData : DataController {
     private Health health;
     private Loadout loadOut;
     private LoadShop myShop;
+    private UnitReactions myAI;
 
     public override string SaveData()
     {
@@ -19,6 +20,7 @@ public class NPCSaveData : DataController {
     public override void LoadData()
     {
         base.LoadData();
+
         if (File.Exists(Application.persistentDataPath + GetFileName()))
         {
             NPCData data = (NPCData)LoadDataFromFile(GetFileName());
@@ -37,6 +39,7 @@ public class NPCSaveData : DataController {
         base.GatherComponents();
         health = GetComponent<Health>();
         loadOut = GetComponent<Loadout>();
+        myAI = GetComponent<UnitReactions>();
         myShop = GetComponent<LoadShop>(); //may be null
     }
 
@@ -47,8 +50,9 @@ public class NPCSaveData : DataController {
 
         Vector3 pos = transform.position;
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
-
+        data.isDead = myAI.isDead;
         data.currentHealth = health.GetCurrentHealth();
+
         if (myShop != null)
         {
             data.currentShopInventory = myShop.GetCurrentInventory();
@@ -60,6 +64,14 @@ public class NPCSaveData : DataController {
     //MAKE THIS OVERRIDE?
     private void ApplyDataToNPC(NPCData data)
     {
+        //eventually just destroy the object and remove it from the dataManager
+        if (data.isDead)
+        {
+            myAI.isDead = true;
+            gameObject.SetActive(false);
+            return;
+        }
+
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
         health.ApplyCurrentHealth(data.currentHealth);
 
@@ -108,4 +120,5 @@ public class NPCData : Data
     public SavedPosition currentPosition;
     public float currentHealth;
     public SavedItem[] currentShopInventory;
+    public bool isDead;
 }
