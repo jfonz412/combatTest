@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class DataManager : MonoBehaviour {
     [SerializeField]
     private List<DataController> dataControllers; //data collected from the current scene
-    private List<string> fileNames = new List<string>(); //to track the files to be deleted if created a new game
     private string permDir;
     private string tempDir;
     private string currentScene;
