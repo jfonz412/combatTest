@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
-using System.Collections.Generic;
 
 public class NewGame : MonoBehaviour {
     private Button button;
@@ -14,23 +13,46 @@ public class NewGame : MonoBehaviour {
 
     private void DeleteSaveData()
     {
-        List<string> savedFileNames = DataManager.GetSavedFileNames();
-     
-        for(int i = 0; i < savedFileNames.Count; i++)
-        {
-            Delete(savedFileNames[i]);
-        }
-
-        DataManager.DeleteListOfSavedFiles();
+        DeleteTempFiles();
+        DeletePermFiles();
         ApplicationManager.GetInstance().GetLevelManager().LoadScene("Demoburgh");
     }
 
-    private void Delete(string fileName)
+    private void DeleteTempFiles()
     {
-        string filePath = Application.persistentDataPath + fileName;
+        string tempDir = Application.persistentDataPath + "/temp";
 
-        Debug.LogFormat("#BeforeDeletion - File at {0} exists: {1}", filePath, File.Exists(filePath));
-        File.Delete(filePath);
-        Debug.LogFormat("#AfterDeletion - File at {0} exists: {1}", filePath, File.Exists(filePath));
+        if (Directory.Exists(tempDir))
+        {
+            string[] files = Directory.GetFiles(tempDir);
+
+            foreach (string s in files)
+            {
+                File.Delete(s);
+            }
+        }
+        else
+        {
+            Debug.Log("tempDir not found");
+        }
+    }
+
+    private void DeletePermFiles()
+    {
+        string permDir = Application.persistentDataPath + "/perm";
+
+        if (Directory.Exists(permDir))
+        {
+            string[] files = Directory.GetFiles(permDir);
+
+            foreach (string s in files)
+            {
+                File.Delete(s);
+            }
+        }
+        else
+        {
+            Debug.Log("tempDir not found");
+        }
     }
 }

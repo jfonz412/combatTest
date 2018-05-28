@@ -9,12 +9,17 @@ public class DataManager : MonoBehaviour {
     [SerializeField]
     private List<DataController> dataControllers; //data collected from the current scene
     private List<string> fileNames = new List<string>(); //to track the files to be deleted if created a new game
-    private static string savedFilesList = "/savedFiles.dat";
+    private string permDir;
+    private string tempDir;
     private string currentScene;
 
     private void Start()
     {
-        SceneManager.activeSceneChanged += ClearControllers; //should hopefully happen before new controllers get loaded...
+        SceneManager.activeSceneChanged += ClearControllers; //counting on this happening before new controllers get loaded, put in awake if issues
+        permDir = Application.persistentDataPath + "/perm";
+        tempDir = Application.persistentDataPath + "/temp";
+        Directory.CreateDirectory(permDir);
+        Directory.CreateDirectory(tempDir);
     }
 
     private void ClearControllers(Scene arg0, Scene arg1)
@@ -29,22 +34,39 @@ public class DataManager : MonoBehaviour {
         dataController.LoadData();
     }
 
-    //in the future, do not save if player is in combat
-    public void SaveAllData()
+    public void SaveDataToTemp()
     {
-        //Debug.Log("Save all data " + dataControllers.Count);
         for (int i = 0; i < dataControllers.Count; i++)
         {
-            string returnedFile = dataControllers[i].SaveData();
-            Debug.Log(returnedFile);
-            fileNames.Add(returnedFile);
-            //Debug.Log("Saving " + dataControllers[i]);
+            dataControllers[i].SaveData();
         }
+    }
 
-        //SaveCurrentScene(); //I don't think it's necessary to call this here because the scene is saved everytime we enter a new scene
+    public void SaveToPerm()
+    {
+        //copy files from temp dir into perm dir
+        SaveDataToTemp();
 
-        //after data is saved, the file name is copied in our list of saved files
-        SerializeFileNames();
+        if (Directory.Exists(tempDir))
+        {
+            string[] files = Directory.GetFiles(tempDir);
+            string fileName;
+            string destFile;
+
+            // Copy the files and overwrite destination files if they already exist.
+            foreach (string s in files)
+            {
+                // Use static Path methods to extract only the file name from the path.
+                fileName = Path.GetFileName(s);
+                destFile = Path.Combine(permDir, fileName);
+                File.Copy(s, destFile, true);
+                File.Delete(s);
+            }
+        }
+        else
+        {
+            Debug.Log("tempDir not found");
+        }
     }
 
     public void LoadAllData()
@@ -57,43 +79,7 @@ public class DataManager : MonoBehaviour {
         }
     }
 
-    private void SerializeFileNames()
-    {
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + savedFilesList);
-        bf.Serialize(file, fileNames);
-        file.Close();
-    }
-
-    public static List<string> GetSavedFileNames()
-    {
-        List<string> savedFiles = new List<string>();
-
-        if (File.Exists(Application.persistentDataPath + savedFilesList))
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + savedFilesList, FileMode.Open);
-            savedFiles = (List<string>)bf.Deserialize(file);
-            file.Close();
-        }
-        else
-        {
-            Debug.LogWarning("Player save data not found!");
-        }
-
-        return savedFiles;
-    }
-
-    public static void DeleteListOfSavedFiles()
-    {
-        string filePath = Application.persistentDataPath + savedFilesList;
-
-        Debug.LogFormat("#BeforeDeletion - File at {0} exists: {1}", filePath, File.Exists(filePath));
-        File.Delete(filePath);
-        Debug.LogFormat("#AfterDeletion - File at {0} exists: {1}", filePath, File.Exists(filePath));
-    }
-
-    //also called from ExitScene
+    //called from ExitScene
     public void SaveCurrentScene()
     {
         //in the future, do not save if player is in combat
@@ -101,7 +87,7 @@ public class DataManager : MonoBehaviour {
         currentScene = SceneManager.GetActiveScene().name;
 
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/currentScene.dat");
+        FileStream file = File.Create(tempDir + "/currentScene.dat");
         bf.Serialize(file, currentScene);
         file.Close();
 

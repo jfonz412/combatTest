@@ -3,7 +3,8 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public class DataController : MonoBehaviour {
-    protected static string fileDirectory = "/GameSave";
+    protected string tempDirectory = "/temp";
+    protected string permDirectory = "/perm";
 
     void Start()
     {

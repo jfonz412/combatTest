@@ -33,7 +33,7 @@ public class ExitScene : MonoBehaviour
         DataManager dm = app.GetDataManager();
 
         PositionPlayer();
-        dm.SaveAllData();
+        dm.SaveDataToTemp();
         app.GetLevelManager().LoadScene(sceneToLoad);
     }
 

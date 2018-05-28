@@ -13,7 +13,7 @@ public class NPCSaveData : DataController {
     {
         base.SaveData();
         NPCData data = PackageNPCData();
-        SaveDataToFile(data, GetFileName());
+        SaveDataToFile(data, tempDirectory + GetFileName());
         return GetFileName();
     }
 
@@ -21,17 +21,28 @@ public class NPCSaveData : DataController {
     {
         base.LoadData();
 
-        if (File.Exists(Application.persistentDataPath + GetFileName()))
+        NPCData data;
+        string fileName = GetFileName();
+
+        if (File.Exists(Application.persistentDataPath + tempDirectory + fileName))
         {
-            NPCData data = (NPCData)LoadDataFromFile(GetFileName());
-            ApplyDataToNPC(data);
+            Debug.Log("Loading temp " + gameObject.name);
+            data = (NPCData)LoadDataFromFile(tempDirectory + fileName);
+
+        }
+        else if (File.Exists(Application.persistentDataPath + permDirectory + fileName))
+        {
+            Debug.Log("Loading perm " + gameObject.name);
+            data = (NPCData)LoadDataFromFile(permDirectory + fileName);
         }
         else
         {
             Debug.LogWarning(gameObject.name + " save data not found!");
+            loadOut.EquipLoadout();
+            return;
         }
 
-        loadOut.EquipLoadout();
+        ApplyDataToNPC(data);
     }
 
     protected override void GatherComponents()
@@ -79,6 +90,8 @@ public class NPCSaveData : DataController {
         {
             myShop.UpdateInventory(UnpackSavedShopInventory(data.currentShopInventory));
         }
+
+        loadOut.EquipLoadout();
     }
 
     private string GetFileName()

@@ -16,26 +16,35 @@ public class PlayerSaveData : DataController {
     {
         base.SaveData();
         PlayerData data = PackagePlayerData();
-        SaveDataToFile(data, fileName);
+        SaveDataToFile(data, tempDirectory + fileName);
         return fileName;
     }
 
     public override void LoadData()
     {
         base.LoadData();
+        PlayerData data;
 
         wallet.LoadSavedBalance(); //to display wallet amount on new game, otherwise this is only called in ApplyPlayerData()
 
-        if (File.Exists(Application.persistentDataPath + fileName))
+        if (File.Exists(Application.persistentDataPath + tempDirectory + fileName))
         {
-            Debug.Log("Loading Player");
-            PlayerData data = (PlayerData)LoadDataFromFile(fileName);
-            ApplyDataToPlayer(data);
+            Debug.Log("Loading temp Player");
+            data = (PlayerData)LoadDataFromFile(tempDirectory + fileName);
+
+        }
+        else if(File.Exists(Application.persistentDataPath + permDirectory + fileName))
+        {
+            Debug.Log("Loading perm Player");
+            data = (PlayerData)LoadDataFromFile(permDirectory + fileName);
         }
         else
         {
             Debug.LogWarning(gameObject.name + " save data not found!");
+            return;
         }
+
+        ApplyDataToPlayer(data);
     }
 
     public SavedItem[] GetSavedInventory()

@@ -17,7 +17,7 @@ public class SaveAndExit : MonoBehaviour {
 
     private void SaveGame()
     {
-        game.GetDataManager().SaveAllData();
+        game.GetDataManager().SaveToPerm(); 
 
         if (exitAfterSave)
         {
