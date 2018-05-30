@@ -2,11 +2,15 @@
 
 public class PlayerState : MonoBehaviour {
 
-    public enum PlayerStates { Idle, Speaking, Fighting, Shopping, Dead, Prompt }
+    public enum PlayerStates { Idle, Speaking, Fighting, Shopping, Dead, Prompt, Paused }
 
-    [HideInInspector]
-    public static PlayerStates currentState;
+    [SerializeField]
+    private static PlayerStates currentState;
 
+    public static PlayerStates GetPlayerState()
+    {
+        return currentState;
+    }
 
     public static void SetPlayerState(PlayerStates newState) //possibly make this return a bool that can tell sender if state switch was successful or not
     {
@@ -29,6 +33,9 @@ public class PlayerState : MonoBehaviour {
                 currentState = newState;
                 break;
             case PlayerStates.Prompt:
+                currentState = newState;
+                break;
+            case PlayerStates.Paused:
                 currentState = newState;
                 break;
             default:

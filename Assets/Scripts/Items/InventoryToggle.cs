@@ -6,28 +6,19 @@ public class InventoryToggle : MonoBehaviour {
     public GameObject equipUI;
     public GameObject infoPanelUI;
 
-    PlayerState.PlayerStates[] invalidStates = new PlayerState.PlayerStates[]
+    private PlayerState.PlayerStates[] invalidStates = new PlayerState.PlayerStates[]
     {
         PlayerState.PlayerStates.Dead,
-        PlayerState.PlayerStates.Speaking
+        PlayerState.PlayerStates.Speaking,
+        //PlayerState.PlayerStates.Paused
     };
 
-    #region Singleton
-    public static InventoryToggle instance;
-
-    void Awake()
-    {
-        instance = this;
-    }
-    #endregion
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         InventoryUIToggle();
     }
 
-    void InventoryUIToggle()
+    private void InventoryUIToggle()
     {
         if (Input.GetButtonDown("Inventory"))
         {
@@ -42,22 +33,14 @@ public class InventoryToggle : MonoBehaviour {
         CheckForValidPlayerState();
     }
 
-    public void CloseInventory()
-    {
-        inventoryUI.SetActive(false);
-        equipUI.SetActive(false);
-        infoPanelUI.SetActive(false);
-        MouseSlot.instance.ToggleSprite(false);
-    }
-
-    void CheckForValidPlayerState()
+    private void CheckForValidPlayerState()
     {
         if (PlayerState.CheckPlayerState(invalidStates))
         {
             CloseInventory();
         }
 
-        if(PlayerState.currentState == PlayerState.PlayerStates.Shopping)
+        if (PlayerState.GetPlayerState() == PlayerState.PlayerStates.Shopping)
         {
             OpenInventory();
         }
@@ -71,5 +54,11 @@ public class InventoryToggle : MonoBehaviour {
         MouseSlot.instance.ToggleSprite(true);
     }
 
-
+    public void CloseInventory()
+    {
+        inventoryUI.SetActive(false);
+        equipUI.SetActive(false);
+        infoPanelUI.SetActive(false);
+        MouseSlot.instance.ToggleSprite(false);
+    }
 }

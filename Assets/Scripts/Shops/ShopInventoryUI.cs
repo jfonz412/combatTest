@@ -15,7 +15,7 @@ public class ShopInventoryUI : MonoBehaviour {
 
     public static ShopInventoryUI instance;
 
-    void Awake()
+    private void Awake()
     {
         if (instance != null)
         {
@@ -26,8 +26,7 @@ public class ShopInventoryUI : MonoBehaviour {
     }
     #endregion
 
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
         shop = InventoryManager.GetInstance().GetShopInventory();
         shop.onInventoryChanged += UpdateUI;
@@ -35,30 +34,11 @@ public class ShopInventoryUI : MonoBehaviour {
         AssignSlotNums();
     }
 
-    void UpdateUI()
+    public void ShopUIToggle(bool active, string NPCname = null)
     {
-        for (int i = 0; i < slots.Length; i++)
-        {
-            if (i < shop.items.Count)
-            {
-                slots[i].AddItem(shop.items[i]);
-            }
-            else
-            {
-                slots[i].ClearSlot();
-            }
-        }
-    }
+        if (NPCname != null)
+            panel.text = NPCname;
 
-    public void OpenShop(string NPCname)
-    {
-        panel.text = NPCname;
-        ShopUIToggle(true);
-    }
-
-    public void ShopUIToggle(bool active)
-    {
-        //to be trigged by NPC interaction
         shopUI.SetActive(active);
         shopDialogue.SetActive(active);
 
@@ -69,13 +49,34 @@ public class ShopInventoryUI : MonoBehaviour {
         }
         else
         {
+            PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping);
             ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus(); 
         }
-
-        //shop.ClearLastItemSold();
     }
 
-    void AssignSlotNums()
+    //for button
+    public void ExitShop()
+    {
+        ShopUIToggle(false);
+    }
+
+    //this method loads the UI slots with items from ShopInventory, called from ShopInventory delgate
+    private void UpdateUI()
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (i < shop.items.Count)
+            {
+                slots[i].AddItem(shop.items[i]); //am I cloning the item here from ShopInventory ?
+            }
+            else
+            {
+                slots[i].ClearSlot();
+            }
+        }
+    }
+
+    private void AssignSlotNums()
     {
         for (int i = 0; i < slots.Length; i++)
         {

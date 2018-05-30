@@ -51,6 +51,7 @@ public class Inventory : MonoBehaviour {
         Callback();
     }
 
+    //called from slotclick after an item is sold from inventory 
     public void CondenseStackables(Item item, int amountRemoved)
     {
         if (item.quantity - amountRemoved < 1)
@@ -76,15 +77,16 @@ public class Inventory : MonoBehaviour {
         items.Insert(itemIndex, null);
 
         Callback();
-
     }
 
+    //for trashcan
     public void RemoveAndDestroy(Item item)
     {
         Remove(item);
         Destroy(item); 
     }
 
+    //for PlayerSaveData to save inventory
     public SavedItem[] GetItemInfo()
     {
         SavedItem[] itemInfo = new SavedItem[items.Count];

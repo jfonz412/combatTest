@@ -2,25 +2,53 @@
 
 public class PauseController : MonoBehaviour {
     public GameObject pauseMenu;
+    private PlayerState.PlayerStates stateBeforePause;
 
-	private void Update ()
+    PlayerState.PlayerStates[] invalidPauseStates = new PlayerState.PlayerStates[]
+    {
+        PlayerState.PlayerStates.Speaking,
+        PlayerState.PlayerStates.Shopping,
+        PlayerState.PlayerStates.Prompt
+    };
+
+
+    private void Update ()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            pauseMenu.SetActive(!pauseMenu.activeSelf);
-            ToggleTime();
+            if(!PlayerState.CheckPlayerState(invalidPauseStates))
+                TogglePause();
         }	
 	}
 
-    private void ToggleTime()
+    private void TogglePause()
     {
-        if (pauseMenu.activeSelf)
+        bool currentlyPaused = pauseMenu.activeSelf;
+
+        if (currentlyPaused)
         {
-            Time.timeScale = 0;
+            Unpause();
+            Debug.Log("Unpausing");
         }
         else
         {
-            Time.timeScale = 1;
+            Pause();
+            Debug.Log("Pausing");
         }
+    }
+
+    private void Pause()
+    {
+        stateBeforePause = PlayerState.GetPlayerState();
+        PlayerState.SetPlayerState(PlayerState.PlayerStates.Paused); //doesn't actually do anything right now, but it exists
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    private void Unpause()
+    {
+        PlayerState.SetPlayerState(stateBeforePause);
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1;
     }
 }

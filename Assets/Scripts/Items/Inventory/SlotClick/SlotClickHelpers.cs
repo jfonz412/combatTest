@@ -138,7 +138,7 @@ public class SlotClickHelpers : MonoBehaviour {
         if (item.quantity > 1)
         {
             qntyPrompt.TriggerPrompt();
-            while (qntyPrompt.waitingForInput && PlayerState.currentState == PlayerState.PlayerStates.Prompt)
+            while (qntyPrompt.waitingForInput && PlayerState.GetPlayerState() == PlayerState.PlayerStates.Prompt)
             {
                 yield return null;
             }
@@ -189,7 +189,7 @@ public class SlotClickHelpers : MonoBehaviour {
         if (item.quantity > 1)
         {
             qntyPrompt.TriggerPrompt();
-            while (qntyPrompt.waitingForInput && PlayerState.currentState == PlayerState.PlayerStates.Prompt)
+            while (qntyPrompt.waitingForInput && PlayerState.GetPlayerState() == PlayerState.PlayerStates.Prompt)
             {
                 yield return null;
             }

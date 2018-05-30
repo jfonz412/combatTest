@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 
+
+//only the player uses this class
 public class EquipUI : MonoBehaviour {
 
     public Transform equipParent;
     private EquipmentManager equipmentManager;
     private EquipSlot[] slots;
 
-    void Start()
+    private void Start()
     {
         equipmentManager = ScriptToolbox.GetInstance().GetPlayerManager().player.transform.GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += UpdateUI;
@@ -17,7 +19,7 @@ public class EquipUI : MonoBehaviour {
         ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Loadout>().EquipLoadout(); //must be called after above delegate
     }
 
-    void UpdateUI(Equipment oldItem, Equipment newItem)
+    private void UpdateUI(Equipment oldItem, Equipment newItem)
     {
         //Debug.Log("Updating " + gameObject + " with " + newItem);
         if (newItem != null)
@@ -32,7 +34,7 @@ public class EquipUI : MonoBehaviour {
         }
     }
 
-    void AssignSlotNums()
+    private void AssignSlotNums()
     {
         for (int i = 0; i < slots.Length; i++)
         {

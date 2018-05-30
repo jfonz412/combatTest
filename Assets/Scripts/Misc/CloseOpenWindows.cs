@@ -9,7 +9,6 @@ public class CloseOpenWindows : MonoBehaviour {
     void Start()
     {
         toolbox = ScriptToolbox.GetInstance();
-        //inventoryManager = InventoryManager.GetInstance();
     }
 
     public void DestroyPopupMenus()
@@ -39,7 +38,7 @@ public class CloseOpenWindows : MonoBehaviour {
     public void CloseAllWindows()
     {
         DestroyPopupMenus();
-        InventoryToggle.instance.CloseInventory();
+        InventoryManager.GetInstance().GetInventoryToggle().CloseInventory();
         toolbox.GetDialogueManager().dialogueWindow.SetBool("isOpen", false);
     }
 

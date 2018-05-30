@@ -56,7 +56,6 @@ public class NPCInteraction : Interactable
     void TriggerDialogue()
     {
         GetComponent<UnitAnimController>().FaceDirection(transform.position, player.position);
-        //DialogueManager.instance.StartDialogue(dialog);
         ScriptToolbox.GetInstance().GetDialogueManager().StartDialogue(dialog);
     }
 
@@ -73,8 +72,7 @@ public class NPCInteraction : Interactable
     {
         if(myShop != null)
         {
-            PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping);
-            ShopInventoryUI.instance.OpenShop(name);
+            ShopInventoryUI.instance.ShopUIToggle(true, name);
             myShop.LoadShopInventory();
         }
         else

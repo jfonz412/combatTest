@@ -12,40 +12,23 @@ public class QuantityPrompt : MonoBehaviour {
 
     IEnumerator waitForInput;
 
-    #region Singleton
-    //insures that we can easily access the inventory, and that there is only one 
-    //inventory at all times
-    public static QuantityPrompt instance;
-
-    void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogWarning("More than one instance of QuantityPrompt found");
-            return;
-        }
-        instance = this;
-    }
-    #endregion
-
     public void TriggerPrompt()
     {
         waitForInput = WaitForInput();
         StartCoroutine(waitForInput);
     }
 
-
-    IEnumerator WaitForInput()
+    private IEnumerator WaitForInput()
     {
         PromptState(true);
-        while (waitingForInput && PlayerState.currentState == PlayerState.PlayerStates.Prompt)
+        while (waitingForInput && PlayerState.GetPlayerState() == PlayerState.PlayerStates.Prompt)
         {
             yield return null;
         }
         PromptState(false);
     }
 
-    void PromptState(bool prompting)
+    private void PromptState(bool prompting)
     {
         if (prompting)
         {

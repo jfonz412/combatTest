@@ -10,9 +10,6 @@ public class ShopInventory : MonoBehaviour {
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChanged;
 
-    //public SoldSlot soldSlot;
-    //private Item lastItemSold;
-
     void Start()
     {
         //fill shop with null spaces
@@ -35,14 +32,6 @@ public class ShopInventory : MonoBehaviour {
         currentLoadedShop = npcShop;
     }
 
-    public void Remove(Item item)
-    {
-        int itemIndex = item.slotNum.GetValueOrDefault();
-        items.RemoveAt(itemIndex);
-        items.Insert(itemIndex, null);
-        Callback();
-    }
-
     public void ClearShopInventory()
     {
         UpdateNPCShopInventory();
@@ -55,6 +44,14 @@ public class ShopInventory : MonoBehaviour {
                 Destroy(items[i]);
             }
         }
+    }
+
+    public void Remove(Item item)
+    {
+        int itemIndex = item.slotNum.GetValueOrDefault();
+        items.RemoveAt(itemIndex);
+        items.Insert(itemIndex, null);
+        Callback();
     }
 
     //this assumes CheckSpaceAndGold() has been ran for this item, if it has slotClicks will use this to add items
@@ -73,6 +70,14 @@ public class ShopInventory : MonoBehaviour {
             AddToFirstEmptySlot(item);
         }
     }
+
+    public bool CheckSpaceAndGold(Item item, int quantity, float price)
+    {
+        //if price <= shopGold
+        return CheckForSpace(item, quantity);
+    }
+
+    #region Stacking stackables
 
     private int AttemptToStackItem(Item newItem)
     {
@@ -145,27 +150,9 @@ public class ShopInventory : MonoBehaviour {
         items[slotNum].slotNum = slotNum; //save refrence to the slot it's been placed in
     }
 
-    private void Callback()
-    {
-        if (onInventoryChanged != null)
-        {
-            onInventoryChanged.Invoke(); //callback
-        }
-    }
-
-    private void UpdateNPCShopInventory()
-    {
-        if(currentLoadedShop != null)
-            currentLoadedShop.UpdateInventory(items);
-        currentLoadedShop = null;
-    }
+    #endregion
 
     #region CHECK IF WE CAN PURCHASE ITEM
-    public bool CheckSpaceAndGold(Item item, int quantity, float price)
-    {
-        //if price <= shopGold
-        return CheckForSpace(item, quantity);
-    }
 
     private bool CheckForSpace(Item item, int quantity)
     {
@@ -226,4 +213,21 @@ public class ShopInventory : MonoBehaviour {
         return newItemQ;
     }
     #endregion
+
+
+    //saves NPC Shop inventory when done shopping
+    private void UpdateNPCShopInventory()
+    {
+        if (currentLoadedShop != null)
+            currentLoadedShop.UpdateInventory(items);
+        currentLoadedShop = null;
+    }
+
+    private void Callback()
+    {
+        if (onInventoryChanged != null)
+        {
+            onInventoryChanged.Invoke(); //callback
+        }
+    }
 }

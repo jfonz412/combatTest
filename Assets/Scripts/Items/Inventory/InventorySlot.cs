@@ -3,11 +3,10 @@ using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour
 {
-    public Image icon;
-    public Item item;
     [HideInInspector]
     public int slotNum;
-
+    public Image icon;
+    public Item item;
 
     public virtual void AddItem(Item newItem)
     {
@@ -37,7 +36,7 @@ public class InventorySlot : MonoBehaviour
 
     public virtual void SlotRightClicked()
     {
-        if (PlayerState.currentState == PlayerState.PlayerStates.Shopping)
+        if (PlayerState.GetPlayerState() == PlayerState.PlayerStates.Shopping)
         {
             InvSlotClick.instance.RightClickedToSell(item);
         }
@@ -49,7 +48,7 @@ public class InventorySlot : MonoBehaviour
 
     public virtual void SlotLeftClicked()
     {
-        if(PlayerState.currentState == PlayerState.PlayerStates.Shopping)
+        if(PlayerState.GetPlayerState() == PlayerState.PlayerStates.Shopping)
         {
             InvSlotClick.instance.LeftClickedToSell(this);
         }

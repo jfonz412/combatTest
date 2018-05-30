@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour {
         }     
     }
 
-    void MoveHere(Vector3 location)
+    private void MoveHere(Vector3 location)
     {
         StopPreviousInteraction();
         PathfindingManager.RequestPath(transform.position, location, unitController.OnPathFound);
