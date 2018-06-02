@@ -8,7 +8,7 @@ public class Interactable : MonoBehaviour {
     [HideInInspector]
     public string[] myInteractions = new string[4]; //use this to populate interact menu
 
-    public enum DefaultInteractions { Attack, Talk, Trade, Pickup, Inspect };
+    public enum DefaultInteractions { Attack, Talk, Trade, Pickup, Inspect, Harvest };
     public DefaultInteractions defaultInteraction; //allows us to select default interaction for this object
 
     public float radius = 1f; //same as melee standard in weapon script

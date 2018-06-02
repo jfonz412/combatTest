@@ -84,7 +84,7 @@ public class PlayerSaveData : DataController {
         myInventory = data.currentInventory; //temporarily cache this so InventoryUI can grab it when it is ready
         wallet.LoadSavedBalance(data.currentGold);
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
-        Debug.Log("Saved player pos: " + data.currentPosition.x + ", " + data.currentPosition.y);
+        //Debug.Log("Saved player pos: " + data.currentPosition.x + ", " + data.currentPosition.y);
     }
 }
 

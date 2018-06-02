@@ -42,9 +42,10 @@ public class InteractableMenu : MonoBehaviour {
 
     public void PassChosenInteraction(Text interaction)
     {
+
         if (currentInteractable != null)
         {
-            string chosenInteraction = interaction.text;
+            string chosenInteraction = TranslateIfHarvestInteraction(interaction);
             player.InteractWithInteractable(chosenInteraction, currentInteractable);
         }
         CloseMenu();
@@ -53,5 +54,18 @@ public class InteractableMenu : MonoBehaviour {
     public void CloseMenu()
     {
         Destroy(gameObject);
+    }
+
+    private string TranslateIfHarvestInteraction(Text interaction)
+    {
+        string s = interaction.text;
+        if(s == "Mine" || s == "Chop")
+        {
+            return "Harvest";
+        }
+        else
+        {
+            return s;
+        }
     }
 }
