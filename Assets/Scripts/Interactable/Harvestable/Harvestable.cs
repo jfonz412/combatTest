@@ -4,6 +4,7 @@ using System.Collections;
 public class Harvestable : Interactable {
     [HideInInspector]
     public bool isHarvested = false;
+    private Animator anim;
 
     [SerializeField]
     private string harvestType;
@@ -17,7 +18,8 @@ public class Harvestable : Interactable {
     //private static int nodeNumber = 0;
 
     void Start () {
-        myInteractions = new string[] { harvestType, "Inspect", "--", "--" };      
+        myInteractions = new string[] { harvestType, "Inspect", "--", "--" };
+        anim = GetComponent<Animator>();
         //timeToHarvest = timeToHarvest * toolBonus;
     }
 
@@ -47,32 +49,45 @@ public class Harvestable : Interactable {
 
     private void TriggerHarvest()
     {
-        Debug.Log("Harvesting " + gameObject);
+        //Debug.Log("Harvesting " + gameObject);
         IEnumerator harvest = HarvestNode();
         StartCoroutine(harvest);
     }
     
     private IEnumerator HarvestNode()
     {
+        Animator playerAnim = player.GetComponent<Animator>();
         Collider2D nodeCol = GetComponent<Collider2D>();
         Collider2D playerCol = player.GetComponent<Collider2D>(); //eventually will allow other units to harvest
+        string shake = "Shake";
+        string harvest = "Harvest";
         
         float timePassed = 0;
 
         while (timePassed < timeToHarvest)
-        {
+        {   
             if (!playerCol.IsTouching(nodeCol))
             {
-                Debug.Log("Player walked away from harvestable node");
+                //Debug.Log("Player walked away from harvestable node");
+                playerAnim.ResetTrigger(harvest);
+                anim.ResetTrigger(shake);
                 yield break;
             }
 
-            yield return new WaitForSeconds(1f);
-            timePassed++;
-            Debug.Log("Harvesting...(" + timePassed + ")");
-        }
-        Debug.Log("Done harvesting");
+            //Debug.Log("triggering player shake");
+            playerAnim.SetTrigger(harvest);
 
+            yield return new WaitForSeconds(1f);
+            
+            timePassed++;
+            //Debug.Log("Harvesting...(" + timePassed + ")");
+
+            anim.SetTrigger(shake);
+
+        }
+        //Debug.Log("Done harvesting");
+
+        playerAnim.ResetTrigger(harvest);
         DropAndDestroy();
         yield break;
     }
