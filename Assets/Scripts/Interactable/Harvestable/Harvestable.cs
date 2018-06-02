@@ -49,9 +49,16 @@ public class Harvestable : Interactable {
 
     private void TriggerHarvest()
     {
-        //Debug.Log("Harvesting " + gameObject);
-        IEnumerator harvest = HarvestNode();
-        StartCoroutine(harvest);
+        Weapon unitWeapon = player.GetComponent<AttackController>().equippedWeapon;
+        if (unitWeapon == null)
+            return;
+
+        if (unitWeapon.toolType == Weapon.ToolType.Pick)
+        {
+            //Debug.Log("Harvesting " + gameObject);
+            IEnumerator harvest = HarvestNode();
+            StartCoroutine(harvest);
+        }
     }
     
     private IEnumerator HarvestNode()

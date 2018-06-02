@@ -3,7 +3,7 @@
 public class Equipment : Item {
 
     public EquipmentSlot equipSlot;
-    public int equipmentID; //it's ID for the resources folder
+    public bool naked;
 
     public override void Use() //RMB
     {

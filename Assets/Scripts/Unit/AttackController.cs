@@ -11,7 +11,7 @@ public class AttackController : MonoBehaviour {
     private Health targetHealth;
 
     private EquipmentManager equipmentManager;
-    private Weapon equippedWeapon;
+    public Weapon equippedWeapon;
     private int weaponIndex = (int)EquipmentSlot.MainHand;
 
     private Stats myStats;

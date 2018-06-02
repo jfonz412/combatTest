@@ -4,7 +4,6 @@ public class EquipmentManager : MonoBehaviour {
 
     [HideInInspector]
     public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead; //only for player, what is this for..?
- 
     //UnitAnimator unitAnim;
 
     [SerializeField]
@@ -39,7 +38,7 @@ public class EquipmentManager : MonoBehaviour {
         Equip(newItem);
         inv.Remove(newItem);
 
-        if(oldItem.equipmentID != 0) //0 is unarmed/naked
+        if(!oldItem.naked) //0 is unarmed/naked
             inv.AddItem(oldItem);
     }
 
@@ -56,7 +55,7 @@ public class EquipmentManager : MonoBehaviour {
         int slotIndex = (int)newItem.equipSlot;
         currentEquipment[slotIndex] = newItem;
 
-        if (newItem.equipmentID != 0) //0 is unarmed/naked, we don't want this actually added to the UI slot
+        if (!newItem.naked) //0 is unarmed/naked, we don't want this actually added to the UI slot
         {
             if (onEquipmentChanged != null)
             {

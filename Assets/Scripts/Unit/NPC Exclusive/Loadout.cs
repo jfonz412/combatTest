@@ -34,6 +34,7 @@ public class Loadout : MonoBehaviour {
         for (int i = 0; i < equipmentNames.Length; i++)
         {
             //Debug.Log(equipmentNames[i]);
+            Debug.Log(equipmentNames[i]);
             equipment[i] = (Equipment)Instantiate(Resources.Load(equipmentNames[i]));
             //Debug.Log(equipment[i]);
         }

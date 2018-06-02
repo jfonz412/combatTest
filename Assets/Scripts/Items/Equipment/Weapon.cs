@@ -5,9 +5,10 @@ public class Weapon : Equipment {
 
     #region Stats
     public enum ToolType { Pick, Axe, NA };
-    public ToolType myToolType;
+    public ToolType toolType;
 
-    public string attackType; // cast, slash, thrust
+    public enum AttackType { Melee, Cast, Ranged };
+    public AttackType attackType;
 
     [SerializeField]
     private float weaponCondition = 1; //1 is undamaged
@@ -21,7 +22,8 @@ public class Weapon : Equipment {
 
     public float range{
 		get{
-			if(attackType == "cast" || attackType == "ranged"){
+			if(attackType != AttackType.Melee)
+            {
 				return 5f;
 			}else{
 				return 1f;
@@ -68,7 +70,18 @@ public class Weapon : Equipment {
 
     public override string GetResourcePath()
     {
-        string directory = "Items/Weapons/";
+        string directory;
+
+        if (toolType == ToolType.NA)
+        {
+            directory = "Items/Weapons/";
+        }
+        else
+        {
+            directory = "Items/Tools/";
+        }
+            
+
         return directory + myFileName;
     }
 }
