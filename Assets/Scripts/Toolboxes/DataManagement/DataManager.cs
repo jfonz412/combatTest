@@ -41,6 +41,7 @@ public class DataManager : MonoBehaviour {
         }
     }
 
+    //this works as long as temp and perm are flat files, would need to dig deeper (recursivly) to get into more directories
     public void SaveToPerm()
     {
         //copy files from temp dir into perm dir
@@ -90,6 +91,6 @@ public class DataManager : MonoBehaviour {
         bf.Serialize(file, currentScene);
         file.Close();
 
-        Debug.Log("Saving scene as " + currentScene);
+        //Debug.Log("Saving scene as " + currentScene);
     }
 }

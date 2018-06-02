@@ -29,7 +29,6 @@ public class PlayerSaveData : DataController {
 
         if (File.Exists(Application.persistentDataPath + tempDirectory + fileName))
         {
-            Debug.Log("Loading temp Player");
             data = (PlayerData)LoadDataFromFile(tempDirectory + fileName);
 
         }

@@ -171,7 +171,7 @@ public class Inventory : MonoBehaviour {
         if (item.slotNum == null)
         {
             item = Instantiate(item);
-            Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
+            //Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
         }
 
         return item;

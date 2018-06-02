@@ -4,11 +4,13 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class NPCSaveData : DataController {
+    //the components we need to save
     private Health health;
     private Loadout loadOut;
     private LoadShop myShop;
     private UnitReactions myAI;
 
+    //called from DataManager to save this object
     public override string SaveData()
     {
         base.SaveData();
@@ -17,6 +19,7 @@ public class NPCSaveData : DataController {
         return GetFileName();
     }
 
+    //called from DataManager to load this object
     public override void LoadData()
     {
         base.LoadData();
@@ -45,6 +48,7 @@ public class NPCSaveData : DataController {
         ApplyDataToNPC(data);
     }
 
+    //called in Start() 
     protected override void GatherComponents()
     {
         base.GatherComponents();
@@ -54,7 +58,7 @@ public class NPCSaveData : DataController {
         myShop = GetComponent<LoadShop>(); //may be null
     }
 
-    //MAKE THIS OVERRIDE?
+    //Called by Save() to grab data from componets and put that in the Data class
     private NPCData PackageNPCData()
     {
         NPCData data = new NPCData();
@@ -72,7 +76,7 @@ public class NPCSaveData : DataController {
         return data;
     }
 
-    //MAKE THIS OVERRIDE?
+    //called by load to apply Data to components
     private void ApplyDataToNPC(NPCData data)
     {
         //eventually just destroy the object and remove it from the dataManager
@@ -94,11 +98,13 @@ public class NPCSaveData : DataController {
         loadOut.EquipLoadout();
     }
 
+    //creates file path for this individual based on it's gameObject.name
     private string GetFileName()
     {
         string filePath = "/NPC_" + gameObject.name + ".dat";
         return filePath;
     }
+
 
     private List<Item> UnpackSavedShopInventory(SavedItem[] savedInventory)
     {

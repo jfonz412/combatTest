@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class Harvestable : Interactable {
+    [HideInInspector]
+    public bool isHarvested = false;
+
     [SerializeField]
     private string harvestType;
     [SerializeField]
@@ -11,8 +14,10 @@ public class Harvestable : Interactable {
     //[SerializeField]
     //private float dropChance;
 
+    //private static int nodeNumber = 0;
+
     void Start () {
-        myInteractions = new string[] { harvestType, "Inspect", "--", "--" };
+        myInteractions = new string[] { harvestType, "Inspect", "--", "--" };      
         //timeToHarvest = timeToHarvest * toolBonus;
     }
 
@@ -79,6 +84,8 @@ public class Harvestable : Interactable {
             Instantiate(itemDrop, transform.position, Quaternion.identity);
         }
 
-        Destroy(gameObject);
+        isHarvested = true;
+        gameObject.SetActive(false);
+        //Destroy(gameObject);
     }
 }
