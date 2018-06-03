@@ -7,25 +7,27 @@ public class Harvestable : Interactable {
     private Animator anim;
 
     [SerializeField]
-    private string harvestType;
-    [SerializeField]
     private float timeToHarvest = 5f;
     [SerializeField]
     private GameObject itemDrop;
     //[SerializeField]
     //private float dropChance;
 
-    //private static int nodeNumber = 0;
+    private enum HarvestType { Mine, Chop };
+    [SerializeField]
+    private HarvestType harvestType;
+    [SerializeField]
+    private Weapon.ToolType requiredTool;
+
 
     void Start () {
-        myInteractions = new string[] { harvestType, "Inspect", "--", "--" };
+        myInteractions = new string[] { harvestType.ToString(), "Inspect", "--", "--" };
         anim = GetComponent<Animator>();
         //timeToHarvest = timeToHarvest * toolBonus;
     }
 
     public override void Interaction(string interaction)
     {
-
         base.Interaction(interaction); //gets the reference to the player
 
         if (interaction == "Default")
@@ -49,11 +51,7 @@ public class Harvestable : Interactable {
 
     private void TriggerHarvest()
     {
-        Weapon unitWeapon = player.GetComponent<AttackController>().equippedWeapon;
-        if (unitWeapon == null)
-            return;
-
-        if (unitWeapon.toolType == Weapon.ToolType.Pick)
+        if (UsingProperTool())
         {
             //Debug.Log("Harvesting " + gameObject);
             IEnumerator harvest = HarvestNode();
@@ -108,6 +106,26 @@ public class Harvestable : Interactable {
 
         isHarvested = true;
         gameObject.SetActive(false);
-        //Destroy(gameObject);
+    }
+
+    private bool UsingProperTool()
+    {
+        Weapon unitWeapon = player.GetComponent<AttackController>().equippedWeapon;
+        bool usingProperTool;
+
+        if (unitWeapon == null)
+        {
+            usingProperTool = false;
+        }
+        else if(unitWeapon.toolType == requiredTool)
+        {
+            usingProperTool = true;
+        }
+        else
+        {
+            usingProperTool = false;
+        }
+
+        return usingProperTool;
     }
 }

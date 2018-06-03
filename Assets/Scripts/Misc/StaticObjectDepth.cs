@@ -8,12 +8,22 @@ public class StaticObjectDepth : MonoBehaviour {
 
     void Start()
     {
-        sp = GetComponent<SpriteRenderer>();
+
+        GetSpriteRenderer();
         SetDepth();
     }
 
     void SetDepth()
     {
         sp.sortingOrder = (int)Mathf.RoundToInt(-transform.position.y * 1000) + modifier;
+    }
+
+    private void GetSpriteRenderer()
+    {
+        sp = GetComponent<SpriteRenderer>();
+        if(sp == null)
+        {
+            GetComponentInChildren<SpriteRenderer>();
+        }
     }
 }
