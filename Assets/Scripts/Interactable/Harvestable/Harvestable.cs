@@ -2,14 +2,14 @@
 using System.Collections;
 
 public class Harvestable : Interactable {
-    [HideInInspector]
-    public bool isHarvested = false;
     private Animator anim;
 
     [SerializeField]
     private float timeToHarvest = 5f;
     [SerializeField]
     private GameObject itemDrop;
+    [SerializeField]
+    private Sprite harvestedSprite;
     //[SerializeField]
     //private float dropChance;
 
@@ -19,7 +19,17 @@ public class Harvestable : Interactable {
     [SerializeField]
     private Weapon.ToolType requiredTool;
 
-
+    private bool harvested = false;
+    [HideInInspector]
+    public bool isHarvested {
+                                get { return harvested; }
+                                set { harvested = value;
+                                        if (value == true)
+                                        {
+                                            ChangeSprite();
+                                        };
+                                    }
+                            }
     void Start () {
         myInteractions = new string[] { harvestType.ToString(), "Inspect", "--", "--" };
         anim = GetComponent<Animator>();
@@ -51,7 +61,7 @@ public class Harvestable : Interactable {
 
     private void TriggerHarvest()
     {
-        if (UsingProperTool())
+        if (UsingProperTool() && !harvested)
         {
             //Debug.Log("Harvesting " + gameObject);
             IEnumerator harvest = HarvestNode();
@@ -93,6 +103,7 @@ public class Harvestable : Interactable {
         //Debug.Log("Done harvesting");
 
         playerAnim.ResetTrigger(harvest);
+        anim.ResetTrigger(shake);
         DropAndDestroy();
         yield break;
     }
@@ -105,7 +116,6 @@ public class Harvestable : Interactable {
         }
 
         isHarvested = true;
-        gameObject.SetActive(false);
     }
 
     private bool UsingProperTool()
@@ -128,4 +138,11 @@ public class Harvestable : Interactable {
 
         return usingProperTool;
     }
+
+    private void ChangeSprite()
+    {
+        SpriteRenderer sp = GetComponentInChildren<SpriteRenderer>();
+        sp.sprite = harvestedSprite;
+    }
+
 }

@@ -24,7 +24,7 @@ public class LoadGame : MonoBehaviour {
             string scene = RetrieveSavedScene();
             Time.timeScale = 1; //in case we are coming from the pause screen
             ApplicationManager.GetInstance().GetLevelManager().LoadScene(scene);
-            Debug.Log("Loading: " + scene);
+            //Debug.Log("Loading: " + scene);
         }
     }
 
@@ -34,12 +34,12 @@ public class LoadGame : MonoBehaviour {
 
         if(scene == "")
         {
-            Debug.Log("No saved scene found, loading active scene");
+            //Debug.Log("No saved scene found, loading active scene");
             return SceneManager.GetActiveScene().name;
         }
         else
         {
-            Debug.Log(scene);
+            //Debug.Log(scene);
             return scene;
         }
     }

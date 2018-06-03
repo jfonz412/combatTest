@@ -23,7 +23,7 @@ public class DataManager : MonoBehaviour {
 
     private void ClearControllers(Scene arg0, Scene arg1)
     {
-        Debug.Log("Creating new dataControllers list");
+        //Debug.Log("Creating new dataControllers list");
         dataControllers = new List<DataController>();
     }
 

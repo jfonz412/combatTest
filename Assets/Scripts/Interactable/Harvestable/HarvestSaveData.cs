@@ -26,13 +26,13 @@ public class HarvestSaveData : DataController {
 
         if (File.Exists(Application.persistentDataPath + tempDirectory + fileName))
         {
-            Debug.Log("Loading temp " + gameObject.name);
+            //Debug.Log("Loading temp " + gameObject.name);
             data = (HarvestableData)LoadDataFromFile(tempDirectory + fileName);
 
         }
         else if (File.Exists(Application.persistentDataPath + permDirectory + fileName))
         {
-            Debug.Log("Loading perm " + gameObject.name);
+            //Debug.Log("Loading perm " + gameObject.name);
             data = (HarvestableData)LoadDataFromFile(permDirectory + fileName);
         }
         else
@@ -55,7 +55,7 @@ public class HarvestSaveData : DataController {
 
     private HarvestableData PackageHarvestableData()
     {
-        Debug.Log("packaging harvestable");
+        //Debug.Log("packaging harvestable");
         HarvestableData data = new HarvestableData();
         data.isHarvested = harvestable.isHarvested;
         return data;
@@ -63,13 +63,9 @@ public class HarvestSaveData : DataController {
 
     private void ApplyDataToHarvestable(HarvestableData data)
     {
-        Debug.Log("applying data to harvestable");
-
         if (data.isHarvested)
         {
-            Debug.Log("this node was harvested: " + gameObject.name);
             harvestable.isHarvested = true;
-            gameObject.SetActive(false);
         }
     }
 

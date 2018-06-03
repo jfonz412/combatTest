@@ -21,6 +21,9 @@ public class Item : ScriptableObject {
     public int maxQuantity = 99;
     public bool stackable;
 
+    public enum ItemDirectory { Consumables, Economic, Weapons, Armor, Tools };
+    public ItemDirectory myDirectory;
+
     //create seperate item classes (equipment, consumable, crafting, etc. to handle differernt use cases)
     public virtual void Use() //RMB
     {
@@ -30,10 +33,33 @@ public class Item : ScriptableObject {
     public virtual void OpenStatWindow(string itemLocation)
     {
         DetermineValue(itemLocation);
-        InfoPanel panel = InfoPanel.instance;
 
+        InfoPanel panel = InfoPanel.instance;
         if (panel != null)
             Instantiate(Resources.Load("PopUps/ItemMenu"), panel.transform.position, Quaternion.identity, panel.transform);
+
+        ItemMenu window = ItemMenu.instance;
+        if (window != null)
+            window.PopulateInfo(PackageItemInfo());
+    }
+
+    protected virtual string[] PackageItemInfo()
+    {
+        string[] myStats = new string[4];
+        if (this != null)
+        {
+            if (stackable)
+            {
+                myStats[0] = name + " (" + quantity.ToString() + ")";
+            }
+            else
+            {
+                myStats[0] = name;
+            }
+            myStats[1] = "Value: " + currentValue.ToString();
+            myStats[3] = myDescription;
+        }
+        return myStats;
     }
 
     private void RemoveFromInventory()
@@ -55,7 +81,7 @@ public class Item : ScriptableObject {
 
     public virtual string GetResourcePath()
     {
-        string directory = "Items/Consumables/";
+        string directory = "Items/" + myDirectory + "/";
         return directory + myFileName;
     }
 }

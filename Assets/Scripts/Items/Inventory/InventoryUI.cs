@@ -56,7 +56,8 @@ public class InventoryUI : MonoBehaviour {
             if (items[i].fileName == null)
                 continue;
 
-            //Debug.Log("Loading " + items[i].fileName + " from saved invetory items" );
+            Debug.Log("Loading " + items[i].fileName + " from saved invetory items" );
+            Debug.Log(Instantiate(Resources.Load(items[i].fileName)).GetType());
             Item item  = (Item)Instantiate(Resources.Load(items[i].fileName)); //needs to wait for the callback
             item.quantity = items[i].quantity;
             inventory.AddItem(item);

@@ -10,7 +10,7 @@ public class DataController : MonoBehaviour {
     {
         GatherComponents();
         ApplicationManager.GetInstance().GetDataManager().LoadDataController(this);
-        Debug.Log("loading datacontroller for: " + gameObject.name);
+        //Debug.Log("loading datacontroller for: " + gameObject.name);
     }
 
     public virtual string SaveData()

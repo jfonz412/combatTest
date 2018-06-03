@@ -123,11 +123,12 @@ public class NPCSaveData : DataController {
             if (savedInventory[i].fileName == null)
                 continue;
 
+            Debug.Log(savedInventory[i].fileName);
             Item item = (Item)Instantiate(Resources.Load(savedInventory[i].fileName)); 
             item.quantity = savedInventory[i].quantity;
 
             loadedItems.Add(item);
-            //Debug.Log(item);
+
         }
         return loadedItems;
     }

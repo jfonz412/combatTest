@@ -15,6 +15,12 @@ public class Grid : MonoBehaviour {
 
     public static Grid instance;
 
+    public void RedrawGrid()
+    {
+        Debug.Log("Redrawing grid");
+        CreateGrid();
+    }
+
     void Awake(){
 		nodeDiameter = nodeRadius*2;
 		// gets us how many nodes we can fit into grid's x and y
@@ -31,7 +37,7 @@ public class Grid : MonoBehaviour {
 		}
 	}
 	
-	void CreateGrid(){
+	private void CreateGrid(){
 		grid = new Node[nodeCountX, nodeCountY];
 		Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x/2 - Vector3.up * gridWorldSize.y/2; //see work note for math
 		

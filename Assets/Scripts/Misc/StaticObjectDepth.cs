@@ -4,7 +4,7 @@
 public class StaticObjectDepth : MonoBehaviour {
 
     SpriteRenderer sp;
-    public int modifier = 0; //to control priority I belive (retro-activly added this comment)
+    public int modifier;
 
     void Start()
     {

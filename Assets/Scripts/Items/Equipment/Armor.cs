@@ -22,10 +22,10 @@ public class Armor : Equipment {
 
         EquipmentStats window = EquipmentStats.instance;
         if (window != null)
-            window.PopulateStats(PackageMyInfo());
+            window.PopulateStats(PackageArmorInfo());
     }
 
-    string[] PackageMyInfo()
+    string[] PackageArmorInfo()
     {
         string[] myStats = new string[5];
         myStats[0] = name;
@@ -37,9 +37,4 @@ public class Armor : Equipment {
         return myStats;
     }
 
-    public override string GetResourcePath()
-    {
-        string directory = "Items/Armor/";
-        return directory + myFileName;
-    }
 }

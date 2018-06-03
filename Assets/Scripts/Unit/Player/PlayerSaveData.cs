@@ -34,7 +34,7 @@ public class PlayerSaveData : DataController {
         }
         else if(File.Exists(Application.persistentDataPath + permDirectory + fileName))
         {
-            Debug.Log("Loading perm Player");
+            //Debug.Log("Loading perm Player");
             data = (PlayerData)LoadDataFromFile(permDirectory + fileName);
         }
         else

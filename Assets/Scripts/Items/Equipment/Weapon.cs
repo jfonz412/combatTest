@@ -52,10 +52,10 @@ public class Weapon : Equipment {
 
         EquipmentStats window = EquipmentStats.instance;
         if(window != null)
-            window.PopulateStats(PackageMyInfo());
+            window.PopulateStats(PackageWeaponInfo());
     }
 
-    private string[] PackageMyInfo()
+    private string[] PackageWeaponInfo()
     {
         string[] myStats = new string[5];
         myStats[0] = name;
@@ -65,23 +65,5 @@ public class Weapon : Equipment {
         myStats[4] = myDescription;
 
         return myStats;
-    }
-
-
-    public override string GetResourcePath()
-    {
-        string directory;
-
-        if (toolType == ToolType.NA)
-        {
-            directory = "Items/Weapons/";
-        }
-        else
-        {
-            directory = "Items/Tools/";
-        }
-            
-
-        return directory + myFileName;
     }
 }
