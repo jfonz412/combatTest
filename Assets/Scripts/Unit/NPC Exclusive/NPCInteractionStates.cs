@@ -41,7 +41,7 @@ public class NPCInteractionStates : MonoBehaviour {
             case InteractionState.FightingPlayer:
                 currentState = newState;
                 npc.defaultInteraction = Interactable.DefaultInteractions.Attack;
-                Debug.Log(npc.defaultInteraction);
+                //Debug.Log(npc.defaultInteraction);
                 break;
             case InteractionState.FightingNPC:
                 currentState = newState;
@@ -49,7 +49,7 @@ public class NPCInteractionStates : MonoBehaviour {
             case InteractionState.FleeingPlayer:
                 currentState = newState;
                 npc.defaultInteraction = Interactable.DefaultInteractions.Attack;
-                Debug.Log(npc.defaultInteraction);
+                //Debug.Log(npc.defaultInteraction);
                 break;
             case InteractionState.FleeingNPC:
                 currentState = newState;

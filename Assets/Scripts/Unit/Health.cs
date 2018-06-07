@@ -41,6 +41,7 @@ public class Health : MonoBehaviour
 
     private Armor PickBodyPart()
     {
+        //GetComponent<BodyParts>().RecieveAttack();
         //EquipmentSlot { Head, Chest, Legs, MainHand, OffHand, Feet}
         int[] validChoices = new int[] { 0, 1, 2, 5 };
         int num = Random.Range(0, validChoices.Length);

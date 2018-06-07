@@ -57,7 +57,8 @@ public class ShopInventory : MonoBehaviour {
     //this assumes CheckSpaceAndGold() has been ran for this item, if it has slotClicks will use this to add items
     public void AddItem(Item item)
     {
-        //item = ConvertToInventoryItem(item);
+        //item = ConvertToInventoryItem(item); might not need to do this because when purchased and placed in the inventory the item is instantiated.
+        //should probably take care of that here but it makes sense that inventory is the last check to make sure it is instantiated so this should be fine
 
         int leftovers = AttemptToStackItem(item);
 
@@ -214,6 +215,19 @@ public class ShopInventory : MonoBehaviour {
     }
     #endregion
 
+    private Item ConvertToInventoryItem(Item item)
+    {
+        //if slotNum is null then it has not been in our inventory needs an instance
+        //otherwise we do not create a new instance and simply use the item as it is
+        if (item.slotNum == null)
+        {
+            item = Instantiate(item);
+            item.Init();
+            //Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
+        }
+
+        return item;
+    }
 
     //saves NPC Shop inventory when done shopping
     private void UpdateNPCShopInventory()

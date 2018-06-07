@@ -3,8 +3,7 @@
 public class EquipmentManager : MonoBehaviour {
 
     [HideInInspector]
-    public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead; //only for player, what is this for..?
-    //UnitAnimator unitAnim;
+    public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead; //only for player if they decide to remove armor?
 
     [SerializeField]
     private Equipment[] currentEquipment;
@@ -114,7 +113,15 @@ public class EquipmentManager : MonoBehaviour {
 
     public Equipment EquipmentFromSlot(int slotNum)
     { 
-        return currentEquipment[slotNum];
+        if(slotNum != -1)
+        {
+            return currentEquipment[slotNum]; 
+        }
+        else //failsafe, shouldn't happen though
+        {
+            Debug.LogWarning("Unknown equip slot passed from HumanBody");
+            return nakedChest;
+        }
     }
 
     public string[] GetEquipmentNames()

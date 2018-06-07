@@ -8,13 +8,13 @@ public class AttackController : MonoBehaviour {
 
     private IEnumerator engagingEntity;
 
-    private Health targetHealth;
+    private BodyParts targetBody;
 
     private EquipmentManager equipmentManager;
     public Weapon equippedWeapon;
     private int weaponIndex = (int)EquipmentSlot.MainHand;
 
-    private Stats myStats;
+    private Skills mySkills;
 
     private UnitAnimController anim;
     private UnitController unit;
@@ -25,7 +25,7 @@ public class AttackController : MonoBehaviour {
 
     private void Start()
     {
-        myStats = GetComponent<Stats>(); 
+        mySkills = GetComponent<Skills>();
         anim = GetComponent<UnitAnimController>();
         unit = GetComponent<UnitController>();
         attackTimer = GetComponent<AttackTimer>();
@@ -89,12 +89,17 @@ public class AttackController : MonoBehaviour {
             SwapWeapons(null, null); //load whatever weapon is already equipped
         }
 
-        float damage = DamageCalculator.CalculateDamageDealt(myStats.baseAttack, equippedWeapon.totalAttack);
-
         AttackAnimation(targetTransform);
-        targetHealth.TakeDamage(damage, transform);
 
-        attackTimer.ResetAttackTimer(equippedWeapon.speed);
+        /*
+        float damage = DamageCalculator.CalculateDamageDealt(myStats.baseAttack, equippedWeapon.totalAttack);
+        targetHealth.TakeDamage(damage, transform);
+        */
+
+        AttackInfo myAttack = mySkills.RequestAttackInfo(equippedWeapon);
+        targetBody.RecieveAttack(myAttack);
+
+        attackTimer.ResetAttackTimer(myAttack.speed);
     }
 
 
@@ -119,7 +124,7 @@ public class AttackController : MonoBehaviour {
 
     private void EngageNewEnemy(Transform targetTransform)
     {     
-        targetHealth = lastKnownTarget.GetComponent<Health>();
+        targetBody = lastKnownTarget.GetComponent<BodyParts>();
         engagingEntity = MoveToEngagement(targetTransform);
 
         StartCoroutine(engagingEntity);
@@ -133,3 +138,4 @@ public class AttackController : MonoBehaviour {
         equippedWeapon = (Weapon)equipmentManager.EquipmentFromSlot(weaponIndex);
     }
 }
+

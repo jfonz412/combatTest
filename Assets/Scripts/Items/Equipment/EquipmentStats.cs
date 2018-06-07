@@ -22,7 +22,7 @@ public class EquipmentStats : MonoBehaviour {
     {
         for (int i = 0; i < stats.Length; i++)
         {
-            Debug.Log(equipmentInfo[i]);
+            //Debug.Log(equipmentInfo[i]); //IS OFTEN NULL
             equipmentInfo[i] = transform.GetChild(i).GetComponent<Text>();
             equipmentInfo[i].text = stats[i];
         }      

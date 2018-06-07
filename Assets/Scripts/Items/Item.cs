@@ -84,4 +84,9 @@ public class Item : ScriptableObject {
         string directory = "Items/" + myDirectory + "/";
         return directory + myFileName;
     }
+
+    public virtual void Init()
+    {
+        //put any instantiation stuff here 
+    }
 }

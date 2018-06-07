@@ -5,14 +5,13 @@ public class Armor : Equipment {
     [SerializeField]
     public float armorCondition = 1f; //1 = no damage to armor 
     [SerializeField]
-    public float protection = 1f; //essentially baseDefense
-    [SerializeField]
     public float weight = 0f; //used to determine if unit is strong enough to equip
 
 	public float defense{
 		get {
-			return protection * armorCondition;
-		}
+            Debug.LogWarning("USING OBSOLETE totalAttack");
+            return 0;
+        }
 	}
 
     //weapon and armor populate their own stats because they differ between the two
@@ -25,11 +24,11 @@ public class Armor : Equipment {
             window.PopulateStats(PackageArmorInfo());
     }
 
-    string[] PackageArmorInfo()
+    private string[] PackageArmorInfo()
     {
         string[] myStats = new string[5];
         myStats[0] = name;
-        myStats[1] = "Condition: " + armorCondition.ToString();
+        myStats[1] = "Quality: " + hardnessValue.ToString();
         myStats[2] = "Weight: " + weight.ToString();
         myStats[3] = "Value: " + currentValue.ToString();
         myStats[4] = myDescription;
@@ -38,3 +37,4 @@ public class Armor : Equipment {
     }
 
 }
+

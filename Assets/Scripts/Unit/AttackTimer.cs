@@ -23,7 +23,6 @@ public class AttackTimer : MonoBehaviour {
 
     public float Timer()
     {
-        Debug.Log(gameObject.name + " " + timeUntilNextAttack);
         return timeUntilNextAttack;
     }
 }

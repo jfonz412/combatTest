@@ -56,9 +56,11 @@ public class InventoryUI : MonoBehaviour {
             if (items[i].fileName == null)
                 continue;
 
-            Debug.Log("Loading " + items[i].fileName + " from saved invetory items" );
-            Debug.Log(Instantiate(Resources.Load(items[i].fileName)).GetType());
-            Item item  = (Item)Instantiate(Resources.Load(items[i].fileName)); //needs to wait for the callback
+            //Debug.Log("Loading " + items[i].fileName + " from saved invetory items" );
+
+            //inventory will instantiate this if it doesn't have a slotNum, which I might eventually want to save but for now it's fine since
+            //items should be added in order
+            Item item  = (Item)Resources.Load(items[i].fileName); //needs to wait for the callback
             item.quantity = items[i].quantity;
             inventory.AddItem(item);
         }

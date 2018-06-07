@@ -29,13 +29,13 @@ public class NPCSaveData : DataController {
 
         if (File.Exists(Application.persistentDataPath + tempDirectory + fileName))
         {
-            Debug.Log("Loading temp " + gameObject.name);
+            //Debug.Log("Loading temp " + gameObject.name);
             data = (NPCData)LoadDataFromFile(tempDirectory + fileName);
 
         }
         else if (File.Exists(Application.persistentDataPath + permDirectory + fileName))
         {
-            Debug.Log("Loading perm " + gameObject.name);
+            //Debug.Log("Loading perm " + gameObject.name);
             data = (NPCData)LoadDataFromFile(permDirectory + fileName);
         }
         else
@@ -123,7 +123,8 @@ public class NPCSaveData : DataController {
             if (savedInventory[i].fileName == null)
                 continue;
 
-            Debug.Log(savedInventory[i].fileName);
+            //Debug.Log(savedInventory[i].fileName);
+            //does this need to be instantiated here? yes because we apply the quantity
             Item item = (Item)Instantiate(Resources.Load(savedInventory[i].fileName)); 
             item.quantity = savedInventory[i].quantity;
 
