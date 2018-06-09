@@ -71,7 +71,11 @@ public class Weapon : Equipment {
         info.hardnessValue = hardnessValue;
         info.weight = weight;
         info.speed = speed;
-        info.name = name;
+        
+        //skip over naming if not using weapon or amrmor, helps with HumanInjuries.DamageMessage()
+        if(weaponType != WeaponType.Hands)
+            info.name = name;
+
         return info;
     }
 

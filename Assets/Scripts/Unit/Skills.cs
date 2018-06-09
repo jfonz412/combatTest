@@ -24,6 +24,7 @@ public class Skills : MonoBehaviour {
         WeaponInfo weapon = currentWeapon.RequestWeaponInfo();
         float associatedSkill = WeaponSkill(weapon.weaponType);
 
+        info.attackerName = gameObject.name;
         info.weapon = weapon;
         info.speed = weapon.speed; // - strength and skill
         info.force = strength + associatedSkill + weapon.weight;
@@ -76,6 +77,7 @@ public class Skills : MonoBehaviour {
 
 public struct AttackInfo
 {
+    public string attackerName;
     public WeaponInfo weapon;
     public float force;
     public float skill;

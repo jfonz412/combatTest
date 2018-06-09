@@ -15,7 +15,6 @@ public class Loadout : MonoBehaviour {
             loadout[i].Init(); 
 
             equipmentManager.Equip(loadout[i]);
-            Debug.Log(gameObject.name + " instantiated " + loadout[i] + " equipment from LoadOut");
         }
     }
 

@@ -36,5 +36,25 @@ public class Armor : Equipment {
         return myStats;
     }
 
+    //skip over naming if not using weapon or amrmor, helps with HumanInjuries.DamageMessage()
+    public ArmorInfo GetArmorInfo()
+    {
+        ArmorInfo info = new ArmorInfo();
+
+        if(material != Material.NA)
+            info.name = name;
+
+        info.protectionValue = hardnessValue;
+        info.armorType = equipSlot;
+        Debug.Log(info.name +"!!!");
+        return info;
+    }
+}
+
+public struct ArmorInfo
+{
+    public string name;
+    public EquipmentSlot armorType;
+    public float protectionValue;
 }
 

@@ -6,6 +6,9 @@ public class HumanoidBody : BodyParts {
     private EquipmentManager equipment;
     private Skills mySkills;
 
+    //SHOULD EVENTUALLY MAKE A DELEGATION THAT WILL GIVE THIS SCRIPT ARMOR INFO 
+    //WHEN EQUIPPING AND UNEQUIPPING ARMOR, LIKE ATTACK CONTROLLER FOR WEAPON
+
     //dictionaries cannot be serialized in unity so we have to seperate them (at least at some point) into arrays
     //these will be linked by their indexes
     private string[] bodyParts = {"Head", "Neck", "LeftArm", "RightArm",
@@ -16,14 +19,18 @@ public class HumanoidBody : BodyParts {
                                           100f, 100f, 100f, 100f };
     private float totalBlood;
 
+    private ArmorInfo[] myArmor = new ArmorInfo[4]; //helmet, upper body, lower body, feet
+
+    private void Awake()
+    {
+        equipment = GetComponent<EquipmentManager>();
+        equipment.onEquipmentChanged += GetArmor;
+    }
 
     private void Start ()
     {
-        equipment = GetComponent<EquipmentManager>();
         mySkills = GetComponent<Skills>();
-
-        //totalBlood = 100f * bodyPartHealth.Length;
-        totalBlood = 100f;
+        totalBlood = 100f * bodyPartHealth.Length;
 	}
 
     public override void RecieveAttack(AttackInfo recievedAttack)
@@ -34,33 +41,30 @@ public class HumanoidBody : BodyParts {
 
     private void DetermineImpact(AttackInfo recievedAttack)
     {
+        string attacker = recievedAttack.attackerName;
+        string weapon = recievedAttack.weapon.name;
+
         if (Hit())
         {
-            int bodyPart = GetBodyPartID();
+            int bodyPart = GetRandomPartID();
 
-            float damageRecieved = CalculateDamage(recievedAttack, bodyPart);
+            DamageInfo damageRecieved = CalculateDamage(recievedAttack, bodyPart);
 
-            if (damageRecieved > 0)
-            {
-                if(recievedAttack.weapon.sharpness > .60)
-                {
-                    Damage(bodyPart, damageRecieved, "Penetration");
-                }
-                else
-                {
-                    Damage(bodyPart, damageRecieved, "Impact");
-                }
+            if (damageRecieved.damageDealt > 0)
+            { 
+                Damage(damageRecieved);
             }
             else
             {
-                Debug.Log(recievedAttack.weapon.name + " did no damage against " + gameObject.name + "'s " + bodyParts[bodyPart]);
+                Debug.Log(attacker + "'s " + weapon + " did no damage against " + gameObject.name + "'s " + bodyParts[bodyPart]);
             }
         }
     }
 
     //need to condense penetrate and impact into one method, refactor this to accomodate for abdomin and organs and all that
-    private void Damage(int bodyPartID, float damage, string damageType)
+    private void Damage(DamageInfo damageInfo)
     {
+        float damage = damageInfo.damageDealt;
         int severityID;
 
         if (damage <= 5)
@@ -88,17 +92,9 @@ public class HumanoidBody : BodyParts {
             severityID = 5;
         }
 
-        Debug.Log(severityID);
-        if (damageType == "Penetration")
-        {
-            HumanInjuries.PenetrationDamage(severityID, bodyPartID, gameObject.name);
-        }
-        else
-        {
-            HumanInjuries.ImpactDamage(severityID, bodyPartID, gameObject.name);
-        }
-
-        bodyPartHealth[bodyPartID] -= damage;
+        damageInfo.severityID = severityID;
+        HumanInjuries.DamageMessage(damageInfo);
+        bodyPartHealth[damageInfo.bodyPartID] -= damage;
 
         if (totalBlood > 0)
             StartCoroutine(Bleeding(damage));
@@ -122,16 +118,34 @@ public class HumanoidBody : BodyParts {
         yield break;
     }
 
-    private float CalculateDamage(AttackInfo recievedAttack, int bodyPartID)
+    private DamageInfo CalculateDamage(AttackInfo recievedAttack, int bodyPartID)
     {
+        DamageInfo damageInfo = new DamageInfo();
+
         //get any armorInfo covering this part
-        float armorProtection = equipment.EquipmentFromSlot(GetArmorSlotNum(bodyParts[bodyPartID])).GetProtectionValue();
+        ArmorInfo armor = GetArmorFrom(bodyParts[bodyPartID]);
+        float myDefense = armor.protectionValue;
+
         float weaponHardness = recievedAttack.weapon.hardnessValue;
-
         float enemyAttack = weaponHardness + recievedAttack.force;
-        float myDefense = armorProtection;
 
-        return enemyAttack - myDefense;
+        if (recievedAttack.weapon.sharpness > .60f)
+        {
+            damageInfo.attackType = "Penetration";
+        }
+        else
+        {
+            damageInfo.attackType = "Impact";
+        }
+
+        damageInfo.bodyPartID = bodyPartID;
+        damageInfo.damageDealt = enemyAttack - myDefense;
+        damageInfo.armorName = armor.name;
+        damageInfo.weaponName = recievedAttack.weapon.name;
+        damageInfo.victimName = gameObject.name;
+        damageInfo.attackerName = recievedAttack.attackerName; //unused right now
+
+        return damageInfo;
     }
 
     private bool Hit()
@@ -157,7 +171,7 @@ public class HumanoidBody : BodyParts {
         return true;
     }
 
-    private int GetBodyPartID()
+    private int GetRandomPartID()
     {
         return Random.Range(0, GetNumberOfParts().Length);
     }
@@ -174,32 +188,63 @@ public class HumanoidBody : BodyParts {
         return validChoices;
     }
 
-    private int GetArmorSlotNum(string bodyPart)
+    public void GetArmor(Equipment oldItem, Equipment newItem)
+    {
+        if (newItem == null)
+            return;
+
+        if(newItem.GetType() == typeof(Armor))
+        {
+            Armor armor = newItem as Armor;
+            ArmorInfo armorInfo = armor.GetArmorInfo();
+            int slot = (int)armorInfo.armorType;
+
+            if (slot < myArmor.Length - 1) //makes sure we don't try and add weapons
+                myArmor[slot] = armorInfo;
+        }
+    }
+
+    //checks for bodyPart in any of the equipment sections
+    private ArmorInfo GetArmorFrom(string bodyPart)
     {
         string[] helmet = { "Head", "Neck" };
         string[] midsection = { "LeftArm", "RightArm", "LHand", "RHand", "Thorax", "Abdomin", };
         string[] legs = { "LeftLeg", "RightLeg" };
         string[] feet = { "LFoot", "RFoot" }; 
 
-        if (ArrayUtility.IndexOf(midsection, bodyPart) >= 0)
+        if (ArrayUtility.IndexOf(helmet, bodyPart) >= 0)
         {
-            return (int)EquipmentSlot.Chest;
+            return myArmor[0];
+        }
+        else if (ArrayUtility.IndexOf(midsection, bodyPart) >= 0)
+        {
+            return myArmor[1];
         }
         else if (ArrayUtility.IndexOf(legs, bodyPart) >= 0)
         {
-            return (int)EquipmentSlot.Legs;
+            return myArmor[2];
         }
         else if (ArrayUtility.IndexOf(feet, bodyPart) >= 0)
         {
-            return (int)EquipmentSlot.Feet;
-        }
-        else if (ArrayUtility.IndexOf(helmet, bodyPart) >= 0)
-        {
-            return (int)EquipmentSlot.Head;
+            return myArmor[3];
         }
         else
         {
-            return -1;
+            Debug.LogError("Bodypart not found!");
+            return myArmor[0];
         }
     }
+
+    public struct DamageInfo
+    {
+        public string armorName;
+        public string weaponName;
+        public string attackerName;
+        public string victimName;
+        public float damageDealt;
+        public int severityID;
+        public string attackType;
+        public int bodyPartID;
+    }
 }
+

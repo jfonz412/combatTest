@@ -32,8 +32,7 @@ public class EquipmentManager : MonoBehaviour {
         Equipment oldItem = currentEquipment[slotNum];
 
         //also Strips so this comes before Equip
-        Unequip(slotNum); 
-
+        Unequip(slotNum);
         Equip(newItem);
         inv.Remove(newItem);
 
@@ -50,7 +49,6 @@ public class EquipmentManager : MonoBehaviour {
 
     public void Equip (Equipment newItem) {
         Equipment oldItem = null;
-
         int slotIndex = (int)newItem.equipSlot;
         currentEquipment[slotIndex] = newItem;
 

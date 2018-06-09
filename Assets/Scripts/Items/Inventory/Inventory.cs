@@ -72,7 +72,6 @@ public class Inventory : MonoBehaviour {
     public void Remove(Item item) 
     {
         int itemIndex = item.slotNum.GetValueOrDefault();
-        Debug.Log(itemIndex);
         items.RemoveAt(itemIndex);
         items.Insert(itemIndex, null);
 

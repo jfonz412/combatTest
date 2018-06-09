@@ -16,14 +16,12 @@ public class Equipment : Item {
     {
         if(hardnessValue == -1f)
             hardnessValue = SetProtectionValue();
-
-        Debug.Log(name + "'s hardnessValue is " + hardnessValue);
     }
 
     public override void Use() //RMB
     {
         base.Use();
-        Debug.Log("Equipping item");
+        //Debug.Log("Equipping item");
 
         //the only entity that will equipping items after loading the scene is the player
         EquipmentManager manager = user.GetComponent<EquipmentManager>();
@@ -41,7 +39,9 @@ public class Equipment : Item {
             Instantiate(Resources.Load("PopUps/EquipmentStats"), panel.transform.position, Quaternion.identity, panel.transform);
     }
 
-    public float GetProtectionValue()
+
+    //MIGHT BE ABLE TO MOVE THIS TO ARMOR
+    protected virtual float GetHardnessValue()
     {
         return hardnessValue;
     }
