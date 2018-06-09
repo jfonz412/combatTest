@@ -2,9 +2,9 @@
 
 public class PlayerDeath : Death {
 
-    public override void StopAllCombat(Transform myAttacker)
+    public override void StopAllCombat()
     {
-        base.StopAllCombat(myAttacker);
+        base.StopAllCombat();
 
         PlayerState.SetPlayerState(PlayerState.PlayerStates.Dead);
         ScriptToolbox.GetInstance().GetWindowCloser().CloseAllWindows();

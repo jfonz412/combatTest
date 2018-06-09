@@ -22,7 +22,6 @@ public class AttackController : MonoBehaviour {
 
     private float myAttackStat;
 
-
     private void Start()
     {
         mySkills = GetComponent<Skills>();
@@ -63,7 +62,7 @@ public class AttackController : MonoBehaviour {
         {
             //eventually this will be a function that will check if ranged or melee, then decide if in range or not
             inRange = c.IsTouching(targetTransform.GetComponent<Collider2D>()); //this would just be for melee
-
+            //else in range will a raycast of some sort to check for obstabcles
             if (!inRange) 
             { 
                 lastKnownTarget = targetTransform;

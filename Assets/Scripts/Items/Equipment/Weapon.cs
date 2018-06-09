@@ -40,7 +40,7 @@ public class Weapon : Equipment {
     {
 		get
         {
-			return weight / 2; //eventually will change to something like weight - skill + 2 / 1, so it is at least always one second
+            return weight;// / 2; //eventually will change to something like weight - skill + 2 / 1, so it is at least always one second
 		}
 	}
 
@@ -71,6 +71,7 @@ public class Weapon : Equipment {
         info.hardnessValue = hardnessValue;
         info.weight = weight;
         info.speed = speed;
+        info.name = name;
         return info;
     }
 
@@ -94,5 +95,5 @@ public struct WeaponInfo
     public float sharpness;
     public float weight;
     public float speed;
-
+    public string name;
 }

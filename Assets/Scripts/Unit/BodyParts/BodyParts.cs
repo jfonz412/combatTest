@@ -6,6 +6,6 @@ using UnityEngine;
 public class BodyParts : MonoBehaviour {
     public virtual void RecieveAttack(AttackInfo recievedAttack)
     {
-        Debug.Log("Attack Recieved");
+        //Debug.Log("Attack Recieved");
     }
 }

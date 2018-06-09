@@ -6,18 +6,18 @@ public class Death : MonoBehaviour {
     [SerializeField]
     private GameObject deathItem;
 
-    public void Die(Transform myAttacker)
+    public void Die()
     {
-        StartCoroutine(DeathProcess(myAttacker)); 
+        StartCoroutine(DeathProcess()); 
     }
 
-    private IEnumerator DeathProcess(Transform myAttacker)
+    private IEnumerator DeathProcess()
     {
-        StopAllCombat(myAttacker);
+        StopAllCombat();
         DropDeathItem();
 
         yield return new WaitForSeconds(6f); //extend death animation before destroy
-        //Destroy(gameObject);
+
         gameObject.SetActive(false);
     }
 
@@ -29,7 +29,7 @@ public class Death : MonoBehaviour {
         }
     }
 
-    public virtual void StopAllCombat(Transform myAttacker)
+    public virtual void StopAllCombat()
     {
         //stop this unit
         GetComponent<UnitController>().StopMoving();
@@ -37,6 +37,6 @@ public class Death : MonoBehaviour {
         GetComponent<UnitAnimController>().Die();
 
         //stop myAttacker
-        myAttacker.GetComponent<AttackController>().EngageTarget(false);
+        //myAttacker.GetComponent<AttackController>().EngageTarget(false);
     }
 }

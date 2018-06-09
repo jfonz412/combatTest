@@ -9,9 +9,9 @@ public class NPCDeath : Death {
         myState = GetComponent<NPCInteractionStates>();
     }
 
-    override public void StopAllCombat(Transform myAttacker)
+    override public void StopAllCombat()
     {
-        base.StopAllCombat(myAttacker);
+        base.StopAllCombat();
         myState.SetInteractionState(NPCInteractionStates.InteractionState.Dead);
     }
 }

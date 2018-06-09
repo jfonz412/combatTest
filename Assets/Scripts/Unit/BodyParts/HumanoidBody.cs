@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,33 +6,37 @@ public class HumanoidBody : BodyParts {
     private EquipmentManager equipment;
     private Skills mySkills;
 
-    //maybe make this a dictionary, key will be the string, value will have a BodyPartInfo
-    protected string[] bodyParts = {"Head", "Neck", "LeftArm", "RightArm",
+    //dictionaries cannot be serialized in unity so we have to seperate them (at least at some point) into arrays
+    //these will be linked by their indexes
+    private string[] bodyParts = {"Head", "Neck", "LeftArm", "RightArm",
                                     "LHand", "RHand", "Thorax", "Abdomin",
                                     "LeftLeg", "RightLeg", "LFoot", "RFoot" };
+    private float[] bodyPartHealth = {  100f, 100f, 100f, 100f,
+                                          100f, 100f, 100f, 100f,
+                                          100f, 100f, 100f, 100f };
+    private float totalBlood;
 
-    
 
     private void Start ()
     {
         equipment = GetComponent<EquipmentManager>();
         mySkills = GetComponent<Skills>();
+
+        //totalBlood = 100f * bodyPartHealth.Length;
+        totalBlood = 100f;
 	}
 
     public override void RecieveAttack(AttackInfo recievedAttack)
     {
         base.RecieveAttack(recievedAttack);
         DetermineImpact(recievedAttack);
-        Debug.Log("HumanBody attacked");
     }
 
     private void DetermineImpact(AttackInfo recievedAttack)
     {
-
-
         if (Hit())
         {
-            string bodyPart = bodyParts[PickBodyPart()];
+            int bodyPart = GetBodyPartID();
 
             float damageRecieved = CalculateDamage(recievedAttack, bodyPart);
 
@@ -41,37 +44,88 @@ public class HumanoidBody : BodyParts {
             {
                 if(recievedAttack.weapon.sharpness > .60)
                 {
-                    //PenetrationDamage(bodyPart, damage)
+                    Damage(bodyPart, damageRecieved, "Penetration");
                 }
                 else
                 {
-                    //ImpactDamage(bodyPart, damage);
+                    Damage(bodyPart, damageRecieved, "Impact");
                 }
             }
-
+            else
+            {
+                Debug.Log(recievedAttack.weapon.name + " did no damage against " + gameObject.name + "'s " + bodyParts[bodyPart]);
+            }
         }
     }
 
-    private void PenetrationDamage(string bodyPart, float damage)
+    //need to condense penetrate and impact into one method, refactor this to accomodate for abdomin and organs and all that
+    private void Damage(int bodyPartID, float damage, string damageType)
     {
-        //determine severity of injury
-        //pass the string and severity of damage to skills InjureSkillsAssociatedWith(string bodyPart, string/enum/float severity)
-        //save injury to the body, check if we are dead/dazed/bleeding out etc.
-        //instantiate floating text
+        int severityID;
+
+        if (damage <= 5)
+        {
+            severityID = 0;
+        }
+        else if (damage <= 15)
+        {
+            severityID = 1;
+        }
+        else if (damage <= 25)
+        {
+            severityID = 2;
+        }
+        else if (damage <= 35)
+        {
+            severityID = 3;
+        }
+        else if (damage <= 45)
+        {
+            severityID = 4;
+        }
+        else
+        {
+            severityID = 5;
+        }
+
+        Debug.Log(severityID);
+        if (damageType == "Penetration")
+        {
+            HumanInjuries.PenetrationDamage(severityID, bodyPartID, gameObject.name);
+        }
+        else
+        {
+            HumanInjuries.ImpactDamage(severityID, bodyPartID, gameObject.name);
+        }
+
+        bodyPartHealth[bodyPartID] -= damage;
+
+        if (totalBlood > 0)
+            StartCoroutine(Bleeding(damage));
     }
 
-    private void ImpactDamage(string bodyPart, float damage)
+    private IEnumerator Bleeding(float damage)
     {
-        //determine severity of injury
-        //pass the string and severity of damage to skills InjureSkillsAssociatedWith(string bodyPart, string/enum/float severity)
-        //save injury to the body, check if we are dead/dazed/bleeding out etc.
-        //instantiate floating text
+        while (damage > 0)
+        {
+            totalBlood -= damage;
+            Debug.Log(gameObject.name + " just bled " + damage + " damage. Blood remaining: " + totalBlood);
+            damage = (damage / 2) - 1f;
+            yield return new WaitForSeconds(1f);            
+        }
+
+        if(totalBlood <= 0)
+        {
+            GetComponent<NPCDeath>().Die();
+        }
+
+        yield break;
     }
 
-    private float CalculateDamage(AttackInfo recievedAttack, string bodyPart)
+    private float CalculateDamage(AttackInfo recievedAttack, int bodyPartID)
     {
         //get any armorInfo covering this part
-        float armorProtection = equipment.EquipmentFromSlot(GetArmorSlotNum(bodyPart)).GetProtectionValue();
+        float armorProtection = equipment.EquipmentFromSlot(GetArmorSlotNum(bodyParts[bodyPartID])).GetProtectionValue();
         float weaponHardness = recievedAttack.weapon.hardnessValue;
 
         float enemyAttack = weaponHardness + recievedAttack.force;
@@ -103,7 +157,7 @@ public class HumanoidBody : BodyParts {
         return true;
     }
 
-    private int PickBodyPart()
+    private int GetBodyPartID()
     {
         return Random.Range(0, GetNumberOfParts().Length);
     }
@@ -123,12 +177,9 @@ public class HumanoidBody : BodyParts {
     private int GetArmorSlotNum(string bodyPart)
     {
         string[] helmet = { "Head", "Neck" };
-        //string[] noArmor = { "Neck" }; ?
         string[] midsection = { "LeftArm", "RightArm", "LHand", "RHand", "Thorax", "Abdomin", };
         string[] legs = { "LeftLeg", "RightLeg" };
-        string[] feet = { "LFoot", "RFoot" };
-
-        string[] stringArray = { "text1", "someothertext"};
+        string[] feet = { "LFoot", "RFoot" }; 
 
         if (ArrayUtility.IndexOf(midsection, bodyPart) >= 0)
         {

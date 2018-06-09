@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Skills : MonoBehaviour {
-    private Dictionary<int, string> dict = new Dictionary<int, string>();
+    //private Dictionary<int, string> dict = new Dictionary<int, string>();
     [SerializeField]
     private float dagger, spear, axe, pick, unarmed;
     [SerializeField]

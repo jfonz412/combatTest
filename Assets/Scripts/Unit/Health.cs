@@ -54,7 +54,7 @@ public class Health : MonoBehaviour
     {
         unitReactions.isDead = true; //stop reacting
         unitReactions.ReactToAttackAgainstSelf(myAttacker); //actually alerts others, and since this unit is dead UnitReactionManager should skip over it
-        deathController.Die(myAttacker);
+        deathController.Die();
     }
 
     public float GetCurrentHealth()

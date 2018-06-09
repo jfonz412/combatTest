@@ -119,7 +119,7 @@ public class ShopInventory : MonoBehaviour {
         {
             if (items[i] == null)
             {
-                item = CheckIfAlreadyInstantiated(item);
+                item = ConvertToInventoryItem(item);
 
                 InsertItemIntoEmptySlot(item, i);
 
@@ -130,17 +130,6 @@ public class ShopInventory : MonoBehaviour {
 
         Debug.Log("Inventory is full");
         return false;
-    }
-
-    private Item CheckIfAlreadyInstantiated(Item item)
-    {
-        if (item.slotNum == null)
-        {
-            item = Instantiate(item);
-            //Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
-        }
-
-        return item;
     }
 
     private void InsertItemIntoEmptySlot(Item item, int slotNum)
