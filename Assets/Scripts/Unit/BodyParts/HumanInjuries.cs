@@ -35,7 +35,7 @@ public class HumanInjuries : MonoBehaviour {
             { 3, "The {1} pierces {0}'s {2}, slicing the flesh of the right arm!" },
             { 4, "The {1} pierces {0}'s {2}, slicing the flesh of the left hand" },
             { 5, "The {1} pierces {0}'s {2}, slicing the flesh of the right hand!" },
-            { 6, "The {1} pierces {0}'s {2}, slicing the flesh of thechest!" },
+            { 6, "The {1} pierces {0}'s {2}, slicing the flesh of the chest!" },
             { 7, "The {1} pierces {0}'s {2}, slicing the flesh of the belly!" },
             { 8, "The {1} pierces {0}'s {2}, slicing the flesh of the left leg!" },
             { 9, "The {1} pierces {0}'s {2}, slicing the flesh of the right leg!" },
