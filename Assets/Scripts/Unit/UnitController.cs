@@ -21,7 +21,7 @@ public class UnitController : MonoBehaviour
         anim = GetComponent<UnitAnimController>();
         rb = GetComponent<Rigidbody2D>();
         sp = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        baseSpeed = GetComponent<Stats>().speed; //down the line make this a callback where everytime speed is modified this will update as well
+        baseSpeed = GetComponent<CombatSkills>().speed; //down the line make this a callback where everytime speed is modified this will update as well
         SetDepth();
     }
 

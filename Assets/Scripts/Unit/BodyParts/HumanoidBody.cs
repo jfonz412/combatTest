@@ -5,31 +5,6 @@ using UnityEngine;
 
 public class HumanoidBody : BodyParts {
     private EquipmentManager equipment;
-    private Skills mySkills;
-
-    //SHOULD EVENTUALLY MAKE A DELEGATION THAT WILL GIVE THIS SCRIPT ARMOR INFO 
-    //WHEN EQUIPPING AND UNEQUIPPING ARMOR, LIKE ATTACK CONTROLLER FOR WEAPON
-
-    //dictionaries cannot be serialized in unity so we have to seperate them (at least at some point) into arrays
-    //these will be linked by their indexes
-    public enum HumanoidBodyParts { Head, Neck, LeftArm, RightArm, LeftHand, RightHand, Chest, Abdomin, LeftLeg, RightLeg, LeftFoot, RightFoot }
-    public Dictionary<HumanoidBodyParts, float> bodyPartHealth = new Dictionary<HumanoidBodyParts, float>()
-    {
-        { HumanoidBodyParts.Head, 100f },
-        { HumanoidBodyParts.Neck, 100f },
-        { HumanoidBodyParts.LeftArm, 100f },
-        { HumanoidBodyParts.RightArm, 100f },
-        { HumanoidBodyParts.LeftHand, 100f },
-        { HumanoidBodyParts.RightHand, 100f },
-        { HumanoidBodyParts.Chest, 100f },
-        { HumanoidBodyParts.Abdomin, 100f },
-        { HumanoidBodyParts.LeftLeg, 100f },
-        { HumanoidBodyParts.RightLeg, 100f },
-        { HumanoidBodyParts.LeftFoot, 100f },
-        { HumanoidBodyParts.RightFoot, 100f },
-    };
-
-    private float totalBlood;
 
     private ArmorInfo[] myArmor = new ArmorInfo[4]; //helmet, upper body, lower body, feet
 
@@ -39,11 +14,28 @@ public class HumanoidBody : BodyParts {
         equipment.onEquipmentChanged += GetArmor;
     }
 
-    private void Start ()
+    protected override void Start()
     {
-        mySkills = GetComponent<Skills>();
-        totalBlood = 100f * System.Enum.GetValues(typeof(HumanoidBodyParts)).Length;
-	}
+        base.Start();
+
+        bodyPartHealth = new Dictionary<BodyParts.Parts, float>()
+        {
+            { BodyParts.Parts.Head, 100f },
+            { BodyParts.Parts.Neck, 100f },
+            { BodyParts.Parts.LeftArm, 100f },
+            { BodyParts.Parts.RightArm, 100f },
+            { BodyParts.Parts.LeftHand, 100f },
+            { BodyParts.Parts.RightHand, 100f },
+            { BodyParts.Parts.Chest, 100f },
+            { BodyParts.Parts.Abdomin, 100f },
+            { BodyParts.Parts.LeftLeg, 100f },
+            { BodyParts.Parts.RightLeg, 100f },
+            { BodyParts.Parts.LeftFoot, 100f },
+            { BodyParts.Parts.RightFoot, 100f },
+        };
+
+        totalBlood = 100f * bodyPartHealth.Count;
+    }
 
     public override void RecieveAttack(AttackInfo recievedAttack)
     {
@@ -105,13 +97,13 @@ public class HumanoidBody : BodyParts {
 
         damageInfo.severityID = severityID;
         HumanInjuries.DamageMessage(damageInfo);
-        DamageBodyPart((HumanoidBodyParts)damageInfo.bodyPartID, damage);
+        DamageBodyPart((BodyParts.Parts)damageInfo.bodyPartID, damage);
 
         if (totalBlood > 0)
             StartCoroutine(Bleeding(damage));
     }
 
-    public void DamageBodyPart(HumanoidBodyParts bodyPart, float damage)
+    public void DamageBodyPart(BodyParts.Parts bodyPart, float damage)
     {
         bodyPartHealth[bodyPart] -= damage;
 
@@ -144,7 +136,7 @@ public class HumanoidBody : BodyParts {
     {
         DamageInfo damageInfo = new DamageInfo();
 
-        HumanoidBodyParts bodyPart = GetRandomPart();
+        BodyParts.Parts bodyPart = GetRandomPart();
         Debug.Log("enum is " + bodyPart.ToString());
         ArmorInfo armor = GetArmorFrom(bodyPart.ToString());
 
@@ -206,9 +198,9 @@ public class HumanoidBody : BodyParts {
         return true;
     }
 
-    private HumanoidBodyParts GetRandomPart()
+    private BodyParts.Parts GetRandomPart()
     {
-        return (HumanoidBodyParts)Random.Range(0, System.Enum.GetValues(typeof(HumanoidBodyParts)).Length);
+        return (BodyParts.Parts)Random.Range(0, bodyPartHealth.Count); //does not guaruntee we will pick the correct part because Dictionaries are arbitrarilly ordered
     }
 
 
@@ -259,6 +251,27 @@ public class HumanoidBody : BodyParts {
         }
     }
 
+    public override float OverallHealth()
+    {
+        Debug.Log(bodyPartHealth);
+        float leftArm = bodyPartHealth[BodyParts.Parts.LeftArm];
+        float rightArm = bodyPartHealth[BodyParts.Parts.RightArm];
+        float leftHand = bodyPartHealth[BodyParts.Parts.LeftHand];
+        float rightHand = bodyPartHealth[BodyParts.Parts.RightHand];
+        float leftLeg = bodyPartHealth[BodyParts.Parts.LeftLeg];
+        float rightLeg = bodyPartHealth[BodyParts.Parts.RightLeg];
+        float leftFoot = bodyPartHealth[BodyParts.Parts.LeftFoot];
+        float rightFoot = bodyPartHealth[BodyParts.Parts.RightFoot];
+        float head = bodyPartHealth[BodyParts.Parts.Head];
+        float neck = bodyPartHealth[BodyParts.Parts.Neck];
+        float chest = bodyPartHealth[BodyParts.Parts.Chest];
+        float abdomin = bodyPartHealth[BodyParts.Parts.Abdomin];
+
+        return baseHealth * ((leftArm + rightArm + leftHand + rightHand + leftLeg + rightLeg + leftFoot + rightFoot +
+                                 abdomin + chest + neck + head / 12) * 0.01f);
+    }
+
+    //put together here and given to injuries script
     public struct DamageInfo
     {
         public string armorName;
@@ -271,7 +284,7 @@ public class HumanoidBody : BodyParts {
         public int bodyPartID;
     }
 
-    public void LoadSavedDamage(float[] savedHealth) 
+    public void LoadSavedDamage(float[] savedHealth)
     {
         //cycle through the bodyPartHealth array and load that into the dictionary
     }

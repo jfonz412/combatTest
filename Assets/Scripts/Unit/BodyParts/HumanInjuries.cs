@@ -7,7 +7,8 @@ public class HumanInjuries : MonoBehaviour {
     /*
     {"Head", "Neck", "LeftArm", "RightArm",
     "LHand", "RHand", "Thorax", "Abdomin",
-    "LeftLeg", "RightLeg", "LFoot", "RFoot" }*/
+    "LeftLeg", "RightLeg", "LFoot", "RFoot" }
+    */
 
     private static Dictionary<int, string>[] penetrationInjuries = new Dictionary<int, string>[] {
         //PENETRATION

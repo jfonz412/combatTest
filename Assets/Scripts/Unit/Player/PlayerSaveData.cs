@@ -69,7 +69,7 @@ public class PlayerSaveData : DataController {
         Vector3 pos = transform.position;
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
 
-        data.currentHealth = health.GetCurrentHealth();
+        //data.currentHealth = health.GetCurrentHealth();
         data.currentEquipment = equipmentManager.GetEquipmentNames();
         data.currentInventory = inventory.GetItemInfo();
         data.currentGold = wallet.GetCurrentBalance();
@@ -78,7 +78,7 @@ public class PlayerSaveData : DataController {
 
     private void ApplyDataToPlayer(PlayerData data)
     {
-        health.ApplyCurrentHealth(data.currentHealth);
+        //health.ApplyCurrentHealth(data.currentHealth);
         loadOut.LoadSavedEquipment(data.currentEquipment);
         myInventory = data.currentInventory; //temporarily cache this so InventoryUI can grab it when it is ready
         wallet.LoadSavedBalance(data.currentGold);
@@ -90,8 +90,7 @@ public class PlayerSaveData : DataController {
 [Serializable]
 public class PlayerData : Data
 {
-    public float currentHealth;
-    //public string currentScene;
+    //public float currentHealth;
     public string[] currentEquipment;
     public float currentGold;
     public SavedItem[] currentInventory;

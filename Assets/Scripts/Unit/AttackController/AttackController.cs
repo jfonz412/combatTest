@@ -14,7 +14,7 @@ public class AttackController : MonoBehaviour {
     public Weapon equippedWeapon;
     private int weaponIndex = (int)EquipmentSlot.MainHand;
 
-    private Skills mySkills;
+    private CombatSkills mySkills;
 
     private UnitAnimController anim;
     private UnitController unit;
@@ -24,7 +24,7 @@ public class AttackController : MonoBehaviour {
 
     private void Start()
     {
-        mySkills = GetComponent<Skills>();
+        mySkills = GetComponent<CombatSkills>();
         anim = GetComponent<UnitAnimController>();
         unit = GetComponent<UnitController>();
         attackTimer = GetComponent<AttackTimer>();
