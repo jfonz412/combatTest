@@ -6,13 +6,17 @@ using UnityEngine;
 public class BodyParts : MonoBehaviour {
     public enum Parts { Head, Neck, LeftArm, RightArm, LeftHand, RightHand, Chest, Abdomin, LeftLeg, RightLeg, LeftFoot, RightFoot }
     public Dictionary<Parts, float> bodyPartHealth;
+    protected Dictionary<EquipmentSlot, ArmorInfo> myArmor = new Dictionary<EquipmentSlot, ArmorInfo>();
 
     protected EquipmentManager equipment;
     protected CombatSkills mySkills;
-    protected Dictionary<EquipmentSlot, ArmorInfo> myArmor = new Dictionary<EquipmentSlot, ArmorInfo>();
+    protected UnitReactions unitReactions;
+    protected Death deathController;
+    //protected Transform myAttacker; //needs to be saved to alert others in
 
     protected float totalBlood; //100 * number of bodyparts
     protected float baseHealth = 100f;
+    private bool alive = true;
 
     protected void Awake()
     {
@@ -23,10 +27,14 @@ public class BodyParts : MonoBehaviour {
     protected virtual void Start()
     {
         mySkills = GetComponent<CombatSkills>();
+        unitReactions = GetComponent<UnitReactions>();
+        deathController = GetComponent<Death>();
     }
 
-    public virtual void RecieveAttack(AttackInfo recievedAttack)
+    public virtual void RecieveAttack(AttackInfo recievedAttack, Transform myAttacker)
     {
+        //myAttacker = _myAttacker;
+        unitReactions.ReactToAttackAgainstSelf(myAttacker);
         DetermineImpact(recievedAttack);
     }
 
@@ -84,7 +92,7 @@ public class BodyParts : MonoBehaviour {
 
         damageInfo.severityID = severityID;
         HumanInjuries.DamageMessage(damageInfo);
-        DamageBodyPart((BodyParts.Parts)damageInfo.bodyPartID, damage);
+        DamageBodyPart((Parts)damageInfo.bodyPartID, damage);
 
         if (totalBlood > 0)
             StartCoroutine(Bleeding(damage));
@@ -110,11 +118,11 @@ public class BodyParts : MonoBehaviour {
             yield return new WaitForSeconds(1f);
         }
 
-        if (totalBlood <= 0)
+        if (totalBlood <= 0) //or if instantlyKilled
         {
-            GetComponent<NPCDeath>().Die();
+            TriggerDeath();
+            StopAllCoroutines();
         }
-
         yield break;
     }
 
@@ -230,5 +238,15 @@ public class BodyParts : MonoBehaviour {
     {
         //add all values from bodyPartHealth into an array and give that to the dataController
         return new float[0];
+    }
+
+    protected void TriggerDeath()
+    {
+        //actually alerts others, and since this unit is dead UnitReactionManager should skip over it
+        //might not neec this because unit is alerted with each hit even if 1hko
+        //unitReactions.ReactToAttackAgainstSelf(myAttacker); 
+        
+        unitReactions.isDead = true; //stop reacting
+        deathController.Die();
     }
 }

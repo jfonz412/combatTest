@@ -96,7 +96,7 @@ public class AttackController : MonoBehaviour {
         */
 
         AttackInfo myAttack = mySkills.RequestAttackInfo(equippedWeapon);
-        targetBody.RecieveAttack(myAttack);
+        targetBody.RecieveAttack(myAttack, transform);
 
         attackTimer.ResetAttackTimer(myAttack.speed);
     }

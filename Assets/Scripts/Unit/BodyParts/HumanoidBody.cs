@@ -24,7 +24,7 @@ public class HumanoidBody : BodyParts {
             { Parts.RightFoot, 100f },
         };
 
-        totalBlood = 100f * bodyPartHealth.Count;
+        totalBlood = 10f * bodyPartHealth.Count;
     }
 
     //checks for bodyPart in any of the equipment sections
