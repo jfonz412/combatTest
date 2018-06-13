@@ -36,7 +36,7 @@ public class EquipmentManager : MonoBehaviour {
         Equip(newItem);
         inv.Remove(newItem);
 
-        if(!oldItem.naked) //0 is unarmed/naked
+        if(!oldItem.naked) //0 is unarmed/naked, so don't add to inventory
             inv.AddItem(oldItem);
     }
 
@@ -52,12 +52,9 @@ public class EquipmentManager : MonoBehaviour {
         int slotIndex = (int)newItem.equipSlot;
         currentEquipment[slotIndex] = newItem;
 
-        if (!newItem.naked) //0 is unarmed/naked, we don't want this actually added to the UI slot
+        if (onEquipmentChanged != null)
         {
-            if (onEquipmentChanged != null)
-            {
-                onEquipmentChanged.Invoke(oldItem, newItem);
-            }
+            onEquipmentChanged.Invoke(oldItem, newItem);
         }
     }
 

@@ -46,7 +46,6 @@ public class Armor : Equipment {
 
         info.protectionValue = hardnessValue;
         info.armorType = equipSlot;
-        Debug.Log(info.name +"!!!");
         return info;
     }
 }

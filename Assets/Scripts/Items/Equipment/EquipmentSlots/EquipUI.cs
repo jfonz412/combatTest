@@ -22,16 +22,17 @@ public class EquipUI : MonoBehaviour {
     private void UpdateUI(Equipment oldItem, Equipment newItem)
     {
         //Debug.Log("Updating " + gameObject + " with " + newItem);
-        if (newItem != null)
-        { 
-            int slotNum = (int)newItem.equipSlot;
-            slots[slotNum].AddEquipment(equipmentManager.EquipmentFromSlot(slotNum));
-        }
-        else
+
+        if (newItem == null)
         {
             int slotNum = (int)oldItem.equipSlot;
             slots[slotNum].ClearSlot();
         }
+        else if(!newItem.naked)
+        {
+            int slotNum = (int)newItem.equipSlot;
+            slots[slotNum].AddEquipment(equipmentManager.EquipmentFromSlot(slotNum));
+        }     
     }
 
     private void AssignSlotNums()

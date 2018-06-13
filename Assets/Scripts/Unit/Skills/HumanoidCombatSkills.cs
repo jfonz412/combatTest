@@ -1,12 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class HumanoidCombatSkills : CombatSkills {
-
-    //private Dictionary<HumanoidBody.HumanoidBodyParts, float> bodyPartHealth;
-
-    //monobehavior function that is called when this component is added on top of CombatSkills
     protected override void Start()
     {
         base.Start();
@@ -20,7 +14,6 @@ public class HumanoidCombatSkills : CombatSkills {
             { Weapon.WeaponType.Spear, 0f }
         };
     }
-
 }
 
 
