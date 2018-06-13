@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-
+using System.Linq;
 
 public class BodyParts : MonoBehaviour {
     public enum Parts { Head, Neck, LeftArm, RightArm, LeftHand, RightHand, Chest, Abdomin, LeftLeg, RightLeg, LeftFoot, RightFoot }
-    public Dictionary<Parts, float> bodyPartHealth;
+    protected Dictionary<Parts, float> bodyPartHealth;
     protected Dictionary<EquipmentSlot, ArmorInfo> myArmor = new Dictionary<EquipmentSlot, ArmorInfo>();
 
     protected EquipmentManager equipment;
@@ -14,8 +14,8 @@ public class BodyParts : MonoBehaviour {
     protected Death deathController;
     //protected Transform myAttacker; //needs to be saved to alert others in
 
-    protected float totalBlood; //100 * number of bodyparts
-    protected float baseHealth = 100f;
+    protected float totalBlood; //BloodPerBodyPart * number of bodyparts
+    protected float baseHealth = 100f; //used for calculating overall body health which is used to measure skill effectiveness
     private bool alive = true;
 
     protected void Awake()
@@ -229,23 +229,22 @@ public class BodyParts : MonoBehaviour {
         public int bodyPartID;
     }
 
-    public void LoadSavedDamage(float[] savedHealth)
+    public void LoadBodyPartHealth(Dictionary<Parts, float> savedBodyPartHealth)
     {
-        //cycle through the bodyPartHealth array and load that into the dictionary
+        bodyPartHealth = savedBodyPartHealth;
+        totalBlood = bodyPartHealth.Sum(x => x.Value);
     }
 
-    public float[] GetBodyPartDamage()
+    public Dictionary<Parts, float> GetBodyPartHealth()
     {
-        //add all values from bodyPartHealth into an array and give that to the dataController
-        return new float[0];
+        return bodyPartHealth;
     }
 
     protected void TriggerDeath()
     {
-        //actually alerts others, and since this unit is dead UnitReactionManager should skip over it
-        //might not neec this because unit is alerted with each hit even if 1hko
-        //unitReactions.ReactToAttackAgainstSelf(myAttacker); 
-        
+        //this method alerts others, and since this unit is dead UnitReactionManager should skip over it
+        //unitReactions.ReactToAttackAgainstSelf(myAttacker); //might not neec this because unit is alerted with each hit even if 1hko
+
         unitReactions.isDead = true; //stop reacting
         deathController.Die();
     }

@@ -9,6 +9,18 @@ public class NPCSaveData : DataController {
     private Loadout loadOut;
     private LoadShop myShop;
     private UnitReactions myAI;
+    private BodyParts bodyParts;
+
+    //called in Start() 
+    protected override void GatherComponents()
+    {
+        base.GatherComponents();
+        health = GetComponent<Health>();
+        loadOut = GetComponent<Loadout>();
+        myAI = GetComponent<UnitReactions>();
+        myShop = GetComponent<LoadShop>(); //may be null if not shop owner
+        bodyParts = GetComponent<BodyParts>();
+    }
 
     //called from DataManager to save this object
     public override string SaveData()
@@ -48,16 +60,6 @@ public class NPCSaveData : DataController {
         ApplyDataToNPC(data);
     }
 
-    //called in Start() 
-    protected override void GatherComponents()
-    {
-        base.GatherComponents();
-        health = GetComponent<Health>();
-        loadOut = GetComponent<Loadout>();
-        myAI = GetComponent<UnitReactions>();
-        myShop = GetComponent<LoadShop>(); //may be null
-    }
-
     //Called by Save() to grab data from componets and put that in the Data class
     private NPCData PackageNPCData()
     {
@@ -66,7 +68,7 @@ public class NPCSaveData : DataController {
         Vector3 pos = transform.position;
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
         data.isDead = myAI.isDead;
-        //data.currentHealth = health.GetCurrentHealth();
+        data.bodyPartHealth = bodyParts.GetBodyPartHealth();
 
         if (myShop != null)
         {
@@ -87,14 +89,13 @@ public class NPCSaveData : DataController {
             return;
         }
 
-        transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
-        //health.ApplyCurrentHealth(data.currentHealth);
-
         if (myShop != null)
         {
             myShop.UpdateInventory(UnpackSavedShopInventory(data.currentShopInventory));
         }
 
+        transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
+        bodyParts.LoadBodyPartHealth(data.bodyPartHealth);
         loadOut.EquipLoadout();
     }
 
@@ -123,8 +124,7 @@ public class NPCSaveData : DataController {
             if (savedInventory[i].fileName == null)
                 continue;
 
-            //Debug.Log(savedInventory[i].fileName);
-            //does this need to be instantiated here? yes because we apply the quantity
+            // this needs to be instantiated here because we apply the quantity
             Item item = (Item)Instantiate(Resources.Load(savedInventory[i].fileName)); 
             item.quantity = savedInventory[i].quantity;
 
@@ -142,4 +142,5 @@ public class NPCData : Data
     //public float currentHealth;
     public SavedItem[] currentShopInventory;
     public bool isDead;
+    public Dictionary<BodyParts.Parts, float> bodyPartHealth;
 }

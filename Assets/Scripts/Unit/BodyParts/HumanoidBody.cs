@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 
 public class HumanoidBody : BodyParts {
 
@@ -24,7 +25,7 @@ public class HumanoidBody : BodyParts {
             { Parts.RightFoot, 100f },
         };
 
-        totalBlood = 10f * bodyPartHealth.Count;
+        totalBlood = bodyPartHealth.Sum(x => x.Value);
     }
 
     //checks for bodyPart in any of the equipment sections

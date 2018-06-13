@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -8,9 +9,21 @@ public class PlayerSaveData : DataController {
     private Loadout loadOut;
     private Inventory inventory;
     private PlayerWallet wallet;
+    private BodyParts bodyParts;
     private SavedItem[] myInventory;
 
     private string fileName = "/playerData.dat";
+
+    protected override void GatherComponents()
+    {
+        base.GatherComponents();
+        health = GetComponent<Health>();
+        equipmentManager = GetComponent<EquipmentManager>();
+        loadOut = GetComponent<Loadout>();
+        inventory = InventoryManager.GetInstance().GetInventory();
+        wallet = ScriptToolbox.GetInstance().GetPlayerWallet();
+        bodyParts = GetComponent<BodyParts>(); 
+    }
 
     public override string SaveData()
     {
@@ -51,16 +64,6 @@ public class PlayerSaveData : DataController {
         return myInventory;
     }
 
-    protected override void GatherComponents()
-    {
-        base.GatherComponents();
-        health = GetComponent<Health>();
-        equipmentManager = GetComponent<EquipmentManager>();
-        loadOut = GetComponent<Loadout>();
-        inventory = InventoryManager.GetInstance().GetInventory();
-        wallet = ScriptToolbox.GetInstance().GetPlayerWallet();
-    }
-
     private PlayerData PackagePlayerData()
     {
         PlayerData data = new PlayerData();
@@ -73,6 +76,7 @@ public class PlayerSaveData : DataController {
         data.currentEquipment = equipmentManager.GetEquipmentNames();
         data.currentInventory = inventory.GetItemInfo();
         data.currentGold = wallet.GetCurrentBalance();
+        data.bodyPartHealth = bodyParts.GetBodyPartHealth();
         return data;
     }
 
@@ -83,8 +87,11 @@ public class PlayerSaveData : DataController {
         myInventory = data.currentInventory; //temporarily cache this so InventoryUI can grab it when it is ready
         wallet.LoadSavedBalance(data.currentGold);
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
+        bodyParts.LoadBodyPartHealth(data.bodyPartHealth);
         //Debug.Log("Saved player pos: " + data.currentPosition.x + ", " + data.currentPosition.y);
     }
+
+
 }
 
 [Serializable]
@@ -95,6 +102,7 @@ public class PlayerData : Data
     public float currentGold;
     public SavedItem[] currentInventory;
     public SavedPosition currentPosition;
+    public Dictionary<BodyParts.Parts, float> bodyPartHealth;
 }
 
 [Serializable]

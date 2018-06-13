@@ -10,7 +10,7 @@ public class HarvestSaveData : DataController {
     public override string SaveData()
     {
         base.SaveData();
-        Debug.Log("saving harvestable");
+        //Debug.Log("saving harvestable");
         HarvestableData data = PackageHarvestableData();
         SaveDataToFile(data, tempDirectory + GetFileName());
         return GetFileName();
