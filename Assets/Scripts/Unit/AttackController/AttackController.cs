@@ -54,11 +54,12 @@ public class AttackController : MonoBehaviour {
     private IEnumerator MoveToEngagement(Transform targetTransform)
     {
         bool inRange;
+        UnitReactions unitAI = targetTransform.GetComponent<UnitReactions>();
         Collider2D c = GetComponent<Collider2D>();
-
+       
         anim.FaceDirection(transform.position, targetTransform.position);
 
-        while (targetTransform)
+        while (!unitAI.isDead) //targetTransform && 
         {
             //eventually this will be a function that will check if ranged or melee, then decide if in range or not
             inRange = c.IsTouching(targetTransform.GetComponent<Collider2D>()); //this would just be for melee

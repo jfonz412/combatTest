@@ -59,7 +59,9 @@ public class BodyParts : MonoBehaviour {
         }
     }
 
-    //need to condense penetrate and impact into one method, refactor this to accomodate for abdomin and organs and all that
+    //these thresholds should stay the same, a bronze colluses would not as vulnerable as a human
+    //but this would be reflected in the armor stats (bronze colluses's bare "flesh" will have a hardness rating of iron armor)
+    //damage is attack - defense 
     protected void Damage(DamageInfo damageInfo)
     {
         float damage = damageInfo.damageDealt;
@@ -94,11 +96,17 @@ public class BodyParts : MonoBehaviour {
         HumanInjuries.DamageMessage(damageInfo);
         DamageBodyPart((Parts)damageInfo.bodyPartID, damage);
 
-        if (totalBlood > 0)
+        if (!Killed())
+        {
             StartCoroutine(Bleeding(damage));
+        }
+        else
+        {
+            TriggerDeath();
+        }
     }
 
-    protected void DamageBodyPart(BodyParts.Parts bodyPart, float damage)
+    protected void DamageBodyPart(Parts bodyPart, float damage)
     {
         bodyPartHealth[bodyPart] -= damage;
 
@@ -113,17 +121,29 @@ public class BodyParts : MonoBehaviour {
         while (damage > 0)
         {
             totalBlood -= damage;
-            Debug.Log(gameObject.name + " just bled " + damage + " damage. Blood remaining: " + totalBlood);
+            //Debug.Log(gameObject.name + " just bled " + damage + " damage. Blood remaining: " + totalBlood);
             damage = (damage / 2) - 1f;
             yield return new WaitForSeconds(1f);
         }
 
-        if (totalBlood <= 0) //or if instantlyKilled
+        if (Killed()) //or if instantlyKilled
         {
             TriggerDeath();
             StopAllCoroutines();
         }
         yield break;
+    }
+
+    protected bool Killed()
+    {
+        if(totalBlood <= 0 || bodyPartHealth[Parts.Head] <= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     protected bool Hit()
@@ -154,9 +174,7 @@ public class BodyParts : MonoBehaviour {
         DamageInfo damageInfo = new DamageInfo();
 
         Parts bodyPart = GetRandomPart();
-        Debug.Log("enum is " + bodyPart.ToString());
         ArmorInfo armor = GetArmorFrom(bodyPart.ToString());
-        Debug.Log("armor is " + armor.name);
         float weaponHardness = recievedAttack.weapon.hardnessValue;
         float enemyAttack = weaponHardness + recievedAttack.force;
 
@@ -202,13 +220,13 @@ public class BodyParts : MonoBehaviour {
     //does not guaruntee we will pick the correct part because Dictionaries are arbitrarilly ordered
     protected Parts GetRandomPart()
     {
-        return (Parts)Random.Range(0, bodyPartHealth.Count); 
+        //return (Parts)Random.Range(0, bodyPartHealth.Count); 
+        return Parts.Head;
     }
 
     public virtual float OverallHealth()
     {
-        Debug.LogError("Base method should not be called here!");
-        return 0;
+        return baseHealth * ((bodyPartHealth.Sum(x => x.Value) / 12) * 0.01f);
     }
 
     protected virtual void GetArmor(Equipment oldItem, Equipment newItem)

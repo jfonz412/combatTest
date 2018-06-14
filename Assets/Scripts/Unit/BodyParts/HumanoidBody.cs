@@ -59,25 +59,6 @@ public class HumanoidBody : BodyParts {
         }
     }
 
-    public override float OverallHealth()
-    {
-        float leftArm = bodyPartHealth[Parts.LeftArm];
-        float rightArm = bodyPartHealth[Parts.RightArm];
-        float leftHand = bodyPartHealth[Parts.LeftHand];
-        float rightHand = bodyPartHealth[Parts.RightHand];
-        float leftLeg = bodyPartHealth[Parts.LeftLeg];
-        float rightLeg = bodyPartHealth[Parts.RightLeg];
-        float leftFoot = bodyPartHealth[Parts.LeftFoot];
-        float rightFoot = bodyPartHealth[Parts.RightFoot];
-        float head = bodyPartHealth[Parts.Head];
-        float neck = bodyPartHealth[Parts.Neck];
-        float chest = bodyPartHealth[Parts.Chest];
-        float abdomin = bodyPartHealth[Parts.Abdomin];
-
-        return baseHealth * ((leftArm + rightArm + leftHand + rightHand + leftLeg + rightLeg + leftFoot + rightFoot +
-                                 abdomin + chest + neck + head / 12) * 0.01f);
-    }
-
     protected override void GetArmor(Equipment oldItem, Equipment newItem)
     {
         if (newItem == null)
