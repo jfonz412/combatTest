@@ -12,10 +12,10 @@ public class BodyParts : MonoBehaviour {
     protected CombatSkills mySkills;
     protected UnitReactions unitReactions;
     protected Death deathController;
-    //protected Transform myAttacker; //needs to be saved to alert others in
+
+    protected AttackReactionSkills attackReaction;
 
     protected float totalBlood; //BloodPerBodyPart * number of bodyparts
-    protected float baseHealth = 100f; //used for calculating overall body health which is used to measure skill effectiveness
     private bool alive = true;
 
     protected void Awake()
@@ -29,6 +29,10 @@ public class BodyParts : MonoBehaviour {
         mySkills = GetComponent<CombatSkills>();
         unitReactions = GetComponent<UnitReactions>();
         deathController = GetComponent<Death>();
+
+        mySkills.onSkillGained += UpdateSkills;
+
+        UpdateSkills(); 
     }
 
     public virtual void RecieveAttack(AttackInfo recievedAttack, Transform myAttacker)
@@ -36,6 +40,18 @@ public class BodyParts : MonoBehaviour {
         //myAttacker = _myAttacker;
         unitReactions.ReactToAttackAgainstSelf(myAttacker);
         DetermineImpact(recievedAttack);
+    }
+
+    public bool CheckBodyParts(Parts[] partsToCheck)
+    {
+        for(int i = 0; i < partsToCheck.Length; i++)
+        {
+            if(bodyPartHealth[partsToCheck[i]] <= 0)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected void DetermineImpact(AttackInfo recievedAttack)
@@ -116,6 +132,15 @@ public class BodyParts : MonoBehaviour {
         Debug.Log(bodyPart + "health is " + bodyPartHealth[bodyPart]);
     }
 
+    protected void CheckForStatusChange()
+    {
+        //stunned
+        //knocked out
+        //panic
+        //beserk
+        //knocked off balance?
+    }
+
     protected IEnumerator Bleeding(float damage)
     {
         while (damage > 0)
@@ -148,24 +173,23 @@ public class BodyParts : MonoBehaviour {
 
     protected bool Hit()
     {
-        AttackReactionSkills skills = mySkills.GetAttackReactionSkills();
-
-        if (Random.Range(0, 100) <= skills.dodge)
+        if (Random.Range(0, 100) <= attackReaction.dodge)
         {
             Debug.Log(gameObject.name + " dodged the attack!");
             return false;
         }
-        else if (Random.Range(0, 100) <= skills.block)
+        else if (Random.Range(0, 100) <= attackReaction.block)
         {
             Debug.Log(gameObject.name + " blocked the attack!");
             return false;
         }
-        else if (Random.Range(0, 100) <= skills.parry)
+        else if (Random.Range(0, 100) <= attackReaction.parry)
         {
             Debug.Log(gameObject.name + " parried the attack!");
             return false;
         }
 
+        CheckForStatusChange(); //empty right now
         return true;
     }
 
@@ -187,8 +211,10 @@ public class BodyParts : MonoBehaviour {
             damageInfo.attackType = "Impact";
         }
 
+        //crit hit
         if (Random.Range(0, 100) <= recievedAttack.skill)
         {
+            Debug.Log(gameObject.name + "'s skill is " + recievedAttack.skill);
             Debug.Log(recievedAttack.attackerName + " skillfully lands a critical hit with his " + recievedAttack.weapon.name + "!");
             damageInfo.damageDealt = enemyAttack;
         }
@@ -220,18 +246,27 @@ public class BodyParts : MonoBehaviour {
     //does not guaruntee we will pick the correct part because Dictionaries are arbitrarilly ordered
     protected Parts GetRandomPart()
     {
-        //return (Parts)Random.Range(0, bodyPartHealth.Count); 
-        return Parts.Head;
+        return (Parts)Random.Range(0, bodyPartHealth.Count); 
     }
 
     public virtual float OverallHealth()
     {
-        return baseHealth * ((bodyPartHealth.Sum(x => x.Value) / 12) * 0.01f);
+        //gives us a precentage to multiply skills by to get their current effectiveness
+        return (bodyPartHealth.Sum(x => x.Value) / bodyPartHealth.Count) * 0.01f;
     }
 
     protected virtual void GetArmor(Equipment oldItem, Equipment newItem)
     {
         Debug.LogError("Base method should not be called here!");
+    }
+
+    protected void TriggerDeath()
+    {
+        //this method alerts others, and since this unit is dead UnitReactionManager should skip over it
+        //unitReactions.ReactToAttackAgainstSelf(myAttacker); //might not neec this because unit is alerted with each hit even if 1hko
+
+        unitReactions.isDead = true; //stop reacting
+        deathController.Die();
     }
 
     //put together here and given to injuries script
@@ -258,12 +293,9 @@ public class BodyParts : MonoBehaviour {
         return bodyPartHealth;
     }
 
-    protected void TriggerDeath()
+    protected void UpdateSkills()
     {
-        //this method alerts others, and since this unit is dead UnitReactionManager should skip over it
-        //unitReactions.ReactToAttackAgainstSelf(myAttacker); //might not neec this because unit is alerted with each hit even if 1hko
-
-        unitReactions.isDead = true; //stop reacting
-        deathController.Die();
+        attackReaction = mySkills.GetAttackReactionSkills();
+        Debug.Log("skills updated!");
     }
 }

@@ -5,8 +5,17 @@ public class HumanoidCombatSkills : CombatSkills {
     {
         base.Start();
 
-        myWeaponSkills = new Dictionary<Weapon.WeaponType, float>()
+        myWeaponSkillLevels = new Dictionary<Weapon.WeaponType, int>()
         { 
+            { Weapon.WeaponType.Axe, 0 },
+            { Weapon.WeaponType.Dagger, 0 },
+            { Weapon.WeaponType.Hands, 0 },
+            { Weapon.WeaponType.Pick, 0 },
+            { Weapon.WeaponType.Spear, 0 }
+        };
+
+        myWeaponSkillExperience = new Dictionary<Weapon.WeaponType, float>()
+        {
             { Weapon.WeaponType.Axe, 0f },
             { Weapon.WeaponType.Dagger, 0f },
             { Weapon.WeaponType.Hands, 0f },

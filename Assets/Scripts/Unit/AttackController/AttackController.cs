@@ -9,7 +9,7 @@ public class AttackController : MonoBehaviour {
     private IEnumerator engagingEntity;
 
     private BodyParts targetBody;
-
+    private BodyParts myBody;
     private EquipmentManager equipmentManager;
     public Weapon equippedWeapon;
     private int weaponIndex = (int)EquipmentSlot.MainHand;
@@ -20,6 +20,8 @@ public class AttackController : MonoBehaviour {
     private UnitController unit;
     private AttackTimer attackTimer;
 
+    private BodyParts.Parts[] bodyPartsNeeded = new BodyParts.Parts[] { BodyParts.Parts.RightArm, BodyParts.Parts.RightHand };
+
     private float myAttackStat;
 
     private void Start()
@@ -28,7 +30,7 @@ public class AttackController : MonoBehaviour {
         anim = GetComponent<UnitAnimController>();
         unit = GetComponent<UnitController>();
         attackTimer = GetComponent<AttackTimer>();
-
+        myBody = GetComponent<BodyParts>();
         equipmentManager = GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += SwapWeapons;
     }
@@ -84,6 +86,13 @@ public class AttackController : MonoBehaviour {
     #region Helper Functions
     private void Attack(Transform targetTransform)
     {
+        if (!myBody.CheckBodyParts(bodyPartsNeeded))
+        {
+            Debug.Log(gameObject.name + " is too injured to attack " + targetTransform.name);
+            //unit reactions -> run away if not player?
+            return;
+        }
+
         if(equippedWeapon == null)
         {
             SwapWeapons(null, null); //load whatever weapon is already equipped
@@ -96,7 +105,7 @@ public class AttackController : MonoBehaviour {
         targetHealth.TakeDamage(damage, transform);
         */
 
-        AttackInfo myAttack = mySkills.RequestAttackInfo(equippedWeapon);
+        AttackInfo myAttack = mySkills.RequestAttackInfo(equippedWeapon); //experience gain is taken care of here
         targetBody.RecieveAttack(myAttack, transform);
 
         attackTimer.ResetAttackTimer(myAttack.speed);
