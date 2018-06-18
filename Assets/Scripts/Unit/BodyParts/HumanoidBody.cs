@@ -25,6 +25,7 @@ public class HumanoidBody : BodyParts {
             { Parts.RightFoot, 100f },
         };
 
+        vitalPart = Parts.Head;
         totalBlood = bodyPartHealth.Sum(x => x.Value);
     }
 

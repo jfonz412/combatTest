@@ -101,6 +101,26 @@ public class Inventory : MonoBehaviour {
         return itemInfo;
     }
 
+    public void LoadSavedItems(SavedItem[] savedItems)
+    {
+        if (items == null)
+        {
+            Debug.Log("items are null");
+            return;
+        }
+
+        for (int i = 0; i < savedItems.Length - 1; i++)
+        {
+            if (savedItems[i].fileName == null) //shouldn't this throw an error if null?
+                continue;
+
+            Item item = (Item)Resources.Load(savedItems[i].fileName);
+
+            item.quantity = savedItems[i].quantity;
+            AddItem(item);
+        }
+    }
+
     #region private methods
 
     private int AttemptToStackItem(Item newItem)

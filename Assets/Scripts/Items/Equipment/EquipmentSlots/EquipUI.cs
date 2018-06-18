@@ -15,8 +15,6 @@ public class EquipUI : MonoBehaviour {
 
         slots = equipParent.GetComponentsInChildren<EquipSlot>();
         AssignSlotNums();
-
-        ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Loadout>().EquipLoadout(); //must be called after above delegate
     }
 
     private void UpdateUI(Equipment oldItem, Equipment newItem)

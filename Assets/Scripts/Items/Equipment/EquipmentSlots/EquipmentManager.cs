@@ -36,7 +36,7 @@ public class EquipmentManager : MonoBehaviour {
         Equip(newItem);
         inv.Remove(newItem);
 
-        if(!oldItem.naked) //0 is unarmed/naked, so don't add to inventory
+        if(!oldItem.naked)
             inv.AddItem(oldItem);
     }
 
@@ -130,5 +130,20 @@ public class EquipmentManager : MonoBehaviour {
         }
 
         return equipmentNames;
+    }
+
+    public void LoadSavedEquipment(string[] equipmentNames)
+    {
+        Equipment equipment;
+
+        for (int i = 0; i < equipmentNames.Length; i++)
+        {
+            equipment = Instantiate((Equipment)Resources.Load(equipmentNames[i]));
+            equipment.Init();
+            //equipment.quality = x;
+            //equipment.condition = y;
+            if(equipment != null)
+                Equip(equipment);
+        }
     }
 }

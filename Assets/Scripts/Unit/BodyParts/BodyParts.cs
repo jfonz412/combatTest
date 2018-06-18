@@ -6,6 +6,8 @@ using System.Linq;
 public class BodyParts : MonoBehaviour {
     public enum Parts { Head, Neck, LeftArm, RightArm, LeftHand, RightHand, Chest, Abdomin, LeftLeg, RightLeg, LeftFoot, RightFoot }
     protected Dictionary<Parts, float> bodyPartHealth;
+    protected Parts vitalPart; //if this is destroyed, unit is killed. Should make this an array eventually
+
     protected Dictionary<EquipmentSlot, ArmorInfo> myArmor = new Dictionary<EquipmentSlot, ArmorInfo>();
 
     protected EquipmentManager equipment;
@@ -37,7 +39,6 @@ public class BodyParts : MonoBehaviour {
 
     public virtual void RecieveAttack(AttackInfo recievedAttack, Transform myAttacker)
     {
-        //myAttacker = _myAttacker;
         unitReactions.ReactToAttackAgainstSelf(myAttacker);
         DetermineImpact(recievedAttack);
     }
@@ -146,7 +147,7 @@ public class BodyParts : MonoBehaviour {
         if (bodyPartHealth[bodyPart] < 0f)
             bodyPartHealth[bodyPart] = 0f;
 
-        Debug.Log(bodyPart + "health is " + bodyPartHealth[bodyPart]);
+        Debug.Log(bodyPart + "health is " + bodyPartHealth[bodyPart] + " for " + gameObject.name);
     }
 
     protected void CheckForStatusChange()
@@ -178,7 +179,7 @@ public class BodyParts : MonoBehaviour {
 
     protected bool Killed()
     {
-        if(totalBlood <= 0 || bodyPartHealth[Parts.Head] <= 0)
+        if(totalBlood <= 0 || bodyPartHealth[vitalPart] <= 0)
         {
             return true;
         }
@@ -250,9 +251,6 @@ public class BodyParts : MonoBehaviour {
             damageInfo.damageDealt = enemyAttack - myDefense;
         }
 
-
-        //DamageSkillCheck(recievedAttack);
-
         damageInfo.bodyPartID = (int)bodyPart;
         damageInfo.armorName = armor.name;
         damageInfo.weaponName = recievedAttack.weapon.name;
@@ -272,7 +270,8 @@ public class BodyParts : MonoBehaviour {
     //does not guaruntee we will pick the correct part because Dictionaries are arbitrarilly ordered
     protected Parts GetRandomPart()
     {
-        return (Parts)Random.Range(0, bodyPartHealth.Count); 
+        int n = Random.Range(0, bodyPartHealth.Count - 1);
+        return bodyPartHealth.Keys.ElementAt(n);
     }
 
     public virtual float OverallHealth()

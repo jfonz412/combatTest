@@ -11,8 +11,6 @@ public class BushBansheeBody : BodyParts
 
         bodyPartHealth = new Dictionary<Parts, float>()
         {
-            { Parts.Head, 100f },
-            { Parts.Neck, 100f },
             { Parts.LeftArm, 100f },
             { Parts.RightArm, 100f },
             { Parts.LeftHand, 100f },
@@ -25,6 +23,7 @@ public class BushBansheeBody : BodyParts
             { Parts.RightFoot, 100f },
         };
 
+        vitalPart = Parts.Chest;
         totalBlood = bodyPartHealth.Sum(x => x.Value);
     }
 
@@ -36,16 +35,11 @@ public class BushBansheeBody : BodyParts
     //checks for bodyPart in any of the equipment sections
     protected override ArmorInfo GetArmorFrom(string bodyPart)
     {
-        string[] helmet = { "Head", "Neck" };
         string[] midsection = { "LeftArm", "RightArm", "LeftHand", "RightHand", "Chest", "Abdomin", };
         string[] legs = { "LeftLeg", "RightLeg" };
         string[] feet = { "LeftFoot", "RightFoot" };
 
-        if (ArrayUtility.IndexOf(helmet, bodyPart) >= 0)
-        {
-            return myArmor[EquipmentSlot.Head];
-        }
-        else if (ArrayUtility.IndexOf(midsection, bodyPart) >= 0)
+        if (ArrayUtility.IndexOf(midsection, bodyPart) >= 0)
         {
             return myArmor[EquipmentSlot.Chest];
         }
@@ -78,4 +72,4 @@ public class BushBansheeBody : BodyParts
         }
     }
 }
-}
+

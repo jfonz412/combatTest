@@ -10,7 +10,6 @@ public class PlayerSaveData : DataController {
     private Inventory inventory;
     private PlayerWallet wallet;
     private BodyParts bodyParts;
-    private SavedItem[] myInventory;
     private CombatSkills combatSkills;
 
     private string fileName = "/playerData.dat";
@@ -45,25 +44,20 @@ public class PlayerSaveData : DataController {
         if (File.Exists(Application.persistentDataPath + tempDirectory + fileName))
         {
             data = (PlayerData)LoadDataFromFile(tempDirectory + fileName);
-
         }
         else if(File.Exists(Application.persistentDataPath + permDirectory + fileName))
         {
-            //Debug.Log("Loading perm Player");
+            Debug.Log("Loading perm Player");
             data = (PlayerData)LoadDataFromFile(permDirectory + fileName);
         }
         else
         {
+            loadOut.EquipLoadout(); //will load player's default loadout so we don't have null equipment
             Debug.LogWarning(gameObject.name + " save data not found!");
             return;
         }
 
         ApplyDataToPlayer(data);
-    }
-
-    public SavedItem[] GetSavedInventory()
-    {
-        return myInventory;
     }
 
     private PlayerData PackagePlayerData()
@@ -89,8 +83,8 @@ public class PlayerSaveData : DataController {
 
     private void ApplyDataToPlayer(PlayerData data)
     {
-        loadOut.LoadSavedEquipment(data.currentEquipment);
-        myInventory = data.currentInventory; //temporarily cache this so InventoryUI can grab it when it is ready
+        equipmentManager.LoadSavedEquipment(data.currentEquipment);
+        inventory.LoadSavedItems(data.currentInventory);
         wallet.LoadSavedBalance(data.currentGold);
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
         bodyParts.LoadBodyPartHealth(data.bodyPartHealth);
@@ -98,6 +92,8 @@ public class PlayerSaveData : DataController {
         combatSkills.LoadSavedCombatExperience(data.combatSkillExperience);
         combatSkills.LoadSavedWeaponLevels(data.weaponSkillLevels);
         combatSkills.LoadSavedWeaponExperience(data.weaponSkillExperience);
+
+        Debug.Log("Applied player data");
     }
 }
 
