@@ -41,6 +41,14 @@ public class CombatSkills : MonoBehaviour {
         body = GetComponent<BodyParts>();
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log(myWeaponSkillLevels[Weapon.WeaponType.Spear]);
+        }
+    }
+
     public virtual AttackInfo RequestAttackInfo(Weapon currentWeapon)
     {
         AttackInfo info = new AttackInfo();
@@ -69,6 +77,7 @@ public class CombatSkills : MonoBehaviour {
         }
     }
 
+    //this will only happen here
     protected void WeaponExperienceGain(Weapon.WeaponType weapon, float experience)
     {
         myWeaponSkillExperience[weapon] += experience;
@@ -79,6 +88,12 @@ public class CombatSkills : MonoBehaviour {
             //onSkillGained(); //not needed for now
             Debug.Log("LEVEL UP: " + myWeaponSkillLevels[weapon] + "!!!");
         }
+    }
+
+    protected virtual float WeaponSkillEffectiveness(Weapon.WeaponType weaponType)
+    {
+        Debug.Log(body.OverallHealth() + " * " + myWeaponSkillLevels[weaponType] + " = " + body.OverallHealth() * myWeaponSkillLevels[weaponType]);
+        return body.OverallHealth() * myWeaponSkillLevels[weaponType];
     }
 
     //copies defense skills and gives it to the body DefenseSkills is not public so we use a different struct
@@ -92,11 +107,52 @@ public class CombatSkills : MonoBehaviour {
         return a;
     }
 
-    protected virtual float WeaponSkillEffectiveness(Weapon.WeaponType weaponType)
-    { 
-        Debug.Log(body.OverallHealth() + " * " + myWeaponSkillLevels[weaponType] + " = " + body.OverallHealth() * myWeaponSkillLevels[weaponType]);
-        return body.OverallHealth() * myWeaponSkillLevels[weaponType];
+    #region Saving and Loading
+
+    //COMBAT SKILLS
+    public Dictionary<CombatSkill, int> GetCombatLevels()
+    {
+        return mySkillLevels;
     }
+
+    public Dictionary<CombatSkill, float> GetCombatExperience()
+    {
+        return mySkillExperience;
+    }
+
+    public void LoadSavedCombatLevels(Dictionary<CombatSkill, int> savedLevels)
+    {
+        mySkillLevels = savedLevels;
+    }
+
+    public void LoadSavedCombatExperience(Dictionary<CombatSkill, float> savedExperience)
+    {
+        mySkillExperience = savedExperience;
+    }
+
+
+    //WEAPONS
+
+    public Dictionary<Weapon.WeaponType, int> GetWeaponLevels()
+    {
+        return myWeaponSkillLevels;
+    }
+
+    public Dictionary<Weapon.WeaponType, float> GetWeaponExperience()
+    {
+        return myWeaponSkillExperience;
+    }
+
+    public void LoadSavedWeaponLevels(Dictionary<Weapon.WeaponType, int> savedLevels)
+    {
+        myWeaponSkillLevels = savedLevels;
+    }
+
+    public void LoadSavedWeaponExperience(Dictionary<Weapon.WeaponType, float> savedExperience)
+    {
+        myWeaponSkillExperience = savedExperience;
+    }
+    #endregion
 }
 
 public struct AttackInfo

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-//THIS SCRIPT IS GETTING BIG, CONSIDER SPLITTING IT INTO 3 SEPERATE SCRIPTS?
+//THIS SCRIPT HAS BEEN SPLIT INTO SHOP/EQUIP/INVENTORY SCRIPTS
 public class SlotClick : MonoBehaviour {
 
     SlotClickHelpers slotClickHelper;

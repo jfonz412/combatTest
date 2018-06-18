@@ -200,7 +200,7 @@ public class HumanInjuries : MonoBehaviour {
     };
 
 
-    public static void DamageMessage(HumanoidBody.DamageInfo damageInfo)
+    public static void DamageMessage(BodyParts.DamageInfo damageInfo)
     {
         string armor = damageInfo.armorName;
         string weapon = damageInfo.weaponName;
@@ -220,13 +220,14 @@ public class HumanInjuries : MonoBehaviour {
         Dictionary<int, string> injuryList = new Dictionary<int, string>();
         if(damageType == "Penetration")
         {
-            injuryList = penetrationInjuries[damageInfo.severityID]; //SEVERITY HARDCODED AT LEVEL 0
+            injuryList = penetrationInjuries[damageInfo.severityID]; 
         }
         else
         {
             injuryList = impactInjuries[damageInfo.severityID];
         }
-        
-        Debug.Log(string.Format(injuryList[bodypart], myName, weapon, armor));
+
+        string line = string.Format(injuryList[bodypart], myName, weapon, armor);
+        BattleReport.AddToBattleReport(line);
     }
 }

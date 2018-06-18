@@ -11,6 +11,7 @@ public class PlayerSaveData : DataController {
     private PlayerWallet wallet;
     private BodyParts bodyParts;
     private SavedItem[] myInventory;
+    private CombatSkills combatSkills;
 
     private string fileName = "/playerData.dat";
 
@@ -22,7 +23,8 @@ public class PlayerSaveData : DataController {
         loadOut = GetComponent<Loadout>();
         inventory = InventoryManager.GetInstance().GetInventory();
         wallet = ScriptToolbox.GetInstance().GetPlayerWallet();
-        bodyParts = GetComponent<BodyParts>(); 
+        bodyParts = GetComponent<BodyParts>();
+        combatSkills = GetComponent<CombatSkills>();
     }
 
     public override string SaveData()
@@ -77,21 +79,26 @@ public class PlayerSaveData : DataController {
         data.currentInventory = inventory.GetItemInfo();
         data.currentGold = wallet.GetCurrentBalance();
         data.bodyPartHealth = bodyParts.GetBodyPartHealth();
+
+        data.combatSkillLevels = combatSkills.GetCombatLevels();
+        data.combatSkillExperience = combatSkills.GetCombatExperience();
+        data.weaponSkillLevels = combatSkills.GetWeaponLevels();
+        data.weaponSkillExperience = combatSkills.GetWeaponExperience();
         return data;
     }
 
     private void ApplyDataToPlayer(PlayerData data)
     {
-        //health.ApplyCurrentHealth(data.currentHealth);
         loadOut.LoadSavedEquipment(data.currentEquipment);
         myInventory = data.currentInventory; //temporarily cache this so InventoryUI can grab it when it is ready
         wallet.LoadSavedBalance(data.currentGold);
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
         bodyParts.LoadBodyPartHealth(data.bodyPartHealth);
-        //Debug.Log("Saved player pos: " + data.currentPosition.x + ", " + data.currentPosition.y);
+        combatSkills.LoadSavedCombatLevels(data.combatSkillLevels);
+        combatSkills.LoadSavedCombatExperience(data.combatSkillExperience);
+        combatSkills.LoadSavedWeaponLevels(data.weaponSkillLevels);
+        combatSkills.LoadSavedWeaponExperience(data.weaponSkillExperience);
     }
-
-
 }
 
 [Serializable]
@@ -103,6 +110,10 @@ public class PlayerData : Data
     public SavedItem[] currentInventory;
     public SavedPosition currentPosition;
     public Dictionary<BodyParts.Parts, float> bodyPartHealth;
+    public Dictionary<CombatSkills.CombatSkill, int> combatSkillLevels;
+    public Dictionary<CombatSkills.CombatSkill, float> combatSkillExperience;
+    public Dictionary<Weapon.WeaponType, int> weaponSkillLevels;
+    public Dictionary<Weapon.WeaponType, float> weaponSkillExperience;
 }
 
 [Serializable]

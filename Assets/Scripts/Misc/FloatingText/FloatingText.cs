@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class FloatingText : MonoBehaviour {
@@ -13,8 +12,9 @@ public class FloatingText : MonoBehaviour {
         Destroy(gameObject, clip.Length);
 	}
 
-    public void SetText(string text)
+    public void SetText(string text, Color color)
     {
+        damageText.color = color;
         damageText.text = text;
     }
 }

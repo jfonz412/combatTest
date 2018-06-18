@@ -88,7 +88,10 @@ public class AttackController : MonoBehaviour {
     {
         if (!myBody.CheckBodyParts(bodyPartsNeeded))
         {
-            Debug.Log(gameObject.name + " is too injured to attack " + targetTransform.name);
+            string line = "<color=red>" + gameObject.name + " is too injured to attack " + targetTransform.name + "</color>";
+            FloatingTextController.CreateFloatingText("Too injured!", transform, Color.red);
+            BattleReport.AddToBattleReport(line);
+            attackTimer.ResetAttackTimer(5f); //arbitrarily reset attack timer
             //unit reactions -> run away if not player?
             return;
         }

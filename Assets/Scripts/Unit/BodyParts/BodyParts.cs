@@ -70,7 +70,11 @@ public class BodyParts : MonoBehaviour {
             }
             else
             {
-                Debug.Log(attacker + " did no damage to " + gameObject.name + ".");
+
+                string line = attacker + " did no damage to " + gameObject.name + ".";
+
+                FloatingTextController.CreateFloatingText("No Damage", transform, Color.white);
+                BattleReport.AddToBattleReport(line);
             }
         }
     }
@@ -82,33 +86,41 @@ public class BodyParts : MonoBehaviour {
     {
         float damage = damageInfo.damageDealt;
         int severityID;
+        Color32 color;
 
         if (damage <= 50)
         {
+            color = new Color32(55, 0, 0, 255);
             severityID = 0;
         }
         else if (damage <= 70)
         {
+            color = new Color32(105, 0, 0, 255);
             severityID = 1;
         }
         else if (damage <= 90)
         {
+            color = new Color32(155, 0, 0, 255);
             severityID = 2;
         }
         else if (damage <= 100)
         {
+            color = new Color32(205, 0, 0, 255);
             severityID = 3;
         }
         else if (damage <= 120)
         {
+            color = new Color32(255, 0, 0, 255);
             severityID = 4;
         }
         else
         {
+            color = new Color32(255, 0, 0, 255);
             severityID = 5;
         }
 
         damageInfo.severityID = severityID;
+        FloatingTextController.CreateFloatingText("Hit", transform, color);
         HumanInjuries.DamageMessage(damageInfo);
         DamageBodyPart((Parts)damageInfo.bodyPartID, damage);
 
@@ -175,17 +187,23 @@ public class BodyParts : MonoBehaviour {
     {
         if (Random.Range(0, 100) <= attackReaction.dodge)
         {
-            Debug.Log(gameObject.name + " dodged the attack!");
+            string line = "<color=green>" + gameObject.name + " parried the attack!</color>";
+            FloatingTextController.CreateFloatingText("Parry", transform, Color.green);
+            BattleReport.AddToBattleReport(line);
             return false;
         }
         else if (Random.Range(0, 100) <= attackReaction.block)
         {
-            Debug.Log(gameObject.name + " blocked the attack!");
+            string line = "<color=yellow>" + gameObject.name + " blocked the attack!</color>";
+            FloatingTextController.CreateFloatingText("Block", transform, Color.blue);
+            BattleReport.AddToBattleReport(line);
             return false;
         }
         else if (Random.Range(0, 100) <= attackReaction.parry)
         {
-            Debug.Log(gameObject.name + " parried the attack!");
+            string line = "<color=yellow>" + gameObject.name + " parried the attack!</color>";
+            FloatingTextController.CreateFloatingText("Parry", transform, Color.yellow);
+            BattleReport.AddToBattleReport(line);
             return false;
         }
 
@@ -214,8 +232,11 @@ public class BodyParts : MonoBehaviour {
         //crit hit
         if (Random.Range(0, 100) <= recievedAttack.skill)
         {
-            Debug.Log(gameObject.name + "'s skill is " + recievedAttack.skill);
-            Debug.Log(recievedAttack.attackerName + " skillfully lands a critical hit with his " + recievedAttack.weapon.name + "!");
+            string line = "<color=yellow>" + recievedAttack.attackerName + " skillfully lands a critical hit with his " + recievedAttack.weapon.name + "!</color>";
+            Color color = new Color(0.2F, 0.3F, 0.4F);
+
+            FloatingTextController.CreateFloatingText("Serious Injury", transform, color);
+            BattleReport.AddToBattleReport(line);
             damageInfo.damageDealt = enemyAttack;
         }
         else
@@ -296,6 +317,5 @@ public class BodyParts : MonoBehaviour {
     protected void UpdateSkills()
     {
         attackReaction = mySkills.GetAttackReactionSkills();
-        Debug.Log("skills updated!");
     }
 }

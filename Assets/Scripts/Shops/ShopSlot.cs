@@ -33,7 +33,7 @@ public class ShopSlot : InventorySlot
 
     public override void SlotRightClicked()
     {
-        InventoryManager.GetInstance().GetShopSlotClick().ShopSlotRightClicked(item); //does nothing, leave it here in case I find a use for this
+        InventoryManager.GetInstance().GetShopSlotClick().ShopSlotRightClicked(item); 
     }
 
     public override void SlotLeftClicked()

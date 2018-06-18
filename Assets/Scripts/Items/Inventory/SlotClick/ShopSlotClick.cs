@@ -16,6 +16,9 @@ public class ShopSlotClick : MonoBehaviour {
 
     public void ShopSlotRightClicked(Item item)
     {
+        if (item == null)
+            return;
+
         ShopDialogue shopDialogue = InventoryManager.GetInstance().GetShopDialogue();
         CheckInventorySpace invCheck = InventoryManager.GetInstance().GetInventorySpaceChecker();
 

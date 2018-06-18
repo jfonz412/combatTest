@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FloatingTextController : MonoBehaviour {
     public static GameObject popupText;
@@ -14,13 +12,13 @@ public class FloatingTextController : MonoBehaviour {
             popupText = Resources.Load("PopUps/PopUpTextParent") as GameObject;
     }
 
-    public static void CreateFloatingText(string text, Transform unitLocation)
+    public static void CreateFloatingText(string text, Transform unitLocation, Color color)
     {
-        Vector3 position = new Vector3(unitLocation.position.x, unitLocation.position.y + 0.5f, unitLocation.position.z);
+        Vector3 position = new Vector3(unitLocation.position.x, unitLocation.position.y + 1f, unitLocation.position.z);
         GameObject instance = Instantiate(popupText);
 
         instance.transform.SetParent(canvas.transform, false);
         instance.transform.position = position;
-        instance.GetComponent<FloatingText>().SetText(text);
+        instance.GetComponent<FloatingText>().SetText(text, color);
     }
 }

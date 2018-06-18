@@ -40,7 +40,7 @@ public class PauseController : MonoBehaviour {
     private void Pause()
     {
         stateBeforePause = PlayerState.GetPlayerState();
-        PlayerState.SetPlayerState(PlayerState.PlayerStates.Paused); //doesn't actually do anything right now, but it exists
+        PlayerState.SetPlayerState(PlayerState.PlayerStates.Paused); 
         pauseMenu.SetActive(true);
         Time.timeScale = 0;
     }

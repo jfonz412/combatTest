@@ -70,7 +70,6 @@ public class HumanoidBody : BodyParts {
             ArmorInfo armorInfo = armor.GetArmorInfo();
 
             myArmor[armorInfo.armorType] = armorInfo;
-            Debug.Log("Loading " + armorInfo.name + " for " + gameObject.name);
         }
     }
 }
