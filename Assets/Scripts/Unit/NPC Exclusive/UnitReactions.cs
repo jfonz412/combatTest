@@ -4,8 +4,11 @@ using System.Collections;
 //the base script for all of our unity personalities
 public class UnitReactions : MonoBehaviour
 {
-    public enum Factions { Townie, BigRedGang, Player };
+    public enum Factions { Townie, BigRedGang, Player, HostileCreature };
     public Factions faction;
+
+    protected Factions[] myEnemyFactions;
+    //private Factions[] myAlliedFactions;
 
     private AttackController attackController;
     private NPCInteractionStates npcState;
@@ -18,8 +21,9 @@ public class UnitReactions : MonoBehaviour
     public bool isDead = false;
     [HideInInspector]
     public bool runningAway = false; //make protected?
+    //bool attacking;
 
-    void Start()
+    protected virtual void Start()
     {
         npcState = transform.GetComponent<NPCInteractionStates>();
         attackController = GetComponent<AttackController>();
@@ -28,6 +32,19 @@ public class UnitReactions : MonoBehaviour
     }
 
     /***-----------------------------------------NPC FUNCTIONS----------------------------------------------- ***/
+
+    public virtual void ReactToUnitInRaidius(UnitReactions unit)
+    {
+        for(int i = 0; i < myEnemyFactions.Length; i++)
+        {
+            if (unit.faction == myEnemyFactions[i])
+            {
+                Debug.Log("Enemy in radius!");
+                ReactToAttackAgainstSelf(unit.transform);
+                return;
+            }
+        }
+    }
 
     //called by UnitReactionManager.cs 
     public void ReactToAttackAgainstOther(int factionID, Transform attacker)
@@ -79,6 +96,7 @@ public class UnitReactions : MonoBehaviour
     protected void Fight(Transform attacker)
     {
         //target the last unit that attacked it while preventing attacking the same target everytime unit is damaged
+        Debug.Log(attackController);
         if (attackController.lastKnownTarget != attacker)
         {
             attackController.EngageTarget(true, attacker);

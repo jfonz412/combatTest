@@ -2,6 +2,13 @@
 
 public class StandardBigRed : UnitReactions {
 
+    protected override void Start()
+    {
+        base.Start();
+        myEnemyFactions = new Factions[] { Factions.HostileCreature };
+    }
+
+
     public override void ReactToAttackAgainstSelf(Transform attacker = null)
     {
         base.ReactToAttackAgainstSelf(attacker);

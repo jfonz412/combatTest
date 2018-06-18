@@ -3,8 +3,8 @@ using UnityEditor;
 using UnityEngine;
 using System.Linq;
 
-public class HumanoidBody : BodyParts {
-
+public class BushBansheeBody : BodyParts
+{
     protected override void Start()
     {
         base.Start();
@@ -39,7 +39,7 @@ public class HumanoidBody : BodyParts {
         string[] helmet = { "Head", "Neck" };
         string[] midsection = { "LeftArm", "RightArm", "LeftHand", "RightHand", "Chest", "Abdomin", };
         string[] legs = { "LeftLeg", "RightLeg" };
-        string[] feet = { "LeftFoot", "RightFoot" }; 
+        string[] feet = { "LeftFoot", "RightFoot" };
 
         if (ArrayUtility.IndexOf(helmet, bodyPart) >= 0)
         {
@@ -78,5 +78,4 @@ public class HumanoidBody : BodyParts {
         }
     }
 }
-
-
+}

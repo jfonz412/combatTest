@@ -121,7 +121,7 @@ public class BodyParts : MonoBehaviour {
 
         damageInfo.severityID = severityID;
         FloatingTextController.CreateFloatingText("Hit", transform, color);
-        HumanInjuries.DamageMessage(damageInfo);
+        CreateDamageReport(damageInfo);
         DamageBodyPart((Parts)damageInfo.bodyPartID, damage);
 
         if (!Killed())
@@ -132,6 +132,11 @@ public class BodyParts : MonoBehaviour {
         {
             TriggerDeath();
         }
+    }
+
+    protected virtual void CreateDamageReport(DamageInfo damageInfo)
+    {
+
     }
 
     protected void DamageBodyPart(Parts bodyPart, float damage)

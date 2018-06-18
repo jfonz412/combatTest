@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public class BraveTownie : UnitReactions {
-
+public class HostileCreature : UnitReactions
+{
     protected override void Start()
     {
         base.Start();
-        myEnemyFactions = new Factions[] { Factions.HostileCreature };
+        myEnemyFactions = new Factions[] { Factions.Player, Factions.Townie, Factions.BigRedGang };
     }
-
+    
     public override void ReactToAttackAgainstSelf(Transform attacker = null)
     {
         base.ReactToAttackAgainstSelf(attacker);
@@ -23,7 +23,7 @@ public class BraveTownie : UnitReactions {
     protected override void ReactToNonFactionAttack(Transform attacker = null)
     {
         base.ReactToNonFactionAttack(attacker);
-        //do nothing
         return;
     }
 }
+
