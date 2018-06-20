@@ -4,7 +4,9 @@ using UnityEngine;
 public class BattleReport : MonoBehaviour {
     [SerializeField]
     private GameObject reportObject;
-    private static Text report;
+    private static ScrollRect scrollRect;
+    private static Text reportText;
+    private static string savedText = "";
     private static int lineCount;
     private static string newlines = System.Environment.NewLine + System.Environment.NewLine;
 
@@ -13,14 +15,16 @@ public class BattleReport : MonoBehaviour {
         PlayerState.PlayerStates.Shopping,
         PlayerState.PlayerStates.Speaking,
         PlayerState.PlayerStates.Paused,
-        //PlayerState.PlayerStates.Dead,
         PlayerState.PlayerStates.Prompt
     };
 
+    PlayerState.PlayerStates stateBeforePause;
 
     void Start ()
     {
-        report = transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
+        reportText = transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
+        scrollRect = transform.GetChild(0).GetChild(0).GetComponent<ScrollRect>();
+        reportText.text = savedText;
     }
 
     void Update()
@@ -30,12 +34,18 @@ public class BattleReport : MonoBehaviour {
 
     public static void AddToBattleReport(string line)
     {
-        report.text += line + newlines;
+        reportText.text += line + newlines;
+        savedText = reportText.text;
         lineCount++;
 
-
-        if (lineCount >= 20)
+        if(lineCount >= 7 && scrollRect.verticalNormalizedPosition > 0)
         {
+            scrollRect.verticalNormalizedPosition -= .05f;
+            Debug.Log(scrollRect.verticalNormalizedPosition);
+        }
+        else if (scrollRect.verticalNormalizedPosition <= 0)
+        {
+            Debug.Log("Removing first line");
             RemoveFirstLine();
         }
     }
@@ -43,26 +53,43 @@ public class BattleReport : MonoBehaviour {
     public static void RemoveFirstLine()
     {
         int index;
-        index = report.text.IndexOf(System.Environment.NewLine);
-        report.text = report.text.Substring(index + System.Environment.NewLine.Length);
+        index = reportText.text.IndexOf(System.Environment.NewLine);
+        reportText.text = reportText.text.Substring(index + System.Environment.NewLine.Length);
 
         //removes second newline
-        index = report.text.IndexOf(System.Environment.NewLine);
-        report.text = report.text.Substring(index + System.Environment.NewLine.Length);
+        index = reportText.text.IndexOf(System.Environment.NewLine);
+        reportText.text = reportText.text.Substring(index + System.Environment.NewLine.Length);
 
         lineCount--;
     }
 
     private void ToggleBattleReport()
     {
+        if (PlayerState.CheckPlayerState(activationImparingStates))
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             reportObject.SetActive(!reportObject.activeSelf);
+            Pause(reportObject.activeSelf);
+        }
+    }
+
+    private void Pause(bool paused)
+    {
+        if (paused)
+        {
+            stateBeforePause = PlayerState.GetPlayerState();
+            PlayerState.SetPlayerState(PlayerState.PlayerStates.BattleReport);
+            Time.timeScale = 0;
+        }
+        else
+        {
+            PlayerState.SetPlayerState(stateBeforePause);
+            Time.timeScale = 1;
         }
 
-        if (reportObject.activeSelf && PlayerState.CheckPlayerState(activationImparingStates))
-        {
-            reportObject.SetActive(false);
-        }
     }
 }

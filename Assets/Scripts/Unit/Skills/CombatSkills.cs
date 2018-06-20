@@ -92,7 +92,7 @@ public class CombatSkills : MonoBehaviour {
 
     protected virtual float WeaponSkillEffectiveness(Weapon.WeaponType weaponType)
     {
-        Debug.Log(body.OverallHealth() + " * " + myWeaponSkillLevels[weaponType] + " = " + body.OverallHealth() * myWeaponSkillLevels[weaponType]);
+        //Debug.Log(body.OverallHealth() + " * " + myWeaponSkillLevels[weaponType] + " = " + body.OverallHealth() * myWeaponSkillLevels[weaponType]);
         return body.OverallHealth() * myWeaponSkillLevels[weaponType];
     }
 

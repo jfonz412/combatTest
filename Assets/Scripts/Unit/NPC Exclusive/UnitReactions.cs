@@ -96,7 +96,6 @@ public class UnitReactions : MonoBehaviour
     protected void Fight(Transform attacker)
     {
         //target the last unit that attacked it while preventing attacking the same target everytime unit is damaged
-        Debug.Log(attackController);
         if (attackController.lastKnownTarget != attacker)
         {
             attackController.EngageTarget(true, attacker);

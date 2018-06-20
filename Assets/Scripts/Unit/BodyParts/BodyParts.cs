@@ -37,22 +37,22 @@ public class BodyParts : MonoBehaviour {
         UpdateSkills(); 
     }
 
-    public virtual void RecieveAttack(AttackInfo recievedAttack, Transform myAttacker)
-    {
-        unitReactions.ReactToAttackAgainstSelf(myAttacker);
-        DetermineImpact(recievedAttack);
-    }
-
     public bool CheckBodyParts(Parts[] partsToCheck)
     {
-        for(int i = 0; i < partsToCheck.Length; i++)
+        for (int i = 0; i < partsToCheck.Length; i++)
         {
-            if(bodyPartHealth[partsToCheck[i]] <= 0)
+            if (bodyPartHealth[partsToCheck[i]] <= 0)
             {
                 return false;
             }
         }
         return true;
+    }
+
+    public virtual void RecieveAttack(AttackInfo recievedAttack, Transform myAttacker)
+    {
+        unitReactions.ReactToAttackAgainstSelf(myAttacker);
+        DetermineImpact(recievedAttack);
     }
 
     protected void DetermineImpact(AttackInfo recievedAttack)
@@ -71,7 +71,6 @@ public class BodyParts : MonoBehaviour {
             }
             else
             {
-
                 string line = attacker + " did no damage to " + gameObject.name + ".";
 
                 FloatingTextController.CreateFloatingText("No Damage", transform, Color.white);
@@ -123,7 +122,7 @@ public class BodyParts : MonoBehaviour {
         damageInfo.severityID = severityID;
         FloatingTextController.CreateFloatingText("Hit", transform, color);
         CreateDamageReport(damageInfo);
-        DamageBodyPart((Parts)damageInfo.bodyPartID, damage);
+        DamageBodyPart(damageInfo.bodyPart, damage);
 
         if (!Killed())
         {
@@ -238,7 +237,7 @@ public class BodyParts : MonoBehaviour {
         //crit hit
         if (Random.Range(0, 100) <= recievedAttack.skill)
         {
-            string line = "<color=yellow>" + recievedAttack.attackerName + " skillfully lands a critical hit with his " + recievedAttack.weapon.name + "!</color>";
+            string line = "<color=yellow>" + recievedAttack.attackerName + " skillfully lands a critical hit with their " + recievedAttack.weapon.name + "!</color>";
             Color color = new Color(0.2F, 0.3F, 0.4F);
 
             FloatingTextController.CreateFloatingText("Serious Injury", transform, color);
@@ -251,12 +250,11 @@ public class BodyParts : MonoBehaviour {
             damageInfo.damageDealt = enemyAttack - myDefense;
         }
 
-        damageInfo.bodyPartID = (int)bodyPart;
+        damageInfo.bodyPart = bodyPart;
         damageInfo.armorName = armor.name;
         damageInfo.weaponName = recievedAttack.weapon.name;
         damageInfo.victimName = gameObject.name;
         damageInfo.attackerName = recievedAttack.attackerName;
-
         return damageInfo;
     }
 
@@ -270,7 +268,11 @@ public class BodyParts : MonoBehaviour {
     //does not guaruntee we will pick the correct part because Dictionaries are arbitrarilly ordered
     protected Parts GetRandomPart()
     {
-        int n = Random.Range(0, bodyPartHealth.Count - 1);
+        int n = Random.Range(0, bodyPartHealth.Count);
+
+        if (n > 0)
+            n--;
+
         return bodyPartHealth.Keys.ElementAt(n);
     }
 
@@ -304,7 +306,7 @@ public class BodyParts : MonoBehaviour {
         public float damageDealt;
         public int severityID;
         public string attackType;
-        public int bodyPartID;
+        public Parts bodyPart;
     }
 
     public void LoadBodyPartHealth(Dictionary<Parts, float> savedBodyPartHealth)

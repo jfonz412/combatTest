@@ -29,7 +29,7 @@ public class BushBansheeBody : BodyParts
 
     protected override void CreateDamageReport(DamageInfo damageInfo)
     {
-        HumanInjuries.DamageMessage(damageInfo);
+        BushBansheeInjuries.DamageMessage(damageInfo);
     }
 
     //checks for bodyPart in any of the equipment sections

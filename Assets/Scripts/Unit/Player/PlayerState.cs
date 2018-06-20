@@ -2,7 +2,7 @@
 
 public class PlayerState : MonoBehaviour {
 
-    public enum PlayerStates { Idle, Speaking, Fighting, Shopping, Dead, Prompt, Paused }
+    public enum PlayerStates { Idle, Speaking, Fighting, Shopping, Dead, Prompt, Paused, BattleReport }
 
     [SerializeField]
     private static PlayerStates currentState;
@@ -14,7 +14,9 @@ public class PlayerState : MonoBehaviour {
 
     public static void SetPlayerState(PlayerStates newState) //possibly make this return a bool that can tell sender if state switch was successful or not
     {
-
+        //CAN PROBABLY JUST DO 
+            //currentState = newState
+        //AND CATCH ANY INVALID STATES, NOT SURE WHY i HAVE THIS SWITCH STATEMENT
         switch (newState)
         {
             case PlayerStates.Idle:
@@ -33,6 +35,9 @@ public class PlayerState : MonoBehaviour {
                 currentState = newState;
                 break;
             case PlayerStates.Prompt:
+                currentState = newState;
+                break;
+            case PlayerStates.BattleReport:
                 currentState = newState;
                 break;
             case PlayerStates.Paused:
