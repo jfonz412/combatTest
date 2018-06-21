@@ -50,7 +50,7 @@ public class BattleReport : MonoBehaviour {
         }
     }
 
-    public static void RemoveFirstLine()
+    private static void RemoveFirstLine()
     {
         int index;
         index = reportText.text.IndexOf(System.Environment.NewLine);
@@ -90,6 +90,13 @@ public class BattleReport : MonoBehaviour {
             PlayerState.SetPlayerState(stateBeforePause);
             Time.timeScale = 1;
         }
+    }
 
+    public void ClearBattleReport()
+    {
+        savedText = "";
+        reportText.text = "";
+        scrollRect.verticalNormalizedPosition = 1;
+        lineCount = 0;
     }
 }

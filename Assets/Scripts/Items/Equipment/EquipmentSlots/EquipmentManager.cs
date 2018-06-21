@@ -23,13 +23,6 @@ public class EquipmentManager : MonoBehaviour {
 
     private Inventory inv;
 
-    private void Awake()
-    {
-        //moved to awake to ensure it loaded before Loadout tries to equip items
-        //int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
-        //currentEquipment = new Equipment[numSlots];
-    }
-
     private void Start ()
     {
         inv = InventoryManager.GetInstance().GetInventory();
