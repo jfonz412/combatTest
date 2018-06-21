@@ -2,7 +2,7 @@
 
 public class Loadout : MonoBehaviour {
     [SerializeField]
-    private Equipment[] loadout = new Equipment[6]; //num of equipslots 
+    private Equipment[] loadout = new Equipment[7]; //num of equipslots 
 
     //called on load for NPCs, called if no save data is found for player to load default equipment
     public void EquipLoadout()

@@ -79,6 +79,22 @@ public class Equipment : Item {
             return 0f;
         }
     }
+
+    public EquipmentInfo GetEquipmentInfo()
+    {
+        EquipmentInfo info = new EquipmentInfo();
+        info.filePath = GetResourcePath();
+        info.slot = equipSlot;
+
+        return info;
+    }
 }
 
-public enum EquipmentSlot { Head, Chest, Legs, MainHand, OffHand, Feet }
+[System.Serializable]
+public struct EquipmentInfo
+{
+    public EquipmentSlot slot;
+    public string filePath;
+}
+
+public enum EquipmentSlot { Head, Chest, Hands, Legs, MainHand, OffHand, Feet }

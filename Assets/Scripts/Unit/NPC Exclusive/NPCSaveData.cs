@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class NPCSaveData : DataController {
     //the components we need to save
     private Health health;
-    private Loadout loadOut;
+    private Loadout loadOut; //just to load npc's default equipment when scene is loaded
     private LoadShop myShop;
     private UnitReactions myAI;
     private BodyParts bodyParts;

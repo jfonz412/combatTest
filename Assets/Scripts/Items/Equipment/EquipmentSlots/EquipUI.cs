@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 
 //only the player uses this class
@@ -6,7 +7,18 @@ public class EquipUI : MonoBehaviour {
 
     public Transform equipParent;
     private EquipmentManager equipmentManager;
+
     private EquipSlot[] slots;
+    private Dictionary<EquipmentSlot, EquipSlot> equipSlots = new Dictionary<EquipmentSlot, EquipSlot>
+    {
+        { EquipmentSlot.Head, null },
+        { EquipmentSlot.Chest, null },
+        { EquipmentSlot.Hands, null },
+        { EquipmentSlot.MainHand, null },
+        { EquipmentSlot.OffHand, null },
+        { EquipmentSlot.Legs, null },
+        { EquipmentSlot.Feet, null }
+    };
 
     private void Start()
     {
@@ -14,30 +26,34 @@ public class EquipUI : MonoBehaviour {
         equipmentManager.onEquipmentChanged += UpdateUI;
 
         slots = equipParent.GetComponentsInChildren<EquipSlot>();
+        Debug.Log("Slots length: " + slots.Length);
         AssignSlotNums();
     }
 
     private void UpdateUI(Equipment oldItem, Equipment newItem)
     {
-        //Debug.Log("Updating " + gameObject + " with " + newItem);
+        Debug.Log("Updating " + gameObject + " with " + newItem);
 
         if (newItem == null)
         {
-            int slotNum = (int)oldItem.equipSlot;
-            slots[slotNum].ClearSlot();
+            EquipmentSlot slot = oldItem.equipSlot;
+            equipSlots[slot].ClearSlot();
         }
         else if(!newItem.naked)
         {
-            int slotNum = (int)newItem.equipSlot;
-            slots[slotNum].AddEquipment(equipmentManager.EquipmentFromSlot(slotNum));
+            EquipmentSlot slot = newItem.equipSlot;
+            equipSlots[slot].AddEquipment(equipmentManager.EquipmentFromSlot(slot));
         }     
     }
 
     private void AssignSlotNums()
     {
-        for (int i = 0; i < slots.Length; i++)
-        {
-            slots[i].equipSlot = i;
-        }
+         equipSlots[EquipmentSlot.Head] = slots[0];
+         equipSlots[EquipmentSlot.Chest] = slots[1];
+         equipSlots[EquipmentSlot.Hands] = slots[2];
+         equipSlots[EquipmentSlot.MainHand] = slots[3];
+         equipSlots[EquipmentSlot.OffHand] = slots[4];
+         equipSlots[EquipmentSlot.Legs] = slots[5];
+         equipSlots[EquipmentSlot.Feet] = slots[6];
     }
 }

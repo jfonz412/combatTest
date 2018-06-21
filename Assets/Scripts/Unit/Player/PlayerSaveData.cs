@@ -69,7 +69,7 @@ public class PlayerSaveData : DataController {
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
 
         //data.currentHealth = health.GetCurrentHealth();
-        data.currentEquipment = equipmentManager.GetEquipmentNames();
+        data.currentEquipment = equipmentManager.GetEquipmentInfo();
         data.currentInventory = inventory.GetItemInfo();
         data.currentGold = wallet.GetCurrentBalance();
         data.bodyPartHealth = bodyParts.GetBodyPartHealth();
@@ -101,7 +101,7 @@ public class PlayerSaveData : DataController {
 public class PlayerData : Data
 {
     //public float currentHealth;
-    public string[] currentEquipment;
+    public List<EquipmentInfo> currentEquipment;
     public float currentGold;
     public SavedItem[] currentInventory;
     public SavedPosition currentPosition;

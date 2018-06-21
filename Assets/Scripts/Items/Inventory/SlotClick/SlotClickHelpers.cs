@@ -26,7 +26,7 @@ public class SlotClickHelpers : MonoBehaviour {
     {
         Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");   //or equipment == naked or unarmed?
         Equipment previousItem = slot.equipment;                //save a copy of the slotItem
-        slot.equipmentManager.Unequip((int)previousItem.equipSlot); //unequip item currently in equip slot
+        slot.equipmentManager.Unequip(previousItem.equipSlot); //unequip item currently in equip slot
         mouseSlot.UpdateItem(previousItem);                //place previous item in the mouseSlot (as an item)?
     }
 

@@ -1,12 +1,22 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour {
 
     [HideInInspector]
-    public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead; //only for player if they decide to remove armor?
+    public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead, nakedHands; //only for player if they decide to remove armor?
 
     [SerializeField]
-    private Equipment[] currentEquipment;
+    private Dictionary<EquipmentSlot, Equipment> currentEquipment = new Dictionary<EquipmentSlot, Equipment>
+    {
+        { EquipmentSlot.Head, null },
+        { EquipmentSlot.Chest, null },
+        { EquipmentSlot.Hands, null },
+        { EquipmentSlot.MainHand, null },
+        { EquipmentSlot.OffHand, null },
+        { EquipmentSlot.Legs, null },
+        { EquipmentSlot.Feet, null }
+    };
 
     public delegate void OnEquipmentChanged(Equipment oldItem, Equipment newItem);
     public OnEquipmentChanged onEquipmentChanged;
@@ -16,8 +26,8 @@ public class EquipmentManager : MonoBehaviour {
     private void Awake()
     {
         //moved to awake to ensure it loaded before Loadout tries to equip items
-        int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
-        currentEquipment = new Equipment[numSlots];
+        //int numSlots = System.Enum.GetNames(typeof(EquipmentSlot)).Length;
+        //currentEquipment = new Equipment[numSlots];
     }
 
     private void Start ()
@@ -28,11 +38,11 @@ public class EquipmentManager : MonoBehaviour {
     //Right clicks
     public void FastEquip(Equipment newItem)
     {
-        int slotNum = (int)newItem.equipSlot;
-        Equipment oldItem = currentEquipment[slotNum];
+        EquipmentSlot slot = newItem.equipSlot;
+        Equipment oldItem = currentEquipment[slot];
 
         //also Strips so this comes before Equip
-        Unequip(slotNum);
+        Unequip(slot);
         Equip(newItem);
         inv.Remove(newItem);
 
@@ -43,14 +53,14 @@ public class EquipmentManager : MonoBehaviour {
     //Right clicks
     public void FastUnequip(Equipment item)
     {
-        Unequip((int)item.equipSlot);
+        Unequip(item.equipSlot);
         inv.AddItem(item);
     }
 
     public void Equip (Equipment newItem) {
         Equipment oldItem = null;
-        int slotIndex = (int)newItem.equipSlot;
-        currentEquipment[slotIndex] = newItem;
+        EquipmentSlot slot = newItem.equipSlot;
+        currentEquipment[slot] = newItem;
 
         if (onEquipmentChanged != null)
         {
@@ -59,11 +69,11 @@ public class EquipmentManager : MonoBehaviour {
     }
 
     //may need to check for naked unequip
-    public void Unequip(int slotIndex)
+    public void Unequip(EquipmentSlot slot)
     {
-        if(currentEquipment[slotIndex] != null)
+        if(currentEquipment[slot] != null)
         {
-            Equipment oldItem = currentEquipment[slotIndex];
+            Equipment oldItem = currentEquipment[slot];
 
             Strip(oldItem);
 
@@ -76,73 +86,69 @@ public class EquipmentManager : MonoBehaviour {
 
     void Strip(Equipment oldItem)
     {
-        int slotIndex = (int)oldItem.equipSlot;
-
+        EquipmentSlot slot = oldItem.equipSlot; //relies on the Equipment.EquipmentSlot enum order staying the same
+ 
         switch (oldItem.equipSlot)
         {
             case EquipmentSlot.Head:
-                currentEquipment[slotIndex] = nakedHead;
+                currentEquipment[slot] = nakedHead;
                 break;
             case EquipmentSlot.Chest:
-                currentEquipment[slotIndex] = nakedChest;
+                currentEquipment[slot] = nakedChest;
+                break;
+            case EquipmentSlot.Hands:
+                currentEquipment[slot] = nakedHands;
                 break;
             case EquipmentSlot.MainHand:
-                currentEquipment[slotIndex] = unarmedMain;
+                currentEquipment[slot] = unarmedMain;
                 break;
             case EquipmentSlot.OffHand:
-                currentEquipment[slotIndex] = unarmedOff;
+                currentEquipment[slot] = unarmedOff;
                 break;
             case EquipmentSlot.Legs:
-                currentEquipment[slotIndex] = nakedLegs;
+                currentEquipment[slot] = nakedLegs;
                 break;
             case EquipmentSlot.Feet:
-                currentEquipment[slotIndex] = nakedFeet;
+                currentEquipment[slot] = nakedFeet;
                 break;
             default:
-                currentEquipment[slotIndex] = null;
+                currentEquipment[slot] = null;
                 Debug.LogError("Invalid EquipSlot");
                 break;
         }
         //unitAnim.LoadEquipment((int)oldItem.equipSlot, 0); //adds naked/unarmed to anim slot
     }
 
-    public Equipment EquipmentFromSlot(int slotNum)
+    public Equipment EquipmentFromSlot(EquipmentSlot slot)
     { 
-        if(slotNum != -1)
-        {
-            return currentEquipment[slotNum]; 
-        }
-        else //failsafe, shouldn't happen though
-        {
-            Debug.LogWarning("Unknown equip slot passed from HumanBody");
-            return nakedChest;
-        }
+         return currentEquipment[slot]; 
     }
 
-    public string[] GetEquipmentNames()
+    public List<EquipmentInfo> GetEquipmentInfo()
     {
-        //should be a dictionary so I can store the ID and condition...or a struct that can store all kinds of data
-        string[] equipmentNames = new string[6];
+        List<EquipmentInfo> infoList = new List<EquipmentInfo>();
 
-        for (int i = 0; i < currentEquipment.Length; i++)
+        foreach (KeyValuePair<EquipmentSlot, Equipment> equipment in currentEquipment)
         {
-            equipmentNames[i] = currentEquipment[i].GetResourcePath();
+            Debug.Log(equipment.Value);
+            infoList.Add(equipment.Value.GetEquipmentInfo());
         }
 
-        return equipmentNames;
+        return infoList;
     }
 
-    public void LoadSavedEquipment(string[] equipmentNames)
+    public void LoadSavedEquipment(List<EquipmentInfo> savedEquipment)
     {
+        
         Equipment equipment;
 
-        for (int i = 0; i < equipmentNames.Length; i++)
+        for(int i = 0; i < savedEquipment.Count; i++)
         {
-            equipment = Instantiate((Equipment)Resources.Load(equipmentNames[i]));
+            equipment = Instantiate((Equipment)Resources.Load(savedEquipment[i].filePath));
             equipment.Init();
             //equipment.quality = x;
             //equipment.condition = y;
-            if(equipment != null)
+            if (equipment != null)
                 Equip(equipment);
         }
     }

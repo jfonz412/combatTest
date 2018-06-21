@@ -12,7 +12,6 @@ public class AttackController : MonoBehaviour {
     private BodyParts myBody;
     private EquipmentManager equipmentManager;
     public Weapon equippedWeapon;
-    private int weaponIndex = (int)EquipmentSlot.MainHand;
 
     private CombatSkills mySkills;
 
@@ -147,7 +146,7 @@ public class AttackController : MonoBehaviour {
     //Player callback for weapon swaps (called from EquipmentManager)
     private void SwapWeapons(Equipment oldItem, Equipment newItem)
     {
-        equippedWeapon = (Weapon)equipmentManager.EquipmentFromSlot(weaponIndex);
+        equippedWeapon = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.MainHand);
     }
 }
 

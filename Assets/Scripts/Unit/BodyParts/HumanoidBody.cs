@@ -38,13 +38,18 @@ public class HumanoidBody : BodyParts {
     protected override ArmorInfo GetArmorFrom(string bodyPart)
     {
         string[] helmet = { "Head", "Neck" };
-        string[] midsection = { "LeftArm", "RightArm", "LeftHand", "RightHand", "Chest", "Abdomin", };
+        string[] midsection = { "LeftArm", "RightArm", "Chest", "Abdomin", };
+        string[] hands = { "LeftHand", "RightHand" };
         string[] legs = { "LeftLeg", "RightLeg" };
         string[] feet = { "LeftFoot", "RightFoot" }; 
 
         if (ArrayUtility.IndexOf(helmet, bodyPart) >= 0)
         {
             return myArmor[EquipmentSlot.Head];
+        }
+        else if (ArrayUtility.IndexOf(hands, bodyPart) >= 0)
+        {
+            return myArmor[EquipmentSlot.Hands];
         }
         else if (ArrayUtility.IndexOf(midsection, bodyPart) >= 0)
         {
