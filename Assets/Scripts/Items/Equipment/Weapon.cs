@@ -66,15 +66,13 @@ public class Weapon : Equipment {
     public WeaponInfo RequestWeaponInfo()
     {
         WeaponInfo info = new WeaponInfo();
+
         info.weaponType = weaponType;
         info.sharpness = sharpness;
         info.hardnessValue = hardnessValue;
         info.weight = weight;
         info.speed = speed;
-        
-        //skip over naming if not using weapon or amrmor, helps with HumanInjuries.DamageMessage()
-        if(weaponType != WeaponType.Hands)
-            info.name = name;
+        info.name = name;
 
         return info;
     }

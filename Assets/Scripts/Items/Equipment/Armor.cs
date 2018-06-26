@@ -41,9 +41,7 @@ public class Armor : Equipment {
     {
         ArmorInfo info = new ArmorInfo();
 
-        if(material != Material.NA)
-            info.name = name;
-
+        info.name = name;
         info.protectionValue = hardnessValue;
         info.armorType = equipSlot;
         return info;

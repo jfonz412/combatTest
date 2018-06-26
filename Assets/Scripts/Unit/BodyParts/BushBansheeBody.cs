@@ -27,11 +27,6 @@ public class BushBansheeBody : BodyParts
         totalBlood = bodyPartHealth.Sum(x => x.Value);
     }
 
-    protected override void CreateDamageReport(DamageInfo damageInfo)
-    {
-        BushBansheeInjuries.DamageMessage(damageInfo);
-    }
-
     //checks for bodyPart in any of the equipment sections
     protected override ArmorInfo GetArmorFrom(string bodyPart)
     {

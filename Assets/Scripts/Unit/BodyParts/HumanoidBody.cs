@@ -29,11 +29,6 @@ public class HumanoidBody : BodyParts {
         totalBlood = bodyPartHealth.Sum(x => x.Value);
     }
 
-    protected override void CreateDamageReport(DamageInfo damageInfo)
-    {
-        HumanInjuries.DamageMessage(damageInfo);
-    }
-
     //checks for bodyPart in any of the equipment sections
     protected override ArmorInfo GetArmorFrom(string bodyPart)
     {

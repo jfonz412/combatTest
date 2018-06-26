@@ -80,7 +80,7 @@ public class EquipmentManager : MonoBehaviour {
     void Strip(Equipment oldItem)
     {
         EquipmentSlot slot = oldItem.equipSlot; //relies on the Equipment.EquipmentSlot enum order staying the same
-        Equipment e = new Equipment();
+        Equipment e;// = new Equipment();
         switch (oldItem.equipSlot)
         {
             case EquipmentSlot.Head:
@@ -109,6 +109,8 @@ public class EquipmentManager : MonoBehaviour {
                 Debug.LogError("Invalid EquipSlot");
                 break;
         }
+
+        e = Instantiate(e);
         e.Init();
         currentEquipment[slot] = e;
     }

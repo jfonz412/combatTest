@@ -4,7 +4,11 @@ using UnityEngine;
 using System.Linq;
 
 public class BodyParts : MonoBehaviour {
+    public enum BodyType { Human, BushBanshee }
     public enum Parts { Head, Neck, LeftArm, RightArm, LeftHand, RightHand, Chest, Abdomin, LeftLeg, RightLeg, LeftFoot, RightFoot }
+
+    public BodyType bodyType;
+
     protected Dictionary<Parts, float> bodyPartHealth;
     protected Parts vitalPart; //if this is destroyed, unit is killed. Should make this an array eventually
 
@@ -121,7 +125,7 @@ public class BodyParts : MonoBehaviour {
 
         damageInfo.severityID = severityID;
         FloatingTextController.CreateFloatingText("Hit", transform, color);
-        CreateDamageReport(damageInfo);
+        Injuries.DamageMessage(damageInfo);
         DamageBodyPart(damageInfo.bodyPart, damage);
 
         if (!Killed())
@@ -132,11 +136,6 @@ public class BodyParts : MonoBehaviour {
         {
             TriggerDeath();
         }
-    }
-
-    protected virtual void CreateDamageReport(DamageInfo damageInfo)
-    {
-
     }
 
     protected void DamageBodyPart(Parts bodyPart, float damage)
@@ -227,11 +226,11 @@ public class BodyParts : MonoBehaviour {
 
         if (recievedAttack.weapon.sharpness > .60f)
         {
-            damageInfo.attackType = "Penetration";
+            damageInfo.damageType = Injuries.DamageType.Penetration;
         }
         else
         {
-            damageInfo.attackType = "Impact";
+            damageInfo.damageType = Injuries.DamageType.Impact;
         }
 
         //crit hit
@@ -250,6 +249,7 @@ public class BodyParts : MonoBehaviour {
             damageInfo.damageDealt = enemyAttack - myDefense;
         }
 
+        damageInfo.bodyType = bodyType;
         damageInfo.bodyPart = bodyPart;
         damageInfo.armorName = armor.name;
         damageInfo.weaponName = recievedAttack.weapon.name;
@@ -265,7 +265,7 @@ public class BodyParts : MonoBehaviour {
         return new ArmorInfo();
     }
 
-    //does not guaruntee we will pick the correct part because Dictionaries are arbitrarilly ordered
+    //picks a random part out of bodyPartHealth
     protected Parts GetRandomPart()
     {
         int n = Random.Range(0, bodyPartHealth.Count);
@@ -305,8 +305,9 @@ public class BodyParts : MonoBehaviour {
         public string victimName;
         public float damageDealt;
         public int severityID;
-        public string attackType;
+        public Injuries.DamageType damageType;
         public Parts bodyPart;
+        public BodyType bodyType;
     }
 
     public void LoadBodyPartHealth(Dictionary<Parts, float> savedBodyPartHealth)

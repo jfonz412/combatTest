@@ -8,7 +8,25 @@ public class BushBansheeInjuries : MonoBehaviour {
       {"LeftArm", "RightArm",
       "LHand", "RHand", "Thorax", "Abdomin",
       "LeftLeg", "RightLeg", "LeftFoot", "RightFoot" }
-      */
+    */
+
+    //should make this inheritable for all injury lists??? this is the same as HumanInjuries
+    public static Dictionary<BodyParts.Parts, string> GetInjuryList(Injuries.DamageType damageType, int severityID)
+    {
+        if (damageType == Injuries.DamageType.Impact)
+        {
+            return impactInjuries[severityID];
+        }
+        else if (damageType == Injuries.DamageType.Penetration)
+        {
+            return penetrationInjuries[severityID];
+        }
+        else
+        {
+            Debug.LogError("Invalid damage type");
+            return new Dictionary<BodyParts.Parts, string>();
+        }
+    }
 
     private static Dictionary<BodyParts.Parts, string>[] penetrationInjuries = new Dictionary<BodyParts.Parts, string>[] {
         //PENETRATION
@@ -174,7 +192,7 @@ public class BushBansheeInjuries : MonoBehaviour {
         },
     };
 
-
+    /*
     public static void DamageMessage(BodyParts.DamageInfo damageInfo)
     {
         string armor = damageInfo.armorName;
@@ -206,4 +224,5 @@ public class BushBansheeInjuries : MonoBehaviour {
         string line = string.Format(injuryList[bodypart], myName, weapon, armor);
         BattleReport.AddToBattleReport(line);
     }
+    */
 }

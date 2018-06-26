@@ -5,10 +5,28 @@ using UnityEngine;
 public class HumanInjuries : MonoBehaviour {
 
     /*
-    {"Head", "Neck", "LeftArm", "RightArm",
-    "LHand", "RHand", "Thorax", "Abdomin",
-    "LeftLeg", "RightLeg", "LFoot", "RFoot" }
+        {"Head", "Neck", "LeftArm", "RightArm",
+        "LHand", "RHand", "Thorax", "Abdomin",
+        "LeftLeg", "RightLeg", "LFoot", "RFoot" }
     */
+    
+    //should make this inheritable for all injury lists??? this is the same as BushBansheeInjuries
+    public static Dictionary<BodyParts.Parts, string> GetInjuryList(Injuries.DamageType damageType, int severityID)
+    {
+        if(damageType == Injuries.DamageType.Impact)
+        {
+            return impactInjuries[severityID];
+        }
+        else if (damageType == Injuries.DamageType.Penetration)
+        {
+            return penetrationInjuries[severityID];
+        }
+        else
+        {
+            Debug.LogError("Invalid damage type");
+            return new Dictionary<BodyParts.Parts, string>();
+        }
+    }
 
     private static Dictionary<BodyParts.Parts, string>[] penetrationInjuries = new Dictionary<BodyParts.Parts, string>[] {
         //PENETRATION
@@ -199,7 +217,7 @@ public class HumanInjuries : MonoBehaviour {
         },
     };
 
-
+    /*
     public static void DamageMessage(BodyParts.DamageInfo damageInfo)
     {
         string armor = damageInfo.armorName;
@@ -230,4 +248,5 @@ public class HumanInjuries : MonoBehaviour {
         string line = string.Format(injuryList[bodypart], myName, weapon, armor);
         BattleReport.AddToBattleReport(line);
     }
+    */
 }
