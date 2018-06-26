@@ -41,7 +41,6 @@ public class BattleReport : MonoBehaviour {
         if(lineCount >= 7 && scrollRect.verticalNormalizedPosition > 0)
         {
             scrollRect.verticalNormalizedPosition -= .05f;
-            Debug.Log(scrollRect.verticalNormalizedPosition);
         }
         else if (scrollRect.verticalNormalizedPosition <= 0)
         {

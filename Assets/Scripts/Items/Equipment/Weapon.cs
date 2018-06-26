@@ -4,7 +4,7 @@
 public class Weapon : Equipment {
 
     #region Stats
-    public enum WeaponType { Dagger, Spear, Axe, Pick, Hands };
+    public enum WeaponType { Dagger, Spear, Axe, Pick, Hands, Offhand };
     public WeaponType weaponType;
 
     public enum ToolType { Pick, Axe, NA };

@@ -32,8 +32,6 @@ public class EquipUI : MonoBehaviour {
 
     private void UpdateUI(Equipment oldItem, Equipment newItem)
     {
-        Debug.Log("Updating " + gameObject + " with " + newItem);
-
         if (newItem == null)
         {
             EquipmentSlot slot = oldItem.equipSlot;

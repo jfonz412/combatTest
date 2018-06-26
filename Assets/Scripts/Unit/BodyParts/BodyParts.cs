@@ -235,7 +235,7 @@ public class BodyParts : MonoBehaviour {
         }
 
         //crit hit
-        if (Random.Range(0, 1) <= recievedAttack.skill)
+        if (Random.Range(0, 100) <= recievedAttack.skill)
         {
             string line = "<color=yellow>" + recievedAttack.attackerName + " skillfully lands a critical hit with their " + recievedAttack.weapon.name + "!</color>";
             Color color = new Color(0.2F, 0.3F, 0.4F);

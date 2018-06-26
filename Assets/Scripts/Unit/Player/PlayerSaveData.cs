@@ -34,6 +34,7 @@ public class PlayerSaveData : DataController {
         return fileName;
     }
 
+    //we attempt to load temp data first, because temp data is deleted after a manual save
     public override void LoadData()
     {
         base.LoadData();

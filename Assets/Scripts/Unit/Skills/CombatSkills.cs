@@ -6,6 +6,8 @@ public class CombatSkills : MonoBehaviour {
     public float speed = 2; //TEMPORARY
 
     protected BodyParts body;
+    protected EquipmentManager equipmentManager;
+    protected WeaponInfo equippedOffHand;
 
     protected Dictionary<Weapon.WeaponType, int> myWeaponSkillLevels; //will be overwritted by inherited classes
     protected Dictionary<Weapon.WeaponType, float> myWeaponSkillExperience; //will be overwritted by inherited classes
@@ -39,6 +41,8 @@ public class CombatSkills : MonoBehaviour {
     protected virtual void Start()
     {
         body = GetComponent<BodyParts>();
+        equipmentManager = GetComponent<EquipmentManager>();
+        equipmentManager.onEquipmentChanged += SwapOffHand;
     }
 
     void Update()
@@ -100,9 +104,15 @@ public class CombatSkills : MonoBehaviour {
     public AttackReactionSkills GetAttackReactionSkills()
     {
         AttackReactionSkills a = new AttackReactionSkills();
-        a.block = mySkillLevels[CombatSkill.Block];
-        a.dodge = mySkillLevels[CombatSkill.Dodge];
-        a.parry = mySkillLevels[CombatSkill.Parry];
+
+        float blockMod = 0f;
+        if (equippedOffHand.name != null)
+            blockMod = equippedOffHand.hardnessValue;
+
+
+        a.block = mySkillLevels[CombatSkill.Block] + blockMod;
+        a.dodge = mySkillLevels[CombatSkill.Dodge] - blockMod/2f;
+        a.parry = mySkillLevels[CombatSkill.Parry] - blockMod/2f;
         a.will  = mySkillLevels[CombatSkill.Willpower];
         return a;
     }
@@ -153,6 +163,22 @@ public class CombatSkills : MonoBehaviour {
         myWeaponSkillExperience = savedExperience;
     }
     #endregion
+
+    //Player callback for weapon swaps (called from EquipmentManager)
+    private void SwapOffHand(Equipment oldItem, Equipment newItem)
+    {
+        Weapon w = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.OffHand);
+        if(w == null)
+        {
+            Debug.Log("w is null");
+            equippedOffHand = new WeaponInfo(); //clear the equipped offhand
+        }
+        else
+        {
+            equippedOffHand = w.RequestWeaponInfo();
+            Debug.Log("w is NOT null " + equippedOffHand.hardnessValue);
+        }
+    }
 }
 
 public struct AttackInfo

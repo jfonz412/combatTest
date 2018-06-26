@@ -80,36 +80,37 @@ public class EquipmentManager : MonoBehaviour {
     void Strip(Equipment oldItem)
     {
         EquipmentSlot slot = oldItem.equipSlot; //relies on the Equipment.EquipmentSlot enum order staying the same
- 
+        Equipment e = new Equipment();
         switch (oldItem.equipSlot)
         {
             case EquipmentSlot.Head:
-                currentEquipment[slot] = nakedHead;
+                e = nakedHead;
                 break;
             case EquipmentSlot.Chest:
-                currentEquipment[slot] = nakedChest;
+                e = nakedChest;
                 break;
             case EquipmentSlot.Hands:
-                currentEquipment[slot] = nakedHands;
+                e = nakedHands;
                 break;
             case EquipmentSlot.MainHand:
-                currentEquipment[slot] = unarmedMain;
+                e = unarmedMain;
                 break;
             case EquipmentSlot.OffHand:
-                currentEquipment[slot] = unarmedOff;
+                e = unarmedOff;
                 break;
             case EquipmentSlot.Legs:
-                currentEquipment[slot] = nakedLegs;
+                e = nakedLegs;
                 break;
             case EquipmentSlot.Feet:
-                currentEquipment[slot] = nakedFeet;
+                e = nakedFeet;
                 break;
             default:
-                currentEquipment[slot] = null;
+                e = null;
                 Debug.LogError("Invalid EquipSlot");
                 break;
         }
-        //unitAnim.LoadEquipment((int)oldItem.equipSlot, 0); //adds naked/unarmed to anim slot
+        e.Init();
+        currentEquipment[slot] = e;
     }
 
     public Equipment EquipmentFromSlot(EquipmentSlot slot)

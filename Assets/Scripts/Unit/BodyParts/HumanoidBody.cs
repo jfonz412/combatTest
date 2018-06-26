@@ -37,6 +37,7 @@ public class HumanoidBody : BodyParts {
     //checks for bodyPart in any of the equipment sections
     protected override ArmorInfo GetArmorFrom(string bodyPart)
     {
+        Debug.Log(gameObject + " " + bodyPart);
         string[] helmet = { "Head", "Neck" };
         string[] midsection = { "LeftArm", "RightArm", "Chest", "Abdomin", };
         string[] hands = { "LeftHand", "RightHand" };
