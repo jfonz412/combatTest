@@ -75,7 +75,11 @@ public class AttackController : MonoBehaviour {
             else
             {
                 Attack(targetTransform);
-                yield return new WaitForSeconds(attackTimer.Timer());
+                while(attackTimer.Timer() > 0f)
+                {
+                    yield return null;
+                }
+
             }
             yield return null;
         }
@@ -102,12 +106,7 @@ public class AttackController : MonoBehaviour {
 
         AttackAnimation(targetTransform);
 
-        /*
-        float damage = DamageCalculator.CalculateDamageDealt(myStats.baseAttack, equippedWeapon.totalAttack);
-        targetHealth.TakeDamage(damage, transform);
-        */
-
-        AttackInfo myAttack = mySkills.RequestAttackInfo(equippedWeapon); //experience gain is taken care of here
+        AttackInfo myAttack = mySkills.RequestAttackInfo(equippedWeapon); 
         targetBody.RecieveAttack(myAttack, transform);
 
         attackTimer.ResetAttackTimer(myAttack.speed);

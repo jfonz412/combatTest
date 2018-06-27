@@ -4,10 +4,12 @@ using UnityEngine;
 public class AttackTimer : MonoBehaviour {
 
     private float timeUntilNextAttack = 0;
+    private IEnumerator currentTimer;
 	
     public void ResetAttackTimer(float cooldownTime) //aka weapon speed
     {
-        StartCoroutine(BeginCountdown(cooldownTime));
+        currentTimer = BeginCountdown(cooldownTime);
+        StartCoroutine(currentTimer);
     }
 
     private IEnumerator BeginCountdown(float cooldownTime)
@@ -24,5 +26,15 @@ public class AttackTimer : MonoBehaviour {
     public float Timer()
     {
         return timeUntilNextAttack;
+    }
+
+    public void ParryTriggered()
+    {
+        if (currentTimer != null)
+        {
+            StopCoroutine(currentTimer);
+        }
+
+        timeUntilNextAttack = 0f;
     }
 }

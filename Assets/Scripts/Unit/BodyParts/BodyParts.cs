@@ -193,6 +193,7 @@ public class BodyParts : MonoBehaviour {
         {
             string line = "<color=green>" + gameObject.name + " parried the attack!</color>";
             FloatingTextController.CreateFloatingText("Parry", transform, Color.green);
+            mySkills.ExperienceGain(CombatSkills.CombatSkill.Dodge, 50f);
             BattleReport.AddToBattleReport(line);
             return false;
         }
@@ -200,6 +201,7 @@ public class BodyParts : MonoBehaviour {
         {
             string line = "<color=yellow>" + gameObject.name + " blocked the attack!</color>";
             FloatingTextController.CreateFloatingText("Block", transform, Color.blue);
+            mySkills.ExperienceGain(CombatSkills.CombatSkill.Block, 50f);
             BattleReport.AddToBattleReport(line);
             return false;
         }
@@ -207,6 +209,8 @@ public class BodyParts : MonoBehaviour {
         {
             string line = "<color=yellow>" + gameObject.name + " parried the attack!</color>";
             FloatingTextController.CreateFloatingText("Parry", transform, Color.yellow);
+            mySkills.ExperienceGain(CombatSkills.CombatSkill.Parry, 50f);
+            GetComponent<AttackTimer>().ResetAttackTimer(0f);
             BattleReport.AddToBattleReport(line);
             return false;
         }

@@ -17,10 +17,10 @@ public class CombatSkills : MonoBehaviour {
     private Dictionary<CombatSkill, int> mySkillLevels = 
         new Dictionary<CombatSkill, int>()
         {
-            { CombatSkill.Agility, 0 },
+            { CombatSkill.Agility, 0 }, //don't think agility, willpower are used right now
             { CombatSkill.Block, 0 },
             { CombatSkill.Dodge, 0 },
-            { CombatSkill.Parry, 0 },
+            { CombatSkill.Parry, 0 }, 
             { CombatSkill.Strength, 0 },
             { CombatSkill.Willpower, 0 }
         };
