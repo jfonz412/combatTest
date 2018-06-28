@@ -1,31 +1,60 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CombatSkills : MonoBehaviour {
     public float speed = 2; //TEMPORARY
 
-    protected BodyParts body;
-    protected EquipmentManager equipmentManager;
-    protected WeaponInfo equippedOffHand;
+    private BodyParts body;
+    private EquipmentManager equipmentManager;
+    private WeaponInfo equippedOffHand;
 
-    protected Dictionary<Weapon.WeaponType, int> myWeaponSkillLevels; //will be overwritted by inherited classes
-    protected Dictionary<Weapon.WeaponType, float> myWeaponSkillExperience; //will be overwritted by inherited classes
+    //this will be used to set the stats
+    [SerializeField]
+    private List<Weapon.WeaponType> defaultWeapons = new List<Weapon.WeaponType>();
+    [SerializeField]
+    private List<int> defaultWeaponStats = new List<int>();
+    [SerializeField]
+    private List<CombatSkill> defaultSkills = new List<CombatSkill>();
+    [SerializeField]
+    private List<int> defaultSkillStats = new List<int>();
+
+    #region Skills
+
+    private Dictionary<Weapon.WeaponType, int> myWeaponSkillLevels = new Dictionary<Weapon.WeaponType, int>()
+        {
+            { Weapon.WeaponType.Axe, 0 },
+            { Weapon.WeaponType.Dagger, 0 },
+            { Weapon.WeaponType.Hands, 0 },
+            { Weapon.WeaponType.Pick, 0 },
+            { Weapon.WeaponType.Spear, 0 },
+            { Weapon.WeaponType.NHC_Main, 0 },
+            { Weapon.WeaponType.NHC_Off, 0 }
+        };
+
+    private Dictionary<Weapon.WeaponType, float> myWeaponSkillExperience = new Dictionary<Weapon.WeaponType, float>()
+        {
+            { Weapon.WeaponType.Axe, 0f },
+            { Weapon.WeaponType.Dagger, 0f },
+            { Weapon.WeaponType.Hands, 0f },
+            { Weapon.WeaponType.Pick, 0f },
+            { Weapon.WeaponType.Spear, 0f },
+            { Weapon.WeaponType.NHC_Main, 0f },
+            { Weapon.WeaponType.NHC_Off, 0f },
+        };
 
     public enum CombatSkill { Block, Parry, Dodge, Strength, Agility, Willpower }
 
-    private Dictionary<CombatSkill, int> mySkillLevels = 
-        new Dictionary<CombatSkill, int>()
+    private Dictionary<CombatSkill, int> mySkillLevels = new Dictionary<CombatSkill, int>()
         {
             { CombatSkill.Agility, 0 }, //don't think agility, willpower are used right now
             { CombatSkill.Block, 0 },
             { CombatSkill.Dodge, 0 },
             { CombatSkill.Parry, 0 }, 
-            { CombatSkill.Strength, 25 },
+            { CombatSkill.Strength, 0 },
             { CombatSkill.Willpower, 0 }
         };
-    private Dictionary<CombatSkill, float> mySkillExperience =
-        new Dictionary<CombatSkill, float>()
+
+    private Dictionary<CombatSkill, float> mySkillExperience = new Dictionary<CombatSkill, float>()
         {
             { CombatSkill.Agility, 0f },
             { CombatSkill.Block, 0f },
@@ -37,8 +66,14 @@ public class CombatSkills : MonoBehaviour {
 
     public delegate void OnSkillGained();
     public OnSkillGained onSkillGained;
+#endregion
 
-    protected virtual void Start()
+    private void Awake()
+    {
+        LoadDefaultSkills();
+    }
+
+    private void Start()
     {
         body = GetComponent<BodyParts>();
         equipmentManager = GetComponent<EquipmentManager>();
@@ -47,13 +82,13 @@ public class CombatSkills : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log(myWeaponSkillLevels[Weapon.WeaponType.Spear]);
+            Debug.Log("Hands skill is " + myWeaponSkillLevels[Weapon.WeaponType.Hands] + " for " + gameObject.name);
         }
     }
 
-    public virtual AttackInfo RequestAttackInfo(Weapon currentWeapon)
+    public AttackInfo RequestAttackInfo(Weapon currentWeapon)
     {
         AttackInfo info = new AttackInfo();
         WeaponInfo weapon = currentWeapon.RequestWeaponInfo();
@@ -82,7 +117,7 @@ public class CombatSkills : MonoBehaviour {
     }
 
     //this will only happen here
-    protected void WeaponExperienceGain(Weapon.WeaponType weapon, float experience)
+    private void WeaponExperienceGain(Weapon.WeaponType weapon, float experience)
     {
         myWeaponSkillExperience[weapon] += experience;
         if (myWeaponSkillExperience[weapon] >= (100 * myWeaponSkillLevels[weapon]))
@@ -94,7 +129,7 @@ public class CombatSkills : MonoBehaviour {
         }
     }
 
-    protected virtual float GetWeaponSkill(Weapon.WeaponType weaponType)
+    private float GetWeaponSkill(Weapon.WeaponType weaponType)
     {
         //Debug.Log(body.OverallHealth() + " * " + myWeaponSkillLevels[weaponType] + " = " + body.OverallHealth() * myWeaponSkillLevels[weaponType]);
         return body.OverallHealth() * myWeaponSkillLevels[weaponType];
@@ -175,6 +210,19 @@ public class CombatSkills : MonoBehaviour {
         else
         {
             equippedOffHand = w.RequestWeaponInfo();
+        }
+    }
+
+    private void LoadDefaultSkills()
+    {
+        for(int i = 0; i < defaultWeapons.Count; i++)
+        {
+            myWeaponSkillLevels[defaultWeapons[i]] = defaultWeaponStats[i];
+        }
+
+        for (int i = 0; i < defaultSkills.Count; i++)
+        {
+            mySkillLevels[defaultSkills[i]] = defaultSkillStats[i];
         }
     }
 }
