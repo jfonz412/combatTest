@@ -6,25 +6,29 @@ public class ExitScene : MonoBehaviour
     private string sceneToLoad;
     [SerializeField]
     private Vector3 playerSpawnPoint;
+    private Transform player;
 
     private void Start()
     {
         ApplicationManager app = ApplicationManager.GetInstance();
         DataManager dm = app.GetDataManager();
         dm.SaveCurrentScene();
+        player = ScriptToolbox.GetInstance().GetPlayerManager().player.transform;
     }
 
-    private void OnTriggerEnter2D()
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if(sceneToLoad == null || sceneToLoad == "")
+        if(col.transform == player)
         {
-            return;
+            if (sceneToLoad == null || sceneToLoad == "")
+            {
+                return;
+            }
+            else
+            {
+                LoadScene();
+            }
         }
-        else
-        {
-            LoadScene();
-        }
-
     }
 
     private void LoadScene()
@@ -37,11 +41,12 @@ public class ExitScene : MonoBehaviour
         app.GetLevelManager().LoadScene(sceneToLoad);
     }
 
+    //places player in proper position for the level they are about to enter
     private void PositionPlayer()
     {
-        Transform player = ScriptToolbox.GetInstance().GetPlayerManager().player.transform;
-
         player.position = playerSpawnPoint;
         Debug.Log("Player set to spawn at: " + playerSpawnPoint.x + ", " + playerSpawnPoint.y);
+
+        //player.spawncompanions() //will spawn based on players pos
     }
 }

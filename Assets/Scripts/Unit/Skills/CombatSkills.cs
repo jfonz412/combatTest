@@ -24,6 +24,7 @@ public class CombatSkills : MonoBehaviour {
             { Weapon.WeaponType.Axe, 0 },
             { Weapon.WeaponType.Dagger, 0 },
             { Weapon.WeaponType.Hands, 0 },
+            { Weapon.WeaponType.Offhand, 0 },
             { Weapon.WeaponType.Pick, 0 },
             { Weapon.WeaponType.Spear, 0 },
             { Weapon.WeaponType.NHC_Main, 0 },
@@ -35,6 +36,7 @@ public class CombatSkills : MonoBehaviour {
             { Weapon.WeaponType.Axe, 0f },
             { Weapon.WeaponType.Dagger, 0f },
             { Weapon.WeaponType.Hands, 0f },
+            { Weapon.WeaponType.Offhand, 0f },
             { Weapon.WeaponType.Pick, 0f },
             { Weapon.WeaponType.Spear, 0f },
             { Weapon.WeaponType.NHC_Main, 0f },
@@ -79,21 +81,10 @@ public class CombatSkills : MonoBehaviour {
         body = GetComponent<BodyParts>();
         equipmentManager = GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += SwapOffHand;
-
-
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log("Hands skill is " + myWeaponSkillLevels[Weapon.WeaponType.Hands] + " for " + gameObject.name);
-        }
     }
 
     public float GetCurrentMoveSpeed()
     {
-        Debug.Log("bodyhealth is: " + body.OverallHealth());
         return mySkillLevels[CombatSkill.Speed] * body.OverallHealth();
     }
 
@@ -128,6 +119,7 @@ public class CombatSkills : MonoBehaviour {
     //this will only happen here
     private void WeaponExperienceGain(Weapon.WeaponType weapon, float experience)
     {
+        Debug.Log("entered weapon experience gain for " + gameObject.name + "'s " + weapon);
         myWeaponSkillExperience[weapon] += experience;
         if (myWeaponSkillExperience[weapon] >= (100 * myWeaponSkillLevels[weapon]))
         {
@@ -159,6 +151,19 @@ public class CombatSkills : MonoBehaviour {
         a.parry = mySkillLevels[CombatSkill.Parry] - blockMod/2f;
         a.will  = mySkillLevels[CombatSkill.Willpower];
         return a;
+    }
+
+    private void LoadDefaultSkills()
+    {
+        for (int i = 0; i < defaultWeapons.Count; i++)
+        {
+            myWeaponSkillLevels[defaultWeapons[i]] = defaultWeaponStats[i];
+        }
+
+        for (int i = 0; i < defaultSkills.Count; i++)
+        {
+            mySkillLevels[defaultSkills[i]] = defaultSkillStats[i];
+        }
     }
 
     #region Saving and Loading
@@ -222,18 +227,6 @@ public class CombatSkills : MonoBehaviour {
         }
     }
 
-    private void LoadDefaultSkills()
-    {
-        for(int i = 0; i < defaultWeapons.Count; i++)
-        {
-            myWeaponSkillLevels[defaultWeapons[i]] = defaultWeaponStats[i];
-        }
-
-        for (int i = 0; i < defaultSkills.Count; i++)
-        {
-            mySkillLevels[defaultSkills[i]] = defaultSkillStats[i];
-        }
-    }
 }
 
 public struct AttackInfo

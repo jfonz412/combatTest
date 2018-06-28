@@ -134,7 +134,7 @@ public class BodyParts : MonoBehaviour {
         }
         else
         {
-            TriggerDeath();
+            TriggerDeath(); //this could be triggered while bleeding out wich will also trigger death resulting in multiple orbs
         }
     }
 
@@ -145,7 +145,7 @@ public class BodyParts : MonoBehaviour {
         if (bodyPartHealth[bodyPart] < 0f)
             bodyPartHealth[bodyPart] = 0f;
 
-        Debug.Log(bodyPart + "health is " + bodyPartHealth[bodyPart] + " for " + gameObject.name);
+        //Debug.Log(bodyPart + "health is " + bodyPartHealth[bodyPart] + " for " + gameObject.name);
     }
 
     protected void CheckForStatusChange()
@@ -167,10 +167,9 @@ public class BodyParts : MonoBehaviour {
             yield return new WaitForSeconds(1f);
         }
 
-        if (VitalPartInjured(vitalParts)) 
+        if (totalBlood <= 0 ) 
         {
             TriggerDeath();
-            StopAllCoroutines(); //is calling this after triggering death a problem?
         }
         yield break;
     }
@@ -271,7 +270,6 @@ public class BodyParts : MonoBehaviour {
     public virtual float OverallHealth()
     {
         //gives us a precentage to multiply skills by to get their current effectiveness
-        Debug.Log(bodyPartHealth.Sum(x => x.Value));
         return (bodyPartHealth.Sum(x => x.Value) / bodyPartHealth.Count) * 0.01f;
     }
 
@@ -284,7 +282,7 @@ public class BodyParts : MonoBehaviour {
     {
         //this method alerts others, and since this unit is dead UnitReactionManager should skip over it
         //unitReactions.ReactToAttackAgainstSelf(myAttacker); //might not neec this because unit is alerted with each hit even if 1hko
-
+        StopAllCoroutines(); 
         unitReactions.isDead = true; //stop reacting
         deathController.Die();
     }
@@ -306,9 +304,7 @@ public class BodyParts : MonoBehaviour {
     public void LoadBodyPartHealth(Dictionary<Parts, float> savedBodyPartHealth)
     {
         bodyPartHealth = savedBodyPartHealth;
-        Debug.Log("Neck is "+ bodyPartHealth[Parts.Neck] + " for " + gameObject.name);
         totalBlood = bodyPartHealth.Sum(x => x.Value);
-        Debug.Log("Loaded blood = " + totalBlood + " for " + gameObject.name);
     }
 
     public Dictionary<Parts, float> GetBodyPartHealth()

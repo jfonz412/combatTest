@@ -8,7 +8,7 @@ public class EquipSlot : InventorySlot {
     [HideInInspector]
     public Equipment equipment;
 
-    public int equipSlot;
+    public EquipmentSlot slotType;
 
     void Start()
     {

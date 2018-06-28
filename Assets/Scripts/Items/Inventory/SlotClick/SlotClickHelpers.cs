@@ -35,7 +35,7 @@ public class SlotClickHelpers : MonoBehaviour {
         Equipment mouseItem = mouseSlot.currentItem as Equipment;
 
         //make sure equipment would be going in the correct slot
-        if (!CheckEquipSlot((int)mouseItem.equipSlot, slot))
+        if (!CheckEquipSlot(mouseItem.equipSlot, slot))
         {
             return;
         }
@@ -50,7 +50,7 @@ public class SlotClickHelpers : MonoBehaviour {
         Equipment mouseItem = mouseSlot.currentItem as Equipment;
 
         //make sure equipment would be going in the correct slot
-        if (!CheckEquipSlot((int)mouseItem.equipSlot, slot))
+        if (!CheckEquipSlot(mouseItem.equipSlot, slot))
         {
             return;
         }
@@ -84,11 +84,11 @@ public class SlotClickHelpers : MonoBehaviour {
         }
     }
 
-    bool CheckEquipSlot(int mouseItemEquipSlot, EquipSlot slot)
+    bool CheckEquipSlot(EquipmentSlot mouseItemEquipSlot, EquipSlot slot)
     {
-        if (mouseItemEquipSlot != slot.equipSlot)
+        if (mouseItemEquipSlot != slot.slotType)
         {
-            Debug.Log("WRONG EQUIP SLOT");
+            Debug.Log("WRONG EQUIP SLOT: " + slot.slotType + " looking for " + mouseItemEquipSlot);
             return false;
         }
         else

@@ -112,12 +112,12 @@ public class AttackController : MonoBehaviour {
         if (Random.Range(0, 100) <= 75)
         {
             myAttack = mySkills.RequestAttackInfo(mainHand);
-            Debug.Log("MAIN HAND");
+            Debug.Log(gameObject.name + "MAIN HAND");
         }
         else
         {
             myAttack = mySkills.RequestAttackInfo(offHand);
-            Debug.Log("OFF HAND");
+            Debug.Log(gameObject.name + " OFF HAND");
         }
 
         targetBody.RecieveAttack(myAttack, transform);

@@ -26,7 +26,6 @@ public class EquipUI : MonoBehaviour {
         equipmentManager.onEquipmentChanged += UpdateUI;
 
         slots = equipParent.GetComponentsInChildren<EquipSlot>();
-        Debug.Log("Slots length: " + slots.Length);
         AssignSlotNums();
     }
 
@@ -44,9 +43,10 @@ public class EquipUI : MonoBehaviour {
         }     
     }
 
+    //bad coding here, but this script is only used by the player right now
     private void AssignSlotNums()
     {
-         equipSlots[EquipmentSlot.Head] = slots[0];
+         equipSlots[EquipmentSlot.Head] = slots[0]; 
          equipSlots[EquipmentSlot.Chest] = slots[1];
          equipSlots[EquipmentSlot.Hands] = slots[2];
          equipSlots[EquipmentSlot.MainHand] = slots[3];
