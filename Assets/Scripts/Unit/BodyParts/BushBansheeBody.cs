@@ -8,22 +8,22 @@ public class BushBansheeBody : BodyParts
     protected override void Start()
     {
         base.Start();
+        if (bodyPartHealth == null)
+            bodyPartHealth = new Dictionary<Parts, float>()
+            {
+                { Parts.LeftArm, 100f },
+                { Parts.RightArm, 100f },
+                { Parts.LeftHand, 100f },
+                { Parts.RightHand, 100f },
+                { Parts.Chest, 100f },
+                { Parts.Abdomin, 100f },
+                { Parts.LeftLeg, 100f },
+                { Parts.RightLeg, 100f },
+                { Parts.LeftFoot, 100f },
+                { Parts.RightFoot, 100f },
+            };
 
-        bodyPartHealth = new Dictionary<Parts, float>()
-        {
-            { Parts.LeftArm, 100f },
-            { Parts.RightArm, 100f },
-            { Parts.LeftHand, 100f },
-            { Parts.RightHand, 100f },
-            { Parts.Chest, 100f },
-            { Parts.Abdomin, 100f },
-            { Parts.LeftLeg, 100f },
-            { Parts.RightLeg, 100f },
-            { Parts.LeftFoot, 100f },
-            { Parts.RightFoot, 100f },
-        };
-
-        vitalPart = Parts.Chest;
+        vitalParts = new Parts[] { Parts.Abdomin, Parts.Chest };
         totalBlood = bodyPartHealth.Sum(x => x.Value);
     }
 

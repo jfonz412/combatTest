@@ -126,7 +126,6 @@ public class EquipmentManager : MonoBehaviour {
 
         foreach (KeyValuePair<EquipmentSlot, Equipment> equipment in currentEquipment)
         {
-            Debug.Log(equipment.Value);
             infoList.Add(equipment.Value.GetEquipmentInfo());
         }
 

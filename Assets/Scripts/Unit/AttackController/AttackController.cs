@@ -90,7 +90,7 @@ public class AttackController : MonoBehaviour {
     #region Helper Functions
     private void Attack(Transform targetTransform)
     {
-        if (!myBody.CheckBodyParts(bodyPartsNeeded))
+        if (myBody.VitalPartInjured(bodyPartsNeeded))
         {
             string line = "<color=red>" + gameObject.name + " is too injured to attack " + targetTransform.name + "</color>";
             FloatingTextController.CreateFloatingText("Too injured!", transform, Color.red);

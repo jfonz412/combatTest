@@ -3,12 +3,10 @@ using System.Collections;
 
 public class UnitController : MonoBehaviour
 {
-    [HideInInspector]
-    public float baseSpeed; //who needs to see this?
-
     private UnitAnimController anim;
     private Rigidbody2D rb;
     private SpriteRenderer sp;
+    private CombatSkills skills;
 
     private IEnumerator followingPath;
     private Vector3[] path;
@@ -21,7 +19,7 @@ public class UnitController : MonoBehaviour
         anim = GetComponent<UnitAnimController>();
         rb = GetComponent<Rigidbody2D>();
         sp = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        baseSpeed = GetComponent<CombatSkills>().speed; //down the line make this a callback where everytime speed is modified this will update as well
+        skills = GetComponent<CombatSkills>(); //down the line make this a callback where everytime speed is modified this will update as well
         SetDepth();
     }
 
@@ -34,7 +32,8 @@ public class UnitController : MonoBehaviour
     {
         if (pathSuccessful)
         {
-            currentMoveSpeed = baseSpeed;
+            currentMoveSpeed = skills.GetCurrentMoveSpeed();
+            Debug.Log("movespeed is " + currentMoveSpeed);
             targetIndex = 0;
             path = newPath;
 

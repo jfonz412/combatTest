@@ -2,7 +2,6 @@
 using UnityEngine;
 
 public class CombatSkills : MonoBehaviour {
-    public float speed = 2; //TEMPORARY
 
     private BodyParts body;
     private EquipmentManager equipmentManager;
@@ -42,7 +41,7 @@ public class CombatSkills : MonoBehaviour {
             { Weapon.WeaponType.NHC_Off, 0f },
         };
 
-    public enum CombatSkill { Block, Parry, Dodge, Strength, Agility, Willpower }
+    public enum CombatSkill { Block, Parry, Dodge, Strength, Agility, Willpower, Speed }
 
     private Dictionary<CombatSkill, int> mySkillLevels = new Dictionary<CombatSkill, int>()
         {
@@ -51,7 +50,8 @@ public class CombatSkills : MonoBehaviour {
             { CombatSkill.Dodge, 0 },
             { CombatSkill.Parry, 0 }, 
             { CombatSkill.Strength, 0 },
-            { CombatSkill.Willpower, 0 }
+            { CombatSkill.Willpower, 0 },
+            {CombatSkill.Speed, 0 }
         };
 
     private Dictionary<CombatSkill, float> mySkillExperience = new Dictionary<CombatSkill, float>()
@@ -61,7 +61,8 @@ public class CombatSkills : MonoBehaviour {
             { CombatSkill.Dodge, 0f },
             { CombatSkill.Parry, 0f },
             { CombatSkill.Strength, 0f },
-            { CombatSkill.Willpower, 0f }
+            { CombatSkill.Willpower, 0f },
+            { CombatSkill.Speed, 0f }
         };
 
     public delegate void OnSkillGained();
@@ -78,6 +79,8 @@ public class CombatSkills : MonoBehaviour {
         body = GetComponent<BodyParts>();
         equipmentManager = GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += SwapOffHand;
+
+
     }
 
     void Update()
@@ -86,6 +89,12 @@ public class CombatSkills : MonoBehaviour {
         {
             Debug.Log("Hands skill is " + myWeaponSkillLevels[Weapon.WeaponType.Hands] + " for " + gameObject.name);
         }
+    }
+
+    public float GetCurrentMoveSpeed()
+    {
+        Debug.Log("bodyhealth is: " + body.OverallHealth());
+        return mySkillLevels[CombatSkill.Speed] * body.OverallHealth();
     }
 
     public AttackInfo RequestAttackInfo(Weapon currentWeapon)

@@ -10,7 +10,7 @@ public class BodyParts : MonoBehaviour {
     public BodyType bodyType;
 
     protected Dictionary<Parts, float> bodyPartHealth;
-    protected Parts vitalPart; //if this is destroyed, unit is killed. Should make this an array eventually
+    protected Parts[] vitalParts;
 
     protected Dictionary<EquipmentSlot, ArmorInfo> myArmor = new Dictionary<EquipmentSlot, ArmorInfo>();
 
@@ -41,16 +41,16 @@ public class BodyParts : MonoBehaviour {
         UpdateSkills(); 
     }
 
-    public bool CheckBodyParts(Parts[] partsToCheck)
+    public bool VitalPartInjured(Parts[] partsToCheck)
     {
         for (int i = 0; i < partsToCheck.Length; i++)
         {
             if (bodyPartHealth[partsToCheck[i]] <= 0)
             {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public virtual void RecieveAttack(AttackInfo recievedAttack, Transform myAttacker)
@@ -128,7 +128,7 @@ public class BodyParts : MonoBehaviour {
         Injuries.DamageMessage(damageInfo);
         DamageBodyPart(damageInfo.bodyPart, damage);
 
-        if (!Killed())
+        if (!VitalPartInjured(vitalParts))
         {
             StartCoroutine(Bleeding(damage));
         }
@@ -167,24 +167,12 @@ public class BodyParts : MonoBehaviour {
             yield return new WaitForSeconds(1f);
         }
 
-        if (Killed()) //or if instantlyKilled
+        if (VitalPartInjured(vitalParts)) 
         {
             TriggerDeath();
-            StopAllCoroutines();
+            StopAllCoroutines(); //is calling this after triggering death a problem?
         }
         yield break;
-    }
-
-    protected bool Killed()
-    {
-        if(totalBlood <= 0 || bodyPartHealth[vitalPart] <= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     protected bool Hit()
@@ -283,6 +271,7 @@ public class BodyParts : MonoBehaviour {
     public virtual float OverallHealth()
     {
         //gives us a precentage to multiply skills by to get their current effectiveness
+        Debug.Log(bodyPartHealth.Sum(x => x.Value));
         return (bodyPartHealth.Sum(x => x.Value) / bodyPartHealth.Count) * 0.01f;
     }
 
@@ -317,7 +306,9 @@ public class BodyParts : MonoBehaviour {
     public void LoadBodyPartHealth(Dictionary<Parts, float> savedBodyPartHealth)
     {
         bodyPartHealth = savedBodyPartHealth;
+        Debug.Log("Neck is "+ bodyPartHealth[Parts.Neck] + " for " + gameObject.name);
         totalBlood = bodyPartHealth.Sum(x => x.Value);
+        Debug.Log("Loaded blood = " + totalBlood + " for " + gameObject.name);
     }
 
     public Dictionary<Parts, float> GetBodyPartHealth()
