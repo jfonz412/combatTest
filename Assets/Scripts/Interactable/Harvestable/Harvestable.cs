@@ -120,7 +120,7 @@ public class Harvestable : Interactable {
 
     private bool UsingProperTool()
     {
-        Weapon unitWeapon = player.GetComponent<AttackController>().equippedWeapon;
+        Weapon unitWeapon = player.GetComponent<AttackController>().mainHand;
         bool usingProperTool;
 
         if (unitWeapon == null)

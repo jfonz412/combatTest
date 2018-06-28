@@ -21,7 +21,7 @@ public class CombatSkills : MonoBehaviour {
             { CombatSkill.Block, 0 },
             { CombatSkill.Dodge, 0 },
             { CombatSkill.Parry, 0 }, 
-            { CombatSkill.Strength, 0 },
+            { CombatSkill.Strength, 25 },
             { CombatSkill.Willpower, 0 }
         };
     private Dictionary<CombatSkill, float> mySkillExperience =
@@ -57,13 +57,13 @@ public class CombatSkills : MonoBehaviour {
     {
         AttackInfo info = new AttackInfo();
         WeaponInfo weapon = currentWeapon.RequestWeaponInfo();
-        float associatedSkill = WeaponSkillEffectiveness(weapon.weaponType);
+        float weaponSkill = GetWeaponSkill(weapon.weaponType);
 
         info.attackerName = gameObject.name;
         info.weapon = weapon;
         info.speed = weapon.speed; // - strength and skill
-        info.force = mySkillLevels[CombatSkill.Strength] + associatedSkill + weapon.weight;
-        info.skill = associatedSkill; //should eventually factor against enemiy's defensive skills (dodge, parry, block, absoarb?)
+        info.force = mySkillLevels[CombatSkill.Strength] + weaponSkill + weapon.weight;
+        info.skill = weaponSkill; //should eventually factor against enemiy's defensive skills (dodge, parry, block, absoarb?)
 
         WeaponExperienceGain(weapon.weaponType, 50f);
         return info;
@@ -90,11 +90,11 @@ public class CombatSkills : MonoBehaviour {
             myWeaponSkillLevels[weapon]++;
             myWeaponSkillExperience[weapon] = 0f;
             //onSkillGained(); //not needed for now
-            Debug.Log("LEVEL UP: " + myWeaponSkillLevels[weapon] + "!!!");
+            Debug.Log("LEVEL UP: " + weapon + myWeaponSkillLevels[weapon] + "!!!");
         }
     }
 
-    protected virtual float WeaponSkillEffectiveness(Weapon.WeaponType weaponType)
+    protected virtual float GetWeaponSkill(Weapon.WeaponType weaponType)
     {
         //Debug.Log(body.OverallHealth() + " * " + myWeaponSkillLevels[weaponType] + " = " + body.OverallHealth() * myWeaponSkillLevels[weaponType]);
         return body.OverallHealth() * myWeaponSkillLevels[weaponType];
@@ -170,13 +170,11 @@ public class CombatSkills : MonoBehaviour {
         Weapon w = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.OffHand);
         if(w == null)
         {
-            Debug.Log("w is null");
             equippedOffHand = new WeaponInfo(); //clear the equipped offhand
         }
         else
         {
             equippedOffHand = w.RequestWeaponInfo();
-            Debug.Log("w is NOT null " + equippedOffHand.hardnessValue);
         }
     }
 }

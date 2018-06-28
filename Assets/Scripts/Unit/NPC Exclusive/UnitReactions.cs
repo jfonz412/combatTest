@@ -39,7 +39,7 @@ public class UnitReactions : MonoBehaviour
         {
             if (unit.faction == myEnemyFactions[i])
             {
-                Debug.Log("Enemy in radius!");
+                //Debug.Log("Enemy in radius!"); //NEEDS REFACTORING*******
                 ReactToAttackAgainstSelf(unit.transform);
                 return;
             }

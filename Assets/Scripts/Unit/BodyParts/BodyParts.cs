@@ -67,7 +67,7 @@ public class BodyParts : MonoBehaviour {
         if (Hit())
         {
             DamageInfo damageRecieved = CalculateDamage(recievedAttack);
-            float defenseThreshold = 25;
+            float defenseThreshold = 5f;
 
             if (damageRecieved.damageDealt > defenseThreshold)
             {

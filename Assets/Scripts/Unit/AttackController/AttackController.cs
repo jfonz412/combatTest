@@ -11,7 +11,8 @@ public class AttackController : MonoBehaviour {
     private BodyParts targetBody;
     private BodyParts myBody;
     private EquipmentManager equipmentManager;
-    public Weapon equippedWeapon;
+    public Weapon mainHand;
+    public Weapon offHand;
 
     private CombatSkills mySkills;
 
@@ -94,19 +95,31 @@ public class AttackController : MonoBehaviour {
             string line = "<color=red>" + gameObject.name + " is too injured to attack " + targetTransform.name + "</color>";
             FloatingTextController.CreateFloatingText("Too injured!", transform, Color.red);
             BattleReport.AddToBattleReport(line);
-            attackTimer.ResetAttackTimer(5f); //arbitrarily reset attack timer
+            attackTimer.ResetAttackTimer(7f); //arbitrarily reset attack timer
             //unit reactions -> run away if not player?
             return;
         }
 
-        if(equippedWeapon == null)
+        if(mainHand == null || offHand == null)
         {
             SwapWeapons(null, null); //load whatever weapon is already equipped
         }
 
         AttackAnimation(targetTransform);
 
-        AttackInfo myAttack = mySkills.RequestAttackInfo(equippedWeapon); 
+        AttackInfo myAttack;
+
+        if (Random.Range(0, 100) <= 75)
+        {
+            myAttack = mySkills.RequestAttackInfo(mainHand);
+            Debug.Log("MAIN HAND");
+        }
+        else
+        {
+            myAttack = mySkills.RequestAttackInfo(offHand);
+            Debug.Log("OFF HAND");
+        }
+
         targetBody.RecieveAttack(myAttack, transform);
 
         attackTimer.ResetAttackTimer(myAttack.speed);
@@ -145,7 +158,8 @@ public class AttackController : MonoBehaviour {
     //Player callback for weapon swaps (called from EquipmentManager)
     private void SwapWeapons(Equipment oldItem, Equipment newItem)
     {
-        equippedWeapon = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.MainHand);
+        mainHand = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.MainHand);
+        offHand  = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.OffHand);
     }
 }
 
