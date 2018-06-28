@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 
 public class BodyParts : MonoBehaviour {
-    public enum BodyType { Human, BushBanshee }
+    public enum BodyType { Human, BushBanshee, FourLeggedAnimal }
     public enum Parts { Head, Neck, LeftArm, RightArm, LeftHand, RightHand, Chest, Abdomin, LeftLeg, RightLeg, LeftFoot, RightFoot }
 
     public BodyType bodyType;

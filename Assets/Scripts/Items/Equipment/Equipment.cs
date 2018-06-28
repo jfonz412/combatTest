@@ -5,7 +5,7 @@ public class Equipment : Item {
     public EquipmentSlot equipSlot;
     public bool naked;
 
-    public enum Material { NA, Cloth, Leather, Iron, Steel, Thicket }; //possibly move this to items if you want to 
+    public enum Material { NA, Cloth, Leather, Iron, Steel, Thicket, ThickFur, Bone, Wood }; //possibly move this to items if you want to 
     public Material material;
 
     [SerializeField]
@@ -62,9 +62,13 @@ public class Equipment : Item {
         {
             return Random.Range(10, 30);
         }
-        else if (material == Material.Leather)
+        else if (material == Material.Leather || material == Material.ThickFur)
         {
-            return Random.Range(15, 40);
+            return Random.Range(15, 30);
+        }
+        else if(material == Material.Bone || material == Material.Wood)
+        {
+            return Random.Range(20, 40);
         }
         else if (material == Material.Iron)
         {
