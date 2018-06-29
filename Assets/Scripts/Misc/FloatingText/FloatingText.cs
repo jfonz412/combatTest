@@ -16,5 +16,6 @@ public class FloatingText : MonoBehaviour {
     {
         damageText.color = color;
         damageText.text = text;
+        damageText.fontSize = 24;
     }
 }

@@ -20,7 +20,8 @@ public class AttackController : MonoBehaviour {
     private UnitController unit;
     private AttackTimer attackTimer;
 
-    private BodyParts.Parts[] bodyPartsNeeded = new BodyParts.Parts[] { BodyParts.Parts.RightArm, BodyParts.Parts.RightHand };
+    [SerializeField]
+    private BodyParts.Parts[] mainBodyPartsNeeded, offBodyPartsNeeded;// = new BodyParts.Parts[] { BodyParts.Parts.RightArm, BodyParts.Parts.RightHand };
 
     private float myAttackStat;
 
@@ -90,38 +91,53 @@ public class AttackController : MonoBehaviour {
     #region Helper Functions
     private void Attack(Transform targetTransform)
     {
-        if (myBody.VitalPartInjured(bodyPartsNeeded))
-        {
-            string line = "<color=red>" + gameObject.name + " is too injured to attack " + targetTransform.name + "</color>";
-            FloatingTextController.CreateFloatingText("Too injured!", transform, Color.red);
-            BattleReport.AddToBattleReport(line);
-            attackTimer.ResetAttackTimer(7f); //arbitrarily reset attack timer
-            //unit reactions -> run away if not player?
-            return;
-        }
-
         if(mainHand == null || offHand == null)
         {
             SwapWeapons(null, null); //load whatever weapon is already equipped
         }
 
-        AttackAnimation(targetTransform);
-
         AttackInfo myAttack;
 
         if (Random.Range(0, 100) <= 75)
         {
-            myAttack = mySkills.RequestAttackInfo(mainHand);
-            Debug.Log(gameObject.name + "MAIN HAND");
+            if (!myBody.VitalPartInjured(mainBodyPartsNeeded))
+            {
+                AttackAnimation(targetTransform);
+                myAttack = mySkills.RequestAttackInfo(mainHand);
+                Debug.Log(gameObject.name + "MAIN HAND");
+            }
+            else
+            {
+                string line = "<color=red>" + gameObject.name + " is too injured to attack " + targetTransform.name + "</color>";
+                FloatingTextController.CreateFloatingText("Too injured!", transform, Color.red);
+                BattleReport.AddToBattleReport(line);
+                attackTimer.ResetAttackTimer(7f); //arbitrarily reset attack timer
+                                                  //unit reactions -> run away if not player?
+
+                return;
+            }
         }
         else
         {
-            myAttack = mySkills.RequestAttackInfo(offHand);
-            Debug.Log(gameObject.name + " OFF HAND");
+            if (!myBody.VitalPartInjured(offBodyPartsNeeded))
+            {
+                AttackAnimation(targetTransform);
+                myAttack = mySkills.RequestAttackInfo(offHand);
+                Debug.Log(gameObject.name + " OFF HAND");
+            }
+            else
+            {
+
+                string line = "<color=red>" + gameObject.name + " is too injured to attack " + targetTransform.name + "</color>";
+                FloatingTextController.CreateFloatingText("Too injured!", transform, Color.red);
+                BattleReport.AddToBattleReport(line);
+                attackTimer.ResetAttackTimer(7f); //arbitrarily reset attack timer
+                                                  //unit reactions -> run away if not player?
+                return;
+            }
         }
 
-        targetBody.RecieveAttack(myAttack, transform);
-
+        targetBody.RecieveAttack(myAttack, transform); //should reset back to whatever weapon was used
         attackTimer.ResetAttackTimer(myAttack.speed);
     }
 

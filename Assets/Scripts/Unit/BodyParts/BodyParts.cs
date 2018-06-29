@@ -18,7 +18,7 @@ public class BodyParts : MonoBehaviour {
     protected CombatSkills mySkills;
     protected UnitReactions unitReactions;
     protected Death deathController;
-
+    protected UnitAnimController anim;
     protected AttackReactionSkills attackReaction;
 
     protected float totalBlood; //BloodPerBodyPart * number of bodyparts
@@ -35,7 +35,7 @@ public class BodyParts : MonoBehaviour {
         mySkills = GetComponent<CombatSkills>();
         unitReactions = GetComponent<UnitReactions>();
         deathController = GetComponent<Death>();
-
+        anim = GetComponent<UnitAnimController>();
         mySkills.onSkillGained += UpdateSkills;
 
         UpdateSkills(); 
@@ -90,41 +90,42 @@ public class BodyParts : MonoBehaviour {
     {
         float damage = damageInfo.damageDealt;
         int severityID;
-        Color32 color;
+        Color color = Color.red;
 
         if (damage <= 50)
         {
-            color = new Color32(55, 0, 0, 255);
+            color.a = .20f;
             severityID = 0;
         }
         else if (damage <= 70)
         {
-            color = new Color32(105, 0, 0, 255);
+            color.a = .40f;
             severityID = 1;
         }
         else if (damage <= 90)
         {
-            color = new Color32(155, 0, 0, 255);
+            color.a = .60f;
             severityID = 2;
         }
         else if (damage <= 100)
         {
-            color = new Color32(205, 0, 0, 255);
+            color.a = .80f;
             severityID = 3;
         }
         else if (damage <= 120)
         {
-            color = new Color32(255, 0, 0, 255);
+            color.a = .90f;
             severityID = 4;
         }
         else
         {
-            color = new Color32(255, 0, 0, 255);
+            color.a = 100f;
             severityID = 5;
         }
 
         damageInfo.severityID = severityID;
         FloatingTextController.CreateFloatingText("Hit", transform, color);
+        anim.TakeDamage(color);
         Injuries.DamageMessage(damageInfo);
         DamageBodyPart(damageInfo.bodyPart, damage);
 
@@ -180,14 +181,16 @@ public class BodyParts : MonoBehaviour {
         {
             string line = "<color=green>" + gameObject.name + " parried the attack!</color>";
             FloatingTextController.CreateFloatingText("Parry", transform, Color.green);
+            anim.Dodge();
             mySkills.ExperienceGain(CombatSkills.CombatSkill.Dodge, 50f);
             BattleReport.AddToBattleReport(line);
             return false;
         }
         else if (Random.Range(0, 100) <= attackReaction.block)
         {
-            string line = "<color=yellow>" + gameObject.name + " blocked the attack!</color>";
+            string line = "<color=blue>" + gameObject.name + " blocked the attack!</color>";
             FloatingTextController.CreateFloatingText("Block", transform, Color.blue);
+            anim.Block();
             mySkills.ExperienceGain(CombatSkills.CombatSkill.Block, 50f);
             BattleReport.AddToBattleReport(line);
             return false;
@@ -196,6 +199,7 @@ public class BodyParts : MonoBehaviour {
         {
             string line = "<color=yellow>" + gameObject.name + " parried the attack!</color>";
             FloatingTextController.CreateFloatingText("Parry", transform, Color.yellow);
+            anim.Parry();
             mySkills.ExperienceGain(CombatSkills.CombatSkill.Parry, 50f);
             GetComponent<AttackTimer>().ResetAttackTimer(0f);
             BattleReport.AddToBattleReport(line);
@@ -227,10 +231,10 @@ public class BodyParts : MonoBehaviour {
         //crit hit
         if (Random.Range(0, 100) <= recievedAttack.skill)
         {
-            string line = "<color=yellow>" + recievedAttack.attackerName + " skillfully lands a critical hit with their " + recievedAttack.weapon.name + "!</color>";
+            string line = "<color=magenta>" + recievedAttack.attackerName + " skillfully lands a critical hit with their " + recievedAttack.weapon.name + "!</color>";
             Color color = new Color(0.2F, 0.3F, 0.4F);
-
-            FloatingTextController.CreateFloatingText("Serious Injury", transform, color);
+            anim.TakeDamage(Color.magenta);
+            FloatingTextController.CreateFloatingText("Vulnerability targeted!", transform, color);
             BattleReport.AddToBattleReport(line);
             damageInfo.damageDealt = enemyAttack;
         }

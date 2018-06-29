@@ -43,29 +43,29 @@ public class UnitAnimController : MonoBehaviour {
         anim.SetBool("isWalking", isWalking);
     }
 
-    public void TakeDamage()
+    public void TakeDamage(Color shadeOfRed)
     {
-        StartCoroutine(FlashRed());
+        StartCoroutine(Flash(shadeOfRed));
     }
 
     public void Block()
     {
-        //StartCoroutine(FlashBlue???());
+        StartCoroutine(Flash(Color.blue));
     }
 
     public void Parry()
     {
-        //StartCoroutine(FlashGreen???());
+        StartCoroutine(Flash(Color.yellow));
     }
 
     public void Dodge()
     {
-        //StartCoroutine(FlashYellow???());
+        StartCoroutine(Flash(Color.green));
     }
 
-    public void Miss()
+    public void CritHit()
     {
-        //StartCoroutine(FlashSomthingElse???());
+        StartCoroutine(Flash(Color.cyan));
     }
 
     public void Die()
@@ -83,9 +83,9 @@ public class UnitAnimController : MonoBehaviour {
     }
 
     //maybe split color changes into it's own static script?
-    IEnumerator FlashRed()
+    IEnumerator Flash(Color color)
     {
-        spriteRend.color = Color.red;
+        spriteRend.color = color;
         yield return new WaitForSeconds(0.5f);
         if (dead)
         {
