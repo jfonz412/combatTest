@@ -94,32 +94,32 @@ public class BodyParts : MonoBehaviour {
 
         if (damage <= 50)
         {
-            color.a = .20f;
+            color.r = .20f;
             severityID = 0;
         }
         else if (damage <= 70)
         {
-            color.a = .40f;
+            color.r = .40f;
             severityID = 1;
         }
         else if (damage <= 90)
         {
-            color.a = .60f;
+            color.r = .60f;
             severityID = 2;
         }
         else if (damage <= 100)
         {
-            color.a = .80f;
+            color.r = .80f;
             severityID = 3;
         }
         else if (damage <= 120)
         {
-            color.a = .90f;
+            color.r = .90f;
             severityID = 4;
         }
         else
         {
-            color.a = 100f;
+            color.r = 100f;
             severityID = 5;
         }
 
