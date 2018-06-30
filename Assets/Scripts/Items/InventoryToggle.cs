@@ -5,6 +5,7 @@ public class InventoryToggle : MonoBehaviour {
     public GameObject inventoryUI;
     public GameObject equipUI;
     public GameObject infoPanelUI;
+    public GameObject healthPanel;
 
     private PlayerState.PlayerStates[] invalidStates = new PlayerState.PlayerStates[]
     {
@@ -23,10 +24,8 @@ public class InventoryToggle : MonoBehaviour {
         if (Input.GetButtonDown("Inventory"))
         {
             inventoryUI.SetActive(!inventoryUI.activeSelf);
-            equipUI.SetActive(inventoryUI.activeSelf);
-            infoPanelUI.SetActive(inventoryUI.activeSelf);
-            MouseSlot.instance.ToggleSprite(inventoryUI.activeSelf);
-
+            ToggleWindows(inventoryUI.activeSelf);
+            
             ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus();
         }
 
@@ -49,16 +48,20 @@ public class InventoryToggle : MonoBehaviour {
     public void OpenInventory()
     {
         inventoryUI.SetActive(true);
-        equipUI.SetActive(true);
-        infoPanelUI.SetActive(true);
-        MouseSlot.instance.ToggleSprite(true);
+        ToggleWindows(true);
     }
 
     public void CloseInventory()
     {
         inventoryUI.SetActive(false);
-        equipUI.SetActive(false);
-        infoPanelUI.SetActive(false);
-        MouseSlot.instance.ToggleSprite(false);
+        ToggleWindows(false);
+    }
+
+    private void ToggleWindows(bool b)
+    {
+        equipUI.SetActive(b);
+        infoPanelUI.SetActive(b);
+        healthPanel.SetActive(b);
+        MouseSlot.instance.ToggleSprite(b);
     }
 }

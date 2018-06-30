@@ -24,6 +24,9 @@ public class BodyParts : MonoBehaviour {
     protected float totalBlood; //BloodPerBodyPart * number of bodyparts
     private bool alive = true;
 
+    public delegate void OnDamageTaken(Parts bodyPart, float damage);
+    public OnDamageTaken onDamageTaken;
+
     protected void Awake()
     {
         equipment = GetComponent<EquipmentManager>();
@@ -146,6 +149,8 @@ public class BodyParts : MonoBehaviour {
         if (bodyPartHealth[bodyPart] < 0f)
             bodyPartHealth[bodyPart] = 0f;
 
+        if(onDamageTaken != null)
+            onDamageTaken.Invoke(bodyPart, damage); //will be null for everyone except player
         //Debug.Log(bodyPart + "health is " + bodyPartHealth[bodyPart] + " for " + gameObject.name);
     }
 
