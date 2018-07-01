@@ -119,7 +119,6 @@ public class CombatSkills : MonoBehaviour {
     //this will only happen here
     private void WeaponExperienceGain(Weapon.WeaponType weapon, float experience)
     {
-        Debug.Log("entered weapon experience gain for " + gameObject.name + "'s " + weapon);
         myWeaponSkillExperience[weapon] += experience;
         if (myWeaponSkillExperience[weapon] >= (100 * myWeaponSkillLevels[weapon]))
         {

@@ -24,8 +24,10 @@ public class BodyParts : MonoBehaviour {
     protected float totalBlood; //BloodPerBodyPart * number of bodyparts
     private bool alive = true;
 
-    public delegate void OnDamageTaken(Parts bodyPart, float damage);
+    public delegate void OnDamageTaken(DamageInfo info);
     public OnDamageTaken onDamageTaken;
+    public delegate void OnHealthLoaded();
+    public OnHealthLoaded onHealthLoaded;
 
     protected void Awake()
     {
@@ -130,7 +132,8 @@ public class BodyParts : MonoBehaviour {
         FloatingTextController.CreateFloatingText("Hit", transform, color);
         anim.TakeDamage(color);
         Injuries.DamageMessage(damageInfo);
-        DamageBodyPart(damageInfo.bodyPart, damage);
+        DamageBodyPart(damageInfo);
+
 
         if (!VitalPartInjured(vitalParts))
         {
@@ -142,15 +145,20 @@ public class BodyParts : MonoBehaviour {
         }
     }
 
-    protected void DamageBodyPart(Parts bodyPart, float damage)
+    protected void DamageBodyPart(DamageInfo info)
     {
-        bodyPartHealth[bodyPart] -= damage;
+        Parts p = info.bodyPart;
+        float d = info.damageDealt;
 
-        if (bodyPartHealth[bodyPart] < 0f)
-            bodyPartHealth[bodyPart] = 0f;
+        bodyPartHealth[p] -= d;
 
-        if(onDamageTaken != null)
-            onDamageTaken.Invoke(bodyPart, damage); //will be null for everyone except player
+        if (bodyPartHealth[p] < 0f)
+            bodyPartHealth[p] = 0f;
+
+        if (onDamageTaken != null)
+            onDamageTaken.Invoke(info);
+
+        //will be null for everyone except player
         //Debug.Log(bodyPart + "health is " + bodyPartHealth[bodyPart] + " for " + gameObject.name);
     }
 
@@ -314,6 +322,9 @@ public class BodyParts : MonoBehaviour {
     {
         bodyPartHealth = savedBodyPartHealth;
         totalBlood = bodyPartHealth.Sum(x => x.Value);
+
+        if (onHealthLoaded != null)
+            onHealthLoaded.Invoke();
     }
 
     public Dictionary<Parts, float> GetBodyPartHealth()

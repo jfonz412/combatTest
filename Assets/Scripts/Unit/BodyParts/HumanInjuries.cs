@@ -216,37 +216,4 @@ public class HumanInjuries : MonoBehaviour {
             {BodyParts.Parts.RightFoot, "The force of the {1} smashes completely through {0}'s {2}, the right foot has been mangled beyond recognition!" },
         },
     };
-
-    /*
-    public static void DamageMessage(BodyParts.DamageInfo damageInfo)
-    {
-        string armor = damageInfo.armorName;
-        string weapon = damageInfo.weaponName;
-        string damageType = damageInfo.attackType;
-        string myName = damageInfo.victimName;
-        BodyParts.Parts bodypart = damageInfo.bodyPart;
-
-        if (armor == null)
-        {
-            armor = "bare flesh";
-        }
-        if(weapon == null)
-        {
-            weapon = "bare hands";
-        }
-
-        Dictionary<BodyParts.Parts, string> injuryList = new Dictionary<BodyParts.Parts, string>();
-        if(damageType == "Penetration")
-        {
-            injuryList = penetrationInjuries[damageInfo.severityID]; 
-        }
-        else
-        {
-            injuryList = impactInjuries[damageInfo.severityID];
-        }
-
-        string line = string.Format(injuryList[bodypart], myName, weapon, armor);
-        BattleReport.AddToBattleReport(line);
-    }
-    */
 }

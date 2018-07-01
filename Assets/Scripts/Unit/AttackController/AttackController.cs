@@ -104,11 +104,10 @@ public class AttackController : MonoBehaviour {
             {
                 AttackAnimation(targetTransform);
                 myAttack = mySkills.RequestAttackInfo(mainHand);
-                Debug.Log(gameObject.name + "MAIN HAND");
             }
             else
             {
-                string line = "<color=red>" + gameObject.name + " is too injured to attack " + targetTransform.name + "</color>";
+                string line = "<color=red>" + gameObject.name + " is too injured to attack with their " + mainHand.name + "</color>";
                 FloatingTextController.CreateFloatingText("Too injured!", transform, Color.red);
                 BattleReport.AddToBattleReport(line);
                 attackTimer.ResetAttackTimer(7f); //arbitrarily reset attack timer
@@ -123,12 +122,11 @@ public class AttackController : MonoBehaviour {
             {
                 AttackAnimation(targetTransform);
                 myAttack = mySkills.RequestAttackInfo(offHand);
-                Debug.Log(gameObject.name + " OFF HAND");
             }
             else
             {
 
-                string line = "<color=red>" + gameObject.name + " is too injured to attack " + targetTransform.name + "</color>";
+                string line = "<color=red>" + gameObject.name + " is too injured to attack with their " + offHand.name + "</color>";
                 FloatingTextController.CreateFloatingText("Too injured!", transform, Color.red);
                 BattleReport.AddToBattleReport(line);
                 attackTimer.ResetAttackTimer(7f); //arbitrarily reset attack timer

@@ -10,20 +10,24 @@ public class HealthDoll : MonoBehaviour {
     void Start () {
         playerBody = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<HumanoidBody>();
         CollectDollParts();
-        LoadSavedBodyPartHealth();
+        //LoadSavedBodyPartHealth(); //activates everytime this is activated
         playerBody.onDamageTaken += DamageBodyPart;
+        playerBody.onHealthLoaded += LoadSavedBodyPartHealth;
 	}
 	
-	// Update is called once per frame
-	private void DamageBodyPart(BodyParts.Parts bodyPart, float damage)
+	private void DamageBodyPart(BodyParts.DamageInfo info)
     {
         for (int i = 0; i < dollParts.Length; i++)
         {
-            if(dollParts[i].dollPart == bodyPart)
+            if(dollParts[i].dollPart == info.bodyPart)
             {
-                playerHealth[bodyPart] -= damage;
-                Color color = DeterminePartColor(playerHealth[bodyPart]);
+                BodyParts.Parts p = info.bodyPart;
+
+                playerHealth[p] -= info.damageDealt; //callback is prob empty which is giving us an error here
+                Color color = DeterminePartColor(playerHealth[p]);
                 dollParts[i].ChangeColor(color);
+                LogDamage(dollParts[i], info.severityID); //info.damageType
+
                 return;
             }
         }
@@ -32,13 +36,23 @@ public class HealthDoll : MonoBehaviour {
 
     private void CollectDollParts()
     {
-        dollParts = transform.GetComponentsInChildren<DollPart>();
+        Transform dollParent = transform.GetChild(0).GetChild(0);
+        int n  = dollParent.childCount;
+        dollParts = new DollPart[n];
+
+        for(int i = 0; i < n; i++)
+        {
+            dollParts[i] = dollParent.GetChild(i).GetChild(0).GetComponent<DollPart>();
+        }
+        //dollParts = transform.GetChild(0).GetChild(0).GetComponentsInChildren<DollPart>();
     }
 
     private void LoadSavedBodyPartHealth()
     {
+        //set the dictionary to the bodyPart's dictionary
         playerHealth = playerBody.GetBodyPartHealth();
-        Debug.Log("Loading saved bodypart health to doll");
+
+        //for each bodypart in the dictionary, we check their health the determine their color
         for (int i = 0; i < dollParts.Length; i++)
         {
             Color color = DeterminePartColor(playerHealth[dollParts[i].dollPart]);
@@ -58,11 +72,79 @@ public class HealthDoll : MonoBehaviour {
         }
         else if (healthOfPart >= 25)
         {
-            return new Color(0.2F, 0.3F, 0.4F); //orange
+            return new Color32(255, 140, 0, 255); //orange
+        }
+        else if(healthOfPart < 25)
+        {
+            return Color.red;
         }
         else
         {
-            return Color.red;
+            Debug.LogError("Shouldn't reach this!");
+            return Color.white;
+        }
+    }
+
+    private void LogDamage(DollPart part, int severityID) // Injuries.DamageType damageType
+    {
+        string injury = InjuryString(severityID);
+        part.LogInjury(injury);
+    }
+
+    private string InjuryString(int severityID)
+    {
+        string s;
+
+        if(severityID == 0)
+        {
+            s = "light scratch";
+        }
+        else if (severityID == 1)
+        {
+            s = "cut open";
+        }
+        else if(severityID == 2)
+        {
+            s = "deep cut";
+        }
+        else if (severityID == 3)
+        {
+            s = "very deep gash";
+        }
+        else if (severityID == 4)
+        {
+            s = "horribly wounded";
+        }
+        else if (severityID == 5)
+        {
+            s = "obliterated";
+        }
+        else
+        {
+            s = "";
+            Debug.LogError("SEVERITY ID NOT FOUND");
+        }
+
+        return s;
+    }
+
+    public Dictionary<BodyParts.Parts, List<string>> SaveInjuryLog()
+    {
+        Dictionary<BodyParts.Parts, List<string>> injuryLog = new Dictionary<BodyParts.Parts, List<string>>();
+
+        for (int i = 0; i < dollParts.Length; i++)
+        {
+            injuryLog[dollParts[i].dollPart] = dollParts[i].GetInjuryLog();
+        }
+
+        return injuryLog;
+    }
+
+    public void LoadInjuryLog(Dictionary<BodyParts.Parts, List<string>> savedInjuryLog)
+    {
+        for (int i = 0; i < dollParts.Length; i++)
+        {
+            dollParts[i].LoadInjuryLog(savedInjuryLog[dollParts[i].dollPart]);
         }
     }
 }

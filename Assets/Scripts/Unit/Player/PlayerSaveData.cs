@@ -4,6 +4,8 @@ using System.IO;
 using UnityEngine;
 
 public class PlayerSaveData : DataController {
+
+    private HealthDoll healthDoll;
     private Health health;
     private EquipmentManager equipmentManager;
     private Loadout loadOut;
@@ -24,6 +26,8 @@ public class PlayerSaveData : DataController {
         wallet = ScriptToolbox.GetInstance().GetPlayerWallet();
         bodyParts = GetComponent<BodyParts>();
         combatSkills = GetComponent<CombatSkills>();
+
+        healthDoll = FindObjectOfType<HealthDoll>(); //should only be one
     }
 
     public override string SaveData()
@@ -74,6 +78,7 @@ public class PlayerSaveData : DataController {
         data.currentInventory = inventory.GetItemInfo();
         data.currentGold = wallet.GetCurrentBalance();
         data.bodyPartHealth = bodyParts.GetBodyPartHealth();
+        data.injuryList = healthDoll.SaveInjuryLog();
 
         data.combatSkillLevels = combatSkills.GetCombatLevels();
         data.combatSkillExperience = combatSkills.GetCombatExperience();
@@ -89,6 +94,7 @@ public class PlayerSaveData : DataController {
         wallet.LoadSavedBalance(data.currentGold);
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
         bodyParts.LoadBodyPartHealth(data.bodyPartHealth);
+        healthDoll.LoadInjuryLog(data.injuryList);
         combatSkills.LoadSavedCombatLevels(data.combatSkillLevels);
         combatSkills.LoadSavedCombatExperience(data.combatSkillExperience);
         combatSkills.LoadSavedWeaponLevels(data.weaponSkillLevels);
@@ -111,6 +117,7 @@ public class PlayerData : Data
     public Dictionary<CombatSkills.CombatSkill, float> combatSkillExperience;
     public Dictionary<Weapon.WeaponType, int> weaponSkillLevels;
     public Dictionary<Weapon.WeaponType, float> weaponSkillExperience;
+    public Dictionary<BodyParts.Parts, List<string>> injuryList;
 }
 
 [Serializable]

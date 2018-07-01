@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour {
 
-    [HideInInspector]
-    public Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead, nakedHands; //only for player if they decide to remove armor?
+    [SerializeField]
+    private Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead, nakedHands; //only for player if they decide to remove armor
 
     [SerializeField]
     private Dictionary<EquipmentSlot, Equipment> currentEquipment = new Dictionary<EquipmentSlot, Equipment>
@@ -109,7 +109,7 @@ public class EquipmentManager : MonoBehaviour {
                 Debug.LogError("Invalid EquipSlot");
                 break;
         }
-
+        Debug.Log(e.equipSlot);
         e = Instantiate(e);
         e.Init();
         currentEquipment[slot] = e;

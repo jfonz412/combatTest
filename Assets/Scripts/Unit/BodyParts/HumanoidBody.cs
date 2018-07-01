@@ -28,6 +28,9 @@ public class HumanoidBody : BodyParts {
 
         vitalParts = new Parts[] { Parts.Head, Parts.Neck, Parts.Abdomin, Parts.Chest };
         totalBlood = bodyPartHealth.Sum(x => x.Value);
+
+        if (onHealthLoaded != null)
+            onHealthLoaded.Invoke();
     }
 
     void Update()
