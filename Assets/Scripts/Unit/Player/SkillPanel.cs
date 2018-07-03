@@ -14,14 +14,15 @@ public class SkillPanel : MonoBehaviour {
 
 
     private Dictionary<CombatSkills.CombatSkill, int> skills;
+    private Dictionary<Weapon.WeaponType, int> weaponSkills;
+    private string newLine = System.Environment.NewLine;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         combatSkills = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<CombatSkills>();
-        combatSkills.onSkillGained += GetCombatSkills;
+        combatSkills.onSkillGained += UpdateCombatSkills;
         skillWindow.text = "";
-
     }
 	
     public void Toggle(bool toggleOn)
@@ -30,7 +31,7 @@ public class SkillPanel : MonoBehaviour {
         {
             skillPanel.SetActive(true);
             skillPlate.SetActive(true);
-            GetCombatSkills();
+            UpdateCombatSkills();
             DisplayCombatSkills();
         }
         else
@@ -45,12 +46,24 @@ public class SkillPanel : MonoBehaviour {
     {
         foreach (KeyValuePair<CombatSkills.CombatSkill, int> skill in skills)
         {
-            skillWindow.text += skill.Key + ": " + skill.Value + System.Environment.NewLine;
+            skillWindow.text += skill.Key + ": " + skill.Value + newLine;
+        }
+
+        skillWindow.text += newLine;
+
+        foreach (KeyValuePair<Weapon.WeaponType, int> skill in weaponSkills)
+        {
+            skillWindow.text += skill.Key + ": " + skill.Value + newLine;
         }
     }
 
-    private void GetCombatSkills()
+    private void UpdateCombatSkills()
     {
         skills = combatSkills.GetCombatLevels();
+        weaponSkills = combatSkills.GetWeaponLevels();
+
+        skillWindow.text = ""; //clear previous stat info
+
+        DisplayCombatSkills(); //display with newly updated skills
     }
 }
