@@ -130,15 +130,19 @@ public class Inventory : MonoBehaviour {
 
         for (int i = 0; i < inventorySpace; i++)
         {
+            Debug.Log("searching space " + i + " for " + newItem);
             if (items[i] != null)
             {
+                Debug.Log("item found, comparing it's name to the new item");
                 if (items[i].name == newItem.name)
                 {
+                    Debug.Log("item of same type found, stacking");
                     newItem.quantity = AddQuantityToSlot(i, newItem.quantity);
                 }
             }
+            Debug.Log("Done with this space");
         }
-
+        Debug.Log("Returning newItem.quantity " + newItem.quantity);
         return newItem.quantity;
     }
 

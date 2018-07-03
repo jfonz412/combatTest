@@ -44,6 +44,11 @@ public class HealthDoll : MonoBehaviour {
         {
             dollParts[i] = dollParent.GetChild(i).GetChild(0).GetComponent<DollPart>();
         }
+
+        if(dollParts == null)
+        {
+            Debug.LogError("Dollparts is null!");
+        }
         //dollParts = transform.GetChild(0).GetChild(0).GetComponentsInChildren<DollPart>();
     }
 
@@ -142,7 +147,7 @@ public class HealthDoll : MonoBehaviour {
 
     public void LoadInjuryLog(Dictionary<BodyParts.Parts, List<string>> savedInjuryLog)
     {
-        for (int i = 0; i < dollParts.Length; i++)
+        for (int i = 0; i < dollParts.Length; i++) 
         {
             dollParts[i].LoadInjuryLog(savedInjuryLog[dollParts[i].dollPart]);
         }

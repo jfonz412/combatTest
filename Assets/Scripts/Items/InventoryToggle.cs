@@ -6,6 +6,7 @@ public class InventoryToggle : MonoBehaviour {
     public GameObject equipUI;
     public GameObject infoPanelUI;
     public GameObject healthPanel;
+    public SkillPanel skillPanel;
 
     private PlayerState.PlayerStates[] invalidStates = new PlayerState.PlayerStates[]
     {
@@ -38,11 +39,12 @@ public class InventoryToggle : MonoBehaviour {
         {
             CloseInventory();
         }
-
+        /*
         if (PlayerState.GetPlayerState() == PlayerState.PlayerStates.Shopping)
         {
             OpenInventory();
         }
+        */
     }
 
     public void OpenInventory()
@@ -62,6 +64,7 @@ public class InventoryToggle : MonoBehaviour {
         equipUI.SetActive(b);
         infoPanelUI.SetActive(b);
         healthPanel.SetActive(b);
+        skillPanel.Toggle(b);
         MouseSlot.instance.ToggleSprite(b);
     }
 }

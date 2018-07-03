@@ -111,7 +111,7 @@ public class CombatSkills : MonoBehaviour {
         {
             mySkillLevels[skill]++;
             mySkillExperience[skill] = 0f;
-            onSkillGained();
+            SkillGainCallback();
             Debug.Log("LEVEL UP: " + mySkillLevels[skill] + "!!!");
         }
     }
@@ -124,9 +124,15 @@ public class CombatSkills : MonoBehaviour {
         {
             myWeaponSkillLevels[weapon]++;
             myWeaponSkillExperience[weapon] = 0f;
-            //onSkillGained(); //not needed for now
+            SkillGainCallback();
             Debug.Log("LEVEL UP: " + weapon + myWeaponSkillLevels[weapon] + "!!!");
         }
+    }
+
+    private void SkillGainCallback()
+    {
+        if (onSkillGained != null)
+            onSkillGained.Invoke();
     }
 
     private float GetWeaponSkill(Weapon.WeaponType weaponType)
