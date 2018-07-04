@@ -26,7 +26,7 @@ public class HealthDoll : MonoBehaviour {
                 playerHealth[p] -= info.damageDealt; //callback is prob empty which is giving us an error here
                 Color color = DeterminePartColor(playerHealth[p]);
                 dollParts[i].ChangeColor(color);
-                LogDamage(dollParts[i], info.severityID); //info.damageType
+                LogDamage(dollParts[i], info); 
 
                 return;
             }
@@ -90,47 +90,10 @@ public class HealthDoll : MonoBehaviour {
         }
     }
 
-    private void LogDamage(DollPart part, int severityID) // Injuries.DamageType damageType
+    private void LogDamage(DollPart part, BodyParts.DamageInfo info) // Injuries.DamageType damageType
     {
-        string injury = InjuryString(severityID);
+        string injury = StringsForInjuryLog.InjuryString(info);
         part.LogInjury(injury);
-    }
-
-    private string InjuryString(int severityID)
-    {
-        string s;
-
-        if(severityID == 0)
-        {
-            s = "light scratch";
-        }
-        else if (severityID == 1)
-        {
-            s = "cut open";
-        }
-        else if(severityID == 2)
-        {
-            s = "deep cut";
-        }
-        else if (severityID == 3)
-        {
-            s = "very deep gash";
-        }
-        else if (severityID == 4)
-        {
-            s = "horribly wounded";
-        }
-        else if (severityID == 5)
-        {
-            s = "obliterated";
-        }
-        else
-        {
-            s = "";
-            Debug.LogError("SEVERITY ID NOT FOUND");
-        }
-
-        return s;
     }
 
     public Dictionary<BodyParts.Parts, List<string>> SaveInjuryLog()
