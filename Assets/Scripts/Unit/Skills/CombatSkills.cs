@@ -17,6 +17,8 @@ public class CombatSkills : MonoBehaviour {
     [SerializeField]
     private List<int> defaultSkillStats = new List<int>();
 
+    public int statusResistance { get { return mySkillLevels[CombatSkill.Willpower]; } }
+
     #region Skills
 
     private Dictionary<Weapon.WeaponType, int> myWeaponSkillLevels = new Dictionary<Weapon.WeaponType, int>()

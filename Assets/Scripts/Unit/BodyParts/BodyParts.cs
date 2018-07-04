@@ -17,6 +17,7 @@ public class BodyParts : MonoBehaviour {
     protected EquipmentManager equipment;
     protected CombatSkills mySkills;
     protected UnitReactions unitReactions;
+    protected UnitStatusController statusController;
     protected Death deathController;
     protected UnitAnimController anim;
     protected AttackReactionSkills attackReaction;
@@ -41,6 +42,7 @@ public class BodyParts : MonoBehaviour {
         unitReactions = GetComponent<UnitReactions>();
         deathController = GetComponent<Death>();
         anim = GetComponent<UnitAnimController>();
+        statusController = GetComponent<UnitStatusController>();
         mySkills.onSkillGained += UpdateSkills;
 
         UpdateSkills(); 
@@ -134,6 +136,7 @@ public class BodyParts : MonoBehaviour {
         Injuries.DamageMessage(damageInfo);
         DamageBodyPart(damageInfo);
 
+        statusController.CheckForStatusTrigger(damageInfo);
 
         if (!VitalPartInjured(vitalParts))
         {
