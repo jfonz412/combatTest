@@ -23,11 +23,11 @@ public class Injuries : MonoBehaviour {
         switch (damageInfo.bodyType)
         {
             case BodyParts.BodyType.Human:
-                return HumanInjuries.GetInjuryList(damageInfo.damageType, damageInfo.severityID);
+                return HumanInjuries.GetInjuryList(damageInfo.damageType, damageInfo.severityLevel);
             case BodyParts.BodyType.BushBanshee:
-                return BushBansheeInjuries.GetInjuryList(damageInfo.damageType, damageInfo.severityID);
+                return BushBansheeInjuries.GetInjuryList(damageInfo.damageType, damageInfo.severityLevel);
             case BodyParts.BodyType.FourLeggedAnimal:
-                return FourLeggedAnimalInjuries.GetInjuryList(damageInfo.damageType, damageInfo.severityID);
+                return FourLeggedAnimalInjuries.GetInjuryList(damageInfo.damageType, damageInfo.severityLevel);
             default:
                 Debug.LogError("Invalid bodytype");
                 return new Dictionary<BodyParts.Parts, string>();

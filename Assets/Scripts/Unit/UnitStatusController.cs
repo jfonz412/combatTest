@@ -37,11 +37,11 @@ public class UnitStatusController : MonoBehaviour
 
         if (info.bodyPart == BodyParts.Parts.Head)
         {
-            TriggerStatus(HeadStatus(info.severityID));
+            TriggerStatus(HeadStatus(info.severityLevel));
         }
         else
         {
-            TriggerStatus(BodyStatus(info.severityID));
+            TriggerStatus(BodyStatus(info.severityLevel));
         }
     }
 
@@ -53,11 +53,11 @@ public class UnitStatusController : MonoBehaviour
         //if health is too low, may trigger overcoming by pain, fear, rage, vomitting, falling, unconsciousness
     }
 
-    private Status HeadStatus(int severityID)
+    private Status HeadStatus(int severityLevel)
     {
         int resistance = combatSkills.statusResistance;
-        severityID++;
-        if (Random.Range(0, 100) > resistance + (baseResistance / severityID))
+        severityLevel++;
+        if (Random.Range(0, 100) > resistance + (baseResistance / severityLevel))
         {
             int n = Random.Range(0, headStates.Length);
 
@@ -67,11 +67,11 @@ public class UnitStatusController : MonoBehaviour
         return Status.Normal;
     }
 
-    private Status BodyStatus(int severityID)
+    private Status BodyStatus(int severityLevel)
     {
         int resistance = combatSkills.statusResistance;
-        severityID++;
-        if (Random.Range(0, 100) > resistance + (baseResistance / severityID))
+        severityLevel++;
+        if (Random.Range(0, 100) > resistance + (baseResistance / severityLevel))
         {
             int n = Random.Range(0, bodyStates.Length);
 

@@ -48,7 +48,7 @@ public class HumanInjuries : MonoBehaviour {
         },
         new Dictionary<BodyParts.Parts, string>() //{1} slices
         {
-            {BodyParts.Parts.Head, "The {1} pierces {0}'s {2}, slicing the flesh of the head!" },
+            {BodyParts.Parts.Head, "The {1} pierces {0}'s {2}, slicing the skin of the head!" },
             {BodyParts.Parts.Neck, "The {1} pierces {0}'s {2}, slicing the flesh of the neck!"},
             {BodyParts.Parts.LeftArm, "The {1} pierces {0}'s {2}, slicing the flesh of the left arm!" },
             {BodyParts.Parts.RightArm, "The {1} pierces {0}'s {2}, slicing the flesh of the right arm!" },
@@ -63,13 +63,13 @@ public class HumanInjuries : MonoBehaviour {
         },
         new Dictionary<BodyParts.Parts, string>() //deep cut
         {
-            {BodyParts.Parts.Head, "The {1} cuts through {0}'s {2} and chips skull!" },
+            {BodyParts.Parts.Head, "The {1} cuts through {0}'s {2} and slams against the skull!" },
             {BodyParts.Parts.Neck, "The {1} cuts through {0}'s {2} and hacks deep into the neck!"},
             {BodyParts.Parts.LeftArm, "The {1} cuts through {0}'s {2} and hacks deep into the left arm!" },
             {BodyParts.Parts.RightArm, "The {1} cuts through {0}'s {2} and hacks deep into the right arm!" },
             {BodyParts.Parts.LeftHand, "The {1} cuts through {0}'s {2} and hacks deep into the left hand" },
             {BodyParts.Parts.RightHand, "The {1} cuts through {0}'s {2} and hacks deep into the right hand!" },
-            {BodyParts.Parts.Chest, "The {1} cuts through {0}'s {2} and chips ribs!" },
+            {BodyParts.Parts.Chest, "The {1} cuts through {0}'s {2} and cuts into {0}'s ribs!" },
             {BodyParts.Parts.Abdomin, "The {1} cuts through {0}'s {2} and hacks deep into the flesh of the belly!" },
             {BodyParts.Parts.LeftLeg, "The {1} cuts through {0}'s {2} and hacks deep into the left leg!" },
             {BodyParts.Parts.RightLeg, "The {1} cuts through {0}'s {2} and hacks deep into the right leg!" },
@@ -79,12 +79,12 @@ public class HumanInjuries : MonoBehaviour {
         new Dictionary<BodyParts.Parts, string>() //cut to bone
         {
             {BodyParts.Parts.Head, "The {1} completely penetrates {0}'s {2}, cracking the skull!" },
-            {BodyParts.Parts.Neck, "The {1} completely penetrates the {2}, hacking into the spine of the neck!"},
+            {BodyParts.Parts.Neck, "The {1} completely penetrates the {2}, hacking nearly to the spine of the neck!"},
             {BodyParts.Parts.LeftArm, "The {1} completely penetrates {0}'s {2}, cutting down to the bone of the the left arm!" },
             {BodyParts.Parts.RightArm, "The {1} completely penetrates {0}'s {2}, cutting down to the bone of the the right arm!" },
             {BodyParts.Parts.LeftHand, "The {1} completely penetrates {0}'s {2}, cutting down to the bones of the the left hand" },
             {BodyParts.Parts.RightHand, "The {1} completely penetrates {0}'s {2}, cutting down to the bones of the the right hand!" },
-            {BodyParts.Parts.Chest, "The {1} completely penetrates the {2} and cuts into {0}'s the ribs!" },
+            {BodyParts.Parts.Chest, "The {1} completely penetrates {0}'s {2} and cracks the ribs!" },
             {BodyParts.Parts.Abdomin, "The {1} completely penetrates {0}'s {2}, and slices the belly wide open!" },
             {BodyParts.Parts.LeftLeg, "The {1} completely penetrates {0}'s {2}, cutting down to the bone of the the left leg!" },
             {BodyParts.Parts.RightLeg, "The {1} completely penetrates {0}'s {2}, cutting down to the bone of the the right leg!" },
@@ -99,7 +99,7 @@ public class HumanInjuries : MonoBehaviour {
             {BodyParts.Parts.RightArm, "The {1} easily carves into {0}'s {2}, completely shatttering the bone of the the right arm!" },
             {BodyParts.Parts.LeftHand, "The {1} easily carves into {0}'s {2}, completely shatttering the bones of the the left hand" },
             {BodyParts.Parts.RightHand, "The {1} easily carves into {0}'s {2}, completely shatttering the bones of the the right hand!" },
-            {BodyParts.Parts.Chest, "The {1} easily carves into {0}'s {2} completely shatters the ribs!" },
+            {BodyParts.Parts.Chest, "The {1} easily carves into {0}'s {2} and completely shatters the ribs!" },
             {BodyParts.Parts.Abdomin, "The {1} easily carves into {0}'s {2}, scrambling his innards with the blade!" },
             {BodyParts.Parts.LeftLeg, "The {1} easily carves into {0}'s {2}, completely shatttering the bone of the the left leg!" },
             {BodyParts.Parts.RightLeg, "The {1} easily carves into {0}'s {2}, completely shatttering the bone of the the right leg!" },

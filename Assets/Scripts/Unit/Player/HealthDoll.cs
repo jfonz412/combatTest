@@ -4,7 +4,7 @@ using UnityEngine;
 public class HealthDoll : MonoBehaviour {
     private DollPart[] dollParts;
     private HumanoidBody playerBody;
-    Dictionary<BodyParts.Parts, float> playerHealth;
+    Dictionary<BodyParts.Parts, int> playerHealth;
 
     // Use this for initialization
     void Start () {
@@ -23,7 +23,7 @@ public class HealthDoll : MonoBehaviour {
             {
                 BodyParts.Parts p = info.bodyPart;
 
-                playerHealth[p] -= info.damageDealt; //callback is prob empty which is giving us an error here
+                playerHealth[p] = info.severityLevel;
                 Color color = DeterminePartColor(playerHealth[p]);
                 dollParts[i].ChangeColor(color);
                 LogDamage(dollParts[i], info); 
@@ -55,7 +55,7 @@ public class HealthDoll : MonoBehaviour {
     private void LoadSavedBodyPartHealth()
     {
         //set the dictionary to the bodyPart's dictionary
-        playerHealth = playerBody.GetBodyPartHealth();
+        playerHealth = playerBody.GetPartDamage();
 
         //for each bodypart in the dictionary, we check their health the determine their color
         for (int i = 0; i < dollParts.Length; i++)
@@ -65,21 +65,21 @@ public class HealthDoll : MonoBehaviour {
         }
     }
 
-    private Color DeterminePartColor(float healthOfPart)
+    private Color DeterminePartColor(int severityLevel)
     {
-        if (healthOfPart >= 75)
+        if (severityLevel == 0 || severityLevel == 1)
         {
             return Color.green;
         }
-        else if (healthOfPart >= 50)
+        else if (severityLevel == 2)
         {
             return Color.yellow;
         }
-        else if (healthOfPart >= 25)
+        else if (severityLevel == 3)
         {
             return new Color32(255, 140, 0, 255); //orange
         }
-        else if(healthOfPart < 25)
+        else if(severityLevel == 4)
         {
             return Color.red;
         }

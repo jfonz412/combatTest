@@ -9,7 +9,7 @@ public class BodyParts : MonoBehaviour {
 
     public BodyType bodyType;
 
-    protected Dictionary<Parts, float> bodyPartHealth;
+    protected Dictionary<Parts, int> bodyPartDamage; //the int is the severityLevel of the damage
     protected Parts[] vitalParts;
 
     protected Dictionary<EquipmentSlot, ArmorInfo> myArmor = new Dictionary<EquipmentSlot, ArmorInfo>();
@@ -22,7 +22,7 @@ public class BodyParts : MonoBehaviour {
     protected UnitAnimController anim;
     protected AttackReactionSkills attackReaction;
 
-    protected float totalBlood; //BloodPerBodyPart * number of bodyparts
+    //protected float totalBlood; //BloodPerBodyPart * number of bodyparts
     private bool alive = true;
 
     public delegate void OnDamageTaken(DamageInfo info);
@@ -52,7 +52,8 @@ public class BodyParts : MonoBehaviour {
     {
         for (int i = 0; i < partsToCheck.Length; i++)
         {
-            if (bodyPartHealth[partsToCheck[i]] <= 0)
+            Parts p = partsToCheck[i];
+            if (bodyPartDamage[p] >= BodyPartDamageLimits.partDamageLimits[p])
             {
                 return true;
             }
@@ -96,41 +97,41 @@ public class BodyParts : MonoBehaviour {
     protected void Damage(DamageInfo damageInfo)
     {
         float damage = damageInfo.damageDealt;
-        int severityID;
+        int severityLevel;
         Color color = Color.red;
 
         if (damage <= 50)
         {
             color.r = .20f;
-            severityID = 0;
+            severityLevel = 0;
         }
         else if (damage <= 70)
         {
             color.r = .40f;
-            severityID = 1;
+            severityLevel = 1;
         }
         else if (damage <= 90)
         {
             color.r = .60f;
-            severityID = 2;
+            severityLevel = 2;
         }
         else if (damage <= 100)
         {
             color.r = .80f;
-            severityID = 3;
+            severityLevel = 3;
         }
         else if (damage <= 120)
         {
             color.r = .90f;
-            severityID = 4;
+            severityLevel = 4;
         }
         else
         {
             color.r = 100f;
-            severityID = 5;
+            severityLevel = 5;
         }
 
-        damageInfo.severityID = severityID;
+        damageInfo.severityLevel = severityLevel;
         FloatingTextController.CreateFloatingText("Hit", transform, color);
         anim.TakeDamage(color);
         Injuries.DamageMessage(damageInfo);
@@ -151,43 +152,30 @@ public class BodyParts : MonoBehaviour {
     protected void DamageBodyPart(DamageInfo info)
     {
         Parts p = info.bodyPart;
-        float d = info.damageDealt;
+        int d = info.severityLevel;
 
-        bodyPartHealth[p] -= d;
-
-        if (bodyPartHealth[p] < 0f)
-            bodyPartHealth[p] = 0f;
+        if(d > bodyPartDamage[p])
+            bodyPartDamage[p] = d;
 
         if (onDamageTaken != null)
             onDamageTaken.Invoke(info);
-
-        //will be null for everyone except player
-        //Debug.Log(bodyPart + "health is " + bodyPartHealth[bodyPart] + " for " + gameObject.name);
-    }
-
-    protected void CheckForStatusChange()
-    {
-        //stunned
-        //knocked out
-        //panic
-        //beserk
-        //knocked off balance?
     }
 
     protected IEnumerator Bleeding(float damage)
     {
         while (damage > 0)
         {
-            totalBlood -= damage;
-            //Debug.Log(gameObject.name + " just bled " + damage + " damage. Blood remaining: " + totalBlood);
+            //totalBlood -= damage;
+            Debug.Log("BLOOD LOSS INACTIVATED");
             damage = (damage / 2) - 1f;
             yield return new WaitForSeconds(1f);
         }
-
+        /*
         if (totalBlood <= 0 ) 
         {
             TriggerDeath();
         }
+        */
         yield break;
     }
 
@@ -222,7 +210,6 @@ public class BodyParts : MonoBehaviour {
             return false;
         }
 
-        CheckForStatusChange(); //empty right now
         return true;
     }
 
@@ -276,21 +263,23 @@ public class BodyParts : MonoBehaviour {
         return new ArmorInfo();
     }
 
-    //picks a random part out of bodyPartHealth
+    //picks a random part out of bodyPartDamage
     protected Parts GetRandomPart()
     {
-        int n = Random.Range(0, bodyPartHealth.Count);
+        int n = Random.Range(0, bodyPartDamage.Count);
 
         if (n > 0)
             n--;
 
-        return bodyPartHealth.Keys.ElementAt(n);
+        return bodyPartDamage.Keys.ElementAt(n);
     }
 
+    //gives us a precentage to multiply skills by to get their current effectiveness
     public virtual float OverallHealth()
     {
-        //gives us a precentage to multiply skills by to get their current effectiveness
-        return (bodyPartHealth.Sum(x => x.Value) / bodyPartHealth.Count) * 0.01f;
+        float fullHealth = (5 * bodyPartDamage.Count);
+        float currentDamage = (bodyPartDamage.Sum(x => x.Value) * bodyPartDamage.Count);
+        return ( fullHealth - currentDamage ) / fullHealth;
     }
 
     protected virtual void GetArmor(Equipment oldItem, Equipment newItem)
@@ -315,24 +304,24 @@ public class BodyParts : MonoBehaviour {
         public string attackerName;
         public string victimName;
         public float damageDealt;
-        public int severityID;
+        public int severityLevel;
         public Injuries.DamageType damageType;
         public Parts bodyPart;
         public BodyType bodyType;
     }
 
-    public void LoadBodyPartHealth(Dictionary<Parts, float> savedBodyPartHealth)
+    public void LoadPartDamage(Dictionary<Parts, int> savedbodyPartDamage)
     {
-        bodyPartHealth = savedBodyPartHealth;
-        totalBlood = bodyPartHealth.Sum(x => x.Value);
+        bodyPartDamage = savedbodyPartDamage;
+        //totalBlood = bodyPartDamage.Sum(x => x.Value);
 
         if (onHealthLoaded != null)
             onHealthLoaded.Invoke();
     }
 
-    public Dictionary<Parts, float> GetBodyPartHealth()
+    public Dictionary<Parts, int> GetPartDamage()
     {
-        return bodyPartHealth;
+        return bodyPartDamage;
     }
 
     protected void UpdateSkills()

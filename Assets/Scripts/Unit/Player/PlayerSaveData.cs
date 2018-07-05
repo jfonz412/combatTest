@@ -77,7 +77,7 @@ public class PlayerSaveData : DataController {
         data.currentEquipment = equipmentManager.GetEquipmentInfo();
         data.currentInventory = inventory.GetItemInfo();
         data.currentGold = wallet.GetCurrentBalance();
-        data.bodyPartHealth = bodyParts.GetBodyPartHealth();
+        data.bodyPartHealth = bodyParts.GetPartDamage();
         data.injuryList = healthDoll.SaveInjuryLog();
 
         data.combatSkillLevels = combatSkills.GetCombatLevels();
@@ -93,7 +93,7 @@ public class PlayerSaveData : DataController {
         inventory.LoadSavedItems(data.currentInventory);
         wallet.LoadSavedBalance(data.currentGold);
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
-        bodyParts.LoadBodyPartHealth(data.bodyPartHealth);
+        bodyParts.LoadPartDamage(data.bodyPartHealth);
         healthDoll.LoadInjuryLog(data.injuryList);
         combatSkills.LoadSavedCombatLevels(data.combatSkillLevels);
         combatSkills.LoadSavedCombatExperience(data.combatSkillExperience);
@@ -112,7 +112,7 @@ public class PlayerData : Data
     public float currentGold;
     public SavedItem[] currentInventory;
     public SavedPosition currentPosition;
-    public Dictionary<BodyParts.Parts, float> bodyPartHealth;
+    public Dictionary<BodyParts.Parts, int> bodyPartHealth;
     public Dictionary<CombatSkills.CombatSkill, int> combatSkillLevels;
     public Dictionary<CombatSkills.CombatSkill, float> combatSkillExperience;
     public Dictionary<Weapon.WeaponType, int> weaponSkillLevels;

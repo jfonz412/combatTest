@@ -26,19 +26,19 @@ public class StringsForInjuryLog : MonoBehaviour {
 
     private static string PenetrationDamage(BodyParts.DamageInfo info)
     {
-        int severityID = info.severityID;
+        int severityLevel = info.severityLevel;
         BodyParts.Parts part = info.bodyPart;
         string s;
 
-        if (severityID == 0) //light scratch
+        if (severityLevel == 0) //light scratch
         {
             s = "light scratch";
         }
-        else if (severityID == 1) //cut
+        else if (severityLevel == 1) //cut
         {
             s = "small cut";
         }
-        else if (severityID == 2) //deep cut
+        else if (severityLevel == 2) //deep cut
         {
             if (part == BodyParts.Parts.Head)
             {
@@ -53,7 +53,7 @@ public class StringsForInjuryLog : MonoBehaviour {
                 s = "deep cut";
             }
         }
-        else if (severityID == 3) //cut down to bone
+        else if (severityLevel == 3) //cut down to bone
         {
             if (part == BodyParts.Parts.Head)
             {
@@ -76,7 +76,7 @@ public class StringsForInjuryLog : MonoBehaviour {
                 s = "horrible gash";
             }
         }
-        else if (severityID == 4) //bone shattering cut
+        else if (severityLevel == 4) //bone shattering cut
         {
             if (part == BodyParts.Parts.Head)
             {
@@ -99,7 +99,7 @@ public class StringsForInjuryLog : MonoBehaviour {
                 s = "bones shattered";
             }
         }
-        else if (severityID == 5) //severed
+        else if (severityLevel == 5) //severed
         {
             s = "severed";
         }
@@ -114,23 +114,23 @@ public class StringsForInjuryLog : MonoBehaviour {
 
     private static string ImpactDamage(BodyParts.DamageInfo info)
     {
-        int severityID = info.severityID;
+        int severityLevel = info.severityLevel;
         BodyParts.Parts part = info.bodyPart;
         string s;
 
-        if (severityID == 0)
+        if (severityLevel == 0)
         {
             s = "light bruise";
         }
-        else if (severityID == 1)
+        else if (severityLevel == 1)
         {
             s = "bruised";
         }
-        else if (severityID == 2)
+        else if (severityLevel == 2)
         {
             s = "badly bruised";
         }
-        else if (severityID == 3) //pulverizing impact
+        else if (severityLevel == 3) //pulverizing impact
         {
             if (part == BodyParts.Parts.Head)
             {
@@ -149,7 +149,7 @@ public class StringsForInjuryLog : MonoBehaviour {
                 s = "muscle/fat pulverized";
             }
         }
-        else if (severityID == 4)
+        else if (severityLevel == 4)
         {
             if (part == BodyParts.Parts.Head)
             {
@@ -172,7 +172,7 @@ public class StringsForInjuryLog : MonoBehaviour {
                 s = "bones shattered";
             }
         }
-        else if (severityID == 5)
+        else if (severityLevel == 5)
         {
             s = "obliterated beyond recognition";
         }

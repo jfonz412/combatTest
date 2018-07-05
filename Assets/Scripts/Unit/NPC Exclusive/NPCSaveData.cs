@@ -68,7 +68,7 @@ public class NPCSaveData : DataController {
         Vector3 pos = transform.position;
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
         data.isDead = myAI.isDead;
-        data.bodyPartHealth = bodyParts.GetBodyPartHealth();
+        data.bodyPartDamage = bodyParts.GetPartDamage();
 
         if (myShop != null)
         {
@@ -95,7 +95,7 @@ public class NPCSaveData : DataController {
         }
 
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
-        bodyParts.LoadBodyPartHealth(data.bodyPartHealth);
+        bodyParts.LoadPartDamage(data.bodyPartDamage);
         loadOut.EquipLoadout();
     }
 
@@ -142,5 +142,5 @@ public class NPCData : Data
     //public float currentHealth;
     public SavedItem[] currentShopInventory;
     public bool isDead;
-    public Dictionary<BodyParts.Parts, float> bodyPartHealth;
+    public Dictionary<BodyParts.Parts, int> bodyPartDamage;
 }
