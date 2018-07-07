@@ -27,18 +27,9 @@ public class HumanoidBody : BodyParts {
             };
 
         vitalParts = new Parts[] { Parts.Head, Parts.Neck, Parts.Abdomin, Parts.Chest };
-        //totalBlood = 1200f;
 
         if (onHealthLoaded != null)
             onHealthLoaded.Invoke();
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log("neck is " + bodyPartDamage[Parts.Neck] + " for " + gameObject.name);
-        }
     }
 
     //checks for bodyPart in any of the equipment sections

@@ -10,6 +10,7 @@ public class AttackController : MonoBehaviour {
 
     private BodyParts targetBody;
     private BodyParts myBody;
+    private Brain myBrain;
     private EquipmentManager equipmentManager;
     public Weapon mainHand;
     public Weapon offHand;
@@ -21,7 +22,17 @@ public class AttackController : MonoBehaviour {
     private AttackTimer attackTimer;
 
     [SerializeField]
-    private BodyParts.Parts[] mainBodyPartsNeeded, offBodyPartsNeeded;// = new BodyParts.Parts[] { BodyParts.Parts.RightArm, BodyParts.Parts.RightHand };
+    private BodyParts.Parts[] mainBodyPartsNeeded, offBodyPartsNeeded; // = new BodyParts.Parts[] { BodyParts.Parts.RightArm, BodyParts.Parts.RightHand };
+
+    private Brain.State[] impairingStates = new Brain.State[]
+{
+        Brain.State.Downed,
+        Brain.State.Rocked,
+        Brain.State.Shock,
+        Brain.State.Unconscious,
+        Brain.State.Vomitting,
+        Brain.State.CantBreathe
+};
 
     private float myAttackStat;
 
@@ -32,6 +43,7 @@ public class AttackController : MonoBehaviour {
         unit = GetComponent<UnitController>();
         attackTimer = GetComponent<AttackTimer>();
         myBody = GetComponent<BodyParts>();
+        myBrain = GetComponent<Brain>();
         equipmentManager = GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += SwapWeapons;
     }
@@ -40,7 +52,7 @@ public class AttackController : MonoBehaviour {
     //How the player object talks to this script
     public void EngageTarget(bool hasTarget, Transform targetTransform = null)
     {
-        if (hasTarget)
+        if (hasTarget && !Impaired())
         {
             lastKnownTarget = targetTransform;
             StopEngagingEnemy();
@@ -74,7 +86,7 @@ public class AttackController : MonoBehaviour {
                 PathfindingManager.RequestPath(transform.position, lastKnownTarget.position, unit.OnPathFound);
                 yield return new WaitForSeconds(.1f);
             }
-            else
+            else if(!Impaired())
             {
                 Attack(targetTransform);
                 while(attackTimer.Timer() > 0f)
@@ -150,6 +162,17 @@ public class AttackController : MonoBehaviour {
         anim.Attack(); //equippedWeapon.attackType
     }
 
+    private bool Impaired()
+    {
+        if (myBrain.ActiveStates(impairingStates))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     private void StopEngagingEnemy()
     {

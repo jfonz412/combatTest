@@ -7,16 +7,26 @@ public class UnitController : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sp;
     private CombatSkills skills;
-
+    private Brain myBrain;
     private IEnumerator followingPath;
     private Vector3[] path;
     private int targetIndex;
 
     private float currentMoveSpeed;
 
+    private Brain.State[] impairingStates = new Brain.State[] 
+    {
+        Brain.State.Downed,
+        Brain.State.Rocked,
+        Brain.State.Shock,
+        Brain.State.Unconscious,
+        Brain.State.Vomitting
+    };
+
     void Start()
     {
         anim = GetComponent<UnitAnimController>();
+        myBrain = GetComponent<Brain>();
         rb = GetComponent<Rigidbody2D>();
         sp = transform.GetChild(0).GetComponent<SpriteRenderer>();
         skills = GetComponent<CombatSkills>(); //down the line make this a callback where everytime speed is modified this will update as well
@@ -30,10 +40,10 @@ public class UnitController : MonoBehaviour
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
-        if (pathSuccessful)
+        if (pathSuccessful && !Impaired())
         {
             currentMoveSpeed = skills.GetCurrentMoveSpeed();
-            Debug.Log("movespeed is " + currentMoveSpeed);
+            //Debug.Log("movespeed is " + currentMoveSpeed);
             targetIndex = 0;
             path = newPath;
 
@@ -59,7 +69,7 @@ public class UnitController : MonoBehaviour
         anim.FaceDirection(transform.position, currentWaypoint);
         anim.Walking(true);
 
-        while (true)
+        while (true && !Impaired()) //expensive but it might take care of all movement stoppage (units will still attack though)
         {
             if (transform.position == currentWaypoint)
             {
@@ -91,7 +101,7 @@ public class UnitController : MonoBehaviour
 
 
     //used by other scripts to stop the pathfinding on command
-    //may need more cleanup (like setting path = null, see reaching the end of path in FollowPath()
+    //may need more cleanup 
     public void StopMoving()
     {
         if (CurrentNode().walkable)
@@ -132,9 +142,21 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    void SetDepth()
+    private void SetDepth()
     {
         sp.sortingOrder = (int)Mathf.RoundToInt(-transform.position.y * 1000);
+    }
+
+    private bool Impaired()
+    {
+        if (myBrain.ActiveStates(impairingStates))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /*

@@ -22,7 +22,7 @@ public class BodyParts : MonoBehaviour {
     protected UnitAnimController anim;
     protected AttackReactionSkills attackReaction;
 
-    //protected float totalBlood; //BloodPerBodyPart * number of bodyparts
+    public float totalBlood = 1200;
     private bool alive = true;
 
     public delegate void OnDamageTaken(DamageInfo info);
@@ -46,6 +46,14 @@ public class BodyParts : MonoBehaviour {
         mySkills.onSkillGained += UpdateSkills;
 
         UpdateSkills(); 
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log(gameObject.name + "'s blood: " + totalBlood);
+        }
     }
 
     public bool VitalPartInjured(Parts[] partsToCheck)
@@ -137,16 +145,7 @@ public class BodyParts : MonoBehaviour {
         Injuries.DamageMessage(damageInfo);
         DamageBodyPart(damageInfo);
 
-        statusController.CheckForStatusTrigger(damageInfo);
-
-        if (!VitalPartInjured(vitalParts))
-        {
-            StartCoroutine(Bleeding(damage));
-        }
-        else
-        {
-            TriggerDeath(); //this could be triggered while bleeding out wich will also trigger death resulting in multiple orbs
-        }
+        statusController.CheckForStatusTriggers(damageInfo);     
     }
 
     protected void DamageBodyPart(DamageInfo info)
@@ -159,24 +158,6 @@ public class BodyParts : MonoBehaviour {
 
         if (onDamageTaken != null)
             onDamageTaken.Invoke(info);
-    }
-
-    protected IEnumerator Bleeding(float damage)
-    {
-        while (damage > 0)
-        {
-            //totalBlood -= damage;
-            Debug.Log("BLOOD LOSS INACTIVATED");
-            damage = (damage / 2) - 1f;
-            yield return new WaitForSeconds(1f);
-        }
-        /*
-        if (totalBlood <= 0 ) 
-        {
-            TriggerDeath();
-        }
-        */
-        yield break;
     }
 
     protected bool Hit()
@@ -277,9 +258,10 @@ public class BodyParts : MonoBehaviour {
     //gives us a precentage to multiply skills by to get their current effectiveness
     public virtual float OverallHealth()
     {
-        float fullHealth = (5 * bodyPartDamage.Count);
+        float fullHealth = ((5 * bodyPartDamage.Count) * bodyPartDamage.Count);
         float currentDamage = (bodyPartDamage.Sum(x => x.Value) * bodyPartDamage.Count);
-        return ( fullHealth - currentDamage ) / fullHealth;
+        float health = (fullHealth - currentDamage) / fullHealth;
+        return health;
     }
 
     protected virtual void GetArmor(Equipment oldItem, Equipment newItem)
@@ -313,7 +295,7 @@ public class BodyParts : MonoBehaviour {
     public void LoadPartDamage(Dictionary<Parts, int> savedbodyPartDamage)
     {
         bodyPartDamage = savedbodyPartDamage;
-        //totalBlood = bodyPartDamage.Sum(x => x.Value);
+        totalBlood = 1200 - (bodyPartDamage.Sum(x => x.Value) * 20);
 
         if (onHealthLoaded != null)
             onHealthLoaded.Invoke();

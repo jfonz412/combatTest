@@ -4,173 +4,201 @@ using UnityEngine;
 
 public class UnitStatusController : MonoBehaviour
 {
-    private UnitController movement;
-    private UnitReactions ai;
+    private Brain myBrain;
     private BodyParts body;
     private CombatSkills combatSkills;
-    private AttackController attackController;
 
-    public enum Status { Normal, Shock, CantBreathe, OvercomeByPain, Unconscious, Vomitting, Downed, Rocked, OvercomeByFear, OvercomeByRage }
-    private Dictionary<Status, string> statusMessages; //will be used to send lines to the battle reports
-
-    //will need to be a little more specific, for example a strong impact to 
-    //the belly will knock the wind out of you, as will puncturing the lungs or crushing the windpipe
-    private Status[] headStates = new Status[] { Status.Unconscious, Status.Rocked, Status.Vomitting, Status.Downed, Status.OvercomeByFear, Status.OvercomeByPain, Status.OvercomeByRage };
-    private Status[] bodyStates = new Status[] { Status.Shock, Status.Vomitting, Status.Downed, Status.OvercomeByFear, Status.OvercomeByPain, Status.OvercomeByRage };
-
-    //private Status currentStatus = Status.Normal;
     private int baseResistance = 100;
 
-    // Use this for initialization
-    void Start()
+    //private Dictionary<Status, string> statusMessages; //will be used to send lines to the battle reports
+
+    private void Start()
     {
-        movement = GetComponent<UnitController>();
-        ai = GetComponent<UnitReactions>();
+        myBrain = GetComponent<Brain>();
         body = GetComponent<BodyParts>();
         combatSkills = GetComponent<CombatSkills>();
-        attackController = GetComponent<AttackController>();
     }
 
-    public void CheckForStatusTrigger(BodyParts.DamageInfo info)
+    public void CheckForStatusTriggers(BodyParts.DamageInfo info)
     {
-        combatSkills.ExperienceGain(CombatSkills.CombatSkill.Willpower, 100f);
+        combatSkills.ExperienceGain(CombatSkills.CombatSkill.Willpower, 20f);
+        BodyParts.Parts p = info.bodyPart;
+        int s = info.severityLevel;
 
-        if (info.bodyPart == BodyParts.Parts.Head)
+        Bleed(p, s);
+        FallDown(p, s);
+        Vomit(p, s);
+        CantBreathe(p, s);
+
+        if (p == BodyParts.Parts.Head)
         {
-            TriggerStatus(HeadStatus(info.severityLevel));
-        }
-        else
-        {
-            TriggerStatus(BodyStatus(info.severityLevel));
-        }
-    }
-
-    //not currently used, but I'm thinking this will check on the unit even when not in combat to determine if they should maybe pass out or something?
-    //not totally sure I will use this
-    public void CheckOverallHealth()
-    {
-        float overallHealth = body.OverallHealth();
-        //if health is too low, may trigger overcoming by pain, fear, rage, vomitting, falling, unconsciousness
-    }
-
-    private Status HeadStatus(int severityLevel)
-    {
-        int resistance = combatSkills.statusResistance;
-        severityLevel++;
-        if (Random.Range(0, 100) > resistance + (baseResistance / severityLevel))
-        {
-            int n = Random.Range(0, headStates.Length);
-
-            return headStates[n];
+            Rocked(p, s);
+            KnockedOut(p, s);
         }
 
-        return Status.Normal;
-    }
-
-    private Status BodyStatus(int severityLevel)
-    {
-        int resistance = combatSkills.statusResistance;
-        severityLevel++;
-        if (Random.Range(0, 100) > resistance + (baseResistance / severityLevel))
+        if(body.OverallHealth() * 100 < 65)
         {
-            int n = Random.Range(0, bodyStates.Length);
-
-            return bodyStates[n];
-        }
-
-        return Status.Normal;
-    }
-
-    private void TriggerStatus(Status status)
-    {
-        switch (status)
-        {
-            case Status.Normal:
-                return;
-            case Status.Downed:
-                FallDown();
-                break;
-            case Status.OvercomeByFear:
-                OvercomeByFear();
-                break;
-            case Status.OvercomeByPain:
-                OvercomeByPain();
-                break;
-            case Status.OvercomeByRage:
-                Enrage();
-                break;
-            case Status.Rocked:
-                Rocked();
-                break;
-            case Status.Shock:
-                Shock();
-                break;
-            case Status.Unconscious:
-                KnockedOut();
-                break;
-            case Status.Vomitting:
-                Vomit();
-                break;
-            case Status.CantBreathe:
-                CantBreathe();
-                break;
-            default:
-                Debug.LogError("Invalid Status");
-                break;
+            OverWhelmed(p, s);
         }
     }
 
-    private void FallDown()
+
+    #region Statuses for many bodyparts
+
+    private void Bleed(BodyParts.Parts part, int severityLevel)
     {
-        string line = gameObject.name + " is knocked to the ground!";
-        BattleReport.AddToBattleReport(line);
+        if (severityLevel >= BodyPartDamageLimits.partBleedLimits[part])
+            StartCoroutine(Bleeding(severityLevel));
     }
 
-    private void OvercomeByFear()
+    protected IEnumerator Bleeding(int severity)
     {
-        string line = gameObject.name + " is overcome by fear!";
-        BattleReport.AddToBattleReport(line);
+        //using 20 here because 12 parts * 5 severity = 1200 (roughly, this gets inaacurate with creatures with more/less parts)
+        float bloodNeeded = 600; //half of 1200 which I've set as a hardcoded default blood volume for all units
+        float damage = severity * 20;
+
+        while (damage > 0 && body.totalBlood > 0)
+        {
+            body.totalBlood -= damage;
+            damage = (damage / 2) - 1f;
+            Debug.Log(gameObject.name + " is bleeding for " + damage + " damage");
+            yield return new WaitForSeconds(1f);
+        }
+
+        if (body.totalBlood <= bloodNeeded)
+        {
+            SlipIntoShock();
+        }
+
+        yield break;
     }
 
-    private void OvercomeByPain()
+    private void SlipIntoShock()
     {
-        string line = gameObject.name + " is overcome by pain!";
+
+        string line = gameObject.name + " is experiencing shock from loss of blood!";
         BattleReport.AddToBattleReport(line);
+
+        myBrain.ToggleState(Brain.State.Shock, true); 
     }
 
-    private void Enrage()
+    private void FallDown(BodyParts.Parts part, int severityLevel)
     {
-        string line = gameObject.name + " has become enraged!";
-        BattleReport.AddToBattleReport(line);
+        if(severityLevel >= BodyPartDamageLimits.partDownedLimits[part])
+        {
+            if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
+            {
+                myBrain.TriggerTemporaryState(Brain.State.Downed, severityLevel);
+                string line = gameObject.name + " is knocked to the ground!";
+                BattleReport.AddToBattleReport(line);
+            }
+        }
     }
 
-    private void Rocked()
+    private void Vomit(BodyParts.Parts part, int severityLevel)
     {
-        string line = gameObject.name + " was rocked by the attack!";
-        BattleReport.AddToBattleReport(line);
+        if (severityLevel >= BodyPartDamageLimits.partVomitLimits[part])
+        {
+            if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
+            {
+                myBrain.TriggerTemporaryState(Brain.State.Vomitting, severityLevel);
+                string line = "The injury causes " + gameObject.name + " to vomit!";
+                BattleReport.AddToBattleReport(line);
+            }
+        }
     }
 
-    private void Shock()
+    private void CantBreathe(BodyParts.Parts part, int severityLevel)
     {
-        string line = gameObject.name + " is in shock!";
-        BattleReport.AddToBattleReport(line);
+        if (severityLevel >= BodyPartDamageLimits.partCantBreatheLimits[part])
+        {
+            if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
+            {
+                myBrain.TriggerTemporaryState(Brain.State.CantBreathe, severityLevel);
+                string line = gameObject.name + " is struggling to breathe!";
+                BattleReport.AddToBattleReport(line);
+            }
+        }
+    }
+    #endregion
+
+    #region Head Only
+
+    private void Rocked(BodyParts.Parts part, int severityLevel)
+    {
+        int triggerLimit = 2;
+        if(severityLevel >= triggerLimit)
+        {
+            if(Random.Range(0,100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
+            {
+                myBrain.TriggerTemporaryState(Brain.State.Rocked, severityLevel);
+                string line = gameObject.name + " was rocked by the attack!";
+                BattleReport.AddToBattleReport(line);
+            }
+        }
     }
 
-    private void KnockedOut()
+    private void KnockedOut(BodyParts.Parts part, int severityLevel)
     {
-        string line = gameObject.name + " has been knocked unconscious by the attack!";
-        BattleReport.AddToBattleReport(line);
+        int triggerLimit = 2;
+        int multiplier = 10; // * severityLevel to get time knocked out
+
+        if (severityLevel >= triggerLimit)
+        {
+            if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
+            {
+                myBrain.TriggerTemporaryState(Brain.State.Unconscious, severityLevel * multiplier);
+                string line = gameObject.name + " has been knocked unconscious by the attack!";
+                BattleReport.AddToBattleReport(line);
+            }
+        }
     }
 
-    private void Vomit()
+    #endregion
+
+    //this stuff is more AI personality related, caused by overall body health after an attack (ie being "tipped over the edge")
+    #region Overwhelmed
+    private void OverWhelmed(BodyParts.Parts p, int s)
     {
-        string line =  "The injury causes " + gameObject.name + " to vomit!";
-        BattleReport.AddToBattleReport(line);
+        if (OvercomeByAnger(p, s))
+            return;
+        if (OvercomeByFear(p, s))
+            return;
+        if (OvercomeByPain(p, s))
+            return;
     }
 
-    private void CantBreathe()
+    private bool OvercomeByFear(BodyParts.Parts part, int severityLevel)
     {
-        string line = gameObject.name + " is struggling to breathe!";
-        BattleReport.AddToBattleReport(line);
+        if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
+        {
+            string line = gameObject.name + " is overcome by fear!";
+            BattleReport.AddToBattleReport(line);
+            return true;
+        }
+        return false;
     }
+
+    private bool OvercomeByPain(BodyParts.Parts part, int severityLevel)
+    {
+        if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
+        {
+            string line = gameObject.name + " is overcome by pain!";
+            BattleReport.AddToBattleReport(line);
+            return true;
+        }
+        return false;
+    }
+
+    private bool OvercomeByAnger(BodyParts.Parts part, int severityLevel)
+    {
+        if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
+        {
+            string line = gameObject.name + " has become enraged!";
+            BattleReport.AddToBattleReport(line);
+            return true;
+        }
+        return false;
+    }
+#endregion
 }

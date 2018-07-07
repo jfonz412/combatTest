@@ -24,7 +24,6 @@ public class BushBansheeBody : BodyParts
             };
 
         vitalParts = new Parts[] { Parts.Abdomin, Parts.Chest };
-        //totalBlood = 1200;
     }
 
     //checks for bodyPart in any of the equipment sections

@@ -64,7 +64,7 @@ public class HumanInjuries : MonoBehaviour {
         new Dictionary<BodyParts.Parts, string>() //deep cut
         {
             {BodyParts.Parts.Head, "The {1} cuts through {0}'s {2} and slams against the skull!" },
-            {BodyParts.Parts.Neck, "The {1} cuts through {0}'s {2} and hacks deep into the neck!"},
+            {BodyParts.Parts.Neck, "The {1} cuts through {0}'s {2} and hacks into the neck!"},
             {BodyParts.Parts.LeftArm, "The {1} cuts through {0}'s {2} and hacks deep into the left arm!" },
             {BodyParts.Parts.RightArm, "The {1} cuts through {0}'s {2} and hacks deep into the right arm!" },
             {BodyParts.Parts.LeftHand, "The {1} cuts through {0}'s {2} and hacks deep into the left hand" },
@@ -79,7 +79,7 @@ public class HumanInjuries : MonoBehaviour {
         new Dictionary<BodyParts.Parts, string>() //cut to bone
         {
             {BodyParts.Parts.Head, "The {1} completely penetrates {0}'s {2}, cracking the skull!" },
-            {BodyParts.Parts.Neck, "The {1} completely penetrates the {2}, hacking nearly to the spine of the neck!"},
+            {BodyParts.Parts.Neck, "The {1} completely penetrates the {2}, hacking deep into the neck!"},
             {BodyParts.Parts.LeftArm, "The {1} completely penetrates {0}'s {2}, cutting down to the bone of the the left arm!" },
             {BodyParts.Parts.RightArm, "The {1} completely penetrates {0}'s {2}, cutting down to the bone of the the right arm!" },
             {BodyParts.Parts.LeftHand, "The {1} completely penetrates {0}'s {2}, cutting down to the bones of the the left hand" },
