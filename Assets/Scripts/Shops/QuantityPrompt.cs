@@ -10,7 +10,14 @@ public class QuantityPrompt : MonoBehaviour {
     [HideInInspector]
     public int enteredAmount = 0;
 
+    private Brain playerBrain;
+
     IEnumerator waitForInput;
+
+    private void Start()
+    {
+        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Brain>();
+    }
 
     public void TriggerPrompt()
     {
@@ -21,7 +28,7 @@ public class QuantityPrompt : MonoBehaviour {
     private IEnumerator WaitForInput()
     {
         PromptState(true);
-        while (waitingForInput && PlayerState.GetPlayerState() == PlayerState.PlayerStates.Prompt)
+        while (waitingForInput && playerBrain.ActiveState(Brain.State.Prompted))
         {
             yield return null;
         }
@@ -32,13 +39,13 @@ public class QuantityPrompt : MonoBehaviour {
     {
         if (prompting)
         {
-            PlayerState.SetPlayerState(PlayerState.PlayerStates.Prompt);
+            playerBrain.ToggleState(Brain.State.Prompted, true);
             promptWindow.SetActive(true);
             waitingForInput = true;
         }
         else
         {
-            PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping); //should just be previous state to catch edge cases?
+            playerBrain.ToggleState(Brain.State.Prompted, false); 
             promptWindow.SetActive(false);
         }
     }

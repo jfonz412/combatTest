@@ -10,37 +10,48 @@ public class PlayerController : MonoBehaviour {
 
     private UnitController unitController;
     private AttackController attackController;
+    private Brain myBrain;
 
     private IEnumerator movingToInteraction = null;
 
-    private PlayerState.PlayerStates[] movementImparingStates = new PlayerState.PlayerStates[] 
+    private Brain.State[] movementImparingStates = new Brain.State[] 
     {
-        PlayerState.PlayerStates.Shopping,
-        PlayerState.PlayerStates.Speaking,
-        PlayerState.PlayerStates.Dead,
-        PlayerState.PlayerStates.Prompt
+        Brain.State.Shopping,
+        Brain.State.Talking,
+        Brain.State.Dead,
+        Brain.State.Prompted,
+        Brain.State.BattleReportOpen
     };
 
 
-    private void Start () {
+    private void Start ()
+    {
         FloatingTextController.Initialize(); //just needs to be initialized somewhere
         unitController = GetComponent<UnitController>();
         attackController = GetComponent<AttackController>();
+        myBrain = GetComponent<Brain>();
     }
 
 
     // Update is called once per frame
     private void Update () {
-        if (!Incapcitated())
+        if (!Impaired())
         {
             MovePlayer();
         }
     }
 
     //this will prevent all movement, popups, and interactions during certain states
-    private bool Incapcitated()
+    private bool Impaired()
     {
-        return PlayerState.CheckPlayerState(movementImparingStates);
+        if (myBrain.ActiveStates(movementImparingStates))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private void MovePlayer(){

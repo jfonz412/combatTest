@@ -9,19 +9,19 @@ public class BattleReport : MonoBehaviour {
     private static string savedText = "";
     private static int lineCount;
     private static string newlines = System.Environment.NewLine + System.Environment.NewLine;
+    private Brain playerBrain;
 
-    private PlayerState.PlayerStates[] activationImparingStates = new PlayerState.PlayerStates[]
+    private Brain.State[] activationImparingStates = new Brain.State[]
     {
-        PlayerState.PlayerStates.Shopping,
-        PlayerState.PlayerStates.Speaking,
-        PlayerState.PlayerStates.Paused,
-        PlayerState.PlayerStates.Prompt
+        Brain.State.Shopping,
+        Brain.State.Talking,
+        Brain.State.Paused,
+        Brain.State.Prompted
     };
-
-    PlayerState.PlayerStates stateBeforePause;
 
     void Start ()
     {
+        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().playerBrain;
         reportText = transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
         scrollRect = transform.GetChild(0).GetChild(0).GetComponent<ScrollRect>();
         reportText.text = savedText;
@@ -29,7 +29,8 @@ public class BattleReport : MonoBehaviour {
 
     void Update()
     {
-        ToggleBattleReport();
+        ToggleBattleReport(); //make this a UI button to open report and we can get this out of Update(), which is causing an error when player (player's brain)
+        //hasn't loaded yet
     }
 
     public static void AddToBattleReport(string line)
@@ -64,7 +65,7 @@ public class BattleReport : MonoBehaviour {
 
     private void ToggleBattleReport()
     {
-        if (PlayerState.CheckPlayerState(activationImparingStates))
+        if (playerBrain.ActiveStates(activationImparingStates))
         {
             return;
         }
@@ -80,13 +81,12 @@ public class BattleReport : MonoBehaviour {
     {
         if (paused)
         {
-            stateBeforePause = PlayerState.GetPlayerState();
-            PlayerState.SetPlayerState(PlayerState.PlayerStates.BattleReport);
+            playerBrain.ToggleState(Brain.State.BattleReportOpen, true);
             Time.timeScale = 0;
         }
         else
         {
-            PlayerState.SetPlayerState(stateBeforePause);
+            playerBrain.ToggleState(Brain.State.BattleReportOpen, false);
             Time.timeScale = 1;
         }
     }

@@ -12,6 +12,7 @@ public class UnitReactions : MonoBehaviour
 
     private AttackController attackController;
     private NPCInteractionStates npcState;
+    private Brain myBrain;
     private UnitController unitController;
 
     public float reactionRadius = 5f;
@@ -26,6 +27,7 @@ public class UnitReactions : MonoBehaviour
     protected virtual void Start()
     {
         npcState = transform.GetComponent<NPCInteractionStates>();
+        myBrain = GetComponent<Brain>();
         attackController = GetComponent<AttackController>();
         unitController = GetComponent<UnitController>();
         ScriptToolbox.GetInstance().GetUnitReactionManager().AddUnitToReactionManager(this);
@@ -99,6 +101,7 @@ public class UnitReactions : MonoBehaviour
         if (attackController.lastKnownTarget != attacker)
         {
             attackController.EngageTarget(true, attacker);
+            /*
             if(attacker.name == "Player")
             {
                 npcState.SetInteractionState(NPCInteractionStates.InteractionState.FightingPlayer);
@@ -107,6 +110,7 @@ public class UnitReactions : MonoBehaviour
             {
                 npcState.SetInteractionState(NPCInteractionStates.InteractionState.FightingNPC);
             }
+            */
         }
     }
 
@@ -115,7 +119,7 @@ public class UnitReactions : MonoBehaviour
         if (!runningAway)
         {
             runningAway = true;
-
+            /*
             if (attacker.name == "Player")
             {
                 npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingPlayer);
@@ -124,7 +128,7 @@ public class UnitReactions : MonoBehaviour
             {
                 npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingNPC);
             }
-
+            */
             StartCoroutine(RunFromAttacker(attacker));
         }           
     }
@@ -135,7 +139,7 @@ public class UnitReactions : MonoBehaviour
         if (!runningAway)
         {
             runningAway = true;
-            npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingNPC);
+            //npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingNPC);
             StartCoroutine(RunFromAttacker(attacker));
         }
     }
@@ -143,7 +147,7 @@ public class UnitReactions : MonoBehaviour
     private IEnumerator RunFromAttacker(Transform attacker)
     {
         //PathfindingManager.RequestPath(transform.position, GetPosition(attacker), unitController.OnPathFound); //makes for a quick initial reaction
-
+        myBrain.ToggleState(Brain.State.Fleeing, true);
         while (attacker && !isDead)
         {
             if (Vector3.Distance(transform.position, attacker.transform.position) < 3f) //runaway radius hardcoded
@@ -157,6 +161,7 @@ public class UnitReactions : MonoBehaviour
                 break;
             }
         }
+        myBrain.ToggleState(Brain.State.Fleeing, false);
         yield break;
     }
 
@@ -189,6 +194,7 @@ public class UnitReactions : MonoBehaviour
         return node.worldPos;     
     }
 
+    //gets node opposite of attacker to run to
     private Node NodeOppositeAttacker(Transform attacker)
     {
         float deviation = Random.Range(0f, 0.9f); 

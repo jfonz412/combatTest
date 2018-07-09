@@ -6,7 +6,7 @@ public class PlayerDeath : Death {
     {
         base.StopAllCombat();
 
-        PlayerState.SetPlayerState(PlayerState.PlayerStates.Dead);
-        ScriptToolbox.GetInstance().GetWindowCloser().CloseAllWindows();
+        GetComponent<Brain>().ToggleState(Brain.State.Dead, true);
+        //ScriptToolbox.GetInstance().GetWindowCloser().CloseAllWindows();
     }
 }

@@ -11,7 +11,30 @@ public class Brain : MonoBehaviour {
     private AttackController myCombat;
     private UnitReactions myReactions; //will eventually change this to UnitPersonality and UnitAffiliations or UnitRelationships and later UnitRoutine or something
 
-    public enum State { Shock, CantBreathe, OvercomeByPain, Unconscious, Vomitting, Downed, Rocked, OvercomeByFear, OvercomeByRage } //could centralize "Dead" state here too
+    public enum State
+    {
+        Shock,
+        CantBreathe,
+        OvercomeByPain,
+        Unconscious,
+        Vomitting,
+        Downed,
+        Rocked,
+        OvercomeByFear,
+        OvercomeByRage,
+        
+        Neutral,
+        Fighting,
+        Fleeing,
+        Dead,
+
+        Shopping,
+        Talking,
+        Prompted,
+        Paused,
+        BattleReportOpen
+    };
+
     public Dictionary<State, bool> currentStates;
     public Dictionary<State, float> stateTimers;
 
@@ -29,6 +52,18 @@ public class Brain : MonoBehaviour {
     public void ToggleState(State state, bool toggle)
     {
         currentStates[state] = toggle;
+    }
+
+    public bool ActiveState(State state)
+    {
+        if (currentStates[state] == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool ActiveStates(State[] states)
@@ -74,7 +109,18 @@ public class Brain : MonoBehaviour {
             { State.Rocked, false },
             { State.Shock, false },
             { State.Unconscious, false },
-            { State.Vomitting, false }
+            { State.Vomitting, false },
+
+            { State.Dead, false },
+            { State.Fighting, false },
+            { State.Fleeing, false },
+            { State.Neutral, false },
+
+            { State.Paused, false },
+            { State.BattleReportOpen, false },
+            { State.Prompted, false },
+            { State.Shopping, false },
+            { State.Talking, false }
         };
     }
 }

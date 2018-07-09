@@ -31,7 +31,8 @@ public class AttackController : MonoBehaviour {
         Brain.State.Shock,
         Brain.State.Unconscious,
         Brain.State.Vomitting,
-        Brain.State.CantBreathe
+        Brain.State.CantBreathe,
+        Brain.State.BattleReportOpen
 };
 
     private float myAttackStat;
@@ -61,6 +62,7 @@ public class AttackController : MonoBehaviour {
         else
         {
             StopEngagingEnemy();
+            myBrain.ToggleState(Brain.State.Fighting, false);
             lastKnownTarget = null;
         }
     }
@@ -69,6 +71,7 @@ public class AttackController : MonoBehaviour {
     private IEnumerator MoveToEngagement(Transform targetTransform)
     {
         bool inRange;
+        myBrain.ToggleState(Brain.State.Fighting, true);
         UnitReactions unitAI = targetTransform.GetComponent<UnitReactions>();
         Collider2D c = GetComponent<Collider2D>();
        
@@ -97,6 +100,8 @@ public class AttackController : MonoBehaviour {
             }
             yield return null;
         }
+
+        myBrain.ToggleState(Brain.State.Fighting, false);
         yield break;
     }
 

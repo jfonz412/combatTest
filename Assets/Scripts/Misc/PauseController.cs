@@ -2,24 +2,42 @@
 
 public class PauseController : MonoBehaviour {
     public GameObject pauseMenu;
-    private PlayerState.PlayerStates stateBeforePause;
+    private Brain playerBrain;
 
-    PlayerState.PlayerStates[] invalidPauseStates = new PlayerState.PlayerStates[]
+    private Brain.State stateBeforePause;
+
+    Brain.State[] invalidPauseStates = new Brain.State[]
     {
-        PlayerState.PlayerStates.Speaking,
-        PlayerState.PlayerStates.Shopping,
-        PlayerState.PlayerStates.Prompt
+        Brain.State.Talking,
+        Brain.State.Shopping,
+        Brain.State.Prompted
     };
 
+    private void Start()
+    {
+        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().playerBrain;
+    }
 
     private void Update ()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(!PlayerState.CheckPlayerState(invalidPauseStates))
+            if(CanPause())
                 TogglePause();
         }	
 	}
+
+    private bool CanPause()
+    {
+        if (!playerBrain.ActiveStates(invalidPauseStates)) //if any of these are active return false
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     private void TogglePause()
     {
@@ -39,15 +57,14 @@ public class PauseController : MonoBehaviour {
 
     private void Pause()
     {
-        stateBeforePause = PlayerState.GetPlayerState();
-        PlayerState.SetPlayerState(PlayerState.PlayerStates.Paused); 
+        playerBrain.ToggleState(Brain.State.Paused, true);
         pauseMenu.SetActive(true);
         Time.timeScale = 0;
     }
 
     private void Unpause()
     {
-        PlayerState.SetPlayerState(stateBeforePause);
+        playerBrain.ToggleState(Brain.State.Paused, false);
         pauseMenu.SetActive(false);
         Time.timeScale = 1;
     }

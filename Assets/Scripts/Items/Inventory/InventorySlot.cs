@@ -8,6 +8,13 @@ public class InventorySlot : MonoBehaviour
     public Image icon;
     public Item item;
 
+    private Brain playerBrain;
+
+    private void Start()
+    {
+        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Brain>();
+    }
+
     public virtual void AddItem(Item newItem)
     {
         if (newItem == null)
@@ -36,7 +43,7 @@ public class InventorySlot : MonoBehaviour
 
     public virtual void SlotRightClicked()
     {
-        if (PlayerState.GetPlayerState() == PlayerState.PlayerStates.Shopping)
+        if (playerBrain.ActiveState(Brain.State.Shopping))
         {
             InvSlotClick.instance.RightClickedToSell(item);
         }
@@ -48,7 +55,7 @@ public class InventorySlot : MonoBehaviour
 
     public virtual void SlotLeftClicked()
     {
-        if(PlayerState.GetPlayerState() == PlayerState.PlayerStates.Shopping)
+        if(playerBrain.ActiveState(Brain.State.Shopping))
         {
             InvSlotClick.instance.LeftClickedToSell(this);
         }

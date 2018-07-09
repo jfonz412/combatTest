@@ -8,12 +8,19 @@ public class InventoryToggle : MonoBehaviour {
     public GameObject healthPanel;
     public SkillPanel skillPanel;
 
-    private PlayerState.PlayerStates[] invalidStates = new PlayerState.PlayerStates[]
+    private Brain playerBrain;
+
+    private Brain.State[] invalidStates = new Brain.State[]
     {
-        PlayerState.PlayerStates.Dead,
-        PlayerState.PlayerStates.Speaking,
-        //PlayerState.PlayerStates.Paused
+        Brain.State.Dead,
+        Brain.State.Talking,
+        //Brain.State.Paused
     };
+
+    private void Start()
+    {
+        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().playerBrain;
+    }
 
     private void Update()
     {
@@ -35,12 +42,12 @@ public class InventoryToggle : MonoBehaviour {
 
     private void CheckForValidPlayerState()
     {
-        if (PlayerState.CheckPlayerState(invalidStates))
+        if (playerBrain.ActiveStates(invalidStates))
         {
             CloseInventory();
         }
         /*
-        if (PlayerState.GetPlayerState() == PlayerState.PlayerStates.Shopping)
+        if (playerBrain.ActiveState(Brain.State.Shopping))
         {
             OpenInventory();
         }

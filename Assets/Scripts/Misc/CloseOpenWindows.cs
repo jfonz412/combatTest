@@ -39,13 +39,12 @@ public class CloseOpenWindows : MonoBehaviour {
     {
         DestroyPopupMenus();
         InventoryManager.GetInstance().GetInventoryToggle().CloseInventory();
-        toolbox.GetDialogueManager().dialogueWindow.SetBool("isOpen", false);
+        toolbox.GetDialogueManager().EndDialogue();
     }
 
     public void KnockPlayerOutOfDialogue()
     {
-        PlayerState.SetPlayerState(PlayerState.PlayerStates.Idle);
-        toolbox.GetDialogueManager().dialogueWindow.SetBool("isOpen", false);
+        toolbox.GetDialogueManager().EndDialogue();
         ShopInventoryUI.instance.ShopUIToggle(false);
     }
 }

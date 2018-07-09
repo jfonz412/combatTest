@@ -11,6 +11,8 @@ public class ShopInventoryUI : MonoBehaviour {
     private ShopInventory shop;
     private ShopSlot[] slots;
 
+    private Brain playerBrain;
+
     #region Singleton
 
     public static ShopInventoryUI instance;
@@ -31,6 +33,8 @@ public class ShopInventoryUI : MonoBehaviour {
         shop = InventoryManager.GetInstance().GetShopInventory();
         shop.onInventoryChanged += UpdateUI;
         slots = itemsParent.GetComponentsInChildren<ShopSlot>();
+        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Brain>();
+
         AssignSlotNums();
     }
 
@@ -44,12 +48,14 @@ public class ShopInventoryUI : MonoBehaviour {
 
         if (!active)
         {
-            PlayerState.SetPlayerState(PlayerState.PlayerStates.Idle);
+            playerBrain.ToggleState(Brain.State.Neutral, false);
+            playerBrain.ToggleState(Brain.State.Shopping, false);
             shop.ClearShopInventory();
         }
         else
         {
-            PlayerState.SetPlayerState(PlayerState.PlayerStates.Shopping);
+            playerBrain.ToggleState(Brain.State.Neutral, true);
+            playerBrain.ToggleState(Brain.State.Shopping, true);
             ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus(); 
         }
     }

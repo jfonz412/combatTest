@@ -16,32 +16,31 @@ public class NPCInteraction : Interactable
 
     public override void Interaction(string interaction)
     {
-        //myState.CheckNPCInteractionState(interaction);
-
         base.Interaction(interaction); //gets the reference to the player
 
-        if (interaction == "Default")
+        //need to set default interaction state depending on the state of this unit and the disposition of the unit towards the player
+
+        if (interaction == "Default") //Default is passed here from PlayerController if this unit is LeftClicked
         {
             interaction = defaultInteraction.ToString();
-            myState.ValidateInteraction(interaction);
         }
 
         switch (interaction)
         {
             case "Attack":
-                if (myState.ValidateInteraction(interaction))
+                if (myState.AbleToInteract(interaction))
                     TriggerAttack();
                 break;
             case "Talk":
-                if (myState.ValidateInteraction(interaction))
+                if (myState.AbleToInteract(interaction))
                     TriggerDialogue();
                 break;
             case "Trade":
-                if (myState.ValidateInteraction(interaction))
+                if (myState.AbleToInteract(interaction))
                     TriggerTrade();
                 break;
             case "Inspect":
-                if (myState.ValidateInteraction(interaction))
+                if (myState.AbleToInteract(interaction))
                     InspectObject();
                 break;
             default:

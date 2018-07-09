@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
+//REPLACED BY BRAIN STATES
 public class PlayerState : MonoBehaviour {
-
+    /*
     public enum PlayerStates { Idle, Speaking, Fighting, Shopping, Dead, Prompt, Paused, BattleReport }
 
     [SerializeField]
@@ -61,4 +62,5 @@ public class PlayerState : MonoBehaviour {
         }
         return false;
     }
+    */
 }
