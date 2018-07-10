@@ -8,8 +8,9 @@ public class NPCSaveData : DataController {
     private Health health;
     private Loadout loadOut; //just to load npc's default equipment when scene is loaded
     private LoadShop myShop;
-    private UnitReactions myAI;
+    //private UnitReactions myAI;
     private BodyParts bodyParts;
+    private Brain myBrain;
 
     //called in Start() 
     protected override void GatherComponents()
@@ -17,9 +18,10 @@ public class NPCSaveData : DataController {
         base.GatherComponents();
         health = GetComponent<Health>();
         loadOut = GetComponent<Loadout>();
-        myAI = GetComponent<UnitReactions>();
+        //myAI = GetComponent<UnitReactions>();
         myShop = GetComponent<LoadShop>(); //may be null if not shop owner
         bodyParts = GetComponent<BodyParts>();
+        myBrain = GetComponent<Brain>();
     }
 
     //called from DataManager to save this object
@@ -67,7 +69,7 @@ public class NPCSaveData : DataController {
 
         Vector3 pos = transform.position;
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
-        data.isDead = myAI.isDead;
+        data.isDead = myBrain.isDead;
         data.bodyPartDamage = bodyParts.GetPartDamage();
 
         if (myShop != null)
@@ -84,7 +86,7 @@ public class NPCSaveData : DataController {
         //eventually just destroy the object and remove it from the dataManager
         if (data.isDead)
         {
-            myAI.isDead = true;
+            myBrain.isDead = true;
             gameObject.SetActive(false);
             return;
         }

@@ -21,6 +21,7 @@ public class SaveAndExit : MonoBehaviour {
 
         if (exitAfterSave)
         {
+            Time.timeScale = 1;
             game.GetLevelManager().LoadScene("Title");
         }
     }

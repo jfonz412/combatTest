@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+//OBSOLETE
 public class EquippedItemDepth : MonoBehaviour {
 
     [HideInInspector]

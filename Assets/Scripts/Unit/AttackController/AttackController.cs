@@ -32,7 +32,8 @@ public class AttackController : MonoBehaviour {
         Brain.State.Unconscious,
         Brain.State.Vomitting,
         Brain.State.CantBreathe,
-        Brain.State.BattleReportOpen
+        Brain.State.BattleReportOpen,
+        Brain.State.Dead
 };
 
     private float myAttackStat;
@@ -72,12 +73,12 @@ public class AttackController : MonoBehaviour {
     {
         bool inRange;
         myBrain.ToggleState(Brain.State.Fighting, true);
-        UnitReactions unitAI = targetTransform.GetComponent<UnitReactions>();
+        Brain opponent = targetTransform.GetComponent<Brain>();
         Collider2D c = GetComponent<Collider2D>();
        
         anim.FaceDirection(transform.position, targetTransform.position);
 
-        while (!unitAI.isDead) //targetTransform && 
+        while (!opponent.isDead) // or unconscious or in shock?
         {
             //eventually this will be a function that will check if ranged or melee, then decide if in range or not
             inRange = c.IsTouching(targetTransform.GetComponent<Collider2D>()); //this would just be for melee

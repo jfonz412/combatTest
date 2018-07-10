@@ -19,9 +19,9 @@ public class UnitReactions : MonoBehaviour
     //public float criticalHealthThreshold = 0;
 
     [HideInInspector]
-    public bool isDead = false;
+    public bool isDead { get { return myBrain.isDead; } }
     [HideInInspector]
-    public bool runningAway = false; //make protected?
+    protected bool runningAway = false; //make protected?
     //bool attacking;
 
     protected virtual void Start()
@@ -101,16 +101,6 @@ public class UnitReactions : MonoBehaviour
         if (attackController.lastKnownTarget != attacker)
         {
             attackController.EngageTarget(true, attacker);
-            /*
-            if(attacker.name == "Player")
-            {
-                npcState.SetInteractionState(NPCInteractionStates.InteractionState.FightingPlayer);
-            }
-            else
-            {
-                npcState.SetInteractionState(NPCInteractionStates.InteractionState.FightingNPC);
-            }
-            */
         }
     }
 
@@ -119,16 +109,6 @@ public class UnitReactions : MonoBehaviour
         if (!runningAway)
         {
             runningAway = true;
-            /*
-            if (attacker.name == "Player")
-            {
-                npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingPlayer);
-            }
-            else
-            {
-                npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingNPC);
-            }
-            */
             StartCoroutine(RunFromAttacker(attacker));
         }           
     }
@@ -139,7 +119,6 @@ public class UnitReactions : MonoBehaviour
         if (!runningAway)
         {
             runningAway = true;
-            //npcState.SetInteractionState(NPCInteractionStates.InteractionState.FleeingNPC);
             StartCoroutine(RunFromAttacker(attacker));
         }
     }

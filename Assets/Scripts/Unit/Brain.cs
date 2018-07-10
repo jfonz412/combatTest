@@ -10,6 +10,9 @@ public class Brain : MonoBehaviour {
     private UnitController myMovement;
     private AttackController myCombat;
     private UnitReactions myReactions; //will eventually change this to UnitPersonality and UnitAffiliations or UnitRelationships and later UnitRoutine or something
+    private Death myDeathController;
+
+    public bool isDead { get { return currentStates[State.Dead]; } set { ToggleState(State.Dead, value); } } 
 
     public enum State
     {
@@ -45,13 +48,25 @@ public class Brain : MonoBehaviour {
         myCombat = GetComponent<AttackController>();
         myMovement = GetComponent<UnitController>();
         myReactions = GetComponent<UnitReactions>();
-
-        SetDefaultStates();
+        myDeathController = GetComponent<Death>();
+        ResetStates();
 	}
 
     public void ToggleState(State state, bool toggle)
     {
         currentStates[state] = toggle;
+    }
+
+    public void TriggerTemporaryState(State state, int severityTimer)
+    {
+        StartCoroutine(TimedState(state, severityTimer));
+    }
+
+    public void Die()
+    {
+        ResetStates();
+        currentStates[State.Dead] = true;
+        myDeathController.Die();
     }
 
     public bool ActiveState(State state)
@@ -79,11 +94,6 @@ public class Brain : MonoBehaviour {
         return false;
     }
 
-    public void TriggerTemporaryState(State state, int severityTimer)
-    {
-        StartCoroutine(TimedState(state, severityTimer));
-    }
-
     private IEnumerator TimedState(State state, float severityTimer)
     {
         ToggleState(state, true);
@@ -97,7 +107,7 @@ public class Brain : MonoBehaviour {
         ToggleState(state, false);
     }
 
-    private void SetDefaultStates()
+    private void ResetStates()
     {
         currentStates = new Dictionary<State, bool>()
         {

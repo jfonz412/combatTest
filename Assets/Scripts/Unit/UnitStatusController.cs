@@ -11,6 +11,7 @@ public class UnitStatusController : MonoBehaviour
     private int baseResistance = 100;
 
     //private Dictionary<Status, string> statusMessages; //will be used to send lines to the battle reports
+    //if Dead, cancel all status coroutines? might not be necessary
 
     private void Start()
     {
@@ -79,7 +80,33 @@ public class UnitStatusController : MonoBehaviour
         string line = gameObject.name + " is experiencing shock from loss of blood!";
         BattleReport.AddToBattleReport(line);
 
-        myBrain.ToggleState(Brain.State.Shock, true); 
+        myBrain.ToggleState(Brain.State.Shock, true);
+
+        StartCoroutine(Shock());
+    }
+
+    protected IEnumerator Shock()
+    {
+        float bloodNeeded = 600; //half of 1200 which I've set as a hardcoded default blood volume for all units
+        float deathTimer = 20f;
+
+        while (body.totalBlood < bloodNeeded)
+        {
+            deathTimer -= Time.deltaTime;
+            Debug.Log(deathTimer);
+            if (deathTimer <= 0)
+            {
+                myBrain.Die();
+                string line = gameObject.name + " has bled out!";
+                BattleReport.AddToBattleReport(line);
+                yield break;
+            }
+            yield return null;
+        }
+
+        //if we've exited the while loop before the timer is up then we've re-accumulated the lost blood and can exit shock
+        myBrain.ToggleState(Brain.State.Shock, false);
+        yield break;
     }
 
     private void FallDown(BodyParts.Parts part, int severityLevel)

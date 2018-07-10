@@ -5,6 +5,12 @@ public class Death : MonoBehaviour {
 
     [SerializeField]
     private GameObject deathItem;
+    private UnitAnimController anim;
+
+    protected void Start()
+    {
+        anim = GetComponent<UnitAnimController>();
+    }
 
     public void Die()
     {
@@ -13,9 +19,8 @@ public class Death : MonoBehaviour {
 
     private IEnumerator DeathProcess()
     {
-        StopAllCombat();
         DropDeathItem();
-
+        anim.Die();
         yield return new WaitForSeconds(6f); //extend death animation before destroy
 
         gameObject.SetActive(false);
@@ -27,16 +32,5 @@ public class Death : MonoBehaviour {
         {
             Instantiate(deathItem, transform.position, Quaternion.identity);
         }
-    }
-
-    public virtual void StopAllCombat()
-    {
-        //stop this unit
-        GetComponent<UnitController>().StopMoving();
-        GetComponent<AttackController>().EngageTarget(false); //should this go first?
-        GetComponent<UnitAnimController>().Die();
-
-        //stop myAttacker
-        //myAttacker.GetComponent<AttackController>().EngageTarget(false);
     }
 }

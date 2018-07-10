@@ -22,7 +22,6 @@ public class LoadGame : MonoBehaviour {
         if (SavedGameAvailable())
         {
             string scene = RetrieveSavedScene();
-            Time.timeScale = 1; //in case we are coming from the pause screen
             ApplicationManager.GetInstance().GetLevelManager().LoadScene(scene);
             //Debug.Log("Loading: " + scene);
         }

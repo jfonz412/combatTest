@@ -18,12 +18,11 @@ public class BodyParts : MonoBehaviour {
     protected CombatSkills mySkills;
     protected UnitReactions unitReactions;
     protected UnitStatusController statusController;
-    protected Death deathController;
     protected UnitAnimController anim;
     protected AttackReactionSkills attackReaction;
+    protected Brain myBrain;
 
-    public float totalBlood = 1200;
-    private bool alive = true;
+    public float totalBlood = 1200; //hardcoded, come up with a better formula for this?
 
     public delegate void OnDamageTaken(DamageInfo info);
     public OnDamageTaken onDamageTaken;
@@ -40,10 +39,10 @@ public class BodyParts : MonoBehaviour {
     {
         mySkills = GetComponent<CombatSkills>();
         unitReactions = GetComponent<UnitReactions>();
-        deathController = GetComponent<Death>();
         anim = GetComponent<UnitAnimController>();
         statusController = GetComponent<UnitStatusController>();
         mySkills.onSkillGained += UpdateSkills;
+        myBrain = GetComponent<Brain>();
 
         UpdateSkills(); 
     }
@@ -145,7 +144,16 @@ public class BodyParts : MonoBehaviour {
         Injuries.DamageMessage(damageInfo);
         DamageBodyPart(damageInfo);
 
-        statusController.CheckForStatusTriggers(damageInfo);     
+        if (VitalPartInjured(vitalParts))
+        {
+            myBrain.Die();
+            string line = "<color=red>" + gameObject.name + " has been mortally wounded!</color>";
+            BattleReport.AddToBattleReport(line);
+        }
+        else
+        {
+            statusController.CheckForStatusTriggers(damageInfo);
+        }
     }
 
     protected void DamageBodyPart(DamageInfo info)
@@ -267,15 +275,6 @@ public class BodyParts : MonoBehaviour {
     protected virtual void GetArmor(Equipment oldItem, Equipment newItem)
     {
         Debug.LogError("Base method should not be called here!");
-    }
-
-    protected void TriggerDeath()
-    {
-        //this method alerts others, and since this unit is dead UnitReactionManager should skip over it
-        //unitReactions.ReactToAttackAgainstSelf(myAttacker); //might not neec this because unit is alerted with each hit even if 1hko
-        StopAllCoroutines(); 
-        unitReactions.isDead = true; //stop reacting
-        deathController.Die();
     }
 
     //put together here and given to injuries script

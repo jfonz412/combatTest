@@ -20,7 +20,8 @@ public class UnitController : MonoBehaviour
         Brain.State.Rocked,
         Brain.State.Shock,
         Brain.State.Unconscious,
-        Brain.State.Vomitting
+        Brain.State.Vomitting,
+        Brain.State.Dead
     };
 
     void Start()
@@ -69,7 +70,7 @@ public class UnitController : MonoBehaviour
         anim.FaceDirection(transform.position, currentWaypoint);
         anim.Walking(true);
 
-        while (true && !Impaired()) //expensive but it might take care of all movement stoppage (units will still attack though)
+        while (true && !Impaired()) //expensive but it might take care of all movement stoppage
         {
             if (transform.position == currentWaypoint)
             {
