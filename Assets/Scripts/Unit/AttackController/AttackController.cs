@@ -90,14 +90,15 @@ public class AttackController : MonoBehaviour {
                 PathfindingManager.RequestPath(transform.position, lastKnownTarget.position, unit.OnPathFound);
                 yield return new WaitForSeconds(.1f);
             }
-            else if(!Impaired())
+            else if(!Impaired() && !attackTimer.coolingDown)
             {
                 Attack(targetTransform);
+                /*
                 while(attackTimer.Timer() > 0f)
                 {
                     yield return null;
                 }
-
+                */
             }
             yield return null;
         }
@@ -154,6 +155,7 @@ public class AttackController : MonoBehaviour {
         }
 
         targetBody.RecieveAttack(myAttack, transform); //should reset back to whatever weapon was used
+        Debug.Log("my weapon speed is " + myAttack.speed);
         attackTimer.ResetAttackTimer(myAttack.speed);
     }
 
