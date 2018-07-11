@@ -28,7 +28,7 @@ public class BodyPartDamageLimits : MonoBehaviour {
         { BodyParts.Parts.LeftFoot, 3 },
         { BodyParts.Parts.RightLeg, 4 },
         { BodyParts.Parts.RightFoot, 3 },
-        { BodyParts.Parts.Neck, 4 },
+        { BodyParts.Parts.Neck, 5 },
     };
 
     //SHOCK

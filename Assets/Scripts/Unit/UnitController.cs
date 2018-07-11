@@ -77,13 +77,7 @@ public class UnitController : MonoBehaviour
                 targetIndex++;
                 if (targetIndex >= path.Length)
                 {
-                    path = null;
-                    targetIndex = 0;
-
-                    //anim.ToggleMovingAnimation(false);
-                    anim.Walking(false);
-
-                    IsKinematic(false);
+                    Stop();
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
@@ -98,6 +92,8 @@ public class UnitController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, currentMoveSpeed * Time.deltaTime);
             yield return null;
         }
+
+        Stop(); //if we are knocked out of while loop by Impaired, we must stop movement
     }
 
 
@@ -117,12 +113,17 @@ public class UnitController : MonoBehaviour
                 StopCoroutine("FollowPath");              
             }
 
-            path = null;
-            targetIndex = 0;
-
-            anim.Walking(false);
-            IsKinematic(false);
+            Stop();
         }
+    }
+
+    private void Stop()
+    {
+        path = null;
+        targetIndex = 0;
+
+        anim.Walking(false);
+        IsKinematic(false);
     }
 
     Node CurrentNode()

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 using System.Linq;
 
@@ -13,6 +12,16 @@ public class BodyParts : MonoBehaviour {
     protected Parts[] vitalParts;
 
     protected Dictionary<EquipmentSlot, ArmorInfo> myArmor = new Dictionary<EquipmentSlot, ArmorInfo>();
+    protected Brain.State[] vulnerableStates = new Brain.State[]
+    {
+        Brain.State.CantBreathe,
+        Brain.State.Dead,
+        Brain.State.Rocked,
+        Brain.State.Shock,
+        Brain.State.Unconscious,
+        Brain.State.Vomitting
+        //Brain.State.Downed, //can still block, dodge, parry while on the ground 
+    };
 
     protected EquipmentManager equipment;
     protected CombatSkills mySkills;
@@ -170,6 +179,9 @@ public class BodyParts : MonoBehaviour {
 
     protected bool Hit()
     {
+        if (myBrain.ActiveStates(vulnerableStates))
+            return true;
+
         if (Random.Range(0, 100) <= attackReaction.dodge)
         {
             string line = "<color=green>" + gameObject.name + " parried the attack!</color>";
@@ -255,12 +267,27 @@ public class BodyParts : MonoBehaviour {
     //picks a random part out of bodyPartDamage
     protected Parts GetRandomPart()
     {
-        int n = Random.Range(0, bodyPartDamage.Count);
+        while (true)
+        {
+            int infiniteLoopStopper = 0;
+            int n = Random.Range(0, bodyPartDamage.Count);
 
-        if (n > 0)
-            n--;
+            if (n > 0)
+                n--;
 
-        return bodyPartDamage.Keys.ElementAt(n);
+            //prevents severed/obliterated part from being attacked
+            if (bodyPartDamage[bodyPartDamage.Keys.ElementAt(n)] < 5)
+            {
+                return bodyPartDamage.Keys.ElementAt(n);
+            }
+            else if(infiniteLoopStopper >= 100)
+            {
+                Debug.LogError("Can't find bodypart after 100 tries");
+                break;
+            }
+            infiniteLoopStopper++;
+        }
+        return bodyPartDamage.Keys.ElementAt(0); //shouldn't ever touch this
     }
 
     //gives us a precentage to multiply skills by to get their current effectiveness

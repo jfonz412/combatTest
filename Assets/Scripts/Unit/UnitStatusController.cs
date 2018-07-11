@@ -7,6 +7,8 @@ public class UnitStatusController : MonoBehaviour
     private Brain myBrain;
     private BodyParts body;
     private CombatSkills combatSkills;
+    private IEnumerator shock;
+    private IEnumerator suffocation;
 
     private int baseResistance = 100;
 
@@ -76,13 +78,16 @@ public class UnitStatusController : MonoBehaviour
 
     private void SlipIntoShock()
     {
+        if(shock == null) //WILL BE CLEARED WHEN THE COROUTINE COMPLETES
+        {
+            string line = "<color=red>" + gameObject.name + " is experiencing shock from loss of blood!</color>";
+            BattleReport.AddToBattleReport(line);
 
-        string line = gameObject.name + " is experiencing shock from loss of blood!";
-        BattleReport.AddToBattleReport(line);
+            myBrain.ToggleState(Brain.State.Shock, true);
 
-        myBrain.ToggleState(Brain.State.Shock, true);
-
-        StartCoroutine(Shock());
+            shock = Shock();
+            StartCoroutine(shock);
+        }
     }
 
     protected IEnumerator Shock()
@@ -97,8 +102,10 @@ public class UnitStatusController : MonoBehaviour
             if (deathTimer <= 0)
             {
                 myBrain.Die();
-                string line = gameObject.name + " has bled out!";
+
+                string line = "<color=red>" + gameObject.name + " has bled out!</color>";
                 BattleReport.AddToBattleReport(line);
+                StopAllCoroutines(); //need this in case we are suffocating and die this way first
                 yield break;
             }
             yield return null;
@@ -106,6 +113,7 @@ public class UnitStatusController : MonoBehaviour
 
         //if we've exited the while loop before the timer is up then we've re-accumulated the lost blood and can exit shock
         myBrain.ToggleState(Brain.State.Shock, false);
+        shock = null;
         yield break;
     }
 
@@ -116,7 +124,7 @@ public class UnitStatusController : MonoBehaviour
             if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.Downed, severityLevel);
-                string line = gameObject.name + " is knocked to the ground!";
+                string line = "<color=blue>" + gameObject.name + " is knocked to the ground!</color>";
                 BattleReport.AddToBattleReport(line);
             }
         }
@@ -129,7 +137,7 @@ public class UnitStatusController : MonoBehaviour
             if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.Vomitting, severityLevel);
-                string line = "The injury causes " + gameObject.name + " to vomit!";
+                string line = "<color=green>The injury causes " + gameObject.name + " to vomit!</color>";
                 BattleReport.AddToBattleReport(line);
             }
         }
@@ -139,13 +147,58 @@ public class UnitStatusController : MonoBehaviour
     {
         if (severityLevel >= BodyPartDamageLimits.partCantBreatheLimits[part])
         {
+            if (severityLevel >= 4)
+            {
+                Suffocate();
+                return;
+            }
+
             if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.CantBreathe, severityLevel);
-                string line = gameObject.name + " is struggling to breathe!";
+                string line = "<color=red>" + gameObject.name + " is struggling to breathe!</color>";
                 BattleReport.AddToBattleReport(line);
             }
         }
+    }
+
+    private void Suffocate()
+    {
+        if(suffocation == null)
+        {
+            suffocation = Suffocating();
+            StartCoroutine(suffocation);
+        }
+    }
+
+    private IEnumerator Suffocating()
+    {
+        //float airNeeded = 60f; 
+        float deathTimer = 20f;
+
+        myBrain.ToggleState(Brain.State.CantBreathe, true);
+        string line = "<color=red>" + gameObject.name + " is suffocating to death!" + "</color>";
+        BattleReport.AddToBattleReport(line);
+
+        while (deathTimer > 0) //AIR NOT IMPLEMENTED
+        {
+            deathTimer -= Time.deltaTime;
+            Debug.Log(deathTimer);
+            if (deathTimer <= 0)
+            {
+                myBrain.Die();
+                line = "<color=red>" + gameObject.name + " has suffocated to death!" + "</color>";
+                BattleReport.AddToBattleReport(line);
+                StopAllCoroutines(); //need this in case we are in shock and die this way first
+                yield break;
+            }
+            yield return null;
+        }
+
+        //if we've exited the while loop before the timer is up then we've re-accumulated the lost air and can exit suffocation
+        myBrain.ToggleState(Brain.State.CantBreathe, false);
+        suffocation = null;
+        yield break;
     }
     #endregion
 
@@ -159,7 +212,7 @@ public class UnitStatusController : MonoBehaviour
             if(Random.Range(0,100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.Rocked, severityLevel);
-                string line = gameObject.name + " was rocked by the attack!";
+                string line = "<color=blue>" + gameObject.name + " was rocked by the attack!</color>";
                 BattleReport.AddToBattleReport(line);
             }
         }
@@ -175,7 +228,7 @@ public class UnitStatusController : MonoBehaviour
             if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.Unconscious, severityLevel * multiplier);
-                string line = gameObject.name + " has been knocked unconscious by the attack!";
+                string line = "<color=magenta>" + gameObject.name + " has been knocked unconscious by the attack!</color>";
                 BattleReport.AddToBattleReport(line);
             }
         }
@@ -199,7 +252,7 @@ public class UnitStatusController : MonoBehaviour
     {
         if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
         {
-            string line = gameObject.name + " is overcome by fear!";
+            string line = "<color=yellow>" + gameObject.name + " is overcome by fear!</color>";
             BattleReport.AddToBattleReport(line);
             return true;
         }
@@ -210,7 +263,7 @@ public class UnitStatusController : MonoBehaviour
     {
         if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
         {
-            string line = gameObject.name + " is overcome by pain!";
+            string line = "<color=yellow>" + gameObject.name + " is overcome by pain!</color>";
             BattleReport.AddToBattleReport(line);
             return true;
         }
@@ -221,7 +274,7 @@ public class UnitStatusController : MonoBehaviour
     {
         if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
         {
-            string line = gameObject.name + " has become enraged!";
+            string line = "<color=yellow>" + gameObject.name + " is overcome by anger!</color>";
             BattleReport.AddToBattleReport(line);
             return true;
         }
