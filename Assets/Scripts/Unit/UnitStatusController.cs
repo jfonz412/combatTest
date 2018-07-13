@@ -6,6 +6,7 @@ public class UnitStatusController : MonoBehaviour
 {
     private Brain myBrain;
     private BodyParts body;
+    private UnitAnimController anim;
     private CombatSkills combatSkills;
     private IEnumerator shock;
     private IEnumerator suffocation;
@@ -20,6 +21,7 @@ public class UnitStatusController : MonoBehaviour
         myBrain = GetComponent<Brain>();
         body = GetComponent<BodyParts>();
         combatSkills = GetComponent<CombatSkills>();
+        anim = GetComponent<UnitAnimController>();
     }
 
     public void CheckForStatusTriggers(BodyParts.DamageInfo info)
@@ -94,6 +96,7 @@ public class UnitStatusController : MonoBehaviour
     {
         float bloodNeeded = 600; //half of 1200 which I've set as a hardcoded default blood volume for all units
         float deathTimer = 20f;
+        anim.Shock(true);
 
         while (body.totalBlood < bloodNeeded)
         {
@@ -101,11 +104,11 @@ public class UnitStatusController : MonoBehaviour
             Debug.Log(deathTimer);
             if (deathTimer <= 0)
             {
-                myBrain.Die();
-
+                anim.Shock(false); //turn off shock animation
                 string line = "<color=red>" + gameObject.name + " has bled out!</color>";
                 BattleReport.AddToBattleReport(line);
                 StopAllCoroutines(); //need this in case we are suffocating and die this way first
+                myBrain.Die();
                 yield break;
             }
             yield return null;
@@ -113,6 +116,7 @@ public class UnitStatusController : MonoBehaviour
 
         //if we've exited the while loop before the timer is up then we've re-accumulated the lost blood and can exit shock
         myBrain.ToggleState(Brain.State.Shock, false);
+        anim.Shock(false); //turn off shock animation
         shock = null;
         yield break;
     }
@@ -123,6 +127,7 @@ public class UnitStatusController : MonoBehaviour
         {
             if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
             {
+                anim.FallOver(severityLevel);
                 myBrain.TriggerTemporaryState(Brain.State.Downed, severityLevel);
                 string line = "<color=blue>" + gameObject.name + " is knocked to the ground!</color>";
                 BattleReport.AddToBattleReport(line);
@@ -136,6 +141,7 @@ public class UnitStatusController : MonoBehaviour
         {
             if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
             {
+                anim.Vomit(severityLevel);
                 myBrain.TriggerTemporaryState(Brain.State.Vomitting, severityLevel);
                 string line = "<color=green>The injury causes " + gameObject.name + " to vomit!</color>";
                 BattleReport.AddToBattleReport(line);
@@ -155,6 +161,7 @@ public class UnitStatusController : MonoBehaviour
 
             if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
             {
+                anim.CantBreath(severityLevel);
                 myBrain.TriggerTemporaryState(Brain.State.CantBreathe, severityLevel);
                 string line = "<color=red>" + gameObject.name + " is struggling to breathe!</color>";
                 BattleReport.AddToBattleReport(line);
@@ -179,6 +186,7 @@ public class UnitStatusController : MonoBehaviour
         myBrain.ToggleState(Brain.State.CantBreathe, true);
         string line = "<color=red>" + gameObject.name + " is suffocating to death!" + "</color>";
         BattleReport.AddToBattleReport(line);
+        anim.Suffocation(true);
 
         while (deathTimer > 0) //AIR NOT IMPLEMENTED
         {
@@ -186,10 +194,13 @@ public class UnitStatusController : MonoBehaviour
             Debug.Log(deathTimer);
             if (deathTimer <= 0)
             {
-                myBrain.Die();
+                anim.Suffocation(false);
+
                 line = "<color=red>" + gameObject.name + " has suffocated to death!" + "</color>";
                 BattleReport.AddToBattleReport(line);
                 StopAllCoroutines(); //need this in case we are in shock and die this way first
+
+                myBrain.Die();
                 yield break;
             }
             yield return null;
@@ -211,6 +222,7 @@ public class UnitStatusController : MonoBehaviour
         {
             if(Random.Range(0,100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
             {
+                anim.Rocked(severityLevel);
                 myBrain.TriggerTemporaryState(Brain.State.Rocked, severityLevel);
                 string line = "<color=blue>" + gameObject.name + " was rocked by the attack!</color>";
                 BattleReport.AddToBattleReport(line);
@@ -227,7 +239,10 @@ public class UnitStatusController : MonoBehaviour
         {
             if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
             {
-                myBrain.TriggerTemporaryState(Brain.State.Unconscious, severityLevel * multiplier);
+                int duration = severityLevel * multiplier;
+
+                anim.KnockedOut(duration);
+                myBrain.TriggerTemporaryState(Brain.State.Unconscious, duration);
                 string line = "<color=magenta>" + gameObject.name + " has been knocked unconscious by the attack!</color>";
                 BattleReport.AddToBattleReport(line);
             }
