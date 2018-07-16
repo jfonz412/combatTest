@@ -21,7 +21,8 @@ public class UnitController : MonoBehaviour
         Brain.State.Shock,
         Brain.State.Unconscious,
         Brain.State.Vomitting,
-        Brain.State.Dead
+        Brain.State.Dead,
+        Brain.State.CantBreathe
     };
 
     void Start()

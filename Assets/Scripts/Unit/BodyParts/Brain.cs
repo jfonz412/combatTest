@@ -12,7 +12,7 @@ public class Brain : MonoBehaviour {
     private UnitReactions myReactions; //will eventually change this to UnitPersonality and UnitAffiliations or UnitRelationships and later UnitRoutine or something
     private Death myDeathController;
 
-    public bool isDead { get { return currentStates[State.Dead]; } set { ToggleState(State.Dead, value); } } 
+    public bool isDead { get { return currentStates[State.Dead]; } set { ToggleState(State.Dead, value); } }
 
     public enum State
     {
@@ -25,7 +25,7 @@ public class Brain : MonoBehaviour {
         Rocked,
         OvercomeByFear,
         OvercomeByRage,
-        
+
         Neutral,
         Fighting,
         Fleeing,
@@ -41,16 +41,15 @@ public class Brain : MonoBehaviour {
     public Dictionary<State, bool> currentStates;
     public Dictionary<State, float> stateTimers;
 
-
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         myCombat = GetComponent<AttackController>();
         myMovement = GetComponent<UnitController>();
         myReactions = GetComponent<UnitReactions>();
         myDeathController = GetComponent<Death>();
         ResetStates();
-	}
+    }
 
     public void ToggleState(State state, bool toggle)
     {
