@@ -171,10 +171,12 @@ public class BodyParts : MonoBehaviour {
         int d = info.severityLevel;
 
         if(d > bodyPartDamage[p])
+        {
             bodyPartDamage[p] = d;
 
-        if (onDamageTaken != null)
-            onDamageTaken.Invoke(info);
+            if (onDamageTaken != null)          
+                onDamageTaken.Invoke(info);           
+        }
     }
 
     protected bool Hit()

@@ -73,7 +73,6 @@ public class PlayerSaveData : DataController {
         Vector3 pos = transform.position;
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
 
-        //data.currentHealth = health.GetCurrentHealth();
         data.currentEquipment = equipmentManager.GetEquipmentInfo();
         data.currentInventory = inventory.GetItemInfo();
         data.currentGold = wallet.GetCurrentBalance();

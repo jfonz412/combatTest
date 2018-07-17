@@ -89,7 +89,7 @@ public class UnitStatusController : MonoBehaviour
         {
             body.totalBlood -= damage;
             damage = (damage / 2) - 1f;
-            Debug.Log(gameObject.name + " is bleeding for " + damage + " damage");
+            //Debug.Log(gameObject.name + " is bleeding for " + damage + " damage");
             yield return new WaitForSeconds(1f);
         }
 

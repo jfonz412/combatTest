@@ -155,7 +155,6 @@ public class AttackController : MonoBehaviour {
         }
 
         targetBody.RecieveAttack(myAttack, transform); //should reset back to whatever weapon was used
-        Debug.Log("my weapon speed is " + myAttack.speed);
         attackTimer.ResetAttackTimer(myAttack.speed);
     }
 

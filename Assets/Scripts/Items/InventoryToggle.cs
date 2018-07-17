@@ -12,8 +12,8 @@ public class InventoryToggle : MonoBehaviour {
 
     private Brain.State[] invalidStates = new Brain.State[]
     {
-        Brain.State.Dead,
-        Brain.State.Talking,
+        //Brain.State.Dead,
+        Brain.State.Talking
         //Brain.State.Paused
     };
 

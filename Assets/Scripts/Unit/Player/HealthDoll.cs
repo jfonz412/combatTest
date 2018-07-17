@@ -3,35 +3,38 @@ using UnityEngine;
 
 public class HealthDoll : MonoBehaviour {
     private DollPart[] dollParts;
-    private HumanoidBody playerBody;
+    private BodyParts playerBody;
     Dictionary<BodyParts.Parts, int> playerHealth;
 
     // Use this for initialization
     void Start () {
-        playerBody = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<HumanoidBody>();
+        playerBody = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<BodyParts>();
         CollectDollParts();
-        //LoadSavedBodyPartHealth(); //activates everytime this is activated
         playerBody.onDamageTaken += DamageBodyPart;
         playerBody.onHealthLoaded += LoadSavedBodyPartHealth;
 	}
-	
+
 	private void DamageBodyPart(BodyParts.DamageInfo info)
     {
+        Debug.Log(playerHealth[BodyParts.Parts.Chest] + "  " + playerHealth[BodyParts.Parts.RightHand] + " " + playerHealth[BodyParts.Parts.LeftArm] + " " + playerHealth[BodyParts.Parts.Neck] + "  " + playerHealth[BodyParts.Parts.RightArm] + " " + playerHealth[BodyParts.Parts.LeftLeg] + "  " + playerHealth[BodyParts.Parts.RightLeg] + " " + playerHealth[BodyParts.Parts.Head] + "  " + playerHealth[BodyParts.Parts.LeftHand] + " " + playerHealth[BodyParts.Parts.Abdomin]);
         for (int i = 0; i < dollParts.Length; i++)
         {
-            if(dollParts[i].dollPart == info.bodyPart)
+            if (dollParts[i].dollPart == info.bodyPart)
             {
                 BodyParts.Parts p = info.bodyPart;
+
+                Debug.Log(" playerHealth[p] is " + playerHealth[p]);
 
                 playerHealth[p] = info.severityLevel;
                 Color color = DeterminePartColor(playerHealth[p]);
                 dollParts[i].ChangeColor(color);
+        
                 LogDamage(dollParts[i], info); 
 
-                return;
+                break;
             }
         }
-        Debug.LogError("BodyPart not found!!! Should not exit the for loop!");
+        Debug.Log("Exited for loop");
     }
 
     private void CollectDollParts()
@@ -55,8 +58,7 @@ public class HealthDoll : MonoBehaviour {
     private void LoadSavedBodyPartHealth()
     {
         //set the dictionary to the bodyPart's dictionary
-        playerHealth = playerBody.GetPartDamage();
-
+        playerHealth = new Dictionary<BodyParts.Parts, int>(playerBody.GetPartDamage());
         //for each bodypart in the dictionary, we check their health the determine their color
         for (int i = 0; i < dollParts.Length; i++)
         {
@@ -82,6 +84,12 @@ public class HealthDoll : MonoBehaviour {
         else if(severityLevel == 4)
         {
             return Color.red;
+        }
+        else if (severityLevel == 5)
+        {
+            Color transparent = Color.red;
+            transparent.a = 0.5f;
+            return transparent;
         }
         else
         {
