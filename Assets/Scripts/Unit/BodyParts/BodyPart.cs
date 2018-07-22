@@ -139,6 +139,7 @@ public class BodyPart : MonoBehaviour {
         }
 
         StatusChecks(severity);
+        Bleed(damageInfo);
         string line = string.Format(GetInjuryString(damageInfo.damageType, severity), gameObject.name, damageInfo.weaponName);
         BattleReport.AddToBattleReport(line);
         //callback for player's health doll
@@ -229,10 +230,9 @@ public class BodyPart : MonoBehaviour {
         //assigns all thresholds, stats, ect
     }
 
-    protected virtual void Bleed(int severity)
+    protected virtual void Bleed(DamageInfo info)
     {
-        float bloodLoss = bloodLossBonus + severity;
-        Debug.Log("Blood loss not calculated, this is the base BodyPart class"); //should be virtual so each part can calcualte it's blood loss
+        float bloodLoss = (bleedRate + info.severityLevel) * info.damageDealt;
         myBody.Bleed(bloodLoss);
     }
 

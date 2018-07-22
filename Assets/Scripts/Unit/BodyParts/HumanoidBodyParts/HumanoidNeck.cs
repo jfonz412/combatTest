@@ -12,6 +12,8 @@ public class HumanoidNeck : BodyPart
         downedThreshold = 3;
         cantBreathThreshold = 3;
         suffocationThreshold = 4;
+
+        bleedRate = 3f;
     }
 
     protected override void StatusChecks(int severity)
@@ -21,7 +23,6 @@ public class HumanoidNeck : BodyPart
         //VomitCheck(severity);
         CantBreathCheck(severity);
         //KnockoutCheck(severity);
-        Bleed(severity);
     }
 
     #region Injury Strings

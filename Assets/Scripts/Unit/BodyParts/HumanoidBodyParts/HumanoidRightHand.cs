@@ -22,7 +22,6 @@ public class HumanoidRightHand : BodyPart
         VomitCheck(severity);
         //CantBreathCheck(severity);
         //KnockoutCheck(severity);
-        Bleed(severity);
     }
 
     protected override Item Unarmed()

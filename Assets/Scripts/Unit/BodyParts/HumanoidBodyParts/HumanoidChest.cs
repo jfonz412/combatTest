@@ -20,7 +20,7 @@ public class HumanoidChest : BodyPart
         DownedCheck(severity);
         //VomitCheck(severity);
         CantBreathCheck(severity);
-        Bleed(severity);
+        
     }
 
     #region Injury Strings

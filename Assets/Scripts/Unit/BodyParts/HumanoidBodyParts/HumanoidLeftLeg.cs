@@ -22,7 +22,7 @@ public class HumanoidLeftLeg : BodyPart
         VomitCheck(severity);
         //CantBreathCheck(severity);
         //KnockoutCheck(severity);
-        Bleed(severity);
+
     }
 
     #region Injury Strings
