@@ -5,22 +5,20 @@ using System.Collections.Generic;
 
 public class NPCSaveData : DataController {
     //the components we need to save
-    private Health health;
     private Loadout loadOut; //just to load npc's default equipment when scene is loaded
     private LoadShop myShop;
     //private UnitReactions myAI;
-    private BodyParts bodyParts;
+    private BodyPartController bodyParts;
     private Brain myBrain;
 
     //called in Start() 
     protected override void GatherComponents()
     {
         base.GatherComponents();
-        health = GetComponent<Health>();
         loadOut = GetComponent<Loadout>();
         //myAI = GetComponent<UnitReactions>();
         myShop = GetComponent<LoadShop>(); //may be null if not shop owner
-        bodyParts = GetComponent<BodyParts>();
+        bodyParts = GetComponent<BodyPartController>();
         myBrain = GetComponent<Brain>();
     }
 
@@ -70,7 +68,7 @@ public class NPCSaveData : DataController {
         Vector3 pos = transform.position;
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
         data.isDead = myBrain.isDead;
-        data.bodyPartDamage = bodyParts.GetPartDamage();
+        data.bodyParts = bodyParts.GetBodyParts();
 
         if (myShop != null)
         {
@@ -97,7 +95,7 @@ public class NPCSaveData : DataController {
         }
 
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
-        bodyParts.LoadPartDamage(data.bodyPartDamage);
+        bodyParts.LoadParts(data.bodyParts);
         loadOut.EquipLoadout();
     }
 
@@ -127,10 +125,11 @@ public class NPCSaveData : DataController {
                 continue;
 
             // this needs to be instantiated here because we apply the quantity
-            Item item = (Item)Instantiate(Resources.Load(savedInventory[i].fileName)); 
-            item.quantity = savedInventory[i].quantity;
+            //Item item = (Item)Instantiate(Resources.Load(savedInventory[i].fileName)); 
+            //item.quantity = savedInventory[i].quantity;
 
-            loadedItems.Add(item);
+            //loadedItems.Add(item);
+            Debug.Log("Method is returning null list for shop inventory, need to update this method");
 
         }
         return loadedItems;
@@ -144,5 +143,5 @@ public class NPCData : Data
     //public float currentHealth;
     public SavedItem[] currentShopInventory;
     public bool isDead;
-    public Dictionary<BodyParts.Parts, int> bodyPartDamage;
+    public List<BodyPart> bodyParts;
 }

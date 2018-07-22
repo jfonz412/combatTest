@@ -17,7 +17,7 @@ public class Harvestable : Interactable {
     [SerializeField]
     private HarvestType harvestType;
     [SerializeField]
-    private Weapon.ToolType requiredTool;
+    private Item.ToolType requiredTool;
 
     private bool harvested = false;
     [HideInInspector]
@@ -120,14 +120,14 @@ public class Harvestable : Interactable {
 
     private bool UsingProperTool()
     {
-        Weapon unitWeapon = player.GetComponent<AttackController>().mainHand;
+        Item unitWeapon = player.GetComponent<AttackController>().mainHand;
         bool usingProperTool;
 
         if (unitWeapon == null)
         {
             usingProperTool = false;
         }
-        else if(unitWeapon.toolType == requiredTool)
+        else if(unitWeapon.myToolType == requiredTool)
         {
             usingProperTool = true;
         }

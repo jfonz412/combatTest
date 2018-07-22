@@ -14,7 +14,7 @@ public class SkillPanel : MonoBehaviour {
 
 
     private Dictionary<CombatSkills.CombatSkill, int> skills;
-    private Dictionary<Weapon.WeaponType, int> weaponSkills;
+    private Dictionary<Item.WeaponType, int> weaponSkills;
     private string newLine = System.Environment.NewLine;
 
     // Use this for initialization
@@ -51,7 +51,7 @@ public class SkillPanel : MonoBehaviour {
 
         skillWindow.text += newLine;
 
-        foreach (KeyValuePair<Weapon.WeaponType, int> skill in weaponSkills)
+        foreach (KeyValuePair<Item.WeaponType, int> skill in weaponSkills)
         {
             skillWindow.text += skill.Key + ": " + skill.Value + newLine;
         }

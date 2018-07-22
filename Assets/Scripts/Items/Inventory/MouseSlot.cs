@@ -67,7 +67,8 @@ public class MouseSlot : MonoBehaviour {
         {
             currentItem = null;
             spriteRenderer.sprite = null;
-            Destroy(currentItem);
+            //Destroy(currentItem);
+            Debug.Log("need to implement this");
             Debug.Log("Item destroyed");
         }
     }

@@ -3,29 +3,28 @@ using UnityEngine;
 
 public class HealthDoll : MonoBehaviour {
     private DollPart[] dollParts;
-    private BodyParts playerBody;
-    Dictionary<BodyParts.Parts, int> playerHealth;
+    private BodyPartController playerBody;
+    List<BodyPart> playerParts;
 
     // Use this for initialization
     void Start () {
-        playerBody = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<BodyParts>();
+        playerBody = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<BodyPartController>();
         CollectDollParts();
-        playerBody.onDamageTaken += DamageBodyPart;
+        //playerBody.onDamageTaken += DamageBodyPart;
         playerBody.onHealthLoaded += LoadSavedBodyPartHealth;
 	}
 
-	private void DamageBodyPart(BodyParts.DamageInfo info)
+	private void DamageBodyPart(BodyPart.DamageInfo info)
     {
-        Debug.Log(playerHealth[BodyParts.Parts.Chest] + "  " + playerHealth[BodyParts.Parts.RightHand] + " " + playerHealth[BodyParts.Parts.LeftArm] + " " + playerHealth[BodyParts.Parts.Neck] + "  " + playerHealth[BodyParts.Parts.RightArm] + " " + playerHealth[BodyParts.Parts.LeftLeg] + "  " + playerHealth[BodyParts.Parts.RightLeg] + " " + playerHealth[BodyParts.Parts.Head] + "  " + playerHealth[BodyParts.Parts.LeftHand] + " " + playerHealth[BodyParts.Parts.Abdomin]);
+        Debug.Log("Need to implement this");
+        /*
         for (int i = 0; i < dollParts.Length; i++)
         {
             if (dollParts[i].dollPart == info.bodyPart)
             {
-                BodyParts.Parts p = info.bodyPart;
+                BodyPart p = info.bodyPart;
 
-                Debug.Log(" playerHealth[p] is " + playerHealth[p]);
-
-                playerHealth[p] = info.severityLevel;
+                p. = info.severityLevel;
                 Color color = DeterminePartColor(playerHealth[p]);
                 dollParts[i].ChangeColor(color);
         
@@ -35,6 +34,7 @@ public class HealthDoll : MonoBehaviour {
             }
         }
         Debug.Log("Exited for loop");
+        */
     }
 
     private void CollectDollParts()
@@ -57,14 +57,17 @@ public class HealthDoll : MonoBehaviour {
 
     private void LoadSavedBodyPartHealth()
     {
+        Debug.Log("Need to implement this");
+        /*
         //set the dictionary to the bodyPart's dictionary
-        playerHealth = new Dictionary<BodyParts.Parts, int>(playerBody.GetPartDamage());
+        playerHealth = new List<BodyPart>(playerBody.GetPartDamage());
         //for each bodypart in the dictionary, we check their health the determine their color
         for (int i = 0; i < dollParts.Length; i++)
         {
             Color color = DeterminePartColor(playerHealth[dollParts[i].dollPart]);
             dollParts[i].ChangeColor(color);
         }
+        */
     }
 
     private Color DeterminePartColor(int severityLevel)
@@ -98,15 +101,15 @@ public class HealthDoll : MonoBehaviour {
         }
     }
 
-    private void LogDamage(DollPart part, BodyParts.DamageInfo info) // Injuries.DamageType damageType
+    private void LogDamage(DollPart part, BodyPart.DamageInfo info) // Injuries.DamageType damageType
     {
-        string injury = StringsForInjuryLog.InjuryString(info);
-        part.LogInjury(injury);
+        //string injury = StringsForInjuryLog.InjuryString(info);
+        //part.LogInjury(injury);
     }
 
-    public Dictionary<BodyParts.Parts, List<string>> SaveInjuryLog()
+    public Dictionary<BodyPart, List<string>> SaveInjuryLog()
     {
-        Dictionary<BodyParts.Parts, List<string>> injuryLog = new Dictionary<BodyParts.Parts, List<string>>();
+        Dictionary<BodyPart, List<string>> injuryLog = new Dictionary<BodyPart, List<string>>();
 
         for (int i = 0; i < dollParts.Length; i++)
         {
@@ -116,7 +119,7 @@ public class HealthDoll : MonoBehaviour {
         return injuryLog;
     }
 
-    public void LoadInjuryLog(Dictionary<BodyParts.Parts, List<string>> savedInjuryLog)
+    public void LoadInjuryLog(Dictionary<BodyPart, List<string>> savedInjuryLog)
     {
         for (int i = 0; i < dollParts.Length; i++) 
         {

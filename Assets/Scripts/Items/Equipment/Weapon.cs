@@ -2,13 +2,8 @@
 
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Inventory/Weapon")]
 public class Weapon : Equipment {
-
+    /*
     #region Stats
-    public enum WeaponType { Dagger, Spear, Axe, Pick, Hands, Offhand, NHC_Main, NHC_Off }; //NHC = non-human char
-    public WeaponType weaponType;
-
-    public enum ToolType { Pick, Axe, NA };
-    public ToolType toolType;
 
     public enum AttackType { Melee, Cast, Ranged };
     public AttackType attackType;
@@ -99,3 +94,5 @@ public struct WeaponInfo
     public float speed;
     public string name;
 }
+*/
+  }

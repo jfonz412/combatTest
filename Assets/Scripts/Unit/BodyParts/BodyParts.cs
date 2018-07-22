@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 
 public class BodyParts : MonoBehaviour {
+    /*
     public enum BodyType { Human, BushBanshee, FourLeggedAnimal }
     public enum Parts { Head, Neck, LeftArm, RightArm, LeftHand, RightHand, Chest, Abdomin, LeftLeg, RightLeg, LeftFoot, RightFoot }
 
@@ -338,4 +339,5 @@ public class BodyParts : MonoBehaviour {
     {
         attackReaction = mySkills.GetAttackReactionSkills();
     }
+    */
 }

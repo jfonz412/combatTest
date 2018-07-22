@@ -43,7 +43,7 @@ public class Inventory : MonoBehaviour {
 
     public void AddToSpecificSlot(Item item)
     {
-        int slotNum = item.slotNum.GetValueOrDefault();
+        int slotNum = item.mySlotNum.GetValueOrDefault();
 
         items.RemoveAt(slotNum);     
         items.Insert(slotNum, item);
@@ -60,18 +60,18 @@ public class Inventory : MonoBehaviour {
         }
         else
         {
-            Item newCopyOfItemForInventory = Instantiate(item);
-            newCopyOfItemForInventory.quantity -= amountRemoved;
-
+            //Item newCopyOfItemForInventory = new Item(item);
+            //newCopyOfItemForInventory.quantity -= amountRemoved;
+            Debug.Log("need to implement this");
             Remove(item); //and destroy?
-            AddItem(newCopyOfItemForInventory);
+            //AddItem(newCopyOfItemForInventory);
         }
     }
 
     //Removes but doesn't destroy the item
     public void Remove(Item item) 
     {
-        int itemIndex = item.slotNum.GetValueOrDefault();
+        int itemIndex = item.mySlotNum.GetValueOrDefault();
         items.RemoveAt(itemIndex);
         items.Insert(itemIndex, null);
 
@@ -82,7 +82,8 @@ public class Inventory : MonoBehaviour {
     public void RemoveAndDestroy(Item item)
     {
         Remove(item);
-        Destroy(item); 
+        Debug.Log("need to implement this");
+        //Destroy(item); 
     }
 
     //for PlayerSaveData to save inventory
@@ -94,7 +95,6 @@ public class Inventory : MonoBehaviour {
         {
             if (items[i] != null)
             {
-                itemInfo[i].fileName = items[i].GetResourcePath();
                 itemInfo[i].quantity = items[i].quantity;
             }
         }
@@ -114,10 +114,10 @@ public class Inventory : MonoBehaviour {
             if (savedItems[i].fileName == null) //shouldn't this throw an error if null?
                 continue;
 
-            Item item = (Item)Resources.Load(savedItems[i].fileName);
-
-            item.quantity = savedItems[i].quantity;
-            AddItem(item);
+            //Item item = (Item)Resources.Load(savedItems[i].fileName);
+            Debug.Log("need to implement this");
+            //item.quantity = savedItems[i].quantity;
+            //AddItem(item);
         }
     }
 
@@ -184,17 +184,18 @@ public class Inventory : MonoBehaviour {
         items.RemoveAt(slotNum); //remove the null item
         items.Insert(slotNum, item); //replace it with actual item
 
-        items[slotNum].slotNum = slotNum; //save refrence to the slot it's been placed in
+        items[slotNum].mySlotNum = slotNum; //save refrence to the slot it's been placed in
     }
 
     private Item ConvertToInventoryItem(Item item)
     {
         //if slotNum is null then it has not been in our inventory needs an instance
         //otherwise we do not create a new instance and simply use the item as it is
-        if (item.slotNum == null)
+        if (item.mySlotNum == null)
         {
-            item = Instantiate(item);
-            item.Init();
+            //item = Instantiate(item);
+            Debug.Log("Need to use Item Master List here");
+            //item.Init();
             //Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
         }
 

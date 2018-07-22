@@ -1,107 +1,100 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+//this script is for the player only
 public class EquipmentManager : MonoBehaviour {
-
     [SerializeField]
-    private Equipment unarmedMain, unarmedOff, nakedChest, nakedLegs, nakedFeet, nakedHead, nakedHands; //only for player if they decide to remove armor
+    private EquipUI UI;
 
-    [SerializeField]
-    private Dictionary<EquipmentSlot, Equipment> currentEquipment = new Dictionary<EquipmentSlot, Equipment>
-    {
-        { EquipmentSlot.Head, null },
-        { EquipmentSlot.Chest, null },
-        { EquipmentSlot.Hands, null },
-        { EquipmentSlot.MainHand, null },
-        { EquipmentSlot.OffHand, null },
-        { EquipmentSlot.Legs, null },
-        { EquipmentSlot.Feet, null }
-    };
-
-    public delegate void OnEquipmentChanged(Equipment oldItem, Equipment newItem);
-    public OnEquipmentChanged onEquipmentChanged;
-
+    private BodyPartController myBody;
     private Inventory inv;
 
-    private void Start ()
+    [SerializeField]
+    private Dictionary<Item.EquipmentSlot, Item> currentEquipment = new Dictionary<Item.EquipmentSlot, Item>
+    {
+        { Item.EquipmentSlot.Head, null },
+        { Item.EquipmentSlot.Chest, null },
+        { Item.EquipmentSlot.Hands, null },
+        { Item.EquipmentSlot.MainHand, null },
+        { Item.EquipmentSlot.OffHand, null },
+        { Item.EquipmentSlot.Legs, null },
+        { Item.EquipmentSlot.Feet, null }
+    };
+
+    private void Start()
     {
         inv = InventoryManager.GetInstance().GetInventory();
+        myBody = GetComponent<BodyPartController>();
+
+        //add callback to either bodypart controller or each bodypart
+        //GatherEquipment()
     }
 
-    //Right clicks
-    public void FastEquip(Equipment newItem)
+    public void Equip(Item newItem)
     {
-        EquipmentSlot slot = newItem.equipSlot;
-        Equipment oldItem = currentEquipment[slot];
-
-        //also Strips so this comes before Equip
-        Unequip(slot);
-        Equip(newItem);
-        inv.Remove(newItem);
-
-        if(!oldItem.naked)
-            inv.AddItem(oldItem);
-    }
-
-    //Right clicks
-    public void FastUnequip(Equipment item)
-    {
-        Unequip(item.equipSlot);
-        inv.AddItem(item);
-    }
-
-    public void Equip (Equipment newItem) {
-        Equipment oldItem = null;
-        EquipmentSlot slot = newItem.equipSlot;
+        Item.EquipmentSlot slot = newItem.myEquipSlot;
         currentEquipment[slot] = newItem;
-
-        if (onEquipmentChanged != null)
-        {
-            onEquipmentChanged.Invoke(oldItem, newItem);
-        }
+        UI.UpdateUI(newItem, newItem.myEquipSlot);
     }
 
     //may need to check for naked unequip
-    public void Unequip(EquipmentSlot slot)
+    public void Unequip(Item.EquipmentSlot slot)
     {
-        if(currentEquipment[slot] != null)
-        {
-            Equipment oldItem = currentEquipment[slot];
-
-            Strip(oldItem);
-
-            if (onEquipmentChanged != null)
-            {
-                onEquipmentChanged.Invoke(oldItem, null);    
-            }
-        }
+        currentEquipment[slot] = null;
+        UI.UpdateUI(null, slot);
     }
 
-    void Strip(Equipment oldItem)
+    //Right clicks
+    public void FastEquip(Item newItem)
     {
-        EquipmentSlot slot = oldItem.equipSlot; //relies on the Equipment.EquipmentSlot enum order staying the same
+        //get the slot this wants to go in
+        Item.EquipmentSlot slot = newItem.myEquipSlot;
+
+        inv.AddItem(currentEquipment[slot]); //add old item to inventory
+        Equip(newItem); //save over old item
+        inv.Remove(newItem); //remove from inventory
+    }
+
+    //Right clicks
+    public void FastUnequip(Item item)
+    {
+        Unequip(item.myEquipSlot);
+        inv.AddItem(item);
+    }
+
+    public Item EquipmentFromSlot(Item.EquipmentSlot slot)
+    {
+        return currentEquipment[slot]; //may be null, but I may not need this method?
+    }
+
+    /************/
+
+    /*
+    void Strip(Item oldItem)
+    {
+        Item.EquipmentSlot slot = oldItem.myEquipSlot; //relies on the Equipment.EquipmentSlot enum order staying the same
         Equipment e;// = new Equipment();
-        switch (oldItem.equipSlot)
+        switch (oldItem.myEquipSlot)
         {
-            case EquipmentSlot.Head:
+            case Item.EquipmentSlot.Head:
                 e = nakedHead;
                 break;
-            case EquipmentSlot.Chest:
+            case Item.EquipmentSlot.Chest:
                 e = nakedChest;
                 break;
-            case EquipmentSlot.Hands:
+            case Item.EquipmentSlot.Hands:
                 e = nakedHands;
                 break;
-            case EquipmentSlot.MainHand:
+            case Item.EquipmentSlot.MainHand:
                 e = unarmedMain;
                 break;
-            case EquipmentSlot.OffHand:
+            case Item.EquipmentSlot.OffHand:
                 e = unarmedOff;
                 break;
-            case EquipmentSlot.Legs:
+            case Item.EquipmentSlot.Legs:
                 e = nakedLegs;
                 break;
-            case EquipmentSlot.Feet:
+            case Item.EquipmentSlot.Feet:
                 e = nakedFeet;
                 break;
             default:
@@ -114,17 +107,14 @@ public class EquipmentManager : MonoBehaviour {
         e.Init();
         currentEquipment[slot] = e;
     }
+    */
 
-    public Equipment EquipmentFromSlot(EquipmentSlot slot)
-    { 
-         return currentEquipment[slot]; 
-    }
-
+    /*
     public List<EquipmentInfo> GetEquipmentInfo()
     {
         List<EquipmentInfo> infoList = new List<EquipmentInfo>();
 
-        foreach (KeyValuePair<EquipmentSlot, Equipment> equipment in currentEquipment)
+        foreach (KeyValuePair<Item.EquipmentSlot, Equipment> equipment in currentEquipment)
         {
             infoList.Add(equipment.Value.GetEquipmentInfo());
         }
@@ -147,4 +137,5 @@ public class EquipmentManager : MonoBehaviour {
                 Equip(equipment);
         }
     }
+    */
 }

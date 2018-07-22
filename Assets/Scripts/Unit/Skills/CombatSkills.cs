@@ -3,13 +3,12 @@ using UnityEngine;
 
 public class CombatSkills : MonoBehaviour {
 
-    private BodyParts body;
+    private BodyPartController body;
     private EquipmentManager equipmentManager;
-    private WeaponInfo equippedOffHand;
 
     //this will be used to set the stats
     [SerializeField]
-    private List<Weapon.WeaponType> defaultWeapons = new List<Weapon.WeaponType>();
+    private List<Item.WeaponType> defaultWeapons = new List<Item.WeaponType>();
     [SerializeField]
     private List<int> defaultWeaponStats = new List<int>();
     [SerializeField]
@@ -21,28 +20,26 @@ public class CombatSkills : MonoBehaviour {
 
     #region Skills
 
-    private Dictionary<Weapon.WeaponType, int> myWeaponSkillLevels = new Dictionary<Weapon.WeaponType, int>()
+    private Dictionary<Item.WeaponType, int> myWeaponSkillLevels = new Dictionary<Item.WeaponType, int>()
         {
-            { Weapon.WeaponType.Axe, 0 },
-            { Weapon.WeaponType.Dagger, 0 },
-            { Weapon.WeaponType.Hands, 0 },
-            { Weapon.WeaponType.Offhand, 0 },
-            { Weapon.WeaponType.Pick, 0 },
-            { Weapon.WeaponType.Spear, 0 },
-            { Weapon.WeaponType.NHC_Main, 0 },
-            { Weapon.WeaponType.NHC_Off, 0 }
+            { Item.WeaponType.Axe, 0 },
+            { Item.WeaponType.Dagger, 0 },
+            { Item.WeaponType.Hands, 0 },
+            { Item.WeaponType.Offhand, 0 },
+            { Item.WeaponType.Pick, 0 },
+            { Item.WeaponType.Spear, 0 },
+            { Item.WeaponType.Misc, 0 }
         };
 
-    private Dictionary<Weapon.WeaponType, float> myWeaponSkillExperience = new Dictionary<Weapon.WeaponType, float>()
+    private Dictionary<Item.WeaponType, float> myWeaponSkillExperience = new Dictionary<Item.WeaponType, float>()
         {
-            { Weapon.WeaponType.Axe, 0f },
-            { Weapon.WeaponType.Dagger, 0f },
-            { Weapon.WeaponType.Hands, 0f },
-            { Weapon.WeaponType.Offhand, 0f },
-            { Weapon.WeaponType.Pick, 0f },
-            { Weapon.WeaponType.Spear, 0f },
-            { Weapon.WeaponType.NHC_Main, 0f },
-            { Weapon.WeaponType.NHC_Off, 0f },
+            { Item.WeaponType.Axe, 0f },
+            { Item.WeaponType.Dagger, 0f },
+            { Item.WeaponType.Hands, 0f },
+            { Item.WeaponType.Offhand, 0f },
+            { Item.WeaponType.Pick, 0f },
+            { Item.WeaponType.Spear, 0f },
+            { Item.WeaponType.Misc, 0 }
         };
 
     public enum CombatSkill { Block, Parry, Dodge, Strength, Agility, Willpower, Speed }
@@ -80,9 +77,10 @@ public class CombatSkills : MonoBehaviour {
 
     private void Start()
     {
-        body = GetComponent<BodyParts>();
-        equipmentManager = GetComponent<EquipmentManager>();
-        equipmentManager.onEquipmentChanged += SwapOffHand;
+        body = GetComponent<BodyPartController>();
+        //get offhand from body
+        //equipmentManager = GetComponent<EquipmentManager>();
+        //equipmentManager.onEquipmentChanged += SwapOffHand;
     }
 
     public float GetCurrentMoveSpeed()
@@ -90,19 +88,19 @@ public class CombatSkills : MonoBehaviour {
         return mySkillLevels[CombatSkill.Speed] * body.OverallHealth();
     }
 
-    public AttackInfo RequestAttackInfo(Weapon currentWeapon)
+    public AttackInfo RequestAttackInfo(Item currentWeapon)
     {
         AttackInfo info = new AttackInfo();
-        WeaponInfo weapon = currentWeapon.RequestWeaponInfo();
-        float weaponSkill = GetWeaponSkill(weapon.weaponType);
+        //ItemInfo weapon = currentWeapon.RequestItemInfo();
+        float weaponSkill = GetWeaponSkill(currentWeapon.myWeaponType);
 
         info.attackerName = gameObject.name;
-        info.weapon = weapon;
-        info.speed = weapon.speed; // - strength and skill
-        info.force = mySkillLevels[CombatSkill.Strength] + weaponSkill + weapon.weight;
+        info.weapon = currentWeapon;
+        info.speed = currentWeapon.weight; // - strength and skill
+        info.force = mySkillLevels[CombatSkill.Strength] + weaponSkill + currentWeapon.weight;
         info.skill = weaponSkill; //should eventually factor against enemiy's defensive skills (dodge, parry, block, absoarb?)
 
-        WeaponExperienceGain(weapon.weaponType, 50f);
+        WeaponExperienceGain(currentWeapon.myWeaponType, 50f);
         return info;
     }
 
@@ -119,7 +117,7 @@ public class CombatSkills : MonoBehaviour {
     }
 
     //this will only happen here
-    private void WeaponExperienceGain(Weapon.WeaponType weapon, float experience)
+    private void WeaponExperienceGain(Item.WeaponType weapon, float experience)
     {
         myWeaponSkillExperience[weapon] += experience;
         if (myWeaponSkillExperience[weapon] >= (100 * myWeaponSkillLevels[weapon]))
@@ -137,7 +135,7 @@ public class CombatSkills : MonoBehaviour {
             onSkillGained.Invoke();
     }
 
-    private float GetWeaponSkill(Weapon.WeaponType weaponType)
+    private float GetWeaponSkill(Item.WeaponType weaponType)
     {
         //Debug.Log(body.OverallHealth() + " * " + myWeaponSkillLevels[weaponType] + " = " + body.OverallHealth() * myWeaponSkillLevels[weaponType]);
         return body.OverallHealth() * myWeaponSkillLevels[weaponType];
@@ -149,9 +147,11 @@ public class CombatSkills : MonoBehaviour {
         AttackReactionSkills a = new AttackReactionSkills();
 
         float blockMod = 0f;
-        if (equippedOffHand.name != null)
+        Debug.Log("offhand has no effect on blocking right now");
+        /*
+        if (equippedOffHand != null)
             blockMod = equippedOffHand.hardnessValue;
-
+        */
 
         a.block = mySkillLevels[CombatSkill.Block] + blockMod;
         a.dodge = mySkillLevels[CombatSkill.Dodge] - blockMod/2f;
@@ -199,22 +199,22 @@ public class CombatSkills : MonoBehaviour {
 
     //WEAPONS
 
-    public Dictionary<Weapon.WeaponType, int> GetWeaponLevels()
+    public Dictionary<Item.WeaponType, int> GetWeaponLevels()
     {
         return myWeaponSkillLevels;
     }
 
-    public Dictionary<Weapon.WeaponType, float> GetWeaponExperience()
+    public Dictionary<Item.WeaponType, float> GetWeaponExperience()
     {
         return myWeaponSkillExperience;
     }
 
-    public void LoadSavedWeaponLevels(Dictionary<Weapon.WeaponType, int> savedLevels)
+    public void LoadSavedWeaponLevels(Dictionary<Item.WeaponType, int> savedLevels)
     {
         myWeaponSkillLevels = savedLevels;
     }
 
-    public void LoadSavedWeaponExperience(Dictionary<Weapon.WeaponType, float> savedExperience)
+    public void LoadSavedWeaponExperience(Dictionary<Item.WeaponType, float> savedExperience)
     {
         myWeaponSkillExperience = savedExperience;
     }
@@ -222,7 +222,7 @@ public class CombatSkills : MonoBehaviour {
 
     //Player callback for weapon swaps (called from EquipmentManager)
     private void SwapOffHand(Equipment oldItem, Equipment newItem)
-    {
+    {/*
         Weapon w = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.OffHand);
         if(w == null)
         {
@@ -232,6 +232,7 @@ public class CombatSkills : MonoBehaviour {
         {
             equippedOffHand = w.RequestWeaponInfo();
         }
+        */
     }
 
 }
@@ -239,7 +240,7 @@ public class CombatSkills : MonoBehaviour {
 public struct AttackInfo
 {
     public string attackerName;
-    public WeaponInfo weapon;
+    public Item weapon;
     public float force;
     public float skill;
     public float speed;

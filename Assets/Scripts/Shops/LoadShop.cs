@@ -39,7 +39,7 @@ public class LoadShop : MonoBehaviour {
         {
             if (shopInventory[i] != null)
             {
-                itemInfo[i].fileName = shopInventory[i].GetResourcePath();
+                //itemInfo[i].fileName = shopInventory[i].GetResourcePath();
                 itemInfo[i].quantity = shopInventory[i].quantity;
                 Debug.Log("saved shop inventory " + itemInfo[i].fileName);
             }

@@ -6,16 +6,16 @@ public class EquipSlot : InventorySlot {
     [HideInInspector]
     public EquipmentManager equipmentManager;
     [HideInInspector]
-    public Equipment equipment;
+    public Item equipment;
 
-    public EquipmentSlot slotType;
+    public Item.EquipmentSlot slotType;
 
     void Start()
     {
         equipmentManager = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<EquipmentManager>();
     }
 
-    public void AddEquipment(Equipment newItem)
+    public void AddEquipment(Item newItem)
     {
         if (newItem == null)
         {

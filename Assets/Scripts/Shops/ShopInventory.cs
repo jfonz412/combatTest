@@ -41,14 +41,15 @@ public class ShopInventory : MonoBehaviour {
             if (items[i] != null)
             {
                 Remove(items[i]);
-                Destroy(items[i]);
+                Debug.Log("need to implement this");
+                //Destroy(items[i]);
             }
         }
     }
 
     public void Remove(Item item)
     {
-        int itemIndex = item.slotNum.GetValueOrDefault();
+        int itemIndex = item.mySlotNum.GetValueOrDefault();
         items.RemoveAt(itemIndex);
         items.Insert(itemIndex, null);
         Callback();
@@ -137,7 +138,7 @@ public class ShopInventory : MonoBehaviour {
         items.RemoveAt(slotNum); //remove the null item
         items.Insert(slotNum, item); //replace it with actual item
 
-        items[slotNum].slotNum = slotNum; //save refrence to the slot it's been placed in
+        items[slotNum].mySlotNum = slotNum; //save refrence to the slot it's been placed in
     }
 
     #endregion
@@ -208,10 +209,11 @@ public class ShopInventory : MonoBehaviour {
     {
         //if slotNum is null then it has not been in our inventory needs an instance
         //otherwise we do not create a new instance and simply use the item as it is
-        if (item.slotNum == null)
+        if (item.mySlotNum == null)
         {
-            item = Instantiate(item);
-            item.Init();
+            //item = Instantiate(item);
+            Debug.Log("Need to use Item Master List here");
+            //item.Init();
             //Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackController : MonoBehaviour {
@@ -8,12 +9,12 @@ public class AttackController : MonoBehaviour {
 
     private IEnumerator engagingEntity;
 
-    private BodyParts targetBody;
-    private BodyParts myBody;
+    private BodyPartController targetBody;
+    private BodyPartController myBody;
     private Brain myBrain;
     private EquipmentManager equipmentManager;
-    public Weapon mainHand;
-    public Weapon offHand;
+    public Item mainHand;
+    //public Item offHand;
 
     private CombatSkills mySkills;
 
@@ -21,8 +22,7 @@ public class AttackController : MonoBehaviour {
     private UnitController unit;
     private AttackTimer attackTimer;
 
-    [SerializeField]
-    private BodyParts.Parts[] mainBodyPartsNeeded, offBodyPartsNeeded; // = new BodyParts.Parts[] { BodyParts.Parts.RightArm, BodyParts.Parts.RightHand };
+    private List<BodyPart> attack1Parts, attack2Parts;
 
     private Brain.State[] impairingStates = new Brain.State[]
 {
@@ -44,12 +44,22 @@ public class AttackController : MonoBehaviour {
         anim = GetComponent<UnitAnimController>();
         unit = GetComponent<UnitController>();
         attackTimer = GetComponent<AttackTimer>();
-        myBody = GetComponent<BodyParts>();
+        myBody = GetComponent<BodyPartController>();
         myBrain = GetComponent<Brain>();
-        equipmentManager = GetComponent<EquipmentManager>();
-        equipmentManager.onEquipmentChanged += SwapWeapons;
+
+        GetAttack1Parts();
+        GetAttack2Parts();
     }
 
+    private void GetAttack1Parts()
+    {
+        attack1Parts = myBody.Attack1Parts();
+    }
+
+    private void GetAttack2Parts()
+    {
+        attack2Parts = myBody.Attack2Parts();
+    }
 
     //How the player object talks to this script
     public void EngageTarget(bool hasTarget, Transform targetTransform = null)
@@ -110,23 +120,18 @@ public class AttackController : MonoBehaviour {
     #region Helper Functions
     private void Attack(Transform targetTransform)
     {
-        if(mainHand == null || offHand == null)
-        {
-            SwapWeapons(null, null); //load whatever weapon is already equipped
-        }
-
         AttackInfo myAttack;
 
         if (Random.Range(0, 100) <= 75)
         {
-            if (!myBody.VitalPartInjured(mainBodyPartsNeeded))
+            if (!myBody.PartTooInjured(attack1Parts))
             {
                 AttackAnimation(targetTransform);
-                myAttack = mySkills.RequestAttackInfo(mainHand);
+                myAttack = mySkills.RequestAttackInfo(attack1Parts[0].MyWeapon());
             }
             else
             {
-                string line = "<color=red>" + gameObject.name + " is too injured to attack with their " + mainHand.name + "</color>";
+                string line = "<color=red>" + gameObject.name + " is too injured to attack with their " + attack1Parts[0].MyWeapon().name + "</color>";
                 FloatingTextController.CreateFloatingText("Too injured!", transform, Color.red);
                 BattleReport.AddToBattleReport(line);
                 attackTimer.ResetAttackTimer(7f); //arbitrarily reset attack timer
@@ -137,15 +142,15 @@ public class AttackController : MonoBehaviour {
         }
         else
         {
-            if (!myBody.VitalPartInjured(offBodyPartsNeeded))
+            if (!myBody.PartTooInjured(attack2Parts))
             {
                 AttackAnimation(targetTransform);
-                myAttack = mySkills.RequestAttackInfo(offHand);
+                myAttack = mySkills.RequestAttackInfo(attack2Parts[0].MyWeapon());
             }
             else
             {
 
-                string line = "<color=red>" + gameObject.name + " is too injured to attack with their " + offHand.name + "</color>";
+                string line = "<color=red>" + gameObject.name + " is too injured to attack with their " + attack2Parts[0].MyWeapon().name + "</color>";
                 FloatingTextController.CreateFloatingText("Too injured!", transform, Color.red);
                 BattleReport.AddToBattleReport(line);
                 attackTimer.ResetAttackTimer(7f); //arbitrarily reset attack timer
@@ -191,7 +196,7 @@ public class AttackController : MonoBehaviour {
 
     private void EngageNewEnemy(Transform targetTransform)
     {     
-        targetBody = lastKnownTarget.GetComponent<BodyParts>();
+        targetBody = lastKnownTarget.GetComponent<BodyPartController>();
         engagingEntity = MoveToEngagement(targetTransform);
 
         StartCoroutine(engagingEntity);
@@ -199,11 +204,13 @@ public class AttackController : MonoBehaviour {
 
     #endregion
 
+    /*
     //Player callback for weapon swaps (called from EquipmentManager)
     private void SwapWeapons(Equipment oldItem, Equipment newItem)
     {
         mainHand = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.MainHand);
         offHand  = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.OffHand);
     }
+    */
 }
 

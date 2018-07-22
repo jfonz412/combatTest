@@ -9,7 +9,7 @@ public class ItemPickup : Interactable {
     void Start()
     {
         myInteractions = new string[] { "Pickup", "Inspect", "--", "--" };
-        item = Instantiate(baseItem);
+        //item = Instantiate(baseItem);
     }
 
     public override void Interaction(string interaction)
@@ -43,7 +43,7 @@ public class ItemPickup : Interactable {
 
         if (itemsLeftAfterPickup == 0)
         {
-            Destroy(item);
+            //Destroy(item);
             Destroy(transform.gameObject);
         }
         else

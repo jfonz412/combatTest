@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class UnitStatusController : MonoBehaviour
 {
+    /*
     private Brain myBrain;
-    private BodyParts body;
+    private BodyPartController body;
     private UnitAnimController anim;
     private CombatSkills combatSkills;
     private IEnumerator shock;
     private IEnumerator suffocation;
 
-    private int baseResistance = 100;
+    private int baseResistance = 100; //got rid of this in BodyPart.cs, willpower will be enough once i balance skills
 
     //private Dictionary<Status, string> statusMessages; //will be used to send lines to the battle reports
     //if Dead, cancel all status coroutines? might not be necessary
@@ -19,15 +20,15 @@ public class UnitStatusController : MonoBehaviour
     private void Start()
     {
         myBrain = GetComponent<Brain>();
-        body = GetComponent<BodyParts>();
+        body = GetComponent<BodyPartController>();
         combatSkills = GetComponent<CombatSkills>();
         anim = GetComponent<UnitAnimController>();
     }
 
-    public void CheckForStatusTriggers(BodyParts.DamageInfo info)
+    public void CheckForStatusTriggers(BodyPartController.DamageInfo info)
     {
         combatSkills.ExperienceGain(CombatSkills.CombatSkill.Willpower, 20f);
-        BodyParts.Parts p = info.bodyPart;
+        BodyPartController.Parts p = info.bodyPart;
         int s = info.severityLevel;
 
         Bleed(p, s);
@@ -40,7 +41,7 @@ public class UnitStatusController : MonoBehaviour
             if (!myBrain.ActiveState(Brain.State.Downed))
                 FallDown(p, s);
 
-            if (p == BodyParts.Parts.Head)
+            if (p == BodyPartController.Parts.Head)
             {
                 Rocked(p, s);
                 KnockedOut(p, s);
@@ -58,7 +59,7 @@ public class UnitStatusController : MonoBehaviour
 
     #region Statuses for many bodyparts
 
-    private void Bleed(BodyParts.Parts part, int severityLevel)
+    private void Bleed(BodyPartController.Parts part, int severityLevel)
     {
         if (severityLevel >= BodyPartDamageLimits.partBleedLimits[part])
             StartCoroutine(Bleeding(severityLevel));
@@ -128,8 +129,9 @@ public class UnitStatusController : MonoBehaviour
         yield break;
     }
 
-    private void FallDown(BodyParts.Parts part, int severityLevel)
+    private void FallDown(BodyPart part, int severityLevel)
     {
+        /*
         if(severityLevel >= BodyPartDamageLimits.partDownedLimits[part])
         {
             if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
@@ -142,7 +144,7 @@ public class UnitStatusController : MonoBehaviour
         }
     }
 
-    private void Vomit(BodyParts.Parts part, int severityLevel)
+    private void Vomit(BodyPartController.Parts part, int severityLevel)
     {
         if (severityLevel >= BodyPartDamageLimits.partVomitLimits[part])
         {
@@ -156,7 +158,7 @@ public class UnitStatusController : MonoBehaviour
         }
     }
 
-    private void CantBreathe(BodyParts.Parts part, int severityLevel)
+    private void CantBreathe(BodyPartController.Parts part, int severityLevel)
     {
         if (severityLevel >= BodyPartDamageLimits.partCantBreatheLimits[part])
         {
@@ -219,7 +221,7 @@ public class UnitStatusController : MonoBehaviour
 
     #region Head Only
 
-    private void Rocked(BodyParts.Parts part, int severityLevel)
+    private void Rocked(BodyPartController.Parts part, int severityLevel)
     {
         int triggerLimit = 2;
         if(severityLevel >= triggerLimit)
@@ -234,7 +236,7 @@ public class UnitStatusController : MonoBehaviour
         }
     }
 
-    private void KnockedOut(BodyParts.Parts part, int severityLevel)
+    private void KnockedOut(BodyPartController.Parts part, int severityLevel)
     {
         int triggerLimit = 2;
         int multiplier = 10; // * severityLevel to get time knocked out
@@ -257,7 +259,7 @@ public class UnitStatusController : MonoBehaviour
 
     //this stuff is more AI personality related, caused by overall body health after an attack (ie being "tipped over the edge")
     #region Overwhelmed
-    private void OverWhelmed(BodyParts.Parts p, int s)
+    private void OverWhelmed(BodyPartController.Parts p, int s)
     {
         if (OvercomeByAnger(p, s))
             return;
@@ -267,7 +269,7 @@ public class UnitStatusController : MonoBehaviour
             return;
     }
 
-    private bool OvercomeByFear(BodyParts.Parts part, int severityLevel)
+    private bool OvercomeByFear(BodyPartController.Parts part, int severityLevel)
     {
         if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
         {
@@ -278,7 +280,7 @@ public class UnitStatusController : MonoBehaviour
         return false;
     }
 
-    private bool OvercomeByPain(BodyParts.Parts part, int severityLevel)
+    private bool OvercomeByPain(BodyPartController.Parts part, int severityLevel)
     {
         if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
         {
@@ -289,7 +291,7 @@ public class UnitStatusController : MonoBehaviour
         return false;
     }
 
-    private bool OvercomeByAnger(BodyParts.Parts part, int severityLevel)
+    private bool OvercomeByAnger(BodyPartController.Parts part, int severityLevel)
     {
         if (Random.Range(0, 100) > combatSkills.statusResistance + baseResistance / (severityLevel + 1))
         {
@@ -300,4 +302,5 @@ public class UnitStatusController : MonoBehaviour
         return false;
     }
 #endregion
+*/
 }

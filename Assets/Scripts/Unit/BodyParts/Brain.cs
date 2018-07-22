@@ -17,6 +17,7 @@ public class Brain : MonoBehaviour {
     public enum State
     {
         Shock,
+        Suffocating,
         CantBreathe,
         OvercomeByPain,
         Unconscious,
@@ -110,6 +111,7 @@ public class Brain : MonoBehaviour {
     {
         currentStates = new Dictionary<State, bool>()
         {
+            { State.Suffocating, false },
             { State.CantBreathe, false },
             { State.Downed, false },
             { State.OvercomeByFear, false },

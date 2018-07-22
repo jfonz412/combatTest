@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Armor", menuName = "Inventory/Armor")]
-public class Armor : Equipment {
+public class Armor : Equipment
+{
+    /*
     [SerializeField]
     public float armorCondition = 1f; //1 = no damage to armor 
     [SerializeField]
@@ -54,4 +56,5 @@ public struct ArmorInfo
     public EquipmentSlot armorType;
     public float protectionValue;
 }
-
+*/
+}

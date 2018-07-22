@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Consumable", menuName = "Inventory/Consumable Item")]
-public class Consumable : Item {
+public class Consumable : MonoBehaviour {/*
 
     [SerializeField]
     private ItemEffects.ItemEffect myEffect;
@@ -12,5 +12,5 @@ public class Consumable : Item {
         ItemEffects.TriggerEffect(myEffect);
         InventoryManager.GetInstance().GetInventory().CondenseStackables(this, 1);
         Debug.Log("Using " + name);
-    }
+    }*/
 }

@@ -2,29 +2,18 @@
 
 public class ItemEffects : MonoBehaviour {
 
-    public enum ItemEffect { HealPlayer, AttackBoost };
+    public enum ItemEffect { Equip };
 
-    public static void TriggerEffect(ItemEffect effect)
+    public static void Use(ItemEffect effect)
     {
-        if(effect == ItemEffect.HealPlayer)
+        if (effect == ItemEffect.Equip)
         {
-            HealPlayer();
-        }
-        if (effect == ItemEffect.HealPlayer)
-        {
-            BoostAttack();
+            EquipToPlayer();
         }
     }
 
-    static void HealPlayer()
+    static void EquipToPlayer() //maybe eventually pass a BodypartController and equip to that gameobject?
     {
-        Debug.Log("Nothing is happeneing when you do this");
-        //Health health = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Health>();
-        //health.ExternalHealthAdjustment(25f); //replace this with health method that "fixes" player
-    }
-
-    static void BoostAttack()
-    {
-        Debug.Log("Boosting attack");
+        Debug.Log("Equipping item to player");
     }
 }

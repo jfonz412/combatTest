@@ -8,7 +8,7 @@ public class DollPart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField]
     private InjuryLog log;
 
-    public BodyParts.Parts dollPart;
+    public BodyPart dollPart;
     private Image myImage;
     private List<string> injuries = new List<string>();
 

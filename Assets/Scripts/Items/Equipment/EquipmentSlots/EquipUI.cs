@@ -9,49 +9,48 @@ public class EquipUI : MonoBehaviour {
     private EquipmentManager equipmentManager;
 
     private EquipSlot[] slots;
-    private Dictionary<EquipmentSlot, EquipSlot> equipSlots = new Dictionary<EquipmentSlot, EquipSlot>
+    private Dictionary<Item.EquipmentSlot, EquipSlot> equipSlots = new Dictionary<Item.EquipmentSlot, EquipSlot>
     {
-        { EquipmentSlot.Head, null },
-        { EquipmentSlot.Chest, null },
-        { EquipmentSlot.Hands, null },
-        { EquipmentSlot.MainHand, null },
-        { EquipmentSlot.OffHand, null },
-        { EquipmentSlot.Legs, null },
-        { EquipmentSlot.Feet, null }
+        { Item.EquipmentSlot.Head, null },
+        { Item.EquipmentSlot.Chest, null },
+        { Item.EquipmentSlot.Hands, null },
+        { Item.EquipmentSlot.MainHand, null },
+        { Item.EquipmentSlot.OffHand, null },
+        { Item.EquipmentSlot.Legs, null },
+        { Item.EquipmentSlot.Feet, null }
     };
 
     private void Start()
     {
+        /*
         equipmentManager = ScriptToolbox.GetInstance().GetPlayerManager().player.transform.GetComponent<EquipmentManager>();
         equipmentManager.onEquipmentChanged += UpdateUI;
-
+        */
         slots = equipParent.GetComponentsInChildren<EquipSlot>();
         AssignSlotNums();
     }
 
-    private void UpdateUI(Equipment oldItem, Equipment newItem)
+    public void UpdateUI(Item newItem, Item.EquipmentSlot slot)
     {
-        if (newItem == null)
+        if (newItem == null) //if new item is null then we are just equipping
         {
-            EquipmentSlot slot = oldItem.equipSlot;
             equipSlots[slot].ClearSlot();
         }
-        else if(!newItem.naked)
+        else
         {
-            EquipmentSlot slot = newItem.equipSlot;
-            equipSlots[slot].AddEquipment(equipmentManager.EquipmentFromSlot(slot));
+            equipSlots[slot].AddEquipment(newItem);
         }     
     }
 
     //bad coding here, but this script is only used by the player right now
     private void AssignSlotNums()
     {
-         equipSlots[EquipmentSlot.Head] = slots[0]; 
-         equipSlots[EquipmentSlot.Chest] = slots[1];
-         equipSlots[EquipmentSlot.Hands] = slots[2];
-         equipSlots[EquipmentSlot.MainHand] = slots[3];
-         equipSlots[EquipmentSlot.OffHand] = slots[4];
-         equipSlots[EquipmentSlot.Legs] = slots[5];
-         equipSlots[EquipmentSlot.Feet] = slots[6];
+         equipSlots[Item.EquipmentSlot.Head] = slots[0]; 
+         equipSlots[Item.EquipmentSlot.Chest] = slots[1];
+         equipSlots[Item.EquipmentSlot.Hands] = slots[2];
+         equipSlots[Item.EquipmentSlot.MainHand] = slots[3];
+         equipSlots[Item.EquipmentSlot.OffHand] = slots[4];
+         equipSlots[Item.EquipmentSlot.Legs] = slots[5];
+         equipSlots[Item.EquipmentSlot.Feet] = slots[6];
     }
 }

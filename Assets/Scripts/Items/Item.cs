@@ -1,18 +1,28 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")] //allows us to create Items like we can create folders, scripts, etc.
-public class Item : ScriptableObject {
+public class Item {
+
+    public Item(Item item = null)
+    {
+        if(item != null)
+        {
+            Item mySelf = this;
+            mySelf = item;
+        }
+    }
+
     [HideInInspector]
     public Transform user;
 
-    [SerializeField]
-    protected string myFileName; //DO NOT FUCKING TOUCH!!!! RISK ERASING ALL FILENAMES IN INSPECTOR
+    public ItemMaterial.Material myMaterial;
+    public ItemEffects.ItemEffect myUseEffect;
 
     public Sprite icon = null;
-    public int? slotNum; //allows the int to be null
+    public int? mySlotNum; //allows the int to be null
 
-    new public string name = "New Item";
-    public string myDescription; 
+    public string name = "New Item";
+    public string myDescription;
 
     public float baseValue = 100f;
     public float currentValue;
@@ -21,13 +31,32 @@ public class Item : ScriptableObject {
     public int maxQuantity = 99;
     public bool stackable;
 
-    public enum ItemDirectory { Consumables, Economic, Weapons, Armor, Tools };
-    public ItemDirectory myDirectory;
+    public float weight;
+    public float hardnessValue;
 
-    //create seperate item classes (equipment, consumable, crafting, etc. to handle differernt use cases)
+    //durability
+    //condition
+    //penetration?
+
+    public enum WeaponType { Dagger, Spear, Axe, Pick, Hands, Offhand, Misc, NA }; //each of these is tied to a combat skill
+    public enum AttackType { Hack, Stab, Projectile, BluntImpact, Punch, Claw, Bite };
+    public enum EquipmentSlot { Head, Chest, Hands, Legs, MainHand, OffHand, Feet, NA }
+    public enum ToolType { Pick, Axe, NA };
+
+    public ToolType myToolType;
+    public AttackType myAttackType;
+    public EquipmentSlot myEquipSlot;
+    public WeaponType myWeaponType;
+
+    private void Start()
+    {
+        hardnessValue = ItemMaterial.HardnessValue(myMaterial);   
+    }
+
     public virtual void Use() //RMB
     {
-        user = ScriptToolbox.GetInstance().GetPlayerManager().player.transform;
+        //user = ScriptToolbox.GetInstance().GetPlayerManager().player.transform;
+        ItemEffects.Use(myUseEffect);
     }
 
     public virtual void OpenStatWindow(string itemLocation)
@@ -36,13 +65,15 @@ public class Item : ScriptableObject {
 
         InfoPanel panel = InfoPanel.instance;
         if (panel != null)
-            Instantiate(Resources.Load("PopUps/ItemMenu"), panel.transform.position, Quaternion.identity, panel.transform);
+            Debug.Log("Need to redo this");
+            //Instantiate(Resources.Load("PopUps/ItemMenu"), panel.transform.position, Quaternion.identity, panel.transform);
 
         ItemMenu window = ItemMenu.instance;
         if (window != null)
             window.PopulateInfo(PackageItemInfo());
     }
 
+    //for stats
     protected virtual string[] PackageItemInfo()
     {
         string[] myStats = new string[4];
@@ -78,15 +109,5 @@ public class Item : ScriptableObject {
             currentValue = PriceChecker.AppraiseItem(this, "Sale");
         }
     }
-
-    public virtual string GetResourcePath()
-    {
-        string directory = "Items/" + myDirectory + "/";
-        return directory + myFileName;
-    }
-
-    public virtual void Init()
-    {
-        //put any instantiation stuff here 
-    }
 }
+
