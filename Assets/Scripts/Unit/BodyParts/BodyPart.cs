@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BodyPart : MonoBehaviour {
+    public new string name;
     protected Brain myBrain;
     protected BodyPartController myBody;
     protected CombatSkills myCombatSkills;
@@ -31,12 +32,15 @@ public class BodyPart : MonoBehaviour {
     protected int suffocationThreshold;
     protected int functioningLimit;
 
+    //for setting individual thresholds for each bodypart..
+    /*
     protected int severityThresh0;
     protected int severityThresh1;
     protected int severityThresh2;
     protected int severityThresh3;
     protected int severityThresh4;
     protected int severityThresh5;
+    */
 
     protected float naturalDefense = 0;
     protected float bleedRate = 1f; //how rapidly we bleed from this part
@@ -97,6 +101,9 @@ public class BodyPart : MonoBehaviour {
     //because chest covers multiple parts, it should automatically place it's refrence in each applicable part
     public void EquipAsArmor(Item item)
     {
+        if (item == null)
+            return;
+
         if (armorType != Item.EquipmentSlot.NA) //if this part can equip armor
         {
             if (armorType == item.myEquipSlot)
@@ -111,6 +118,9 @@ public class BodyPart : MonoBehaviour {
 
     public void EquipAsWeapon(Item item)
     {
+        if (item == null)
+            return;
+
         //check if we can equip w/ current skills?
         if (attack1 || attack2) //if this part is responsible for attacking
         {
@@ -128,7 +138,6 @@ public class BodyPart : MonoBehaviour {
 #region Damage Calculations
     public void TakeDamage(AttackInfo recievedAttack)
     {
-        //should be determining severity here with adjustable thresholds
         DamageInfo damageInfo = CalculateDamage(recievedAttack);
         damageInfo = DetermineSeverityLevel(damageInfo);
         int severity = damageInfo.severityLevel;
@@ -138,11 +147,11 @@ public class BodyPart : MonoBehaviour {
             currentSeverityLevel = severity;
         }
 
-        StatusChecks(severity);
-        Bleed(damageInfo);
         string line = string.Format(GetInjuryString(damageInfo.damageType, severity), gameObject.name, damageInfo.weaponName);
         BattleReport.AddToBattleReport(line);
-        //callback for player's health doll
+
+        StatusChecks(severity);
+        Bleed(damageInfo);
     }
 
      private DamageInfo CalculateDamage(AttackInfo recievedAttack)
@@ -157,7 +166,7 @@ public class BodyPart : MonoBehaviour {
         float enemyAttack = recievedAttack.weapon.hardnessValue + recievedAttack.force;
 
         //crit hit
-        if (Random.Range(0, 100) <= recievedAttack.skill)
+        if (UnityEngine.Random.Range(0, 100) <= recievedAttack.skill)
         {
             damageInfo.damageDealt = enemyAttack; //no armor or def taken into account
         }
@@ -243,14 +252,14 @@ public class BodyPart : MonoBehaviour {
 
     #endregion
 
-    #region Status Checks
+#region Status Checks
     protected void KnockoutCheck(int severity)
     {
         int multiplier = 10; // * severityLevel to get time knocked out
 
         if (severity >= knockoutThreshold)
         {
-            if (Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
+            if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
                 int duration = severity * multiplier;
 
@@ -266,7 +275,7 @@ public class BodyPart : MonoBehaviour {
     {
         if (severity >= rockedThreshold)
         {
-            if (Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
+            if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.Rocked, severity);
                 anim.Rocked();
@@ -280,7 +289,7 @@ public class BodyPart : MonoBehaviour {
     {
         if (severity >= downedThreshold)
         {
-            if (Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
+            if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.Downed, severity);
                 anim.FallOver();
@@ -300,7 +309,7 @@ public class BodyPart : MonoBehaviour {
                 return;
             }
 
-            if (Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
+            if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.CantBreathe, severity);
                 anim.CantBreath();
@@ -314,7 +323,7 @@ public class BodyPart : MonoBehaviour {
     {
         if (severity >= vomitThreshold)
         {
-            if (Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
+            if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.Vomitting, severity);
                 anim.Vomit(); //ANIM MUST COME AFTER STATE IS FLIPPED
@@ -325,6 +334,7 @@ public class BodyPart : MonoBehaviour {
     }
     #endregion
 
+    #region Public Methods
     public bool IsTooInjured()
     {
         if (currentSeverityLevel >= functioningLimit)
@@ -353,5 +363,30 @@ public class BodyPart : MonoBehaviour {
         public Item.AttackType damageType;
     }
 
+    public PartInfo PackagePartInfo()
+    {
+        PartInfo info = new PartInfo();
+        info.severityLevel = currentSeverityLevel;
+        info.myArmor = myArmor;
+        info.myWeapon = myWeapon;
 
+        return info;
+    }
+
+    public void UnpackSavedPartInfo(PartInfo info)
+    {
+        currentSeverityLevel = info.severityLevel;
+        EquipAsArmor(info.myArmor);
+        EquipAsWeapon(info.myWeapon);
+    }
+
+    [Serializable]
+    public struct PartInfo
+    {
+        public string name;
+        public int severityLevel;
+        public Item myArmor;
+        public Item myWeapon;
+    }
+    #endregion
 }

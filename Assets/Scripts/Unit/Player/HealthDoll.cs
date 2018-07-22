@@ -10,8 +10,6 @@ public class HealthDoll : MonoBehaviour {
     void Start () {
         playerBody = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<BodyPartController>();
         CollectDollParts();
-        //playerBody.onDamageTaken += DamageBodyPart;
-        playerBody.onHealthLoaded += LoadSavedBodyPartHealth;
 	}
 
 	private void DamageBodyPart(BodyPart.DamageInfo info)

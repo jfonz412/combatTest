@@ -95,7 +95,7 @@ public class NPCSaveData : DataController {
         }
 
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
-        bodyParts.LoadParts(data.bodyParts);
+        bodyParts.LoadSavedParts(data.bodyParts);
         loadOut.EquipLoadout();
     }
 
@@ -143,5 +143,5 @@ public class NPCData : Data
     //public float currentHealth;
     public SavedItem[] currentShopInventory;
     public bool isDead;
-    public List<BodyPart> bodyParts;
+    public BodyPart.PartInfo[] bodyParts;
 }

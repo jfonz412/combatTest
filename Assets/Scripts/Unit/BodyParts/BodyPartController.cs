@@ -12,13 +12,7 @@ public class BodyPartController : MonoBehaviour {
     private AttackReactionSkills attackReaction;
     private Brain myBrain;
 
-    public float totalBlood = 1200; //hardcoded, come up with a better formula for this?
-
-    //public delegate void OnDamageTaken(DamageInfo info);
-    //public OnDamageTaken onDamageTaken;
-    public delegate void OnHealthLoaded();
-    public OnHealthLoaded onHealthLoaded;
-
+    public float totalBlood;
 
     private List<BodyPart> bodyParts = new List<BodyPart>();
     [SerializeField]
@@ -53,8 +47,21 @@ public class BodyPartController : MonoBehaviour {
             Debug.LogError("Please add vital parts");
             vitalParts = new List<BodyPart> { bodyParts[0] };
         }
+
+        CalculateTotalBlood();
     }
 
+    private void CalculateTotalBlood()
+    {
+        int totalSeverity = 0;
+        for(int i = 0; i < bodyParts.Count; i++)
+        {
+            totalSeverity += bodyParts[i].SeverityLevel();
+        }
+        totalBlood = (bodyParts.Count * 100f) - (25f * totalSeverity);
+    }
+
+#region Public Methods
     //gives us a precentage to multiply skills by to get their current effectiveness
     public float OverallHealth()
     {
@@ -89,12 +96,7 @@ public class BodyPartController : MonoBehaviour {
         bodyParts.Add(bodyPart); //adds a refrence to this bodypart, not a copy
     }
 
-
-    private void UpdateSkills()
-    {
-        Debug.Log("should this stilll be here");
-        attackReaction = mySkills.GetAttackReactionSkills();
-    }
+#endregion
 
     #region Recieve Attack
 
@@ -337,19 +339,33 @@ public class BodyPartController : MonoBehaviour {
 
     #region Saving and Loading BodyParts
 
-        public void LoadParts(List<BodyPart> savedbodyParts)
+    public void LoadSavedParts(BodyPart.PartInfo[] info)
+    {
+        for (int i = 0; i < bodyParts.Count; i++)
         {
-            totalBlood = 1200f; // - (bodyPartDamage.Sum(x => x.Value) * 20);
-            Debug.Log("Need to update load part damage, obsolete method?");
-            if (onHealthLoaded != null)
-                onHealthLoaded.Invoke();
+             bodyParts[i].UnpackSavedPartInfo(info[i]);
         }
 
-        public List<BodyPart> GetBodyParts()
+        CalculateTotalBlood(); 
+    }
+
+    public BodyPart.PartInfo[] GetBodyParts()
+    {
+        BodyPart.PartInfo[] info = new BodyPart.PartInfo[bodyParts.Count];
+
+        for(int i = 0; i < bodyParts.Count; i++)
         {
-            return bodyParts;
+            info[i] = bodyParts[i].PackagePartInfo();
         }
 
-        #endregion
+        return info;
+    }
 
+    #endregion
+
+    private void UpdateSkills()
+    {
+        Debug.Log("should this stilll be here");
+        attackReaction = mySkills.GetAttackReactionSkills();
+    }
 }

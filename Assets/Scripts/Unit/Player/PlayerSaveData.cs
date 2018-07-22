@@ -10,7 +10,7 @@ public class PlayerSaveData : DataController {
     private Loadout loadOut;
     private Inventory inventory;
     private PlayerWallet wallet;
-    private BodyPartController bodyParts;
+    private BodyPartController myBody;
     private CombatSkills combatSkills;
 
     private string fileName = "/playerData.dat";
@@ -22,7 +22,7 @@ public class PlayerSaveData : DataController {
         loadOut = GetComponent<Loadout>();
         inventory = InventoryManager.GetInstance().GetInventory();
         wallet = ScriptToolbox.GetInstance().GetPlayerWallet();
-        bodyParts = GetComponent<BodyPartController>();
+        myBody = GetComponent<BodyPartController>();
         combatSkills = GetComponent<CombatSkills>();
 
         healthDoll = FindObjectOfType<HealthDoll>(); //should only be one
@@ -66,7 +66,7 @@ public class PlayerSaveData : DataController {
     private PlayerData PackagePlayerData()
     {
         PlayerData data = new PlayerData();
-        //data.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        //data.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; //is this old code??
 
         Vector3 pos = transform.position;
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
@@ -74,7 +74,7 @@ public class PlayerSaveData : DataController {
         //data.currentEquipment = equipmentManager.GetEquipmentInfo();
         data.currentInventory = inventory.GetItemInfo();
         data.currentGold = wallet.GetCurrentBalance();
-        //data.bodyPartHealth = bodyParts.GetPartDamage();
+        data.bodyParts = myBody.GetBodyParts();
         //data.injuryList = healthDoll.SaveInjuryLog();
 
         data.combatSkillLevels = combatSkills.GetCombatLevels();
@@ -90,7 +90,7 @@ public class PlayerSaveData : DataController {
         inventory.LoadSavedItems(data.currentInventory);
         wallet.LoadSavedBalance(data.currentGold);
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
-        //bodyParts.LoadPartDamage(data.bodyPartHealth);
+        myBody.LoadSavedParts(data.bodyParts);
         //healthDoll.LoadInjuryLog(data.injuryList);
         combatSkills.LoadSavedCombatLevels(data.combatSkillLevels);
         combatSkills.LoadSavedCombatExperience(data.combatSkillExperience);
@@ -108,12 +108,12 @@ public class PlayerData : Data
     public float currentGold;
     public SavedItem[] currentInventory;
     public SavedPosition currentPosition;
-    //public Dictionary<BodyPartController.Parts, int> bodyPartHealth;
+    public BodyPart.PartInfo[] bodyParts;
     public Dictionary<CombatSkills.CombatSkill, int> combatSkillLevels;
     public Dictionary<CombatSkills.CombatSkill, float> combatSkillExperience;
     public Dictionary<Item.WeaponType, int> weaponSkillLevels;
     public Dictionary<Item.WeaponType, float> weaponSkillExperience;
-    //public Dictionary<BodyPartController.Parts, List<string>> injuryList;
+    //public Dictionary<BodyPart, List<string>> injuryList;
 }
 
 [Serializable]

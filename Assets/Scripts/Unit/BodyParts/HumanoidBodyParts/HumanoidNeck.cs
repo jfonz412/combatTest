@@ -5,6 +5,7 @@ public class HumanoidNeck : BodyPart
     protected override void AssignPartStats()
     {
         armorType = Item.EquipmentSlot.Chest; //put this before callback is assigned in base class
+        name = "neck";
         functioningLimit = 4;
         //knockoutThreshold = 3;
         //vomitThreshold = 5;
@@ -33,24 +34,24 @@ public class HumanoidNeck : BodyPart
             //0 is name, 1 is weapon 2 is armor
             {Item.AttackType.BluntImpact, new string[]
                 {
-                     "The force of the {1} bruises {0}'s neck!",
-                     "The force of the {1} heavily bruises {0}'s neck!",
-                     "The force of the {1} seriously bruises {0}'s neck!",
-                     "The force of the {1} crushes the meat of {0}'s neck",
-                     "The force of the {1} crumples part of {0}'s neck!",
-                     "The force of the {1} completely crushes {0}'s neck!"
+                     "The force of the {1} bruises {0}'s " + name + "!",
+                     "The force of the {1} heavily bruises {0}'s " + name + "!",
+                     "The force of the {1} seriously bruises {0}'s " + name + "!",
+                     "The force of the {1} crushes the meat of {0}'s " + name + "",
+                     "The force of the {1} crumples part of {0}'s " + name + "!",
+                     "The force of the {1} completely crushes {0}'s " + name + "!"
                 }
             },
 
                         //0 is name, 1 is weapon 2 is armor
             {Item.AttackType.Stab, new string[]
                 {
-                     "The point of the {1} pokes into the flesh of {0}'s neck!",
-                     "The point of the {1} stabs into {0}'s neck!",
-                     "The point of the {1} stabs deeply into {0}'s neck",
-                     "The blade of the {1} pierces completely through {0}'s neck!",
-                     "The blade of the {1} pierces completely through {0}'s neck!",
-                     "The blade of the {1} pierces completely through {0}'s neck!"
+                     "The point of the {1} pokes into the flesh of {0}'s " + name + "!",
+                     "The point of the {1} stabs into {0}'s " + name + "!",
+                     "The point of the {1} stabs deeply into {0}'s " + name + "",
+                     "The blade of the {1} pierces completely through {0}'s " + name + "!",
+                     "The blade of the {1} pierces completely through {0}'s " + name + "!",
+                     "The blade of the {1} pierces completely through {0}'s " + name + "!"
                 }
             }
         };
