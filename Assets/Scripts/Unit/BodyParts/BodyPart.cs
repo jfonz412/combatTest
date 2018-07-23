@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BodyPart : MonoBehaviour {
+    public DollPart dollPart; //for player only for now
+    
     public new string name;
+    public List<string> injuryLog = new List<string>(); //must be instantiated here
+
     protected Brain myBrain;
     protected BodyPartController myBody;
     protected CombatSkills myCombatSkills;
@@ -56,6 +60,11 @@ public class BodyPart : MonoBehaviour {
 
         AssignPartStats();
         SetInjuryStrings();
+
+        if (dollPart != null)
+        {
+            dollPart.Initialize(PackagePartInfo());
+        }
 
         //Debug.Log("assigning parts for " + this);
         //Debug.Log("my armortype is " + armorType);
@@ -136,18 +145,30 @@ public class BodyPart : MonoBehaviour {
     #endregion
 
 #region Damage Calculations
+
     public void TakeDamage(AttackInfo recievedAttack)
     {
         DamageInfo damageInfo = CalculateDamage(recievedAttack);
         damageInfo = DetermineSeverityLevel(damageInfo);
         int severity = damageInfo.severityLevel;
+        string line = string.Format(GetInjuryString(damageInfo.damageType, severity), gameObject.name, damageInfo.weaponName);
 
         if (severity > currentSeverityLevel)
         {
             currentSeverityLevel = severity;
+            if (dollPart != null)
+                dollPart.SeverityColor(severity);
         }
 
-        string line = string.Format(GetInjuryString(damageInfo.damageType, severity), gameObject.name, damageInfo.weaponName);
+        string log;
+        if (dollPart != null)
+        {
+            Debug.Log(gameObject.name + " is trying to log for " + damageInfo.damageType + " damage!");
+            log = dollPart.LogInjury(severity, damageInfo.damageType);
+        }
+            
+
+        //injuryLog.Add(log); these should be connected
         BattleReport.AddToBattleReport(line);
 
         StatusChecks(severity);
@@ -360,6 +381,7 @@ public class BodyPart : MonoBehaviour {
         public string victimName;
         public float damageDealt;
         public int severityLevel;
+        public string bodyPart;
         public Item.AttackType damageType;
     }
 
@@ -369,15 +391,25 @@ public class BodyPart : MonoBehaviour {
         info.severityLevel = currentSeverityLevel;
         info.myArmor = myArmor;
         info.myWeapon = myWeapon;
-
+        info.injuryLog = injuryLog;
+        info.name = name;
         return info;
     }
 
     public void UnpackSavedPartInfo(PartInfo info)
     {
-        currentSeverityLevel = info.severityLevel;
-        EquipAsArmor(info.myArmor);
-        EquipAsWeapon(info.myWeapon);
+        if(info.name == name)
+        {
+            currentSeverityLevel = info.severityLevel;
+            injuryLog = info.injuryLog;
+            EquipAsArmor(info.myArmor);
+            EquipAsWeapon(info.myWeapon);
+
+            if (dollPart != null)
+            {
+                dollPart.Initialize(info);
+            }
+        }
     }
 
     [Serializable]
@@ -387,6 +419,7 @@ public class BodyPart : MonoBehaviour {
         public int severityLevel;
         public Item myArmor;
         public Item myWeapon;
+        public List<string> injuryLog;
     }
     #endregion
 }

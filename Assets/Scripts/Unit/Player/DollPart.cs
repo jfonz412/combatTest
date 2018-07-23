@@ -8,29 +8,38 @@ public class DollPart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField]
     private InjuryLog log;
 
-    public BodyPart dollPart;
-    private Image myImage;
-    private List<string> injuries = new List<string>();
+    private Dictionary<Item.AttackType, string[]> injuryStrings = new Dictionary<Item.AttackType, string[]>();
 
+    private Image myImage;
+    private List<string> injuries;
 
     private void Awake()
     {
-        myImage = transform.parent.GetComponent<Image>();
+        myImage = transform.parent.GetComponent<Image>();       
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void Initialize(BodyPart.PartInfo info)
     {
-        Debug.Log("Pointer entered " + dollPart);
-        log.DisplayInjuryList(injuries);
+        LoadInjuryStrings();
+        Color color = DeterminePartColor(info.severityLevel);
+        ChangeColor(color);
+        injuries = info.injuryLog; //should hold a ref so list will update itself
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void SeverityColor(int severity)
     {
-        Debug.Log("Pointer exit " + dollPart);
-        log.ClearInjuryList();
+        Color color = DeterminePartColor(severity);
+        ChangeColor(color);
     }
 
-    public void ChangeColor(Color color)
+    public string LogInjury(int severity, Item.AttackType damageType)
+    {
+        string line = injuryStrings[damageType][severity];
+        injuries.Add(line);
+        return line;
+    }
+
+    private void ChangeColor(Color color)
     {
         if(myImage == null)
         {
@@ -45,18 +54,73 @@ public class DollPart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         myImage.color = color;
     }
 
-    public void LogInjury(string injury)
+    private Color DeterminePartColor(int severityLevel)
     {
-        injuries.Add(injury);
+        if (severityLevel == 0 || severityLevel == 1)
+        {
+            return Color.green;
+        }
+        else if (severityLevel == 2)
+        {
+            return Color.yellow;
+        }
+        else if (severityLevel == 3)
+        {
+            return new Color32(255, 140, 0, 255); //orange
+        }
+        else if (severityLevel == 4)
+        {
+            return Color.red;
+        }
+        else if (severityLevel == 5)
+        {
+            Color transparent = Color.red;
+            transparent.a = 0.5f;
+            return transparent;
+        }
+        else
+        {
+            Debug.LogError("Shouldn't reach this!");
+            return Color.white;
+        }
     }
 
-    public List<string> GetInjuryLog()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        return injuries;
+        log.DisplayInjuryList(injuries);
     }
 
-    public void LoadInjuryLog(List<string> savedInjuries)
+    public void OnPointerExit(PointerEventData eventData)
     {
-        injuries = savedInjuries;
+        log.ClearInjuryList();
     }
+
+#region Injury strings
+    private void LoadInjuryStrings()
+    {
+        injuryStrings[Item.AttackType.BluntImpact] = bluntImpact;
+        injuryStrings[Item.AttackType.Stab] = stabbed;
+
+    }
+
+    private string[] stabbed = new string[]
+    {
+        "poked",
+        "broken flesh",
+        "punctured",
+        "stabbed",
+        "gored",
+        "skewered"
+    };
+
+    private string[] bluntImpact = new string[]
+    {
+        "light bruise",
+        "bruised",
+        "heavily bruised",
+        "internal damage",
+        "crushed",
+        "pulverized"
+    };
+#endregion
 }
