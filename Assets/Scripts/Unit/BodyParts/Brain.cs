@@ -54,6 +54,10 @@ public class Brain : MonoBehaviour {
 
     public void ToggleState(State state, bool toggle)
     {
+        if(currentStates == null)
+        {
+            ResetStates();
+        }
         currentStates[state] = toggle;
     }
 

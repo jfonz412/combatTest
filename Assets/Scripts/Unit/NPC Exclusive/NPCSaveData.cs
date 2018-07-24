@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public class NPCSaveData : DataController {
     //the components we need to save
-    private Loadout loadOut; //just to load npc's default equipment when scene is loaded
     private LoadShop myShop;
     //private UnitReactions myAI;
     private BodyPartController bodyParts;
@@ -15,7 +14,6 @@ public class NPCSaveData : DataController {
     protected override void GatherComponents()
     {
         base.GatherComponents();
-        loadOut = GetComponent<Loadout>();
         //myAI = GetComponent<UnitReactions>();
         myShop = GetComponent<LoadShop>(); //may be null if not shop owner
         bodyParts = GetComponent<BodyPartController>();
@@ -53,7 +51,6 @@ public class NPCSaveData : DataController {
         else
         {
             Debug.LogWarning(gameObject.name + " save data not found!");
-            loadOut.EquipLoadout();
             return;
         }
 
@@ -96,7 +93,6 @@ public class NPCSaveData : DataController {
 
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
         bodyParts.LoadSavedParts(data.bodyParts);
-        loadOut.EquipLoadout();
     }
 
     //creates file path for this individual based on it's gameObject.name

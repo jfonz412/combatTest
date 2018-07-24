@@ -7,20 +7,24 @@ public class BodyPartController : MonoBehaviour {
     private EquipmentManager equipment;
     private CombatSkills mySkills;
     private UnitReactions unitReactions;
-    private UnitStatusController statusController;
     private UnitAnimController anim;
     private AttackReactionSkills attackReaction;
     private Brain myBrain;
-
+    private DefaultEquipment defaultEquipment;
     public float totalBlood;
 
     private List<BodyPart> bodyParts = new List<BodyPart>();
     [SerializeField]
     private List<BodyPart> vitalParts;
 
-    //private Dictionary<Item.EquipmentSlot, ArmorInfo> myArmor = new Dictionary<Item.EquipmentSlot, ArmorInfo>();
+    //for attack controller
+    public List<BodyPart> attack1Parts;
+    public List<BodyPart> attack2Parts;
+
+    //move this to BodyPart?
     private Brain.State[] vulnerableStates = new Brain.State[]
     {
+        Brain.State.Suffocating,
         Brain.State.CantBreathe,
         Brain.State.Dead,
         Brain.State.Rocked,
@@ -32,23 +36,20 @@ public class BodyPartController : MonoBehaviour {
 
     private void Start() //make private?
     {
-        mySkills = GetComponent<CombatSkills>();
         unitReactions = GetComponent<UnitReactions>();
         anim = GetComponent<UnitAnimController>();
-        statusController = GetComponent<UnitStatusController>();
-        mySkills.onSkillGained += UpdateSkills;
         myBrain = GetComponent<Brain>();
+        defaultEquipment = GetComponent<DefaultEquipment>();
+        mySkills = GetComponent<CombatSkills>();
+        mySkills.onSkillGained += UpdateSkills;
+        UpdateSkills();       
 
-        UpdateSkills();
+        AddBodyParts(); //collects the bodyparts from the unit, part stats should be set by now
+        LoadAttackParts(); //saves attack parts into a list for the AttackController to reference
+        CalculateTotalBlood(); //bodyparts needed for this
 
-        //catch
-        if(vitalParts == null)
-        {
-            Debug.LogError("Please add vital parts");
-            vitalParts = new List<BodyPart> { bodyParts[0] };
-        }
-
-        CalculateTotalBlood();
+        Debug.Log("Loading default loadout with " + bodyParts.Count + " parts loaded");
+        defaultEquipment.EquipLoadout(this);
     }
 
     private void CalculateTotalBlood()
@@ -61,7 +62,7 @@ public class BodyPartController : MonoBehaviour {
         totalBlood = (bodyParts.Count * 100f) - (25f * totalSeverity);
     }
 
-#region Public Methods
+    #region Public Methods
     //gives us a precentage to multiply skills by to get their current effectiveness
     public float OverallHealth()
     {
@@ -91,9 +92,10 @@ public class BodyPartController : MonoBehaviour {
     }
 
     //for each BodyPart to load itself to the controller
-    public void AddBodyPart(BodyPart bodyPart)
+    public void AddBodyParts()
     {
-        bodyParts.Add(bodyPart); //adds a refrence to this bodypart, not a copy
+        BodyPart[] bp = GetComponents<BodyPart>();
+        bodyParts = bp.ToList();
     }
 
 #endregion
@@ -187,6 +189,7 @@ public class BodyPartController : MonoBehaviour {
     {
         for (int i = 0; i < bodyParts.Count; i++)
         {
+            Debug.Log(item.name + " equipping from body " + gameObject.name);
             bodyParts[i].EquipAsArmor(item);
         }
     }
@@ -200,35 +203,36 @@ public class BodyPartController : MonoBehaviour {
     }
 
     //returns a list of parts with attack1
-    public List<BodyPart> Attack1Parts()
+    private void LoadAttackParts()
     {
-        List<BodyPart> bp = new List<BodyPart>();
+        Attack1Parts();
+        Attack2Parts();
+    }
 
+    //returns a list of parts with attack1
+    private void Attack1Parts()
+    {
         for (int i = 0; i < bodyParts.Count; i++)
         {
             if (bodyParts[i].attack1)
             {
-                bp.Add(bodyParts[i]);
+                attack1Parts.Add(bodyParts[i]);
+                //Debug.Log("added " + bodyParts[i] + " for " + gameObject.name);
             }
         }
-
-        return bp;
     }
 
     //returns a list of pasts with attack2
-    public List<BodyPart> Attack2Parts()
+    private void Attack2Parts()
     {
-        List<BodyPart> bp = new List<BodyPart>();
-
         for (int i = 0; i < bodyParts.Count; i++)
         {
             if (bodyParts[i].attack2)
             {
-                bp.Add(bodyParts[i]);
+                attack2Parts.Add(bodyParts[i]);
+                //Debug.Log("added " + bodyParts[i] + " for " + gameObject.name);
             }
         }
-
-        return bp;
     }
 
     #endregion
@@ -339,6 +343,7 @@ public class BodyPartController : MonoBehaviour {
 
     #region Saving and Loading BodyParts
 
+    //applies saved info to bodyparts
     public void LoadSavedParts(BodyPart.PartInfo[] info)
     {
         for (int i = 0; i < bodyParts.Count; i++)
@@ -346,7 +351,7 @@ public class BodyPartController : MonoBehaviour {
              bodyParts[i].UnpackSavedPartInfo(info[i]);
         }
 
-        CalculateTotalBlood(); 
+        CalculateTotalBlood();
     }
 
     public BodyPart.PartInfo[] GetBodyParts()

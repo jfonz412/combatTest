@@ -2,34 +2,34 @@
 
 //all loadouts will inherit from this script
 public class DefaultEquipment : MonoBehaviour {
-    protected BodyPartController myBody;
     protected Item[] defaultArmor;
     protected Item[] defaultWeapon;
+    //bools for toggling items on or off would make this script a little more flexable
 
     // Use this for initialization
-    void Start () {
-        myBody = GetComponent<BodyPartController>();
+    public void EquipLoadout (BodyPartController myBody) {
 
         InstantiateDefaultEquipment();
-        LoadDefaultArmor();
-        LoadDefaultWeapon();
+        LoadDefaultArmor(myBody);
+        LoadDefaultWeapon(myBody);
 	}
 	
-    protected void InstantiateDefaultEquipment()
+    protected virtual void InstantiateDefaultEquipment()
     {
         //set default weapons and armor
     }
 
 	// Update is called once per frame
-	void LoadDefaultArmor()
+	void LoadDefaultArmor(BodyPartController myBody)
     {
         for (int i = 0; i < defaultArmor.Length; i++)
         {
+            Debug.Log(defaultArmor[i].name + " default for " + gameObject.name);
             myBody.EquipArmor(defaultArmor[i]);
         }
     }
 
-    void LoadDefaultWeapon()
+    void LoadDefaultWeapon(BodyPartController myBody)
     {
         for (int i = 0; i < defaultWeapon.Length; i++)
         {

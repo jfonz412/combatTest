@@ -12,8 +12,7 @@ public class AttackController : MonoBehaviour {
     private BodyPartController targetBody;
     private BodyPartController myBody;
     private Brain myBrain;
-    private EquipmentManager equipmentManager;
-    public Item mainHand;
+    public Item mainHand; //remove this but be prepared to fix harvesting
     //public Item offHand;
 
     private CombatSkills mySkills;
@@ -47,18 +46,13 @@ public class AttackController : MonoBehaviour {
         myBody = GetComponent<BodyPartController>();
         myBrain = GetComponent<Brain>();
 
-        GetAttack1Parts();
-        GetAttack2Parts();
+        GetAttackPartReferences();
     }
 
-    private void GetAttack1Parts()
+    private void GetAttackPartReferences()
     {
-        attack1Parts = myBody.Attack1Parts();
-    }
-
-    private void GetAttack2Parts()
-    {
-        attack2Parts = myBody.Attack2Parts();
+        attack1Parts = myBody.attack1Parts; //main 
+        attack2Parts = myBody.attack2Parts; //off
     }
 
     //How the player object talks to this script

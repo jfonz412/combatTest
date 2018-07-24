@@ -34,6 +34,7 @@ public class DollPart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public string LogInjury(int severity, Item.AttackType damageType)
     {
+        //Debug.Log("Damage type " + damageType);
         string line = injuryStrings[damageType][severity];
         injuries.Add(line);
         return line;

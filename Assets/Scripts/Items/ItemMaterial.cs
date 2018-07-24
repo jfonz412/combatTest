@@ -38,6 +38,8 @@ public class ItemMaterial : MonoBehaviour {
         }
         else
         {
+            Debug.LogError("Material hardness value not set!");
+            //consider adding an additional value that would make a log less effective than a wood sword?
             return 0f;
         }
     }

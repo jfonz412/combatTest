@@ -7,7 +7,6 @@ public class PlayerSaveData : DataController {
 
     private HealthDoll healthDoll;
     private EquipmentManager equipmentManager;
-    private Loadout loadOut;
     private Inventory inventory;
     private PlayerWallet wallet;
     private BodyPartController myBody;
@@ -19,7 +18,6 @@ public class PlayerSaveData : DataController {
     {
         base.GatherComponents();
         equipmentManager = GetComponent<EquipmentManager>();
-        loadOut = GetComponent<Loadout>();
         inventory = InventoryManager.GetInstance().GetInventory();
         wallet = ScriptToolbox.GetInstance().GetPlayerWallet();
         myBody = GetComponent<BodyPartController>();
@@ -55,7 +53,6 @@ public class PlayerSaveData : DataController {
         }
         else
         {
-            loadOut.EquipLoadout(); //will load player's default loadout so we don't have null equipment
             Debug.LogWarning(gameObject.name + " save data not found!");
             return;
         }
@@ -90,12 +87,16 @@ public class PlayerSaveData : DataController {
         inventory.LoadSavedItems(data.currentInventory);
         wallet.LoadSavedBalance(data.currentGold);
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
+
         myBody.LoadSavedParts(data.bodyParts);
-        //healthDoll.LoadInjuryLog(data.injuryList);
+        //load saved equipment 
+
         combatSkills.LoadSavedCombatLevels(data.combatSkillLevels);
         combatSkills.LoadSavedCombatExperience(data.combatSkillExperience);
         combatSkills.LoadSavedWeaponLevels(data.weaponSkillLevels);
         combatSkills.LoadSavedWeaponExperience(data.weaponSkillExperience);
+
+
 
         Debug.Log("Applied player data");
     }

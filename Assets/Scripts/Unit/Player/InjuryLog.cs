@@ -10,6 +10,9 @@ public class InjuryLog : MonoBehaviour {
     {
         string injuryLine;
 
+        if (injuryList == null)
+            Debug.LogError("Injury list is null!");
+
         for (int i = 0; i < injuryList.Count; i++)
         {
             injuryLine = injuryList[i] + System.Environment.NewLine;

@@ -49,16 +49,18 @@ public class BodyPart : MonoBehaviour {
     protected float naturalDefense = 0;
     protected float bleedRate = 1f; //how rapidly we bleed from this part
 
+    protected void Awake()
+    {
+        AssignPartStats(); //make sure these are set before anyone touches these bodyparts, which can only be done through BodyPartController (loaded in start)
+    }
+
     protected void Start()
     {
         myBrain = GetComponent<Brain>();
         myBody = GetComponent<BodyPartController>();
         myCombatSkills = GetComponent<CombatSkills>();
         anim = GetComponent<UnitAnimController>();
-        myBody.AddBodyPart(this);
 
-
-        AssignPartStats();
         SetInjuryStrings();
 
         if (dollPart != null)
@@ -112,14 +114,16 @@ public class BodyPart : MonoBehaviour {
     {
         if (item == null)
             return;
-
+            
         if (armorType != Item.EquipmentSlot.NA) //if this part can equip armor
         {
             if (armorType == item.myEquipSlot)
             {
+                myArmor = item;
+
                 if (onEquipmentChanged != null)
                 {
-                    onEquipmentChanged.Invoke(myArmor, item);
+                    onEquipmentChanged.Invoke(myArmor, item); //will take care of putting unequipped item in inventory for player
                 }
             }
         }
