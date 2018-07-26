@@ -1,12 +1,9 @@
 ﻿using System;
 using System.IO;
 using UnityEngine;
-using System.Collections.Generic;
 
-public class NPCSaveData : DataController {
-    //the components we need to save
-    private LoadShop myShop;
-    //private UnitReactions myAI;
+public class NPCSaveData : DataController
+{
     private BodyPartController bodyParts;
     private Brain myBrain;
 
@@ -14,8 +11,6 @@ public class NPCSaveData : DataController {
     protected override void GatherComponents()
     {
         base.GatherComponents();
-        //myAI = GetComponent<UnitReactions>();
-        myShop = GetComponent<LoadShop>(); //may be null if not shop owner
         bodyParts = GetComponent<BodyPartController>();
         myBrain = GetComponent<Brain>();
     }
@@ -67,11 +62,6 @@ public class NPCSaveData : DataController {
         data.isDead = myBrain.isDead;
         data.bodyParts = bodyParts.GetBodyParts();
 
-        if (myShop != null)
-        {
-            data.currentShopInventory = myShop.GetCurrentInventory();
-        }
-
         return data;
     }
 
@@ -86,11 +76,6 @@ public class NPCSaveData : DataController {
             return;
         }
 
-        if (myShop != null)
-        {
-            myShop.UpdateInventory(UnpackSavedShopInventory(data.currentShopInventory));
-        }
-
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
         bodyParts.LoadSavedParts(data.bodyParts);
     }
@@ -101,43 +86,11 @@ public class NPCSaveData : DataController {
         string filePath = "/NPC_" + gameObject.name + ".dat";
         return filePath;
     }
-
-
-    private List<Item> UnpackSavedShopInventory(SavedItem[] savedInventory)
-    {
-        //Debug.Log("Unpacking shop inventory for " + gameObject.name);
-        List<Item> loadedItems = new List<Item>();
-
-        if (savedInventory == null)
-        {
-            //Debug.Log("savedInventory is null for " + gameObject.name);
-            return loadedItems;
-        }
-            
-
-        for (int i = 0; i < savedInventory.Length; i++)
-        {
-            if (savedInventory[i].fileName == null)
-                continue;
-
-            // this needs to be instantiated here because we apply the quantity
-            //Item item = (Item)Instantiate(Resources.Load(savedInventory[i].fileName)); 
-            //item.quantity = savedInventory[i].quantity;
-
-            //loadedItems.Add(item);
-            Debug.Log("Method is returning null list for shop inventory, need to update this method");
-
-        }
-        return loadedItems;
-    }
 }
-
 [Serializable]
 public class NPCData : Data
 {
     public SavedPosition currentPosition;
-    //public float currentHealth;
-    public SavedItem[] currentShopInventory;
     public bool isDead;
     public BodyPart.PartInfo[] bodyParts;
 }

@@ -39,7 +39,7 @@ public class MouseSlot : MonoBehaviour {
 
         if(currentItem != null)
         {
-            currentItemSprite = currentItem.icon;
+            //currentItemSprite = currentItem.icon;
             spriteRenderer.sprite = currentItemSprite;
         }
         else

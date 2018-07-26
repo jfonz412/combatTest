@@ -24,7 +24,6 @@ public class DefaultEquipment : MonoBehaviour {
     {
         for (int i = 0; i < defaultArmor.Length; i++)
         {
-            Debug.Log(defaultArmor[i].name + " default for " + gameObject.name);
             myBody.EquipArmor(defaultArmor[i]);
         }
     }

@@ -16,7 +16,7 @@ public class DataController : MonoBehaviour {
     public virtual string SaveData()
     {
         string fileName = "";
-        //Debug.Log("Saving player data");
+        Debug.Log("Saving " + gameObject.name +" data");
         return fileName;
     }
 
@@ -41,6 +41,7 @@ public class DataController : MonoBehaviour {
     {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + fileName);
+
         bf.Serialize(file, data);
         file.Close();
     }

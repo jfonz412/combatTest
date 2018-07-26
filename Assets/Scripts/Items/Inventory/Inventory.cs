@@ -87,9 +87,9 @@ public class Inventory : MonoBehaviour {
     }
 
     //for PlayerSaveData to save inventory
-    public SavedItem[] GetItemInfo()
+    public Item[] GetItemInfo()
     {
-        SavedItem[] itemInfo = new SavedItem[items.Count];
+        Item[] itemInfo = new Item[items.Count];
 
         for (int i = 0; i < items.Count; i++)
         {
@@ -101,7 +101,7 @@ public class Inventory : MonoBehaviour {
         return itemInfo;
     }
 
-    public void LoadSavedItems(SavedItem[] savedItems)
+    public void LoadSavedItems(Item[] savedItems)
     {
         if (items == null)
         {
@@ -111,8 +111,8 @@ public class Inventory : MonoBehaviour {
 
         for (int i = 0; i < savedItems.Length - 1; i++)
         {
-            if (savedItems[i].fileName == null) //shouldn't this throw an error if null?
-                continue;
+            //if (savedItems[i].fileName == null) //shouldn't this throw an error if null?
+                //continue;
 
             //Item item = (Item)Resources.Load(savedItems[i].fileName);
             Debug.Log("need to implement this");

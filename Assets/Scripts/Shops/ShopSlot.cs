@@ -12,7 +12,7 @@ public class ShopSlot : InventorySlot
         }
 
         item = newItem;
-        icon.sprite = item.icon;
+        //icon.sprite = item.icon;
         icon.enabled = true;
 
         //Debug.Log(item.name + " has been added to slot " + slotNum + "with a slotnum of " + item.slotNum);

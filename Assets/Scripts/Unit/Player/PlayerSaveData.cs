@@ -69,7 +69,7 @@ public class PlayerSaveData : DataController {
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
 
         //data.currentEquipment = equipmentManager.GetEquipmentInfo();
-        data.currentInventory = inventory.GetItemInfo();
+        //data.currentInventory = inventory.GetItemInfo();
         data.currentGold = wallet.GetCurrentBalance();
         data.bodyParts = myBody.GetBodyParts();
         //data.injuryList = healthDoll.SaveInjuryLog();
@@ -84,7 +84,7 @@ public class PlayerSaveData : DataController {
     private void ApplyDataToPlayer(PlayerData data)
     {
         //equipmentManager.LoadSavedEquipment(data.currentEquipment);
-        inventory.LoadSavedItems(data.currentInventory);
+        //inventory.LoadSavedItems(data.currentInventory);
         wallet.LoadSavedBalance(data.currentGold);
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
 
@@ -107,7 +107,6 @@ public class PlayerData : Data
 {
     //public List<EquipmentInfo> currentEquipment;
     public float currentGold;
-    public SavedItem[] currentInventory;
     public SavedPosition currentPosition;
     public BodyPart.PartInfo[] bodyParts;
     public Dictionary<CombatSkills.CombatSkill, int> combatSkillLevels;
@@ -115,13 +114,6 @@ public class PlayerData : Data
     public Dictionary<Item.WeaponType, int> weaponSkillLevels;
     public Dictionary<Item.WeaponType, float> weaponSkillExperience;
     //public Dictionary<BodyPart, List<string>> injuryList;
-}
-
-[Serializable]
-public struct SavedItem
-{
-    public string fileName;
-    public int quantity;
 }
 
 [Serializable]

@@ -46,7 +46,7 @@ public class DataManager : MonoBehaviour {
     {
         //copy files from temp dir into perm dir
         SaveDataToTemp();
-
+  
         if (Directory.Exists(tempDir))
         {
             string[] files = Directory.GetFiles(tempDir);

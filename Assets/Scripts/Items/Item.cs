@@ -3,23 +3,24 @@ using UnityEngine;
 
 [Serializable]
 public class Item {
-
+    
     public Item(Item item = null)
-    {
+    {/*
         if(item != null)
         {
             Item mySelf = this;
             mySelf = item;
-        }
+        }*/
     }
-
-    [HideInInspector]
-    public Transform user;
+    
+    
+    //[HideInInspector]
+    //public Transform user; can't serialize with this
 
     public ItemMaterial.Material myMaterial;
     public ItemEffects.ItemEffect myUseEffect;
 
-    public Sprite icon = null;
+    //public Sprite icon = null;
     public int? mySlotNum; //allows the int to be null
 
     public string name = "New Item";

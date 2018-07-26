@@ -24,7 +24,7 @@ public class EquipSlot : InventorySlot {
         }
 
         equipment = newItem;
-        icon.sprite = equipment.icon;
+        //icon.sprite = equipment.icon;
         icon.enabled = true;
     }
 

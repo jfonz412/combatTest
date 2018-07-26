@@ -189,7 +189,6 @@ public class BodyPartController : MonoBehaviour {
     {
         for (int i = 0; i < bodyParts.Count; i++)
         {
-            Debug.Log(item.name + " equipping from body " + gameObject.name);
             bodyParts[i].EquipAsArmor(item);
         }
     }
