@@ -12,6 +12,10 @@ public class DemoburghShops : MarketInventory {
             {
                 MasterItemList.IronChest(),
                 MasterItemList.IronChest(),
+                MasterItemList.ClothShirt(),
+                MasterItemList.ClothShirt(),
+                MasterItemList.ClothShirt(),
+                MasterItemList.ClothShirt(),
                 MasterItemList.ClothShirt()
             });
     }

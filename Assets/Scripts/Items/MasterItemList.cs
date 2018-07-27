@@ -41,7 +41,7 @@ public class MasterItemList : MonoBehaviour {
         item.myWeaponType = Item.WeaponType.Hands;
         return item;
     }
-    public static Item ClothShirt()
+    public static Item ClothShirt(int _quantity = 1)
     {
         Item item = new Item();
 
@@ -52,7 +52,7 @@ public class MasterItemList : MonoBehaviour {
         item.myMaterial = ItemMaterial.Material.Cloth;
         item.weight = 0.8f;
         item.stackable = true;
-        item.quantity = 1;
+        item.quantity = _quantity;
         item.maxQuantity = 3;
         item.myWeaponType = Item.WeaponType.NA; //should cancel below, need NA attacktype to be more explicit here
         item.myAttackType = Item.AttackType.BluntImpact; 

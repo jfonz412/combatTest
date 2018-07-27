@@ -59,15 +59,9 @@ public class Item {
     public virtual void OpenStatWindow(string itemLocation)
     {
         DetermineValue(itemLocation);
-
-        InfoPanel panel = InfoPanel.instance;
-        if (panel != null)
-            Debug.Log("Need to redo this");
-            //Instantiate(Resources.Load("PopUps/ItemMenu"), panel.transform.position, Quaternion.identity, panel.transform);
-
-        ItemMenu window = ItemMenu.instance;
-        if (window != null)
-            window.PopulateInfo(PackageItemInfo());
+        InfoPanel.instance.InstantiatePanel(); 
+        ItemMenu.instance.PopulateInfo(PackageItemInfo()); 
+        
     }
 
     //for stats

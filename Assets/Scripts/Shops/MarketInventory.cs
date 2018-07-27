@@ -26,6 +26,11 @@ public class MarketInventory : MonoBehaviour {
         }
     }
 
+    public void UpdateShop(string shopOwner, List<Item> updatedInventory)
+    {
+        townShops[shopOwner] = updatedInventory.ToArray();
+    }
+
     public Dictionary<string, Item[]> SaveShops()
     {
         return townShops;

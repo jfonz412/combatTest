@@ -18,7 +18,6 @@ public class ClickCheck : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     private void Start()
     {
-
         slot = GetComponentInParent<InventorySlot>();
         windowCloser = ScriptToolbox.GetInstance().GetWindowCloser();
         playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Brain>();

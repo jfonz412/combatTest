@@ -32,6 +32,7 @@ public class ShopSlot : InventorySlot
 
     public override void SlotHoverOver()
     {
+        InventoryManager.GetInstance().GetInventoryToggle().OpenInventory();
         InventoryManager.GetInstance().GetShopSlotClick().ShopSlotHoverOver(item);
     }
 

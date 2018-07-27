@@ -29,8 +29,8 @@ public class LoadShop : MonoBehaviour {
 
     public void UpdateInventory(List<Item> items) //WHERE IS THIS CALLED? FROM SHOPINVENTORY.CS I think
     {
-        //Debug.Log("Updating NPC shop's inventory" + items[1]);
-        shopInventory = new List<Item>(items);
+        shopInventory = new List<Item>(items); //save over old shop
+        EconomyManager.GetInstance().GetMarketInventory().UpdateShop(gameObject.name, items);
     }
 
     public Item[] GetCurrentInventory()

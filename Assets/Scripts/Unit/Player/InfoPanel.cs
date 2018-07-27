@@ -9,4 +9,10 @@ public class InfoPanel : MonoBehaviour {
         instance = this;
     }
     #endregion
+
+    public void InstantiatePanel()
+    {
+        gameObject.SetActive(true);
+        Instantiate(Resources.Load("PopUps/ItemMenu"), transform.position, Quaternion.identity, transform);
+    }
 }
