@@ -7,12 +7,16 @@ public class ShopSlot : InventorySlot
     {
         if (newItem == null)
         {
+            Debug.Log("Item null, clearing slot in UI " + newItem);
             ClearSlot();
             return;
         }
 
+        Debug.Log("Item being added to UI slot");
         item = newItem;
-        //icon.sprite = item.icon;
+        Sprite itemSprite = Resources.Load<Sprite>("Images/ItemIcons/" + item.icon);
+        Debug.Log(itemSprite);
+        icon.sprite = itemSprite;
         icon.enabled = true;
 
         //Debug.Log(item.name + " has been added to slot " + slotNum + "with a slotnum of " + item.slotNum);

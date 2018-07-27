@@ -22,7 +22,7 @@ public class LoadShop : MonoBehaviour {
 
     public void LoadShopInventory()
     {
-        shopInventory = DemoburghShops.GetInventory(gameObject.name).ToList();
+        shopInventory = EconomyManager.GetInstance().GetMarketInventory().GetInventory(gameObject.name).ToList();
         InventoryManager.GetInstance().GetShopInventory().LoadShopInventory(shopInventory, this); //load inventory window with this
         InventoryManager.GetInstance().GetShopDialogue().LoadShopDialogue(shopDialogue); //get shop dialog window
     }

@@ -73,7 +73,7 @@ public class ShopInventoryUI : MonoBehaviour {
         {
             if (i < shop.items.Count)
             {
-                slots[i].AddItem(shop.items[i]); //am I cloning the item here from ShopInventory ?
+                slots[i].AddItem(shop.items[i]); 
             }
             else
             {

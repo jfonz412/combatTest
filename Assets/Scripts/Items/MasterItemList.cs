@@ -9,7 +9,7 @@ public class MasterItemList : MonoBehaviour {
 
         item.name = "Iron Body Armor";
         item.myDescription = "This is iron body armor covering the chest, abdominals, and both arms.";
-        //item.icon = "fileName"
+        item.icon = "PlateIronChest";
         item.myEquipSlot = Item.EquipmentSlot.Chest;
         item.myMaterial = ItemMaterial.Material.Iron;
         item.weight = 10f;
@@ -47,7 +47,7 @@ public class MasterItemList : MonoBehaviour {
 
         item.name = "Cloth Shirt";
         item.myDescription = "Your average cloth shirt.";
-        //item.icon = "fileName"
+        item.icon = "ClothShirt";
         item.myEquipSlot = Item.EquipmentSlot.Chest;
         item.myMaterial = ItemMaterial.Material.Cloth;
         item.weight = 0.8f;
@@ -66,7 +66,7 @@ public class MasterItemList : MonoBehaviour {
 
         item.name = "Cloth Trousers";
         item.myDescription = "Your average cloth trousers.";
-        //item.icon = "fileName"
+        item.icon = "ClothTrousers";
         item.myEquipSlot = Item.EquipmentSlot.Legs;
         item.myMaterial = ItemMaterial.Material.Cloth;
         item.weight = 1f;
@@ -85,7 +85,7 @@ public class MasterItemList : MonoBehaviour {
 
         item.name = "Leather Boots";
         item.myDescription = "Leather boots for workin', walkin' and anything inbetween.";
-        //item.icon = "fileName"
+        item.icon = "LeatherBoots";
         item.myEquipSlot = Item.EquipmentSlot.Feet;
         item.myMaterial = ItemMaterial.Material.Leather;
         item.weight = 3f;
@@ -104,7 +104,7 @@ public class MasterItemList : MonoBehaviour {
 
         item.name = "Leather Gloves";
         item.myDescription = "Leather gloves offer decent protection from the elements.";
-        //item.icon = "fileName"
+        item.icon = "LeatherGloves";
         item.myEquipSlot = Item.EquipmentSlot.Hands;
         item.myMaterial = ItemMaterial.Material.Leather;
         item.weight = 0.1f;
@@ -116,6 +116,5 @@ public class MasterItemList : MonoBehaviour {
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
         return item;
-    }
-    
+    }   
 }

@@ -48,7 +48,6 @@ public class BodyPartController : MonoBehaviour {
         LoadAttackParts(); //saves attack parts into a list for the AttackController to reference
         CalculateTotalBlood(); //bodyparts needed for this
 
-        Debug.Log("Loading default loadout with " + bodyParts.Count + " parts loaded");
         defaultEquipment.EquipLoadout(this);
     }
 

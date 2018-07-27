@@ -11,7 +11,6 @@ public class VillagerLoadout : DefaultEquipment {
                                     MasterItemList.ClothTrousers(),
                                     MasterItemList.LeatherBoots(),
                                     MasterItemList.LeatherGloves()};
-        Debug.Log("Instantiated armor " + defaultArmor.Length);
 
         defaultWeapon = new Item[0];
         

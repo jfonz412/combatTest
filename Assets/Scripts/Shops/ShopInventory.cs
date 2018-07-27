@@ -118,10 +118,8 @@ public class ShopInventory : MonoBehaviour {
         //check if there are any empty slots/items
         for (int i = 0; i < inventorySpace; i++)
         {
-            if (items[i] == null)
+            if (items[i] == null) //if the space is null
             {
-                item = ConvertToInventoryItem(item);
-
                 InsertItemIntoEmptySlot(item, i);
 
                 Callback();
@@ -204,21 +202,6 @@ public class ShopInventory : MonoBehaviour {
         return newItemQ;
     }
     #endregion
-
-    private Item ConvertToInventoryItem(Item item)
-    {
-        //if slotNum is null then it has not been in our inventory needs an instance
-        //otherwise we do not create a new instance and simply use the item as it is
-        if (item.mySlotNum == null)
-        {
-            //item = Instantiate(item);
-            Debug.Log("Need to use Item Master List here");
-            //item.Init();
-            //Debug.Log("No slotNum found, instantiating new object (" + item.slotNum + ")");
-        }
-
-        return item;
-    }
 
     //saves NPC Shop inventory when done shopping
     private void UpdateNPCShopInventory()

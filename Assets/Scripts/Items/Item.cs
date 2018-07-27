@@ -5,12 +5,7 @@ using UnityEngine;
 public class Item {
     
     public Item(Item item = null)
-    {/*
-        if(item != null)
-        {
-            Item mySelf = this;
-            mySelf = item;
-        }*/
+    {
     }
     
     
@@ -20,7 +15,7 @@ public class Item {
     public ItemMaterial.Material myMaterial;
     public ItemEffects.ItemEffect myUseEffect;
 
-    //public Sprite icon = null;
+    public string icon = null;
     public int? mySlotNum; //allows the int to be null
 
     public string name = "New Item";

@@ -4,14 +4,14 @@ using System.IO;
 using UnityEngine;
 
 public class ShopSaveData : DataController {
-    DemoburghShops demoBurghShop;
+    MarketInventory shops;
 
-    private string fileName = "/DemoShopData.dat"; //MAKE THIS DYNAMIC, GIVE DEMOSHOP A BASE SCRIPT THIS SCRIPT CAN GRAB
+    private string fileName = "/ShopData.dat"; //MAKE THIS DYNAMIC, GIVE DEMOSHOP A BASE SCRIPT THIS SCRIPT CAN GRAB
 
     protected override void GatherComponents()
     {
         base.GatherComponents();
-        demoBurghShop = GetComponent<DemoburghShops>();
+        shops = GetComponent<MarketInventory>();
     }
 
     public override string SaveData()
@@ -34,13 +34,13 @@ public class ShopSaveData : DataController {
         }
         else if (File.Exists(Application.persistentDataPath + permDirectory + fileName))
         {
-            Debug.Log("Loading perm Player");
+            Debug.Log("Loading perm ShopData");
             data = (ShopData)LoadDataFromFile(permDirectory + fileName);
         }
         else
         {
             Debug.LogWarning(gameObject.name + " save data not found!");
-            demoBurghShop.LoadShops(); //run with nothing
+            shops.LoadShops(); //run with nothing
             return;
         }
 
@@ -50,13 +50,13 @@ public class ShopSaveData : DataController {
     private ShopData PackageShopData()
     {
         ShopData data = new ShopData();
-        data.shopInventory = demoBurghShop.SaveShops();
+        data.shopInventory = shops.SaveShops();
         return data;
     }
 
     private void ApplyData(ShopData data)
     {
-        demoBurghShop.LoadShops(data.shopInventory);
+        shops.LoadShops(data.shopInventory);
     }
 }
 
