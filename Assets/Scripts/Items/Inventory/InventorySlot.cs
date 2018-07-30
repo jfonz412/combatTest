@@ -19,12 +19,16 @@ public class InventorySlot : MonoBehaviour
     {
         if (newItem == null)
         {
+            Debug.Log("Item null, clearing slot in UI " + newItem);
             ClearSlot();
             return;
         }
 
+        Debug.Log("Item being added to UI slot");
         item = newItem;
-        //icon.sprite = item.icon;
+        Sprite itemSprite = Resources.Load<Sprite>("Images/ItemIcons/" + item.icon);
+        Debug.Log("sprite for " + item + " is " + itemSprite);
+        icon.sprite = itemSprite;
         icon.enabled = true;
     }
 

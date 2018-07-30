@@ -368,7 +368,6 @@ public class BodyPartController : MonoBehaviour {
 
     private void UpdateSkills()
     {
-        Debug.Log("should this stilll be here");
         attackReaction = mySkills.GetAttackReactionSkills();
     }
 }

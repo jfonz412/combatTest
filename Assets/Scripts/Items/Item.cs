@@ -4,14 +4,40 @@ using UnityEngine;
 [Serializable]
 public class Item {
     
-    public Item(Item item = null)
+    public Item(Item _item = null)
     {
+        if (_item == null)
+            return;
+
+        myMaterial = _item.myMaterial;
+        myUseEffect = _item.myUseEffect;
+
+        icon = _item.icon;
+        mySlotNum = _item.mySlotNum; //allows the to be null
+
+        name = _item.name;
+        myDescription = _item.myDescription;
+
+         baseValue = _item.baseValue;
+         currentValue = _item.currentValue;
+
+         quantity = _item.quantity;
+         maxQuantity = _item.maxQuantity;
+         stackable = _item.stackable;
+
+         weight = _item.weight;
+         hardnessValue = _item.hardnessValue;
+
+        //durability
+        //condition
+        //penetration?
+
+         myToolType = _item.myToolType;
+         myAttackType = _item.myAttackType;
+         myEquipSlot = _item.myEquipSlot;
+         myWeaponType = _item.myWeaponType;
     }
     
-    
-    //[HideInInspector]
-    //public Transform user; can't serialize with this
-
     public ItemMaterial.Material myMaterial;
     public ItemEffects.ItemEffect myUseEffect;
 

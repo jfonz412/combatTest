@@ -13,7 +13,7 @@ public class Inventory : MonoBehaviour {
 
     void Start()
     {
-        //fill inventory with null spaces
+        //fill inventory with null spaces, gives our list the correct # of spaces
         for(int i = 0; i < inventorySpace; i++)
         {
             items.Add(null);
@@ -23,7 +23,8 @@ public class Inventory : MonoBehaviour {
     //returns the amount of leftover items that could not be stacked
     public int AddItem(Item item)
     {
-        //item = ConvertToInventoryItem(item);
+        if (item == null)
+            return 0;
 
         int leftovers = AttemptToStackItem(item);
 
@@ -87,38 +88,15 @@ public class Inventory : MonoBehaviour {
     }
 
     //for PlayerSaveData to save inventory
-    public Item[] GetItemInfo()
+    public List<Item> GetInventoryItems()
     {
-        Item[] itemInfo = new Item[items.Count];
-
-        for (int i = 0; i < items.Count; i++)
-        {
-            if (items[i] != null)
-            {
-                itemInfo[i].quantity = items[i].quantity;
-            }
-        }
-        return itemInfo;
+        return new List<Item>(items);
     }
 
-    public void LoadSavedItems(Item[] savedItems)
+    public void LoadSavedItems(List<Item> savedItems)
     {
-        if (items == null)
-        {
-            Debug.Log("items are null");
-            return;
-        }
-
-        for (int i = 0; i < savedItems.Length - 1; i++)
-        {
-            //if (savedItems[i].fileName == null) //shouldn't this throw an error if null?
-                //continue;
-
-            //Item item = (Item)Resources.Load(savedItems[i].fileName);
-            Debug.Log("need to implement this");
-            //item.quantity = savedItems[i].quantity;
-            //AddItem(item);
-        }
+        items = savedItems;
+        Callback();
     }
 
     #region private methods
@@ -130,19 +108,19 @@ public class Inventory : MonoBehaviour {
 
         for (int i = 0; i < inventorySpace; i++)
         {
-            Debug.Log("searching space " + i + " for " + newItem);
+            Debug.Log("searching space " + i + " for " + newItem.name);
             if (items[i] != null)
             {
-                Debug.Log("item found, comparing it's name to the new item");
+                Debug.Log(items[i].name + " found, comparing it's name to the new item");
                 if (items[i].name == newItem.name)
                 {
-                    Debug.Log("item of same type found, stacking");
+                    Debug.Log("item of same type found, stacking " + newItem.name + " onto " + items[i].name);
                     newItem.quantity = AddQuantityToSlot(i, newItem.quantity);
                 }
             }
             Debug.Log("Done with this space");
         }
-        Debug.Log("Returning newItem.quantity " + newItem.quantity);
+        Debug.Log("Returning newItem.quantity for " + newItem.name + " " + newItem.quantity);
         return newItem.quantity;
     }
 
@@ -166,7 +144,7 @@ public class Inventory : MonoBehaviour {
         {
             if (items[i] == null)
             {
-                item = ConvertToInventoryItem(item);
+                //item = ConvertToInventoryItem(item);
 
                 InsertItemIntoEmptySlot(item, i);
 
@@ -183,7 +161,7 @@ public class Inventory : MonoBehaviour {
     {
         items.RemoveAt(slotNum); //remove the null item
         items.Insert(slotNum, item); //replace it with actual item
-
+        Debug.Log("quantity for " + item.name + " " + item.quantity);
         items[slotNum].mySlotNum = slotNum; //save refrence to the slot it's been placed in
     }
 
@@ -207,6 +185,10 @@ public class Inventory : MonoBehaviour {
         if (onInventoryChanged != null)
         {
             onInventoryChanged.Invoke(); //callback
+        }
+        else
+        {
+            Debug.LogError("NULL");
         }
     }
     #endregion

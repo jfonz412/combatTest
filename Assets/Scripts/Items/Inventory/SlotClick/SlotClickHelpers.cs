@@ -248,7 +248,8 @@ public class SlotClickHelpers : MonoBehaviour {
     {
         if (item.quantity - quantity < 1)
         {
-            shop.Remove(item); //and destroy???
+            shop.Remove(item);
+            item = null; //just to be sure it's no longer going to be refrenced
         }
         else
         {
@@ -256,12 +257,13 @@ public class SlotClickHelpers : MonoBehaviour {
         }
     }
 
+    //this is going to the inventory, does it need to be new?
+    //yes because it may have a different quantity, if it's not then the shop item will be destroyed
     Item CreateNewItemForInventory(Item item, int quantity)
     {
-        Debug.Log("need to implement this");
-        //Item newItem = Instantiate(item);
-        //newItem.quantity = quantity;
-        return new Item();
+        Item newItem = new Item(item);
+        newItem.quantity = quantity;
+        return newItem;
     }
 
     #endregion
