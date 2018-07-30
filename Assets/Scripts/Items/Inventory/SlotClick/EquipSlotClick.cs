@@ -33,7 +33,7 @@ public class EquipSlotClick : MonoBehaviour {
     public void EquipSlotLeftClicked(EquipSlot slot)
     {
         MouseSlot mouseSlot = MouseSlot.instance;
-        Item mouseItem = MouseSlot.instance.currentItem;
+        Item mouseItem = MouseSlot.instance.Item();
 
         if (slotClickHelper.CheckItemType() == false)
         {

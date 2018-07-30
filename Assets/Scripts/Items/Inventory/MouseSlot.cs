@@ -4,7 +4,7 @@ public class MouseSlot : MonoBehaviour {
 
     public SpriteRenderer spriteRenderer;
     public Sprite currentItemSprite;
-    public Item currentItem;
+    private Item currentItem;
 
     #region Singleton
     public static MouseSlot instance;
@@ -30,7 +30,11 @@ public class MouseSlot : MonoBehaviour {
         Vector3 temp = Input.mousePosition;
         temp.z = 10f; // Set this to be the distance you want the object to be placed in front of the camera.
         gameObject.transform.position = Camera.main.ScreenToWorldPoint(temp);
+    }
 
+    public Item Item()
+    {
+        return currentItem; 
     }
 
     public void UpdateItem(Item item)
@@ -39,7 +43,7 @@ public class MouseSlot : MonoBehaviour {
 
         if(currentItem != null)
         {
-            //currentItemSprite = currentItem.icon;
+            currentItemSprite = Resources.Load<Sprite>("Images/ItemIcons/" + item.icon);
             spriteRenderer.sprite = currentItemSprite;
         }
         else
@@ -67,9 +71,7 @@ public class MouseSlot : MonoBehaviour {
         {
             currentItem = null;
             spriteRenderer.sprite = null;
-            //Destroy(currentItem);
-            Debug.Log("need to implement this");
-            Debug.Log("Item destroyed");
+            Debug.Log("Item ref removed");
         }
     }
 }

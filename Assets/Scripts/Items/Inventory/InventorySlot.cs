@@ -6,13 +6,18 @@ public class InventorySlot : MonoBehaviour
     [HideInInspector]
     public int slotNum;
     public Image icon;
-    public Item item;
+    protected Item item;
 
     private Brain playerBrain;
 
     private void Start()
     {
         playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Brain>();
+    }
+
+    public Item Item()
+    {
+        return item; //will be null if slot empty
     }
 
     public virtual void AddItem(Item newItem)

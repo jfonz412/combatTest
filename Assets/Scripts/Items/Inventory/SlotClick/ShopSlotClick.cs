@@ -47,7 +47,7 @@ public class ShopSlotClick : MonoBehaviour {
 
     public void ShopSlotLeftClicked(ShopSlot slot)
     {
-        Item item = slot.item;
+        Item item = slot.Item();
 
         if (item != null)
         {

@@ -34,7 +34,7 @@ public class SlotClickHelpers : MonoBehaviour {
 
     public void PlaceItemInEmptySlot(MouseSlot mouseSlot, EquipSlot slot)
     {
-        Item mouseItem = mouseSlot.currentItem;
+        Item mouseItem = mouseSlot.Item();
 
         //make sure equipment would be going in the correct slot
         if (!CheckEquipSlot(mouseItem.myEquipSlot, slot))
@@ -49,7 +49,7 @@ public class SlotClickHelpers : MonoBehaviour {
 
     public void SwapItems(MouseSlot mouseSlot, EquipSlot slot)
     {
-        Item mouseItem = mouseSlot.currentItem;
+        Item mouseItem = mouseSlot.Item();
 
         //make sure equipment would be going in the correct slot
         if (!CheckEquipSlot(mouseItem.myEquipSlot, slot))
@@ -67,15 +67,15 @@ public class SlotClickHelpers : MonoBehaviour {
     //----------------------------------------------
     public bool CheckItemType()
     {
-        if (MouseSlot.instance.currentItem == null)
+        if (MouseSlot.instance.Item() == null)
         {
             return true;
         }
-        else if (MouseSlot.instance.currentItem.GetType() == typeof(Armor))
+        else if (MouseSlot.instance.Item().GetType() == typeof(Armor))
         {
             return true;
         }
-        else if (MouseSlot.instance.currentItem.GetType() == typeof(Weapon))
+        else if (MouseSlot.instance.Item().GetType() == typeof(Weapon))
         {
             return true;
         }
@@ -106,14 +106,14 @@ public class SlotClickHelpers : MonoBehaviour {
     public void PickUpItemIntoEmptyMouseSlot(MouseSlot mouseSlot, InventorySlot slot)
     {
         Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");
-        Item previousItem = slot.item;             //save a copy of the slotItem
+        Item previousItem = slot.Item();             //save a copy of the slotItem
         inv.Remove(previousItem);       //remove the item in the slot 
         mouseSlot.UpdateItem(previousItem); //place previous item in the mouseSlot          
     }
 
     public void PlaceItemInEmptySlot(MouseSlot mouseSlot, InventorySlot slot)
     {
-        Item mouseItem = mouseSlot.currentItem;
+        Item mouseItem = mouseSlot.Item();
 
         Debug.Log("PLACING ITEM IN EMPTY SLOT");
         mouseItem.mySlotNum = slot.slotNum; //assign item's slotNum to this slot
@@ -123,10 +123,10 @@ public class SlotClickHelpers : MonoBehaviour {
 
     public void SwapItems(MouseSlot mouseSlot, InventorySlot slot)
     {
-        Item mouseItem = mouseSlot.currentItem;
-        Item previousItem = slot.item;
+        Item mouseItem = mouseSlot.Item();
+        Item previousItem = slot.Item();
 
-        Debug.Log("SWAPPING ITEMS");
+        Debug.Log("SWAPPING " + mouseSlot.Item().name + " with " + slot.Item().name);
         mouseItem.mySlotNum = slot.slotNum;              //assign item's slotNum to this slot
         inv.AddToSpecificSlot(mouseItem);   //drop item in slot, removing old item is taken care of here too
         mouseSlot.UpdateItem(previousItem);     //add old item to mouseSlot

@@ -46,27 +46,27 @@ public class InvSlotClick : MonoBehaviour {
     public void InventorySlotLeftClicked(InventorySlot slot)
     {
         MouseSlot mouseSlot = MouseSlot.instance;
-        Item mouseItem = MouseSlot.instance.currentItem;
+        Item mouseItem = MouseSlot.instance.Item();
 
-        if (mouseItem == null && slot.item == null)
+        if (mouseItem == null && slot.Item() == null)
         {
             Debug.Log("BOTH SLOTS EMPTY");
             return;
         }
 
-        if (mouseItem == null && slot.item != null)
+        if (mouseItem == null && slot.Item() != null)
         {
             slotClickHelper.PickUpItemIntoEmptyMouseSlot(mouseSlot, slot);
             return;
         }
 
-        if (mouseItem != null && slot.item == null)
+        if (mouseItem != null && slot.Item() == null)
         {
             slotClickHelper.PlaceItemInEmptySlot(mouseSlot, slot);
             return;
         }
 
-        if (mouseItem != null && slot.item != null)
+        if (mouseItem != null && slot.Item() != null)
         {
             slotClickHelper.SwapItems(mouseSlot, slot);
             return;
@@ -75,8 +75,8 @@ public class InvSlotClick : MonoBehaviour {
 
     public void LeftClickedToSell(InventorySlot slot)
     {
-        Item item = slot.item;
-        //int quantity = PromptForQuantity();
+        Item item = slot.Item();
+        //int quantity = PromptForQuantity(); //why is this commented out
         if (item != null)
         {
             StartCoroutine(slotClickHelper.SellItem(item));

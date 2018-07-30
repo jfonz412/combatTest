@@ -4,8 +4,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour {
 
     public int inventorySpace;
-    public List<Item> items = new List<Item>();
-
+    public List<Item> items;
 
     //creates a callback
     public delegate void OnInventoryChanged();
