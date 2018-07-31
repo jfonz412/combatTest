@@ -153,7 +153,6 @@ public class SlotClickHelpers : MonoBehaviour {
                 yield break; //do nothing if quantity is 0 
             }
         }
-
         CommitSale(item, quantity);
     }
 
@@ -167,10 +166,12 @@ public class SlotClickHelpers : MonoBehaviour {
             playerWallet.Deposit(price);
             Debug.Log("You have been credited $" + price);
 
-            inv.CondenseStackables(item, quantity);
+            inv.SubtractQuantityFromItem(item, quantity);
 
-            item.quantity = quantity;
-            shop.AddItem(item);
+            //create new item to go to shop
+            Item soldItem = new Item(item);
+            soldItem.quantity = quantity;
+            shop.AddItem(soldItem);
 
             shopDialogue.SetCurrentMessage(LoadShop.MessageType.SUCCESS);
         }

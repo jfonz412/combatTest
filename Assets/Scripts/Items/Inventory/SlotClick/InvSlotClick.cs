@@ -76,7 +76,7 @@ public class InvSlotClick : MonoBehaviour {
     public void LeftClickedToSell(InventorySlot slot)
     {
         Item item = slot.Item();
-        //int quantity = PromptForQuantity(); //why is this commented out
+
         if (item != null)
         {
             StartCoroutine(slotClickHelper.SellItem(item));

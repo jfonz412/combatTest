@@ -18,24 +18,24 @@ public class Item {
         name = _item.name;
         myDescription = _item.myDescription;
 
-         baseValue = _item.baseValue;
-         currentValue = _item.currentValue;
+        baseValue = _item.baseValue;
+        currentValue = _item.currentValue;
 
-         quantity = _item.quantity;
-         maxQuantity = _item.maxQuantity;
-         stackable = _item.stackable;
+        quantity = _item.quantity;
+        maxQuantity = _item.maxQuantity;
+        stackable = _item.stackable;
 
-         weight = _item.weight;
-         hardnessValue = _item.hardnessValue;
+        weight = _item.weight;
+        hardnessValue = _item.hardnessValue;
 
         //durability
         //condition
         //penetration?
 
-         myToolType = _item.myToolType;
-         myAttackType = _item.myAttackType;
-         myEquipSlot = _item.myEquipSlot;
-         myWeaponType = _item.myWeaponType;
+        myToolType = _item.myToolType;
+        myAttackType = _item.myAttackType;
+        myEquipSlot = _item.myEquipSlot;
+        myWeaponType = _item.myWeaponType;
     }
     
     public ItemMaterial.Material myMaterial;
@@ -112,7 +112,7 @@ public class Item {
 
     private void RemoveFromInventory()
     {
-        InventoryManager.GetInstance().GetInventory().RemoveAndDestroy(this);
+        InventoryManager.GetInstance().GetInventory().Remove(this);
     }
 
     public void DetermineValue(string itemLocation)

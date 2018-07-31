@@ -52,7 +52,7 @@ public class Inventory : MonoBehaviour {
     }
 
     //called from slotclick after an item is sold from inventory 
-    public void CondenseStackables(Item item, int amountRemoved)
+    public void SubtractQuantityFromItem(Item item, int amountRemoved)
     {
         if (item.quantity - amountRemoved < 1)
         {
@@ -60,11 +60,7 @@ public class Inventory : MonoBehaviour {
         }
         else
         {
-            //Item newCopyOfItemForInventory = new Item(item);
-            //newCopyOfItemForInventory.quantity -= amountRemoved;
-            Debug.Log("need to implement this");
-            Remove(item); //and destroy?
-            //AddItem(newCopyOfItemForInventory);
+            item.quantity -= amountRemoved;
         }
     }
 
@@ -76,14 +72,6 @@ public class Inventory : MonoBehaviour {
         items.Insert(itemIndex, null);
 
         Callback();
-    }
-
-    //for trashcan
-    public void RemoveAndDestroy(Item item)
-    {
-        Remove(item);
-        Debug.Log("need to implement this");
-        //Destroy(item); 
     }
 
     //for PlayerSaveData to save inventory
