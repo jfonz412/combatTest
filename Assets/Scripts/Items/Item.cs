@@ -79,7 +79,7 @@ public class Item {
     public virtual void Use() //RMB
     {
         //user = ScriptToolbox.GetInstance().GetPlayerManager().player.transform;
-        ItemEffects.Use(myUseEffect);
+        ItemEffects.Use(myUseEffect, this);
     }
 
     public virtual void OpenStatWindow(string itemLocation)

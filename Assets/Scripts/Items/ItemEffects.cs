@@ -4,16 +4,16 @@ public class ItemEffects : MonoBehaviour {
 
     public enum ItemEffect { Equip };
 
-    public static void Use(ItemEffect effect)
+    public static void Use(ItemEffect effect, Item item)
     {
         if (effect == ItemEffect.Equip)
         {
-            EquipToPlayer();
+            EquipToPlayer(item);
         }
     }
 
-    static void EquipToPlayer() //maybe eventually pass a BodypartController and equip to that gameobject?
+    static void EquipToPlayer(Item item) //maybe eventually pass a BodypartController and equip to that gameobject?
     {
-        Debug.Log("Equipping item to player");
+        ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<EquipmentManager>().FastEquip(item);
     }
 }
