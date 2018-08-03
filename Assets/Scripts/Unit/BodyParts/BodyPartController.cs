@@ -10,7 +10,6 @@ public class BodyPartController : MonoBehaviour {
     private UnitAnimController anim;
     private AttackReactionSkills attackReaction;
     private Brain myBrain;
-    private DefaultEquipment defaultEquipment;
     public float totalBlood;
 
     private List<BodyPart> bodyParts = new List<BodyPart>();
@@ -39,16 +38,19 @@ public class BodyPartController : MonoBehaviour {
         unitReactions = GetComponent<UnitReactions>();
         anim = GetComponent<UnitAnimController>();
         myBrain = GetComponent<Brain>();
-        defaultEquipment = GetComponent<DefaultEquipment>();
         mySkills = GetComponent<CombatSkills>();
         mySkills.onSkillGained += UpdateSkills;
         UpdateSkills();       
 
         AddBodyParts(); //collects the bodyparts from the unit, part stats should be set by now
         LoadAttackParts(); //saves attack parts into a list for the AttackController to reference
-        CalculateTotalBlood(); //bodyparts needed for this
-
-        defaultEquipment.EquipLoadout(this);
+        CalculateTotalBlood(); //bodyparts needed for this 
+        
+        //if a unit doesn't have an equipment manager load default eqpmnt
+        if(GetComponent<EquipmentManager>() == null)
+        {
+            GetComponent<DefaultEquipment>().EquipLoadout(this);
+        }
     }
 
     private void CalculateTotalBlood()
@@ -188,7 +190,10 @@ public class BodyPartController : MonoBehaviour {
     {
         for (int i = 0; i < bodyParts.Count; i++)
         {
-            bodyParts[i].EquipAsArmor(item);
+            if (bodyParts[i].armorSlot == item.myEquipSlot)
+            {
+                bodyParts[i].EquipArmor(item);
+            }
         }
     }
 
@@ -196,7 +201,25 @@ public class BodyPartController : MonoBehaviour {
     {
         for (int i = 0; i < bodyParts.Count; i++)
         {
-            bodyParts[i].EquipAsWeapon(item);
+            if(bodyParts[i].weaponSlot == item.myEquipSlot)
+            {
+                bodyParts[i].EquipWeapon(item);
+            }
+        }
+    }
+
+    public void StripEquipment(Item.EquipmentSlot slot)
+    {
+        for (int i = 0; i < bodyParts.Count; i++)
+        {
+            if (bodyParts[i].weaponSlot == slot)
+            {
+                bodyParts[i].StripEquipment("Weapon");
+            }
+            else if (bodyParts[i].armorSlot == slot)
+            {
+                bodyParts[i].StripEquipment("Armor");
+            }
         }
     }
 
@@ -344,11 +367,22 @@ public class BodyPartController : MonoBehaviour {
     //applies saved info to bodyparts
     public void LoadSavedParts(BodyPart.PartInfo[] info)
     {
-        for (int i = 0; i < bodyParts.Count; i++)
+        if(bodyParts.Count == 0)
         {
-             bodyParts[i].UnpackSavedPartInfo(info[i]);
+            AddBodyParts();
         }
 
+        for (int i = 0; i < info.Length; i++)
+        {
+            for (int b = 0; b < bodyParts.Count; b++)
+            {
+                if (bodyParts[b].name == info[i].name)
+                {
+                    bodyParts[b].UnpackSavedPartInfo(info[i]);
+                }
+
+            }
+        }
         CalculateTotalBlood();
     }
 

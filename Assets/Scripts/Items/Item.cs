@@ -35,20 +35,20 @@ public class Item {
         myToolType = _item.myToolType;
         myAttackType = _item.myAttackType;
         myEquipSlot = _item.myEquipSlot;
-        myWeaponType = _item.myWeaponType;
+        myWeaponSkill = _item.myWeaponSkill;
     }
     
-    public ItemMaterial.Material myMaterial;
-    public ItemEffects.ItemEffect myUseEffect;
+    public ItemMaterial.Material myMaterial; //used to calculate hardness of an object
+    public ItemEffects.ItemEffect myUseEffect; //what happens when player right clicks this item in inventory
 
-    public string icon = null;
-    public int? mySlotNum; //allows the int to be null
+    public string icon = ""; //file path to image used for item icon
+    public int? mySlotNum; //?allows the int to be null, used to save inventory spot
 
-    public string name = "New Item";
+    public string name;
     public string myDescription;
 
-    public float baseValue = 100f;
-    public float currentValue;
+    public float baseValue = 0f; //base value of this item before economy modifiers
+    public float currentValue;   //value after mods
 
     public int quantity = 1;
     public int maxQuantity = 99;
@@ -61,15 +61,15 @@ public class Item {
     //condition
     //penetration?
 
-    public enum WeaponType { Dagger, Spear, Axe, Pick, Hands, Offhand, Misc, NA }; //each of these is tied to a combat skill
-    public enum AttackType { Hack, Stab, Projectile, BluntImpact, Punch, Claw, Bite };
-    public enum EquipmentSlot { Head, Chest, Hands, Legs, MainHand, OffHand, Feet, NA }
+    public enum WeaponSkill { Dagger, Spear, Axe, Pick, Hands, Offhand, Misc, NA }; //each of these is tied to a combat skill and used to see if weildable
+    public enum AttackType { Hack, Stab, Projectile, BluntImpact, Punch, Claw, Bite, NA }; //used to determine injury
+    public enum EquipmentSlot { Head, Chest, Hands, Legs, MainHand, OffHand, Feet, NA } //used to determin slot in equipment manager
     public enum ToolType { Pick, Axe, NA };
 
     public ToolType myToolType;
     public AttackType myAttackType;
     public EquipmentSlot myEquipSlot;
-    public WeaponType myWeaponType;
+    public WeaponSkill myWeaponSkill;
 
     private void Start()
     {

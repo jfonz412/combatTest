@@ -68,7 +68,6 @@ public class PlayerSaveData : DataController {
         Vector3 pos = transform.position;
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
 
-        //data.currentEquipment = equipmentManager.GetEquipmentInfo();
         data.currentInventory = inventory.GetInventoryItems();
         data.currentGold = wallet.GetCurrentBalance();
         data.bodyParts = myBody.GetBodyParts();
@@ -83,13 +82,13 @@ public class PlayerSaveData : DataController {
 
     private void ApplyDataToPlayer(PlayerData data)
     {
-        //equipmentManager.LoadSavedEquipment(data.currentEquipment);
+
         inventory.LoadSavedItems(data.currentInventory);
         wallet.LoadSavedBalance(data.currentGold);
         transform.position = new Vector3(data.currentPosition.x, data.currentPosition.y, data.currentPosition.z);
 
         myBody.LoadSavedParts(data.bodyParts);
-        //load saved equipment 
+        equipmentManager.LoadSavedEquipment(data.bodyParts);
 
         combatSkills.LoadSavedCombatLevels(data.combatSkillLevels);
         combatSkills.LoadSavedCombatExperience(data.combatSkillExperience);
@@ -112,8 +111,8 @@ public class PlayerData : Data
     public BodyPart.PartInfo[] bodyParts;
     public Dictionary<CombatSkills.CombatSkill, int> combatSkillLevels;
     public Dictionary<CombatSkills.CombatSkill, float> combatSkillExperience;
-    public Dictionary<Item.WeaponType, int> weaponSkillLevels;
-    public Dictionary<Item.WeaponType, float> weaponSkillExperience;
+    public Dictionary<Item.WeaponSkill, int> weaponSkillLevels;
+    public Dictionary<Item.WeaponSkill, float> weaponSkillExperience;
     //public Dictionary<BodyPart, List<string>> injuryList;
 }
 

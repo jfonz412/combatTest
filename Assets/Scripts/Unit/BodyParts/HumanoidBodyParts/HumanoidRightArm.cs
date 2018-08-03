@@ -4,7 +4,8 @@ public class HumanoidRightArm : BodyPart
 {
     protected override void AssignPartStats()
     {
-        armorType = Item.EquipmentSlot.Chest; //put this before callback is assigned in base class
+        armorSlot = Item.EquipmentSlot.Chest; //put this before callback is assigned in base class
+        weaponSlot = Item.EquipmentSlot.MainHand;
         name = "right arm";
         functioningLimit = 4;
         //knockoutThreshold = 0;

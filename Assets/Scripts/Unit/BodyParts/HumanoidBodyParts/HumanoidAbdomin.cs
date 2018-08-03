@@ -3,7 +3,7 @@
 public class HumanoidAbdomin : BodyPart {
     protected override void AssignPartStats()
     {
-        armorType = Item.EquipmentSlot.Chest; //put this before callback is assigned in base class
+        armorSlot = Item.EquipmentSlot.Chest; //put this before callback is assigned in base class
         name = "belly";
         functioningLimit = 4;
         //knockoutThreshold = 0;

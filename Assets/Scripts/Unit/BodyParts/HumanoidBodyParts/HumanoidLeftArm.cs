@@ -3,7 +3,8 @@
 public class HumanoidLeftArm : BodyPart {
     protected override void AssignPartStats()
     {
-        armorType = Item.EquipmentSlot.Chest; //put this before callback is assigned in base class
+        armorSlot = Item.EquipmentSlot.Chest; //put this before callback is assigned in base class
+        weaponSlot = Item.EquipmentSlot.OffHand;
         attack2 = true;
         name = "left arm";
         functioningLimit = 4;

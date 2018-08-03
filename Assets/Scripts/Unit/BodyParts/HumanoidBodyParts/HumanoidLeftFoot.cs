@@ -4,7 +4,7 @@ public class HumanoidLeftFoot : BodyPart
 {
     protected override void AssignPartStats()
     {
-        armorType = Item.EquipmentSlot.Feet; //put this before callback is assigned in base class
+        armorSlot = Item.EquipmentSlot.Feet; //put this before callback is assigned in base class
         name = "left foot";
         functioningLimit = 4;
         //knockoutThreshold = 3;

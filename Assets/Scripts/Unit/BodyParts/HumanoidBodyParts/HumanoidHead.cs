@@ -4,7 +4,7 @@ public class HumanoidHead : BodyPart
 {
     protected override void AssignPartStats()
     {
-        armorType = Item.EquipmentSlot.Head; //put this before callback is assigned in base class
+        armorSlot = Item.EquipmentSlot.Head; //put this before callback is assigned in base class
         name = "head";
         functioningLimit = 5;
         knockoutThreshold = 3;

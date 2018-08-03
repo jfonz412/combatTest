@@ -16,10 +16,10 @@ public class MasterItemList : MonoBehaviour {
         item.stackable = false;
         item.quantity = 1;
         item.maxQuantity = 1;
-        item.myAttackType = Item.AttackType.BluntImpact;
+        item.myAttackType = Item.AttackType.NA;
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
-        item.myWeaponType = Item.WeaponType.Misc;
+        item.myWeaponSkill = Item.WeaponSkill.NA;
         return item;
     }
     public static Item Fist()
@@ -38,7 +38,7 @@ public class MasterItemList : MonoBehaviour {
         item.myAttackType = Item.AttackType.BluntImpact; //can be punch?
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
-        item.myWeaponType = Item.WeaponType.Hands;
+        item.myWeaponSkill = Item.WeaponSkill.Hands;
         return item;
     }
     public static Item ClothShirt(int _quantity = 1)
@@ -54,8 +54,8 @@ public class MasterItemList : MonoBehaviour {
         item.stackable = true;
         item.quantity = _quantity;
         item.maxQuantity = 3;
-        item.myWeaponType = Item.WeaponType.NA; //should cancel below, need NA attacktype to be more explicit here
-        item.myAttackType = Item.AttackType.BluntImpact; 
+        item.myWeaponSkill = Item.WeaponSkill.NA; //should cancel below, need NA attacktype to be more explicit here
+        item.myAttackType = Item.AttackType.NA; 
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
         return item;
@@ -73,8 +73,8 @@ public class MasterItemList : MonoBehaviour {
         item.stackable = true;
         item.quantity = 1;
         item.maxQuantity = 3;
-        item.myWeaponType = Item.WeaponType.NA; 
-        item.myAttackType = Item.AttackType.BluntImpact; 
+        item.myWeaponSkill = Item.WeaponSkill.NA; 
+        item.myAttackType = Item.AttackType.NA; 
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
         return item;
@@ -92,8 +92,8 @@ public class MasterItemList : MonoBehaviour {
         item.stackable = true;
         item.quantity = 1;
         item.maxQuantity = 2;
-        item.myWeaponType = Item.WeaponType.Misc; 
-        item.myAttackType = Item.AttackType.BluntImpact; 
+        item.myWeaponSkill = Item.WeaponSkill.NA; 
+        item.myAttackType = Item.AttackType.NA; 
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
         return item;
@@ -111,10 +111,29 @@ public class MasterItemList : MonoBehaviour {
         item.stackable = true;
         item.quantity = 1;
         item.maxQuantity = 4;
-        item.myWeaponType = Item.WeaponType.Misc;
-        item.myAttackType = Item.AttackType.BluntImpact;
+        item.myWeaponSkill = Item.WeaponSkill.NA;
+        item.myAttackType = Item.AttackType.NA;
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
         return item;
-    }   
+    }
+    public static Item IronDagger()
+    {
+        Item item = new Item();
+
+        item.name = "Iron Dagger";
+        item.myDescription = "Small but effective";
+        item.icon = "IronDagger";
+        item.myEquipSlot = Item.EquipmentSlot.MainHand;
+        item.myMaterial = ItemMaterial.Material.Iron;
+        item.weight = 1f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myWeaponSkill = Item.WeaponSkill.Dagger;
+        item.myAttackType = Item.AttackType.Stab;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        return item;
+    }
 }

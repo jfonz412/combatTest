@@ -27,8 +27,8 @@ public class SlotClickHelpers : MonoBehaviour {
     public void PickUpItemIntoEmptyMouseSlot(MouseSlot mouseSlot, EquipSlot slot)
     {
         Debug.Log("PICK UP ITEM INTO EMPTY MOUSE SLOT");   //or equipment == naked or unarmed?
-        Item previousItem = slot.equipment;                //save a copy of the slotItem
-        slot.equipmentManager.Unequip(previousItem.myEquipSlot); //unequip item currently in equip slot
+        Item previousItem = slot.Equipment();                //save a copy of the slotItem
+        slot.EquipmentManager().Unequip(previousItem.myEquipSlot); //unequip item currently in equip slot
         mouseSlot.UpdateItem(previousItem);                //place previous item in the mouseSlot (as an item)?
     }
 
@@ -43,7 +43,7 @@ public class SlotClickHelpers : MonoBehaviour {
         }
 
         Debug.Log("PLACING ITEM IN EMPTY SLOT");
-        slot.equipmentManager.Equip(mouseItem);
+        slot.EquipmentManager().Equip(mouseItem);
         mouseSlot.UpdateItem(null); //clear mouseSlot's item
     }
 
@@ -58,8 +58,8 @@ public class SlotClickHelpers : MonoBehaviour {
         }
 
         Debug.Log("SWAPPING ITEMS");
-        Item previousItem = slot.equipment;        //save a copy of the slotItem
-        slot.equipmentManager.Equip(mouseItem);
+        Item previousItem = slot.Equipment();        //save a copy of the slotItem
+        slot.EquipmentManager().Equip(mouseItem);
         mouseSlot.UpdateItem(previousItem);        //add old item to mouseSlot
     }
 
@@ -71,11 +71,7 @@ public class SlotClickHelpers : MonoBehaviour {
         {
             return true;
         }
-        else if (MouseSlot.instance.Item().GetType() == typeof(Armor))
-        {
-            return true;
-        }
-        else if (MouseSlot.instance.Item().GetType() == typeof(Weapon))
+        else if (MouseSlot.instance.Item().myEquipSlot != Item.EquipmentSlot.NA)
         {
             return true;
         }

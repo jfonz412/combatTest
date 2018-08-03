@@ -17,9 +17,10 @@ public class BodyPart : MonoBehaviour {
     protected Dictionary<Item.AttackType, string[]> myInjuryStrings;
 
     public bool attack1, attack2; //select these so that our attack controller can grab a refrence to them
+    public Item.EquipmentSlot weaponSlot = Item.EquipmentSlot.NA;
     protected Item myWeapon; // OR UNARMED BASE ATTACK
 
-    protected Item.EquipmentSlot armorType; //can be null or NA if the unit doesn't wear armor and will handle it's own defense 
+    public Item.EquipmentSlot armorSlot = Item.EquipmentSlot.NA;
     protected Item myArmor;
 
     public delegate void OnEquipmentChanged(Item oldItem, Item newItem);
@@ -85,7 +86,7 @@ public class BodyPart : MonoBehaviour {
         }
     }
 
-    public float MyArmorValue() //might not need to be public
+    public float MyArmor() 
     {
         if (myArmor == null)
         {
@@ -93,59 +94,44 @@ public class BodyPart : MonoBehaviour {
         }
         else
         {
-            return myArmor.hardnessValue;
+            return myArmor.hardnessValue + naturalDefense;
         }
     }
 
+    public void EquipWeapon(Item newWeapon)
+    {
+        if (newWeapon != null) { }
+        myWeapon = newWeapon;
+    }
+
+    public void EquipArmor(Item newArmor)
+    {
+        if (newArmor != null)
+            myArmor = newArmor;
+    }
+
+    public void StripEquipment(string type)
+    {
+        if (type == "Armor")
+        {
+            myArmor = null;
+        }
+        else if (type == "Weapon")
+        {
+            myWeapon = null;
+        }
+        else
+        {
+            Debug.LogError("String not found!");
+        }
+    }
+
+    //if this bodypart is checked for a weapon and doesn't have one it needs to tell AttackInfo something about what it's attacking with
     protected virtual Item Unarmed()
     {
         Debug.LogError("Should not touch base method");
         return new Item();
     }
-
-    protected virtual Item Unarmored()
-    {
-        Debug.LogError("Should not touch base method");
-        return new Item();
-    }
-
-    //because chest covers multiple parts, it should automatically place it's refrence in each applicable part
-    public void EquipAsArmor(Item item)
-    {
-        if (item == null)
-            return;
-            
-        if (armorType != Item.EquipmentSlot.NA) //if this part can equip armor
-        {
-            if (armorType == item.myEquipSlot)
-            {
-                myArmor = item;
-
-                if (onEquipmentChanged != null)
-                {
-                    onEquipmentChanged.Invoke(myArmor, item); //will take care of putting unequipped item in inventory for player
-                }
-            }
-        }
-    }
-
-    public void EquipAsWeapon(Item item)
-    {
-        if (item == null)
-            return;
-
-        //check if we can equip w/ current skills?
-        if (attack1 || attack2) //if this part is responsible for attacking
-        {
-            myWeapon = item;
-
-            if (onEquipmentChanged != null)
-            {
-                onEquipmentChanged.Invoke(myWeapon, item);
-            }
-        }
-    }
-
     #endregion
 
 #region Damage Calculations
@@ -197,7 +183,7 @@ public class BodyPart : MonoBehaviour {
         }
         else
         {
-            float myDefense = MyArmorValue();
+            float myDefense = MyArmor();
             damageInfo.damageDealt = enemyAttack - myDefense;
         }
 
@@ -402,18 +388,16 @@ public class BodyPart : MonoBehaviour {
 
     public void UnpackSavedPartInfo(PartInfo info)
     {
-        if(info.name == name)
-        {
-            currentSeverityLevel = info.severityLevel;
-            injuryLog = info.injuryLog;
-            EquipAsArmor(info.myArmor);
-            EquipAsWeapon(info.myWeapon);
+        Debug.Log(gameObject.name + " unpacking " + info.name + " in " + name);
+        currentSeverityLevel = info.severityLevel;
+        injuryLog = info.injuryLog;
+        EquipArmor(info.myArmor);
+        EquipWeapon(info.myWeapon);
 
-            if (dollPart != null)
-            {
-                dollPart.Initialize(info);
-            }
-        }
+        if (dollPart != null)
+        {
+            dollPart.Initialize(info);
+        }       
     }
 
     [Serializable]

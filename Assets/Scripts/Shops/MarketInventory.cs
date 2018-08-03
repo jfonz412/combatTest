@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MarketInventory : MonoBehaviour {
@@ -16,13 +15,13 @@ public class MarketInventory : MonoBehaviour {
         if (savedShops == null)
         {
             InstantiateItems();
-            Debug.Log("saved shops not found, instatiating items");
+            //Debug.Log("saved shops not found, instatiating items");
         }
         else
         {
             townShops = savedShops; //link these or make a new copy? if we leave them linked items will be pdated automatically for better or worse...
-            Debug.Log("Saved shops found and loaded");
-            Debug.LogWarning("You are linking these dictionaries");
+            //Debug.Log("Saved shops found and loaded");
+           // Debug.LogWarning("You are linking these dictionaries");
         }
     }
 

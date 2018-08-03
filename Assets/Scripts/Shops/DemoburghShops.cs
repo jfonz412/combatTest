@@ -15,8 +15,7 @@ public class DemoburghShops : MarketInventory {
                 MasterItemList.ClothShirt(),
                 MasterItemList.ClothShirt(),
                 MasterItemList.ClothShirt(),
-                MasterItemList.ClothShirt(),
-                MasterItemList.ClothShirt()
+                MasterItemList.IronDagger()
             });
     }
 }

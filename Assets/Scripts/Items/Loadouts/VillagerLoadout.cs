@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class VillagerLoadout : DefaultEquipment {
-
+﻿public class VillagerLoadout : DefaultEquipment
+{
     protected override void InstantiateDefaultEquipment()
     {
         base.InstantiateDefaultEquipment();
@@ -12,7 +8,6 @@ public class VillagerLoadout : DefaultEquipment {
                                     MasterItemList.LeatherBoots(),
                                     MasterItemList.LeatherGloves()};
 
-        defaultWeapon = new Item[0];
-        
+        defaultWeapon = new Item[] { MasterItemList.IronDagger() };       
     }
 }

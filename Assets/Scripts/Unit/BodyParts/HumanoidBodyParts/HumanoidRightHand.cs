@@ -4,7 +4,8 @@ public class HumanoidRightHand : BodyPart
 {
     protected override void AssignPartStats()
     {
-        armorType = Item.EquipmentSlot.Hands; //put this before callback is assigned in base class
+        armorSlot = Item.EquipmentSlot.Hands;
+        weaponSlot = Item.EquipmentSlot.MainHand;
         name = "right hand";
         SetInjuryStrings();
         functioningLimit = 4;

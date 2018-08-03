@@ -15,17 +15,17 @@ public class EquipSlotClick : MonoBehaviour {
     public void EquipSlotRightClicked(EquipSlot slot)
     {
         Debug.Log("Equip slot right clicked");
-        if (slot.equipment != null)
+        if (slot.Equipment() != null)
         {
-            slot.equipmentManager.FastUnequip(slot.equipment);
+            slot.EquipmentManager().FastUnequip(slot.Equipment());
         }
     }
 
     public void EquipSlotHoverOver(EquipSlot slot)
     {
-        if (slot.equipment != null)
+        if (slot.Equipment() != null)
         {
-            slot.equipment.OpenStatWindow("Inventory");
+            slot.Equipment().OpenStatWindow("Inventory");
         }
     }
 
@@ -40,25 +40,25 @@ public class EquipSlotClick : MonoBehaviour {
             return;
         }
 
-        if (mouseItem == null && slot.equipment == null) //or slot.equipment == naked or unarmed?
+        if (mouseItem == null && slot.Equipment() == null) //or slot.Equipment() == naked or unarmed?
         {
             Debug.Log("BOTH SLOTS EMPTY");
             return;
         }
 
-        if (mouseItem == null && slot.equipment != null)
+        if (mouseItem == null && slot.Equipment() != null)
         {
             slotClickHelper.PickUpItemIntoEmptyMouseSlot(mouseSlot, slot);
             return;
         }
 
-        if (mouseItem != null && slot.equipment == null) //or slot.equipment == naked or unarmed?
+        if (mouseItem != null && slot.Equipment() == null) //or slot.Equipment() == naked or unarmed?
         {
             slotClickHelper.PlaceItemInEmptySlot(mouseSlot, slot);
             return;
         }
 
-        if (mouseItem != null && slot.equipment != null) //or slot.equipment == naked or unarmed?
+        if (mouseItem != null && slot.Equipment() != null) //or slot.Equipment() == naked or unarmed?
         {
             slotClickHelper.SwapItems(mouseSlot, slot);
             return;

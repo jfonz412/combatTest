@@ -3,13 +3,11 @@ using UnityEngine;
 
 //this script is for the player only
 public class EquipmentManager : MonoBehaviour {
-    [SerializeField]
     private EquipUI UI;
 
     private BodyPartController myBody;
     private Inventory inv;
 
-    [SerializeField]
     private Dictionary<Item.EquipmentSlot, Item> currentEquipment = new Dictionary<Item.EquipmentSlot, Item>
     {
         { Item.EquipmentSlot.Head, null },
@@ -25,22 +23,24 @@ public class EquipmentManager : MonoBehaviour {
     {
         inv = InventoryManager.GetInstance().GetInventory();
         myBody = GetComponent<BodyPartController>();
-
-        //add callback to either bodypart controller or each bodypart
-        //GatherEquipment()
+        UI = CanvasUI.instance.GetComponent<EquipUI>();
     }
 
     public void Equip(Item newItem)
     {
         Item.EquipmentSlot slot = newItem.myEquipSlot;
         currentEquipment[slot] = newItem;
+        if(UI == null)
+            UI = CanvasUI.instance.GetComponent<EquipUI>();
         UI.UpdateUI(newItem, newItem.myEquipSlot);
+        SendToBodyPart(newItem);
     }
 
     //may need to check for naked unequip
     public void Unequip(Item.EquipmentSlot slot)
     {
         currentEquipment[slot] = null;
+        myBody.StripEquipment(slot);
         UI.UpdateUI(null, slot);
     }
 
@@ -67,75 +67,31 @@ public class EquipmentManager : MonoBehaviour {
         return currentEquipment[slot]; //may be null, but I may not need this method?
     }
 
-    /************/
-
-    /*
-    void Strip(Item oldItem)
+    private void SendToBodyPart(Item item)
     {
-        Item.EquipmentSlot slot = oldItem.myEquipSlot; //relies on the Equipment.EquipmentSlot enum order staying the same
-        Equipment e;// = new Equipment();
-        switch (oldItem.myEquipSlot)
+        if(myBody == null)
+            myBody = GetComponent<BodyPartController>();
+
+        if (item.myEquipSlot == Item.EquipmentSlot.MainHand || item.myEquipSlot == Item.EquipmentSlot.OffHand)
         {
-            case Item.EquipmentSlot.Head:
-                e = nakedHead;
-                break;
-            case Item.EquipmentSlot.Chest:
-                e = nakedChest;
-                break;
-            case Item.EquipmentSlot.Hands:
-                e = nakedHands;
-                break;
-            case Item.EquipmentSlot.MainHand:
-                e = unarmedMain;
-                break;
-            case Item.EquipmentSlot.OffHand:
-                e = unarmedOff;
-                break;
-            case Item.EquipmentSlot.Legs:
-                e = nakedLegs;
-                break;
-            case Item.EquipmentSlot.Feet:
-                e = nakedFeet;
-                break;
-            default:
-                e = null;
-                Debug.LogError("Invalid EquipSlot");
-                break;
+            myBody.EquipWeapon(item);
         }
-        Debug.Log(e.equipSlot);
-        e = Instantiate(e);
-        e.Init();
-        currentEquipment[slot] = e;
-    }
-    */
-
-    /*
-    public List<EquipmentInfo> GetEquipmentInfo()
-    {
-        List<EquipmentInfo> infoList = new List<EquipmentInfo>();
-
-        foreach (KeyValuePair<Item.EquipmentSlot, Equipment> equipment in currentEquipment)
+        else
         {
-            infoList.Add(equipment.Value.GetEquipmentInfo());
-        }
-
-        return infoList;
-    }
-
-    public void LoadSavedEquipment(List<EquipmentInfo> savedEquipment)
-    {
-        
-        Equipment equipment;
-
-        for(int i = 0; i < savedEquipment.Count; i++)
-        {
-            equipment = Instantiate((Equipment)Resources.Load(savedEquipment[i].filePath));
-            equipment.Init();
-            //equipment.quality = x;
-            //equipment.condition = y;
-            if (equipment != null)
-                Equip(equipment);
+            myBody.EquipArmor(item);
         }
     }
-    */
+
+    public void LoadSavedEquipment(BodyPart.PartInfo[] parts)
+    {
+
+        //not loading default equipment if nothing is saved
+        for(int i = 0; i < parts.Length; i++)
+        {
+            if(parts[i].myArmor != null)
+                Equip(parts[i].myArmor);
+            if (parts[i].myWeapon != null)
+                Equip(parts[i].myWeapon);
+        }
+    }
 }

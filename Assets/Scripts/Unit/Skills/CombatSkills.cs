@@ -8,7 +8,7 @@ public class CombatSkills : MonoBehaviour {
 
     //this will be used to set the stats
     [SerializeField]
-    private List<Item.WeaponType> defaultWeapons = new List<Item.WeaponType>();
+    private List<Item.WeaponSkill> defaultWeapons = new List<Item.WeaponSkill>();
     [SerializeField]
     private List<int> defaultWeaponStats = new List<int>();
     [SerializeField]
@@ -20,26 +20,26 @@ public class CombatSkills : MonoBehaviour {
 
     #region Skills
 
-    private Dictionary<Item.WeaponType, int> myWeaponSkillLevels = new Dictionary<Item.WeaponType, int>()
+    private Dictionary<Item.WeaponSkill, int> myWeaponSkillLevels = new Dictionary<Item.WeaponSkill, int>()
         {
-            { Item.WeaponType.Axe, 0 },
-            { Item.WeaponType.Dagger, 0 },
-            { Item.WeaponType.Hands, 0 },
-            { Item.WeaponType.Offhand, 0 },
-            { Item.WeaponType.Pick, 0 },
-            { Item.WeaponType.Spear, 0 },
-            { Item.WeaponType.Misc, 0 }
+            { Item.WeaponSkill.Axe, 0 },
+            { Item.WeaponSkill.Dagger, 0 },
+            { Item.WeaponSkill.Hands, 0 },
+            { Item.WeaponSkill.Offhand, 0 },
+            { Item.WeaponSkill.Pick, 0 },
+            { Item.WeaponSkill.Spear, 0 },
+            { Item.WeaponSkill.Misc, 0 }
         };
 
-    private Dictionary<Item.WeaponType, float> myWeaponSkillExperience = new Dictionary<Item.WeaponType, float>()
+    private Dictionary<Item.WeaponSkill, float> myWeaponSkillExperience = new Dictionary<Item.WeaponSkill, float>()
         {
-            { Item.WeaponType.Axe, 0f },
-            { Item.WeaponType.Dagger, 0f },
-            { Item.WeaponType.Hands, 0f },
-            { Item.WeaponType.Offhand, 0f },
-            { Item.WeaponType.Pick, 0f },
-            { Item.WeaponType.Spear, 0f },
-            { Item.WeaponType.Misc, 0 }
+            { Item.WeaponSkill.Axe, 0f },
+            { Item.WeaponSkill.Dagger, 0f },
+            { Item.WeaponSkill.Hands, 0f },
+            { Item.WeaponSkill.Offhand, 0f },
+            { Item.WeaponSkill.Pick, 0f },
+            { Item.WeaponSkill.Spear, 0f },
+            { Item.WeaponSkill.Misc, 0 }
         };
 
     public enum CombatSkill { Block, Parry, Dodge, Strength, Agility, Willpower, Speed }
@@ -92,7 +92,7 @@ public class CombatSkills : MonoBehaviour {
     {
         AttackInfo info = new AttackInfo();
         //ItemInfo weapon = currentWeapon.RequestItemInfo();
-        float weaponSkill = GetWeaponSkill(currentWeapon.myWeaponType);
+        float weaponSkill = GetWeaponSkill(currentWeapon.myWeaponSkill);
 
         info.attackerName = gameObject.name;
         info.weapon = currentWeapon;
@@ -100,7 +100,7 @@ public class CombatSkills : MonoBehaviour {
         info.force = mySkillLevels[CombatSkill.Strength] + weaponSkill + currentWeapon.weight;
         info.skill = weaponSkill; //should eventually factor against enemiy's defensive skills (dodge, parry, block, absoarb?)
 
-        WeaponExperienceGain(currentWeapon.myWeaponType, 50f);
+        WeaponExperienceGain(currentWeapon.myWeaponSkill, 50f);
         return info;
     }
 
@@ -117,7 +117,7 @@ public class CombatSkills : MonoBehaviour {
     }
 
     //this will only happen here
-    private void WeaponExperienceGain(Item.WeaponType weapon, float experience)
+    private void WeaponExperienceGain(Item.WeaponSkill weapon, float experience)
     {
         myWeaponSkillExperience[weapon] += experience;
         if (myWeaponSkillExperience[weapon] >= (100 * myWeaponSkillLevels[weapon]))
@@ -135,10 +135,10 @@ public class CombatSkills : MonoBehaviour {
             onSkillGained.Invoke();
     }
 
-    private float GetWeaponSkill(Item.WeaponType weaponType)
+    private float GetWeaponSkill(Item.WeaponSkill weaponSkill)
     {
-        //Debug.Log(body.OverallHealth() + " * " + myWeaponSkillLevels[weaponType] + " = " + body.OverallHealth() * myWeaponSkillLevels[weaponType]);
-        return body.OverallHealth() * myWeaponSkillLevels[weaponType];
+        //Debug.Log(body.OverallHealth() + " * " + myWeaponSkillLevels[WeaponSkill] + " = " + body.OverallHealth() * myWeaponSkillLevels[WeaponSkill]);
+        return body.OverallHealth() * myWeaponSkillLevels[weaponSkill];
     }
 
     //copies defense skills and gives it to the body DefenseSkills is not public so we use a different struct
@@ -199,22 +199,22 @@ public class CombatSkills : MonoBehaviour {
 
     //WEAPONS
 
-    public Dictionary<Item.WeaponType, int> GetWeaponLevels()
+    public Dictionary<Item.WeaponSkill, int> GetWeaponLevels()
     {
         return myWeaponSkillLevels;
     }
 
-    public Dictionary<Item.WeaponType, float> GetWeaponExperience()
+    public Dictionary<Item.WeaponSkill, float> GetWeaponExperience()
     {
         return myWeaponSkillExperience;
     }
 
-    public void LoadSavedWeaponLevels(Dictionary<Item.WeaponType, int> savedLevels)
+    public void LoadSavedWeaponLevels(Dictionary<Item.WeaponSkill, int> savedLevels)
     {
         myWeaponSkillLevels = savedLevels;
     }
 
-    public void LoadSavedWeaponExperience(Dictionary<Item.WeaponType, float> savedExperience)
+    public void LoadSavedWeaponExperience(Dictionary<Item.WeaponSkill, float> savedExperience)
     {
         myWeaponSkillExperience = savedExperience;
     }

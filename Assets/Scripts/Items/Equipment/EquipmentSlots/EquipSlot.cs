@@ -2,17 +2,21 @@
 
 public class EquipSlot : InventorySlot {
 
-    //SlotClick.instance.cs needs to know about these
-    [HideInInspector]
-    public EquipmentManager equipmentManager;
-    [HideInInspector]
-    public Item equipment;
+    private EquipmentManager equipmentManager;
+    protected Item equipment;
 
     public Item.EquipmentSlot slotType;
 
-    void Start()
+    public EquipmentManager EquipmentManager()
     {
-        equipmentManager = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<EquipmentManager>();
+        if(equipmentManager == null)
+            equipmentManager = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<EquipmentManager>();
+        return equipmentManager;
+    }
+
+    public Item Equipment()
+    {
+        return equipment;
     }
 
     public void AddEquipment(Item newItem)
@@ -24,7 +28,9 @@ public class EquipSlot : InventorySlot {
         }
 
         equipment = newItem;
-        //icon.sprite = equipment.icon;
+
+        Sprite itemSprite = Resources.Load<Sprite>("Images/ItemIcons/" + equipment.icon);
+        icon.sprite = itemSprite;
         icon.enabled = true;
     }
 
