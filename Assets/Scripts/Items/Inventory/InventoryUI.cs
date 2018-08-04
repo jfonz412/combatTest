@@ -16,7 +16,7 @@ public class InventoryUI : MonoBehaviour {
         AssignSlotNums();
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         for (int i = 0; i < slots.Length; i++)
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour {
@@ -33,6 +34,7 @@ public class Inventory : MonoBehaviour {
         }
         else if(AddToFirstEmptySlot(item))
         {
+            Debug.Log("adding to first empty slot");
             return 0;
         }
         else
@@ -48,7 +50,7 @@ public class Inventory : MonoBehaviour {
         items.RemoveAt(slotNum);     
         items.Insert(slotNum, item);
 
-        Callback();
+        StartCoroutine(Callback());
     }
 
     //called from slotclick after an item is sold from inventory 
@@ -71,7 +73,7 @@ public class Inventory : MonoBehaviour {
         items.RemoveAt(itemIndex);
         items.Insert(itemIndex, null);
 
-        Callback();
+        StartCoroutine(Callback());
     }
 
     //for PlayerSaveData to save inventory
@@ -83,7 +85,7 @@ public class Inventory : MonoBehaviour {
     public void LoadSavedItems(List<Item> savedItems)
     {
         items = savedItems;
-        Callback();
+        StartCoroutine(Callback());
     }
 
     #region private methods
@@ -107,6 +109,7 @@ public class Inventory : MonoBehaviour {
             }
             Debug.Log("Done with this space");
         }
+
         Debug.Log("Returning newItem.quantity for " + newItem.name + " " + newItem.quantity);
         return newItem.quantity;
     }
@@ -120,7 +123,7 @@ public class Inventory : MonoBehaviour {
             items[slot].quantity++;
             newItemQuantity--;
         }
-
+        Debug.Log(items[slot].quantity);
         return newItemQuantity;
     }
 
@@ -135,7 +138,7 @@ public class Inventory : MonoBehaviour {
 
                 InsertItemIntoEmptySlot(item, i);
 
-                Callback();
+                StartCoroutine(Callback());
                 return true;
             }
         }
@@ -167,7 +170,7 @@ public class Inventory : MonoBehaviour {
         return item;
     }
 
-    private void Callback()
+    private void CallbackOLD()
     {
         if (onInventoryChanged != null)
         {
@@ -177,6 +180,15 @@ public class Inventory : MonoBehaviour {
         {
             Debug.LogError("NULL");
         }
+    }
+
+    private IEnumerator Callback()
+    {
+        while (onInventoryChanged == null)
+        {
+            yield return new WaitForSeconds(0.02f); //wait for UI to be ready
+        }
+        onInventoryChanged.Invoke(); //callback
     }
     #endregion
 }
