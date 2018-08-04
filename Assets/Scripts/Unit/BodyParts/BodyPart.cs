@@ -50,11 +50,12 @@ public class BodyPart : MonoBehaviour {
     */
 
     protected float naturalDefense = 0;
-    protected float bleedRate = 1f; //how rapidly we bleed from this part
+    protected float bleedBonus = 0f; //how rapidly we bleed from this part
 
     protected void Awake()
     {
         AssignPartStats(); //make sure these are set before anyone touches these bodyparts, which can only be done through BodyPartController (loaded in start)
+        Debug.Log("Loaded default severity level for " + name + " at " + currentSeverityLevel);
     }
 
     protected void Start()
@@ -155,7 +156,7 @@ public class BodyPart : MonoBehaviour {
         string log;
         if (dollPart != null)
         {
-            Debug.Log(gameObject.name + " is trying to log for " + damageInfo.damageType + " damage!");
+            //Debug.Log(gameObject.name + " is logging for " + damageInfo.damageType + " damage!");
             log = dollPart.LogInjury(severity, damageInfo.damageType);
         }
             
@@ -252,10 +253,13 @@ public class BodyPart : MonoBehaviour {
         //assigns all thresholds, stats, ect
     }
 
-    protected virtual void Bleed(DamageInfo info)
+    protected void Bleed(DamageInfo info)
     {
-        float bloodLoss = (bleedRate + info.severityLevel) * info.damageDealt;
-        myBody.Bleed(bloodLoss);
+        float bloodLoss = ((bleedBonus + info.severityLevel) * info.damageDealt) / 2f;
+        Debug.Log("Bloodloss for " + gameObject.name + "'s " + name + " is " + bloodLoss);
+
+        if(bloodLoss > 0)
+            myBody.Bleed(bloodLoss);
     }
 
     protected string GetInjuryString(Item.AttackType attackType, int severity)
@@ -347,7 +351,7 @@ public class BodyPart : MonoBehaviour {
     }
     #endregion
 
-    #region Public Methods
+#region Public Methods
     public bool IsTooInjured()
     {
         if (currentSeverityLevel >= functioningLimit)
@@ -390,8 +394,9 @@ public class BodyPart : MonoBehaviour {
 
     public void UnpackSavedPartInfo(PartInfo info)
     {
-        Debug.Log(gameObject.name + " unpacking " + info.name + " in " + name);
+        //Debug.Log(gameObject.name + " unpacking " + info.name + " in " + name);
         currentSeverityLevel = info.severityLevel;
+        Debug.Log("Loading saved severity level for " + name + " at " + info.severityLevel);
         injuryLog = info.injuryLog;
         EquipArmor(info.myArmor);
         EquipWeapon(info.myWeapon);

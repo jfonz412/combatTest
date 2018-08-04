@@ -14,7 +14,7 @@ public class HumanoidNeck : BodyPart
         cantBreathThreshold = 3;
         suffocationThreshold = 4;
 
-        bleedRate = 3f;
+        bleedBonus = 2f;
     }
 
     protected override void StatusChecks(int severity)

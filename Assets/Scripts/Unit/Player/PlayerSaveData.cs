@@ -63,7 +63,6 @@ public class PlayerSaveData : DataController {
     private PlayerData PackagePlayerData()
     {
         PlayerData data = new PlayerData();
-        //data.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; //is this old code??
 
         Vector3 pos = transform.position;
         data.currentPosition = new SavedPosition { x = pos.x, y = pos.y, z = pos.z };
@@ -71,7 +70,6 @@ public class PlayerSaveData : DataController {
         data.currentInventory = inventory.GetInventoryItems();
         data.currentGold = wallet.GetCurrentBalance();
         data.bodyParts = myBody.GetBodyParts();
-        //data.injuryList = healthDoll.SaveInjuryLog();
 
         data.combatSkillLevels = combatSkills.GetCombatLevels();
         data.combatSkillExperience = combatSkills.GetCombatExperience();
@@ -104,7 +102,6 @@ public class PlayerSaveData : DataController {
 [Serializable]
 public class PlayerData : Data
 {
-    //public List<EquipmentInfo> currentEquipment;
     public List<Item> currentInventory;
     public float currentGold;
     public SavedPosition currentPosition;
@@ -113,7 +110,6 @@ public class PlayerData : Data
     public Dictionary<CombatSkills.CombatSkill, float> combatSkillExperience;
     public Dictionary<Item.WeaponSkill, int> weaponSkillLevels;
     public Dictionary<Item.WeaponSkill, float> weaponSkillExperience;
-    //public Dictionary<BodyPart, List<string>> injuryList;
 }
 
 [Serializable]

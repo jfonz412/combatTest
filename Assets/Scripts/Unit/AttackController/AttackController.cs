@@ -32,7 +32,8 @@ public class AttackController : MonoBehaviour {
         Brain.State.Vomitting,
         Brain.State.CantBreathe,
         Brain.State.BattleReportOpen,
-        Brain.State.Dead
+        Brain.State.Dead,
+        Brain.State.Suffocating
 };
 
     private float myAttackStat;
