@@ -13,6 +13,8 @@ public class HumanoidHead : BodyPart
         downedThreshold = 3;
         //cantBreathThreshold = 3;
         //suffocationThreshold = 4;
+
+        isVitalPart = true;
     }
 
     protected override void StatusChecks(int severity)

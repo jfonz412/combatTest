@@ -37,6 +37,8 @@ public class BodyPart : MonoBehaviour {
     protected int suffocationThreshold;
     protected int functioningLimit;
 
+    public bool isVitalPart = false;
+
     //for setting individual thresholds for each bodypart..
     /*
     protected int severityThresh0;

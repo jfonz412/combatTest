@@ -103,6 +103,8 @@ public class BodyPartController : MonoBehaviour {
     {
         BodyPart[] bp = GetComponents<BodyPart>();
         bodyParts = bp.ToList();
+
+        LoadVitalParts();
     }
 
 #endregion
@@ -262,11 +264,24 @@ public class BodyPartController : MonoBehaviour {
         }
     }
 
+    //returns a list of pasts with attack2
+    private void LoadVitalParts()
+    {
+        for (int i = 0; i < bodyParts.Count; i++)
+        {
+            if (bodyParts[i].isVitalPart)
+            {
+                vitalParts.Add(bodyParts[i]);
+                Debug.Log("added " + bodyParts[i].name + " for " + gameObject.name + " as vital part");
+            }
+        }
+    }
+
     #endregion
 
     #region Bleeding and Suffocation
 
-        public void Bleed(float amount)
+    public void Bleed(float amount)
         {
             StartCoroutine(Bleeding(amount));
         }
