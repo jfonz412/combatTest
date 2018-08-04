@@ -141,65 +141,49 @@ public class BodyPart : MonoBehaviour {
 
     public void TakeDamage(AttackInfo recievedAttack)
     {
-        DamageInfo damageInfo = CalculateDamage(recievedAttack);
-        damageInfo = DetermineSeverityLevel(damageInfo);
+        DamageInfo damageInfo = DetermineSeverityLevel(recievedAttack);
         int severity = damageInfo.severityLevel;
-        string line = string.Format(GetInjuryString(damageInfo.damageType, severity), gameObject.name, damageInfo.weaponName);
+        string line;
 
-        if (severity > currentSeverityLevel)
+        if (severity >= 0)
         {
-            currentSeverityLevel = severity;
+            if (severity > currentSeverityLevel)
+            {
+                currentSeverityLevel = severity;
+                if (dollPart != null)
+                    dollPart.SeverityColor(severity);
+            }
+            string log;
             if (dollPart != null)
-                dollPart.SeverityColor(severity);
-        }
-
-        string log;
-        if (dollPart != null)
-        {
-            //Debug.Log(gameObject.name + " is logging for " + damageInfo.damageType + " damage!");
-            log = dollPart.LogInjury(severity, damageInfo.damageType);
-        }
-            
-
-        //injuryLog.Add(log); these should be connected
-        BattleReport.AddToBattleReport(line);
-
-        StatusChecks(severity);
-        Bleed(damageInfo);
-    }
-
-     private DamageInfo CalculateDamage(AttackInfo recievedAttack)
-    {
-        DamageInfo damageInfo = new DamageInfo();
-
-        damageInfo.damageType = recievedAttack.weapon.myAttackType;
-        damageInfo.weaponName = recievedAttack.weapon.name;
-        damageInfo.victimName = gameObject.name;
-        damageInfo.attackerName = recievedAttack.attackerName;
-
-        float enemyAttack = recievedAttack.weapon.hardnessValue + recievedAttack.force;
-
-        //crit hit
-        if (UnityEngine.Random.Range(0, 100) <= recievedAttack.skill)
-        {
-            damageInfo.damageDealt = enemyAttack; //no armor or def taken into account
+            {
+                //Debug.Log(gameObject.name + " is logging for " + damageInfo.damageType + " damage!");
+                log = dollPart.LogInjury(severity, damageInfo.damageType);
+            }
+            line = string.Format(GetInjuryString(damageInfo.damageType, severity), gameObject.name, damageInfo.weaponName);
+            BattleReport.AddToBattleReport(line);
+            StatusChecks(severity);
+            Bleed(damageInfo);
         }
         else
         {
-            float myDefense = MyArmor();
-            damageInfo.damageDealt = enemyAttack - myDefense;
+            line = recievedAttack.attackerName + " 's " + recievedAttack.weapon.name + " does no damage to " + gameObject.name + "'s " + name;
+            BattleReport.AddToBattleReport(line);
         }
-
-        return damageInfo;
     }
 
-    private DamageInfo DetermineSeverityLevel(DamageInfo damageInfo)
-    {              
+    private DamageInfo DetermineSeverityLevel(AttackInfo receivedAttack)
+    {
+        DamageInfo damageInfo = CalculateDamage(receivedAttack);
+
         float damage = damageInfo.damageDealt;
         int severityLevel;
         Color color = Color.red;
 
-        if (damage <= 50)
+        if (damage <= 20)
+        {
+            severityLevel = -1;
+        }
+        else if (damage <= 50)
         {
             color.r = .20f;
             severityLevel = 0;
@@ -231,13 +215,42 @@ public class BodyPart : MonoBehaviour {
         }
 
         damageInfo.severityLevel = severityLevel;
-        FloatingTextController.CreateFloatingText("Hit", transform, color);
-        anim.TakeDamage(color);
+        if(severityLevel >= 0)
+        {
+            FloatingTextController.CreateFloatingText("Hit", transform, color);
+            anim.TakeDamage(color);
+        }
         return damageInfo;
     }
-#endregion
 
-#region Virtual methods
+    private DamageInfo CalculateDamage(AttackInfo recievedAttack)
+    {
+        DamageInfo damageInfo = new DamageInfo();
+
+        damageInfo.damageType = recievedAttack.weapon.myAttackType;
+        damageInfo.weaponName = recievedAttack.weapon.name;
+        damageInfo.victimName = gameObject.name;
+        damageInfo.attackerName = recievedAttack.attackerName;
+
+        float enemyAttack = recievedAttack.weapon.hardnessValue + recievedAttack.force;
+
+        //crit hit
+        if (UnityEngine.Random.Range(0, 100) <= recievedAttack.skill)
+        {
+            damageInfo.damageDealt = enemyAttack; //no armor or def taken into account
+        }
+        else
+        {
+            float myDefense = MyArmor();
+            damageInfo.damageDealt = enemyAttack - myDefense;
+        }
+
+        return damageInfo;
+    }
+
+    #endregion
+
+    #region Virtual methods
 
     protected virtual void StatusChecks(int severity)
     {
