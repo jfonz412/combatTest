@@ -17,6 +17,8 @@ public class DemoburghShops : MarketInventory {
                 MasterItemList.HealthPotion(),
                 MasterItemList.HealthPotion(),
                 MasterItemList.IronDagger(),
+                MasterItemList.WoodenShield(),
+                MasterItemList.IronShield(),
                 MasterItemList.Log(),
                 MasterItemList.Log(),
                 MasterItemList.Log()

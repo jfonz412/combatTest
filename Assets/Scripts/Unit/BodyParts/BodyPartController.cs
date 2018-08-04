@@ -40,16 +40,22 @@ public class BodyPartController : MonoBehaviour {
         myBrain = GetComponent<Brain>();
         mySkills = GetComponent<CombatSkills>();
         mySkills.onSkillGained += UpdateSkills;
-        UpdateSkills();       
 
         AddBodyParts(); //collects the bodyparts from the unit, part stats should be set by now
         LoadAttackParts(); //saves attack parts into a list for the AttackController to reference
         CalculateTotalBlood(); //bodyparts needed for this 
-        
-        //if a unit doesn't have an equipment manager load default eqpmnt
-        if(GetComponent<EquipmentManager>() == null)
+        UpdateSkills(); //relies on bodyparts being loaded
+
+        //if a unit doesn't have an equipment manager load default eqpmnt 
+        EquipmentManager e = GetComponent<EquipmentManager>();
+        if (e == null)
         {
             GetComponent<DefaultEquipment>().EquipLoadout(this);
+        }
+        else
+        {
+            //let equipment handler load it's own default stuff if it needs to
+            e.onEquipmentChanged += UpdateSkills;
         }
     }
 

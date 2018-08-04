@@ -20,6 +20,7 @@ public class MasterItemList : MonoBehaviour {
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
         item.myWeaponSkill = Item.WeaponSkill.NA;
+        item.Init();
         return item;
     }
     public static Item Fist()
@@ -58,6 +59,7 @@ public class MasterItemList : MonoBehaviour {
         item.myAttackType = Item.AttackType.NA; 
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
+        item.Init();
         return item;
     }
     public static Item ClothTrousers()
@@ -77,6 +79,7 @@ public class MasterItemList : MonoBehaviour {
         item.myAttackType = Item.AttackType.NA; 
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
+        item.Init();
         return item;
     }
     public static Item LeatherBoots()
@@ -96,6 +99,7 @@ public class MasterItemList : MonoBehaviour {
         item.myAttackType = Item.AttackType.NA; 
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
+        item.Init();
         return item;
     }
     public static Item LeatherGloves()
@@ -115,6 +119,7 @@ public class MasterItemList : MonoBehaviour {
         item.myAttackType = Item.AttackType.NA;
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
+        item.Init();
         return item;
     }
     public static Item IronDagger()
@@ -134,6 +139,47 @@ public class MasterItemList : MonoBehaviour {
         item.myAttackType = Item.AttackType.Stab;
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
+        item.Init();
+        return item;
+    }
+    public static Item WoodenShield()
+    {
+        Item item = new Item();
+
+        item.name = "Wooden Shield";
+        item.myDescription = "Will block most blows";
+        item.icon = "WoodenShield";
+        item.myEquipSlot = Item.EquipmentSlot.OffHand;
+        item.myMaterial = ItemMaterial.Material.Wood;
+        item.weight = 3f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myWeaponSkill = Item.WeaponSkill.Offhand;
+        item.myAttackType = Item.AttackType.BluntImpact;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        item.Init();
+        return item;
+    }
+    public static Item IronShield()
+    {
+        Item item = new Item();
+
+        item.name = "Iron Shield";
+        item.myDescription = "Will block most blows, but it's pretty heavy";
+        item.icon = "IronShield";
+        item.myEquipSlot = Item.EquipmentSlot.OffHand;
+        item.myMaterial = ItemMaterial.Material.Iron;
+        item.weight = 5f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myWeaponSkill = Item.WeaponSkill.Offhand;
+        item.myAttackType = Item.AttackType.BluntImpact;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        item.Init();
         return item;
     }
 
@@ -154,6 +200,7 @@ public class MasterItemList : MonoBehaviour {
         item.myAttackType = Item.AttackType.NA;
         item.myUseEffect = ItemEffects.ItemEffect.NA;
         item.myToolType = Item.ToolType.NA;
+        item.Init();
         return item;
     }
     public static Item HealthPotion()
@@ -175,6 +222,7 @@ public class MasterItemList : MonoBehaviour {
         item.myToolType = Item.ToolType.NA;
         item.baseValue = 250f;
         item.destroyOnUse = true;
+        item.Init();
         return item;
     }
 }

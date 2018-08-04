@@ -75,9 +75,9 @@ public class Item {
     public EquipmentSlot myEquipSlot;
     public WeaponSkill myWeaponSkill;
 
-    private void Start()
+    public void Init()
     {
-        hardnessValue = ItemMaterial.HardnessValue(myMaterial);   
+        hardnessValue = ItemMaterial.HardnessValue(myMaterial);
     }
 
     public virtual void Use() //RMB

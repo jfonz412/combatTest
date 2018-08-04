@@ -8,6 +8,9 @@ public class EquipmentManager : MonoBehaviour {
     private BodyPartController myBody;
     private Inventory inv;
 
+    public delegate void OnEquipmentChanged();
+    public OnEquipmentChanged onEquipmentChanged;
+
     private Dictionary<Item.EquipmentSlot, Item> currentEquipment = new Dictionary<Item.EquipmentSlot, Item>
     {
         { Item.EquipmentSlot.Head, null },

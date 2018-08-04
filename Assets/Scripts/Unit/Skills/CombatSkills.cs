@@ -4,7 +4,7 @@ using UnityEngine;
 public class CombatSkills : MonoBehaviour {
 
     private BodyPartController body;
-    private EquipmentManager equipmentManager;
+    List<BodyPart> blockingParts;
 
     //this will be used to set the stats
     [SerializeField]
@@ -78,9 +78,7 @@ public class CombatSkills : MonoBehaviour {
     private void Start()
     {
         body = GetComponent<BodyPartController>();
-        //get offhand from body
-        //equipmentManager = GetComponent<EquipmentManager>();
-        //equipmentManager.onEquipmentChanged += SwapOffHand;
+        blockingParts = body.attack2Parts; //possible script order issue if this is called before bodyparts are loaded
     }
 
     public float GetCurrentMoveSpeed()
@@ -147,11 +145,9 @@ public class CombatSkills : MonoBehaviour {
         AttackReactionSkills a = new AttackReactionSkills();
 
         float blockMod = 0f;
-        Debug.Log("offhand has no effect on blocking right now");
-        /*
-        if (equippedOffHand != null)
-            blockMod = equippedOffHand.hardnessValue;
-        */
+
+        if(!body.PartTooInjured(blockingParts))
+            blockMod = blockingParts[0].MyWeapon().hardnessValue;
 
         a.block = mySkillLevels[CombatSkill.Block] + blockMod;
         a.dodge = mySkillLevels[CombatSkill.Dodge] - blockMod/2f;
@@ -219,22 +215,6 @@ public class CombatSkills : MonoBehaviour {
         myWeaponSkillExperience = savedExperience;
     }
     #endregion
-
-    //Player callback for weapon swaps (called from EquipmentManager)
-    private void SwapOffHand(Equipment oldItem, Equipment newItem)
-    {/*
-        Weapon w = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.OffHand);
-        if(w == null)
-        {
-            equippedOffHand = new WeaponInfo(); //clear the equipped offhand
-        }
-        else
-        {
-            equippedOffHand = w.RequestWeaponInfo();
-        }
-        */
-    }
-
 }
 
 public struct AttackInfo
