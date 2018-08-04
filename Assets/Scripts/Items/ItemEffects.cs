@@ -2,18 +2,31 @@
 
 public class ItemEffects : MonoBehaviour {
 
-    public enum ItemEffect { Equip };
+    public enum ItemEffect { Equip, NA, HealthPotion };
 
-    public static void Use(ItemEffect effect, Item item)
+    public static void Use(ItemEffect effect, Item item) //maybe eventually pass unit component refs to effect specific gameobject?
     {
         if (effect == ItemEffect.Equip)
         {
             EquipToPlayer(item);
         }
+        else if (effect == ItemEffect.HealthPotion)
+        {
+            HealthPotion(item);
+        }
+        else if (effect == ItemEffect.NA)
+        {
+            return;
+        }
     }
 
-    static void EquipToPlayer(Item item) //maybe eventually pass a BodypartController and equip to that gameobject?
+    static void EquipToPlayer(Item item) 
     {
         ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<EquipmentManager>().FastEquip(item);
+    }
+
+    static void HealthPotion(Item item) 
+    {
+        Debug.Log("Healing!");
     }
 }

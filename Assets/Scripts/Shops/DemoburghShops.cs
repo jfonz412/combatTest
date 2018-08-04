@@ -11,11 +11,15 @@ public class DemoburghShops : MarketInventory {
             new Item[]
             {
                 MasterItemList.IronChest(),
-                MasterItemList.IronChest(),
                 MasterItemList.ClothShirt(),
                 MasterItemList.ClothShirt(),
                 MasterItemList.ClothShirt(),
-                MasterItemList.IronDagger()
+                MasterItemList.HealthPotion(),
+                MasterItemList.HealthPotion(),
+                MasterItemList.IronDagger(),
+                MasterItemList.Log(),
+                MasterItemList.Log(),
+                MasterItemList.Log()
             });
     }
 }

@@ -29,6 +29,9 @@ public class EquipmentManager : MonoBehaviour {
     public void Equip(Item newItem)
     {
         Item.EquipmentSlot slot = newItem.myEquipSlot;
+        if (slot == Item.EquipmentSlot.Head)
+            Debug.LogError("Should not be equipping to head " + newItem.name);
+
         currentEquipment[slot] = newItem;
         if(UI == null)
             UI = CanvasUI.instance.GetComponent<EquipUI>();

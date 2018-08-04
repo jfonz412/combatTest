@@ -51,9 +51,9 @@ public class MasterItemList : MonoBehaviour {
         item.myEquipSlot = Item.EquipmentSlot.Chest;
         item.myMaterial = ItemMaterial.Material.Cloth;
         item.weight = 0.8f;
-        item.stackable = true;
+        item.stackable = false;
         item.quantity = _quantity;
-        item.maxQuantity = 3;
+        item.maxQuantity = 1;
         item.myWeaponSkill = Item.WeaponSkill.NA; //should cancel below, need NA attacktype to be more explicit here
         item.myAttackType = Item.AttackType.NA; 
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
@@ -70,9 +70,9 @@ public class MasterItemList : MonoBehaviour {
         item.myEquipSlot = Item.EquipmentSlot.Legs;
         item.myMaterial = ItemMaterial.Material.Cloth;
         item.weight = 1f;
-        item.stackable = true;
+        item.stackable = false;
         item.quantity = 1;
-        item.maxQuantity = 3;
+        item.maxQuantity = 1;
         item.myWeaponSkill = Item.WeaponSkill.NA; 
         item.myAttackType = Item.AttackType.NA; 
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
@@ -89,9 +89,9 @@ public class MasterItemList : MonoBehaviour {
         item.myEquipSlot = Item.EquipmentSlot.Feet;
         item.myMaterial = ItemMaterial.Material.Leather;
         item.weight = 3f;
-        item.stackable = true;
+        item.stackable = false;
         item.quantity = 1;
-        item.maxQuantity = 2;
+        item.maxQuantity = 1;
         item.myWeaponSkill = Item.WeaponSkill.NA; 
         item.myAttackType = Item.AttackType.NA; 
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
@@ -108,9 +108,9 @@ public class MasterItemList : MonoBehaviour {
         item.myEquipSlot = Item.EquipmentSlot.Hands;
         item.myMaterial = ItemMaterial.Material.Leather;
         item.weight = 0.1f;
-        item.stackable = true;
+        item.stackable = false;
         item.quantity = 1;
-        item.maxQuantity = 4;
+        item.maxQuantity = 1;
         item.myWeaponSkill = Item.WeaponSkill.NA;
         item.myAttackType = Item.AttackType.NA;
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
@@ -134,6 +134,47 @@ public class MasterItemList : MonoBehaviour {
         item.myAttackType = Item.AttackType.Stab;
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
+        return item;
+    }
+
+    public static Item Log()
+    {
+        Item item = new Item();
+
+        item.name = "Log";
+        item.myDescription = "It's big, it's heavy, it's wood.";
+        item.icon = "Log";
+        item.myEquipSlot = Item.EquipmentSlot.NA;
+        item.myMaterial = ItemMaterial.Material.NA;
+        item.weight = 5f;
+        item.stackable = true;
+        item.quantity = 1;
+        item.maxQuantity = 3;
+        item.myWeaponSkill = Item.WeaponSkill.NA;
+        item.myAttackType = Item.AttackType.NA;
+        item.myUseEffect = ItemEffects.ItemEffect.NA;
+        item.myToolType = Item.ToolType.NA;
+        return item;
+    }
+    public static Item HealthPotion()
+    {
+        Item item = new Item();
+
+        item.name = "Health Potion";
+        item.myDescription = "A mysterious potion that can heal even the gravest of wounds...but at what cost?";
+        item.icon = "HealthPotion";
+        item.myEquipSlot = Item.EquipmentSlot.NA;
+        item.myMaterial = ItemMaterial.Material.NA;
+        item.weight = 0.5f;
+        item.stackable = true;
+        item.quantity = 1;
+        item.maxQuantity = 3;
+        item.myWeaponSkill = Item.WeaponSkill.NA;
+        item.myAttackType = Item.AttackType.NA;
+        item.myUseEffect = ItemEffects.ItemEffect.HealthPotion;
+        item.myToolType = Item.ToolType.NA;
+        item.baseValue = 250f;
+        item.destroyOnUse = true;
         return item;
     }
 }

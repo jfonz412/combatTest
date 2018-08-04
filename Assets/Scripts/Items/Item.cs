@@ -28,11 +28,13 @@ public class Item {
         weight = _item.weight;
         hardnessValue = _item.hardnessValue;
 
-        //durability
-        //condition
-        //penetration?
+        destroyOnUse = _item.destroyOnUse;
 
-        myToolType = _item.myToolType;
+    //durability
+    //condition
+    //penetration?
+
+    myToolType = _item.myToolType;
         myAttackType = _item.myAttackType;
         myEquipSlot = _item.myEquipSlot;
         myWeaponSkill = _item.myWeaponSkill;
@@ -57,6 +59,8 @@ public class Item {
     public float weight;
     public float hardnessValue;
 
+    public bool destroyOnUse { get; set; } //not sure why but I need this in order to set bool in new Item
+
     //durability
     //condition
     //penetration?
@@ -80,6 +84,15 @@ public class Item {
     {
         //user = ScriptToolbox.GetInstance().GetPlayerManager().player.transform;
         ItemEffects.Use(myUseEffect, this);
+
+        if (destroyOnUse)
+        {
+            quantity--;
+            if(quantity == 0)
+            {
+                RemoveFromInventory();
+            }
+        }
     }
 
     public virtual void OpenStatWindow(string itemLocation)
