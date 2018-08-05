@@ -272,7 +272,7 @@ public class BodyPartController : MonoBehaviour {
             if (bodyParts[i].isVitalPart)
             {
                 vitalParts.Add(bodyParts[i]);
-                Debug.Log("added " + bodyParts[i].name + " for " + gameObject.name + " as vital part");
+                //Debug.Log("added " + bodyParts[i].name + " for " + gameObject.name + " as vital part");
             }
         }
     }

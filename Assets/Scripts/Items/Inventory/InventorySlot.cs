@@ -29,8 +29,8 @@ public class InventorySlot : MonoBehaviour
             return;
         }
 
-        Debug.Log("Item being added to UI slot");
         item = newItem;
+        Debug.Log("Item being added to UI slot, it's quantity is " + item.quantity);
         Sprite itemSprite = Resources.Load<Sprite>("Images/ItemIcons/" + item.icon);
         Debug.Log("sprite for " + item + " is " + itemSprite);
         icon.sprite = itemSprite;

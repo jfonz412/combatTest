@@ -2,14 +2,23 @@
 
 public class ItemPickup : Interactable {
 
-    public Item baseItem;
-    [HideInInspector]
+    public MasterItemList.Items baseItem;
+    public int myQuantity;
     public Item item;
 
     void Start()
     {
         myInteractions = new string[] { "Pickup", "Inspect", "--", "--" };
-        //item = Instantiate(baseItem);
+        item = MasterItemList.GetItem(baseItem); 
+
+        //optional quantity setting, will be 0 if not manually set
+        if(myQuantity > 0)
+        {
+            Debug.Log("Setting item quantity to " + myQuantity);
+            if(myQuantity <= item.maxQuantity)
+                item.quantity = (int)myQuantity;
+        }
+        Debug.Log("now my quantity is " + item.quantity);
     }
 
     public override void Interaction(string interaction)
@@ -38,12 +47,12 @@ public class ItemPickup : Interactable {
 
     void PickUp()
     {
-        //Debug.Log("Picking up " + item.name);
+        Debug.Log("Picking up " + item.name + " with quantity of " + item.quantity);
         int itemsLeftAfterPickup = InventoryManager.GetInstance().GetInventory().AddItem(item);
 
         if (itemsLeftAfterPickup == 0)
         {
-            //Destroy(item);
+            item = null;
             Destroy(transform.gameObject);
         }
         else

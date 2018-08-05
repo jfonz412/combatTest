@@ -1,8 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MasterItemList : MonoBehaviour {
+    public enum Items { Log };
+
+    //This is probably slower than calling the method to return the item directly, but it allows scripts like ItemPickup to use the enums to select an item
+    //use the direct method where possible, like Shop/Loot lists, but this is here if we need it
+    private static Dictionary<Items, Item> itemLookup = new Dictionary<Items, Item>()
+    {
+        { Items.Log, Log() }
+    };
+
+    public static Item GetItem(Items requestedItem)
+    {
+        return new Item(itemLookup[requestedItem]);
+    }
+
     public static Item IronChest()
     {
         Item item = new Item();

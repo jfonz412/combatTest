@@ -55,7 +55,7 @@ public class BodyPart : MonoBehaviour {
     protected void Awake()
     {
         AssignPartStats(); //make sure these are set before anyone touches these bodyparts, which can only be done through BodyPartController (loaded in start)
-        Debug.Log("Loaded default severity level for " + name + " at " + currentSeverityLevel);
+        //Debug.Log("Loaded default severity level for " + name + " at " + currentSeverityLevel);
     }
 
     protected void Start()
@@ -409,7 +409,7 @@ public class BodyPart : MonoBehaviour {
     {
         //Debug.Log(gameObject.name + " unpacking " + info.name + " in " + name);
         currentSeverityLevel = info.severityLevel;
-        Debug.Log("Loading saved severity level for " + name + " at " + info.severityLevel);
+        //Debug.Log("Loading saved severity level for " + name + " at " + info.severityLevel);
         injuryLog = info.injuryLog;
         EquipArmor(info.myArmor);
         EquipWeapon(info.myWeapon);

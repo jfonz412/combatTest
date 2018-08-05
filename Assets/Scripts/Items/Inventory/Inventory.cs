@@ -26,6 +26,7 @@ public class Inventory : MonoBehaviour {
         if (item == null)
             return 0;
 
+        Debug.Log("Adding new item with quantity of " + item.quantity);
         int leftovers = AttemptToStackItem(item);
 
         if(leftovers == 0)
@@ -92,6 +93,7 @@ public class Inventory : MonoBehaviour {
 
     private int AttemptToStackItem(Item newItem)
     {
+        Debug.Log("Attemping to stack new item with quantity of " + newItem.quantity);
         if (!newItem.stackable)
             return newItem.quantity;
 
@@ -134,8 +136,6 @@ public class Inventory : MonoBehaviour {
         {
             if (items[i] == null)
             {
-                //item = ConvertToInventoryItem(item);
-
                 InsertItemIntoEmptySlot(item, i);
 
                 StartCoroutine(Callback());
