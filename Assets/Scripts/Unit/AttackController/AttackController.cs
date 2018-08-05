@@ -12,8 +12,6 @@ public class AttackController : MonoBehaviour {
     private BodyPartController targetBody;
     private BodyPartController myBody;
     private Brain myBrain;
-    public Item mainHand; //remove this but be prepared to fix harvesting
-    //public Item offHand;
 
     private CombatSkills mySkills;
 

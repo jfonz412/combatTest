@@ -30,6 +30,7 @@ public class Harvestable : Interactable {
                                         };
                                     }
                             }
+
     void Start () {
         myInteractions = new string[] { harvestType.ToString(), "Inspect", "--", "--" };
         anim = GetComponent<Animator>();
@@ -120,7 +121,7 @@ public class Harvestable : Interactable {
 
     private bool UsingProperTool()
     {
-        Item unitWeapon = player.GetComponent<AttackController>().mainHand;
+        Item unitWeapon = player.GetComponent<HumanoidRightHand>().MyWeapon();
         bool usingProperTool;
 
         if (unitWeapon == null)

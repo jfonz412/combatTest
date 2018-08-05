@@ -2,13 +2,16 @@
 using UnityEngine;
 
 public class MasterItemList : MonoBehaviour {
-    public enum Items { Log };
+    public enum Items { Log, WoodAxe, IronPickaxe, Stone };
 
     //This is probably slower than calling the method to return the item directly, but it allows scripts like ItemPickup to use the enums to select an item
     //use the direct method where possible, like Shop/Loot lists, but this is here if we need it
     private static Dictionary<Items, Item> itemLookup = new Dictionary<Items, Item>()
     {
-        { Items.Log, Log() }
+        { Items.Log, Log() },
+        { Items.Stone, Stone() },
+        { Items.WoodAxe, WoodAxe() },
+        { Items.IronPickaxe, IronPickaxe() },
     };
 
     public static Item GetItem(Items requestedItem)
@@ -155,6 +158,66 @@ public class MasterItemList : MonoBehaviour {
         item.Init();
         return item;
     }
+    public static Item IronHatchet()
+    {
+        Item item = new Item();
+
+        item.name = "Iron Hatchet";
+        item.myDescription = "Can be used for self defense as well as chopping wood";
+        item.icon = "IronHatchet";
+        item.myEquipSlot = Item.EquipmentSlot.MainHand;
+        item.myMaterial = ItemMaterial.Material.Iron;
+        item.weight = 2f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myWeaponSkill = Item.WeaponSkill.Axe;
+        item.myAttackType = Item.AttackType.Hack;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.Axe;
+        item.Init();
+        return item;
+    }
+    public static Item WoodAxe()
+    {
+        Item item = new Item();
+
+        item.name = "Wood Axe";
+        item.myDescription = "A lumberjack's favorite tool, also a devestating (yet unwieldly) weapon";
+        item.icon = "WoodAxe";
+        item.myEquipSlot = Item.EquipmentSlot.MainHand;
+        item.myMaterial = ItemMaterial.Material.Iron;
+        item.weight = 4f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myWeaponSkill = Item.WeaponSkill.Axe;
+        item.myAttackType = Item.AttackType.Hack;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.Axe;
+        item.Init();
+        return item;
+    }
+    public static Item IronPickaxe()
+    {
+        Item item = new Item();
+
+        item.name = "Iron Pickaxe";
+        item.myDescription = "Can be used to break rocks or skulls";
+        item.icon = "IronPickaxe";
+        item.myEquipSlot = Item.EquipmentSlot.MainHand;
+        item.myMaterial = ItemMaterial.Material.Iron;
+        item.weight = 2;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myWeaponSkill = Item.WeaponSkill.Pick;
+        item.myAttackType = Item.AttackType.Stab;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.Pick;
+        item.Init();
+        return item;
+    }
     public static Item WoodenShield()
     {
         Item item = new Item();
@@ -203,6 +266,26 @@ public class MasterItemList : MonoBehaviour {
         item.name = "Log";
         item.myDescription = "It's big, it's heavy, it's wood.";
         item.icon = "Log";
+        item.myEquipSlot = Item.EquipmentSlot.NA;
+        item.myMaterial = ItemMaterial.Material.NA;
+        item.weight = 5f;
+        item.stackable = true;
+        item.quantity = 1;
+        item.maxQuantity = 3;
+        item.myWeaponSkill = Item.WeaponSkill.NA;
+        item.myAttackType = Item.AttackType.NA;
+        item.myUseEffect = ItemEffects.ItemEffect.NA;
+        item.myToolType = Item.ToolType.NA;
+        item.Init();
+        return item;
+    }
+    public static Item Stone()
+    {
+        Item item = new Item();
+
+        item.name = "Stone";
+        item.myDescription = "Great for absolutely nothing right now";
+        item.icon = "Stone";
         item.myEquipSlot = Item.EquipmentSlot.NA;
         item.myMaterial = ItemMaterial.Material.NA;
         item.weight = 5f;
