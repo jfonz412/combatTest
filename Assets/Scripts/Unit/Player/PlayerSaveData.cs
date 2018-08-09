@@ -4,8 +4,6 @@ using System.IO;
 using UnityEngine;
 
 public class PlayerSaveData : DataController {
-
-    private HealthDoll healthDoll;
     private EquipmentManager equipmentManager;
     private Inventory inventory;
     private PlayerWallet wallet;
@@ -22,8 +20,6 @@ public class PlayerSaveData : DataController {
         wallet = ScriptToolbox.GetInstance().GetPlayerWallet();
         myBody = GetComponent<BodyPartController>();
         combatSkills = GetComponent<CombatSkills>();
-
-        healthDoll = FindObjectOfType<HealthDoll>(); //should only be one
     }
 
     public override string SaveData()

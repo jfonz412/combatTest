@@ -4,68 +4,60 @@ using UnityEngine;
 
 public class BodyPart : MonoBehaviour {
     public DollPart dollPart; //for player only for now
-    
+    private List<string> injuryLog = new List<string>(); //must be instantiated here
+
     public new string name;
-    public List<string> injuryLog = new List<string>(); //must be instantiated here
 
-    protected Brain myBrain;
-    protected BodyPartController myBody;
-    protected CombatSkills myCombatSkills;
-    protected UnitAnimController anim;
-    protected EquipmentManager myEquipment;
+    private Brain myBrain;
+    private BodyPartController myBody;
+    private CombatSkills myCombatSkills;
+    private UnitAnimController anim;
 
-    protected Dictionary<Item.AttackType, string[]> myInjuryStrings;
+    public string[] stabInjuries = new string[6];
+    public string[] hackInjuries = new string[6];
+    public string[] biteInjuries = new string[6];
+    public string[] bluntInjuries = new string[6];
+    public string[] clawInjuries = new string[6];
+    public string[] projectileInjuries = new string[6];
 
-    public bool attack1, attack2; //select these so that our attack controller can grab a refrence to them
+
+
+    //used to determine if this bodypart is needed to attack
+    public bool attack1 = false;
+    public bool attack2 = false;
+
     public Item.EquipmentSlot weaponSlot = Item.EquipmentSlot.NA;
-    protected Item myWeapon; // OR UNARMED BASE ATTACK
+    private Item myWeapon; 
 
     public Item.EquipmentSlot armorSlot = Item.EquipmentSlot.NA;
-    protected Item myArmor;
+    private Item myArmor;
 
     public delegate void OnEquipmentChanged(Item oldItem, Item newItem);
     public OnEquipmentChanged onEquipmentChanged;
 
-    protected int currentSeverityLevel = 0;
+    private int currentSeverityLevel = 0;
 
-    //these will be set in the Start() function of each individual part 
-    protected int knockoutThreshold;
-    protected int vomitThreshold;
-    protected int rockedThreshold;
-    protected int downedThreshold;
-    protected int cantBreathThreshold;
-    protected int suffocationThreshold;
-    protected int functioningLimit;
+    //severity levels will never reach 6, so by default none of these will trigger
+    public int knockoutThreshold = 6;
+    public int vomitThreshold = 6;
+    public int rockedThreshold = 6;
+    public int downedThreshold = 6;
+    public int cantBreathThreshold = 6;
+    public int suffocationThreshold = 6;
+    public int functioningLimit = 6;
 
+    //if true and this part is damaged beyond it's functioningLimit, unit will be mortally wounded
     public bool isVitalPart = false;
 
-    //for setting individual thresholds for each bodypart..
-    /*
-    protected int severityThresh0;
-    protected int severityThresh1;
-    protected int severityThresh2;
-    protected int severityThresh3;
-    protected int severityThresh4;
-    protected int severityThresh5;
-    */
+    public float naturalDefense = 0; //defense when not wearing any armor, may be replaced by default armor item
+    public float bleedBonus = 0f; //how rapidly we bleed from this part
 
-    protected float naturalDefense = 0;
-    protected float bleedBonus = 0f; //how rapidly we bleed from this part
-
-    protected void Awake()
-    {
-        AssignPartStats(); //make sure these are set before anyone touches these bodyparts, which can only be done through BodyPartController (loaded in start)
-        //Debug.Log("Loaded default severity level for " + name + " at " + currentSeverityLevel);
-    }
-
-    protected void Start()
+    private void Start()
     {
         myBrain = GetComponent<Brain>();
         myBody = GetComponent<BodyPartController>();
         myCombatSkills = GetComponent<CombatSkills>();
         anim = GetComponent<UnitAnimController>();
-
-        SetInjuryStrings();
 
         if (dollPart != null)
         {
@@ -130,7 +122,7 @@ public class BodyPart : MonoBehaviour {
     }
 
     //if this bodypart is checked for a weapon and doesn't have one it needs to tell AttackInfo something about what it's attacking with
-    protected virtual Item Unarmed()
+    private Item Unarmed()
     {
         Debug.LogError("Should not touch base method");
         return new Item();
@@ -159,7 +151,7 @@ public class BodyPart : MonoBehaviour {
                 //Debug.Log(gameObject.name + " is logging for " + damageInfo.damageType + " damage!");
                 log = dollPart.LogInjury(severity, damageInfo.damageType);
             }
-            line = string.Format(GetInjuryString(damageInfo.damageType, severity), gameObject.name, damageInfo.weaponName);
+            line = string.Format(GetInjuryString(damageInfo.damageType, severity), gameObject.name, damageInfo.weaponName, name);
             BattleReport.AddToBattleReport(line);
             StatusChecks(severity);
             Bleed(damageInfo);
@@ -170,6 +162,7 @@ public class BodyPart : MonoBehaviour {
             BattleReport.AddToBattleReport(line);
         }
     }
+        
 
     private DamageInfo DetermineSeverityLevel(AttackInfo receivedAttack)
     {
@@ -250,23 +243,23 @@ public class BodyPart : MonoBehaviour {
 
     #endregion
 
-    #region Virtual methods
+#region methods
 
-    protected virtual void StatusChecks(int severity)
+    private void StatusChecks(int severity)
     {
         //check for status effects in each part
     }
 
-    protected virtual void SetInjuryStrings()
+    private void SetInjuryStrings()
     {
 
     }
-    protected virtual void AssignPartStats()
+    private void AssignPartStats()
     {
         //assigns all thresholds, stats, ect
     }
 
-    protected void Bleed(DamageInfo info)
+    private void Bleed(DamageInfo info)
     {
         float bloodLoss = ((bleedBonus + info.severityLevel) * info.damageDealt) / 2f;
         Debug.Log("Bloodloss for " + gameObject.name + "'s " + name + " is " + bloodLoss);
@@ -275,15 +268,31 @@ public class BodyPart : MonoBehaviour {
             myBody.Bleed(bloodLoss);
     }
 
-    protected string GetInjuryString(Item.AttackType attackType, int severity)
+    private string GetInjuryString(Item.AttackType attackType, int severity)
     {
-        return myInjuryStrings[attackType][severity];
+        if(attackType == Item.AttackType.Stab)
+        {
+            return stabInjuries[severity];
+        }
+        else if (attackType == Item.AttackType.BluntImpact)
+        {
+            return bluntInjuries[severity];
+        }
+        else if (attackType == Item.AttackType.Hack)
+        {
+            return hackInjuries[severity];
+        }
+        else
+        {
+            Debug.LogError("Attack type not found!");
+            return "ATTACK TYPE NOT FOUND!";
+        }
     }
 
     #endregion
 
 #region Status Checks
-    protected void KnockoutCheck(int severity)
+    private void KnockoutCheck(int severity)
     {
         int multiplier = 10; // * severityLevel to get time knocked out
 
@@ -301,7 +310,7 @@ public class BodyPart : MonoBehaviour {
         }
     }
 
-    protected void RockedCheck(int severity)
+    private void RockedCheck(int severity)
     {
         if (severity >= rockedThreshold)
         {
@@ -315,7 +324,7 @@ public class BodyPart : MonoBehaviour {
         }
     }
 
-    protected void DownedCheck(int severity)
+    private void DownedCheck(int severity)
     {
         if (severity >= downedThreshold)
         {
@@ -329,7 +338,7 @@ public class BodyPart : MonoBehaviour {
         }
     }
 
-    protected void CantBreathCheck(int severity)
+    private void CantBreathCheck(int severity)
     {
         if (severity >= cantBreathThreshold)
         {
@@ -349,7 +358,7 @@ public class BodyPart : MonoBehaviour {
         }
     }
 
-    protected void VomitCheck(int severity)
+    private void VomitCheck(int severity)
     {
         if (severity >= vomitThreshold)
         {
