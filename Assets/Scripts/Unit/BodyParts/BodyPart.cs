@@ -27,10 +27,10 @@ public class BodyPart : MonoBehaviour {
     public bool attack2 = false;
 
     public Item.EquipmentSlot weaponSlot = Item.EquipmentSlot.NA;
-    private Item myWeapon; 
-
     public Item.EquipmentSlot armorSlot = Item.EquipmentSlot.NA;
-    private Item myArmor;
+    [SerializeField]
+    private Item myWeapon, myArmor; 
+
 
     public delegate void OnEquipmentChanged(Item oldItem, Item newItem);
     public OnEquipmentChanged onEquipmentChanged;
@@ -124,8 +124,8 @@ public class BodyPart : MonoBehaviour {
     //if this bodypart is checked for a weapon and doesn't have one it needs to tell AttackInfo something about what it's attacking with
     private Item Unarmed()
     {
-        Debug.LogError("Should not touch base method");
-        return new Item();
+        Debug.LogWarning("Equipping hardcoded fist");
+        return MasterItemList.Fist();
     }
     #endregion
 
@@ -151,7 +151,7 @@ public class BodyPart : MonoBehaviour {
                 //Debug.Log(gameObject.name + " is logging for " + damageInfo.damageType + " damage!");
                 log = dollPart.LogInjury(severity, damageInfo.damageType);
             }
-            line = string.Format(GetInjuryString(damageInfo.damageType, severity), gameObject.name, damageInfo.weaponName, name);
+            line = string.Format(GetInjuryString(damageInfo.damageType, severity), gameObject.name, damageInfo.weaponName);
             BattleReport.AddToBattleReport(line);
             StatusChecks(severity);
             Bleed(damageInfo);

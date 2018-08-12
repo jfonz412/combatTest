@@ -40,11 +40,7 @@ public class BodyPartController : MonoBehaviour {
         myBrain = GetComponent<Brain>();
         mySkills = GetComponent<CombatSkills>();
         mySkills.onSkillGained += UpdateSkills;
-
-        AddBodyParts(); //collects the bodyparts from the unit, part stats should be set by now
-        LoadAttackParts(); //saves attack parts into a list for the AttackController to reference
-        CalculateTotalBlood(); //bodyparts needed for this 
-        UpdateSkills(); //relies on bodyparts being loaded
+        AddBodyParts();
 
         //if a unit doesn't have an equipment manager load default eqpmnt 
         EquipmentManager e = GetComponent<EquipmentManager>();
@@ -101,8 +97,11 @@ public class BodyPartController : MonoBehaviour {
     //for each BodyPart to load itself to the controller
     public void AddBodyParts()
     {
-        BodyPart[] bp = GetComponents<BodyPart>();
-        bodyParts = bp.ToList();
+        bodyParts = GetComponent<Body>().GetBodyParts();
+
+        LoadAttackParts(); //saves attack parts into a list for the AttackController to reference
+        CalculateTotalBlood(); //bodyparts needed for this 
+        UpdateSkills(); //relies on bodyparts being loaded
 
         LoadVitalParts();
     }
@@ -388,10 +387,8 @@ public class BodyPartController : MonoBehaviour {
     //applies saved info to bodyparts
     public void LoadSavedParts(BodyPart.PartInfo[] info)
     {
-        if(bodyParts.Count == 0)
-        {
+        if (bodyParts.Count == 0)
             AddBodyParts();
-        }
 
         for (int i = 0; i < info.Length; i++)
         {
@@ -423,6 +420,8 @@ public class BodyPartController : MonoBehaviour {
 
     private void UpdateSkills()
     {
+        if (mySkills == null) //need to check for this in case this is called while loading saved parts before default parts are loaded
+            mySkills = GetComponent<CombatSkills>();
         attackReaction = mySkills.GetAttackReactionSkills();
     }
 }
