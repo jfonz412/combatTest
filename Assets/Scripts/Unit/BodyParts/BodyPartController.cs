@@ -281,105 +281,105 @@ public class BodyPartController : MonoBehaviour {
     #region Bleeding and Suffocation
 
     public void Bleed(float amount)
+    {
+        StartCoroutine(Bleeding(amount));
+    }
+
+    public void Suffocate(BodyPart part)
+    {
+        //currently prevents two different parts suffocating a unit (neck and chest for example)
+        if (!myBrain.ActiveState(Brain.State.Suffocating))
         {
-            StartCoroutine(Bleeding(amount));
+            myBrain.ToggleState(Brain.State.Suffocating, true);
+            string line = "<color=red>" + gameObject.name + " is suffocating to death!" + "</color>";
+            BattleReport.AddToBattleReport(line);
+            anim.Suffocation();
+            StartCoroutine(Suffocating(part));
+        }
+    }
+
+    private IEnumerator Bleeding(float blood)
+    {
+        //using 20 here because 12 parts * 5 severity = 1200 (roughly, this gets inaacurate with creatures with more/less parts)
+        float bloodNeeded = 600; //half of 1200 which I've set as a hardcoded default blood volume for all units
+
+        while (blood > 0 && totalBlood > 0)
+        {
+            totalBlood -= blood;
+            blood = (blood / 2) - 1f;
+            //Debug.Log(gameObject.name + " is bleeding for " + damage + " damage");
+            yield return new WaitForSeconds(1f);
         }
 
-        public void Suffocate(BodyPart part)
+        if (totalBlood <= bloodNeeded)
         {
-            //currently prevents two different parts suffocating a unit (neck and chest for example)
-            if (!myBrain.ActiveState(Brain.State.Suffocating))
+            SlipIntoShock();
+        }
+
+        yield break;
+    }
+
+    private void SlipIntoShock()
+    {
+        if (!myBrain.ActiveState(Brain.State.Shock)) // if not already in sheck
+        {
+            string line = "<color=red>" + gameObject.name + " is experiencing shock from loss of blood!</color>";
+            BattleReport.AddToBattleReport(line);
+            myBrain.ToggleState(Brain.State.Shock, true);
+            anim.Shock();
+            StartCoroutine(Shock());
+        }
+    }
+
+    private IEnumerator Shock()
+    {
+        float bloodNeeded = 600; //half of 1200 which I've set as a hardcoded default blood volume for all units
+        float deathTimer = 20f;
+
+
+        while (totalBlood < bloodNeeded)
+        {
+            deathTimer -= Time.deltaTime;
+            Debug.Log(deathTimer);
+            if (deathTimer <= 0)
             {
-                myBrain.ToggleState(Brain.State.Suffocating, true);
-                string line = "<color=red>" + gameObject.name + " is suffocating to death!" + "</color>";
+                string line = "<color=red>" + gameObject.name + " has bled out!</color>";
                 BattleReport.AddToBattleReport(line);
-                anim.Suffocation();
-                StartCoroutine(Suffocating(part));
+                StopAllCoroutines(); //need this in case we are suffocating and die this way first
+                myBrain.Die();
+                yield break;
             }
+            yield return null;
         }
 
-        private IEnumerator Bleeding(float blood)
+        //if we've exited the while loop before the timer is up then we've re-accumulated the lost blood and can exit shock
+        myBrain.ToggleState(Brain.State.Shock, false);
+        yield break;
+    }
+
+    private IEnumerator Suffocating(BodyPart part)
+    {
+        float deathTimer = 20f;
+
+        while (part.SeverityLevel() >= part.SuffocationThreshold()) 
         {
-            //using 20 here because 12 parts * 5 severity = 1200 (roughly, this gets inaacurate with creatures with more/less parts)
-            float bloodNeeded = 600; //half of 1200 which I've set as a hardcoded default blood volume for all units
-
-            while (blood > 0 && totalBlood > 0)
+            deathTimer -= Time.deltaTime;
+            Debug.Log(deathTimer);
+            if (deathTimer <= 0)
             {
-                totalBlood -= blood;
-                blood = (blood / 2) - 1f;
-                //Debug.Log(gameObject.name + " is bleeding for " + damage + " damage");
-                yield return new WaitForSeconds(1f);
-            }
-
-            if (totalBlood <= bloodNeeded)
-            {
-                SlipIntoShock();
-            }
-
-            yield break;
-        }
-
-        private void SlipIntoShock()
-        {
-            if (!myBrain.ActiveState(Brain.State.Shock)) // if not already in sheck
-            {
-                string line = "<color=red>" + gameObject.name + " is experiencing shock from loss of blood!</color>";
+                string line = "<color=red>" + gameObject.name + " has suffocated to death!" + "</color>";
                 BattleReport.AddToBattleReport(line);
-                myBrain.ToggleState(Brain.State.Shock, true);
-                anim.Shock();
-                StartCoroutine(Shock());
+                StopAllCoroutines(); //need this in case we are in shock and die this way first
+                myBrain.Die();
+                yield break;
             }
+            yield return null;
         }
 
-        private IEnumerator Shock()
-        {
-            float bloodNeeded = 600; //half of 1200 which I've set as a hardcoded default blood volume for all units
-            float deathTimer = 20f;
-
-
-            while (totalBlood < bloodNeeded)
-            {
-                deathTimer -= Time.deltaTime;
-                Debug.Log(deathTimer);
-                if (deathTimer <= 0)
-                {
-                    string line = "<color=red>" + gameObject.name + " has bled out!</color>";
-                    BattleReport.AddToBattleReport(line);
-                    StopAllCoroutines(); //need this in case we are suffocating and die this way first
-                    myBrain.Die();
-                    yield break;
-                }
-                yield return null;
-            }
-
-            //if we've exited the while loop before the timer is up then we've re-accumulated the lost blood and can exit shock
-            myBrain.ToggleState(Brain.State.Shock, false);
-            yield break;
-        }
-
-        private IEnumerator Suffocating(BodyPart part)
-        {
-            float deathTimer = 20f;
-
-            while (part.SeverityLevel() >= part.SuffocationThreshold()) 
-            {
-                deathTimer -= Time.deltaTime;
-                Debug.Log(deathTimer);
-                if (deathTimer <= 0)
-                {
-                    string line = "<color=red>" + gameObject.name + " has suffocated to death!" + "</color>";
-                    BattleReport.AddToBattleReport(line);
-                    StopAllCoroutines(); //need this in case we are in shock and die this way first
-                    myBrain.Die();
-                    yield break;
-                }
-                yield return null;
-            }
-
-            //if we've exited the while loop before the timer is up then we've re-accumulated the lost air and can exit suffocation
-            myBrain.ToggleState(Brain.State.Suffocating, false);
-            yield break;
-        }
+        //if we've exited the while loop before the timer is up then we've re-accumulated the lost air and can exit suffocation
+        myBrain.ToggleState(Brain.State.Suffocating, false);
+        yield break;
+    }
     #endregion
 
     #region Saving and Loading BodyParts

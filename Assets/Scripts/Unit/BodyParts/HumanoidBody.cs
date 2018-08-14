@@ -131,11 +131,11 @@ public class HumanoidBody : Body
         abdomin.bluntInjuries[5] = "The force of the {1} obliterates {0}'s innards!";
 
         abdomin.stabInjuries[0] = "The point of the {1} pokes at the skin of {0}'s " + abdomin.name + "!";
-        abdomin.stabInjuries[0] = "The point of the {1} pokes into the flesh of {0}'s " + abdomin.name + "!";
-        abdomin.stabInjuries[0] = "The point of the {1} tears through the muscle of {0}'s " + abdomin.name + "!";
-        abdomin.stabInjuries[0] = "The point of the {1} pokes {0} in the guts!";
-        abdomin.stabInjuries[0] = "The blade of the {1} cuts deep into {0}'s " + abdomin.name + "!";
-        abdomin.stabInjuries[0] = "The blade of the {1} pierces completely through {0}'s " + abdomin.name + "!";
+        abdomin.stabInjuries[1] = "The point of the {1} pokes into the flesh of {0}'s " + abdomin.name + "!";
+        abdomin.stabInjuries[2] = "The point of the {1} tears through the muscle of {0}'s " + abdomin.name + "!";
+        abdomin.stabInjuries[3] = "The point of the {1} pokes {0} in the guts!";
+        abdomin.stabInjuries[4] = "The blade of the {1} cuts deep into {0}'s " + abdomin.name + "!";
+        abdomin.stabInjuries[5] = "The blade of the {1} pierces completely through {0}'s " + abdomin.name + "!";
         return abdomin;
     }
 
@@ -340,7 +340,7 @@ public class HumanoidBody : Body
     {        BodyPart rightFoot = gameObject.AddComponent<BodyPart>();
 
         rightFoot.armorSlot = Item.EquipmentSlot.Feet; //put this before callback is assigned in base class
-        rightFoot.name = "left foot";
+        rightFoot.name = "right foot";
         rightFoot.functioningLimit = 4;
         rightFoot.vomitThreshold = 5;
         rightFoot.downedThreshold = 3;
