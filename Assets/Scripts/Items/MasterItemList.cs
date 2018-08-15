@@ -39,25 +39,6 @@ public class MasterItemList : MonoBehaviour {
         item.Init();
         return item;
     }
-    public static Item Fist()
-    {
-        Item item = new Item();
-
-        item.name = "Fist";
-        item.myDescription = "WEAPON ITEM, SHOULD NOT BE IN INVENTORY";
-        //item.icon = "fileName"
-        //item.myEquipSlot = Item.EquipmentSlot. don't know if I need this for weapons?
-        item.myMaterial = ItemMaterial.Material.NA;
-        item.weight = 1f;
-        item.stackable = false;
-        item.quantity = 1;
-        item.maxQuantity = 1;
-        item.myAttackType = Item.AttackType.BluntImpact; //can be punch?
-        item.myUseEffect = ItemEffects.ItemEffect.Equip;
-        item.myToolType = Item.ToolType.NA;
-        item.myWeaponSkill = Item.WeaponSkill.Hands;
-        return item;
-    }
     public static Item ClothShirt(int _quantity = 1)
     {
         Item item = new Item();
@@ -321,4 +302,127 @@ public class MasterItemList : MonoBehaviour {
         item.Init();
         return item;
     }
+
+    /*
+     * Subpart items are the different elements a BodyPart to equip for offense or defense
+     */
+    public static Item Fist()
+    {
+        Item item = new Item();
+
+        item.name = "fist";
+        item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
+        //item.icon = "NO ICON"
+        //item.myEquipSlot = ANY
+        item.myMaterial = ItemMaterial.Material.Bone;
+        item.weight = 1f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myAttackType = Item.AttackType.BluntImpact;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        item.myWeaponSkill = Item.WeaponSkill.Hands;
+        return item;
+    }
+    /* //not used
+    public static Item BareFlesh()
+    {
+        Item item = new Item();
+
+        item.name = "bare flesh";
+        item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
+        //item.icon = "NO ICON"
+        //item.myEquipSlot = ANY
+        item.myMaterial = ItemMaterial.Material.NA;
+        item.weight = 1f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myAttackType = Item.AttackType.NA;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        item.myWeaponSkill = Item.WeaponSkill.NA;
+        return item;
+    } */
+
+    public static Item FurSkin()
+    {
+        Item item = new Item();
+
+        item.name = "fur skin";
+        item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
+        //item.icon = "NO ICON"
+        //item.myEquipSlot = ANY
+        item.myMaterial = ItemMaterial.Material.FurSkin;
+        item.weight = 1f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myAttackType = Item.AttackType.NA;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        item.myWeaponSkill = Item.WeaponSkill.NA;
+        return item;
+    }
+
+    public static Item ThichFurSkin()
+    {
+        Item item = new Item();
+
+        item.name = "thich fur skin";
+        item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
+        //item.icon = "NO ICON"
+        //item.myEquipSlot = ANY
+        item.myMaterial = ItemMaterial.Material.ThickFurSkin;
+        item.weight = 1f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myAttackType = Item.AttackType.NA;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        item.myWeaponSkill = Item.WeaponSkill.NA;
+        return item;
+    }
+
+    public static Item Claw()
+    {
+        Item item = new Item();
+
+        item.name = "claw";
+        item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
+        //item.icon = "NO ICON"
+        //item.myEquipSlot = ANY
+        item.myMaterial = ItemMaterial.Material.Bone;
+        item.weight = 1f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myAttackType = Item.AttackType.Claw; 
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        item.myWeaponSkill = Item.WeaponSkill.NA;
+        return item;
+    }
+    public static Item Teeth()
+    {
+        Item item = new Item();
+
+        item.name = "teeth";
+        item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
+        //item.icon = "NO ICON"
+        //item.myEquipSlot = ANY
+        item.myMaterial = ItemMaterial.Material.Bone;
+        item.weight = 1f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myAttackType = Item.AttackType.Bite;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        item.myWeaponSkill = Item.WeaponSkill.NA;
+        return item;
+    }
+
 }

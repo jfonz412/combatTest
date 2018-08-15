@@ -2,7 +2,7 @@
 
 public class ItemMaterial : MonoBehaviour {
 
-    public enum Material { NA, Cloth, Leather, Iron, Steel, Thicket, ThickFur, Bone, Wood, Glass, Ceramic }
+    public enum Material { NA, Cloth, Leather, Iron, Steel, Thicket, ThickFurSkin, FurSkin, Bone, Wood, Glass, Ceramic }
 
     public static float HardnessValue(Material material)
     {
@@ -16,11 +16,11 @@ public class ItemMaterial : MonoBehaviour {
         {
             return Random.Range(5, 20);
         }
-        else if (material == Material.Thicket)
+        else if (material == Material.Thicket || material == Material.ThickFurSkin)
         {
             return Random.Range(10, 30);
         }
-        else if (material == Material.Leather || material == Material.ThickFur)
+        else if (material == Material.Leather || material == Material.ThickFurSkin)
         {
             return Random.Range(15, 30);
         }

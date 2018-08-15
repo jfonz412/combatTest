@@ -151,8 +151,8 @@ public class BodyPart : MonoBehaviour {
                 //Debug.Log(gameObject.name + " is logging for " + damageInfo.damageType + " damage!");
                 log = dollPart.LogInjury(severity, damageInfo.damageType);
             }
-
-            line = string.Format(GetInjuryString(damageInfo.damageType, severity), gameObject.name, damageInfo.weaponName);
+            string unitName = gameObject.name;
+            line = string.Format(GetInjuryString(damageInfo.damageType, severity), unitName, damageInfo.weaponName, damageInfo.attackerName);
             BattleReport.AddToBattleReport(line);
             StatusChecks(severity);
             Bleed(damageInfo);

@@ -39,19 +39,19 @@ public class HumanoidBody : Body
         head.downedThreshold = 3;
         head.isVitalPart = true;
 
-        head.stabInjuries[0] = "The point of the {1} pokes at the skin of {0}'s " + head.name + "!";
-        head.stabInjuries[1] = "The point of the {1} leaves a decent gash flesh of {0}'s " + head.name + "!";
-        head.stabInjuries[2] = "The point of the {1} jabs into {0}'s " + head.name + ", the neck is pulled with the force";
-        head.stabInjuries[3] = "The point of the {1} slams into the " + head.name + " and cracks {0}'s skull!";
-        head.stabInjuries[4] = "The blade of the {1} jams halfway into {0}'s skull!";
-        head.stabInjuries[5] = "The blade of the {1} pierces completely through {0}'s " + head.name + "!";
+        head.stabInjuries[0] = "The point of {2}'s {1} pokes at the skin of {0}'s " + head.name + "!";
+        head.stabInjuries[1] = "The point of {2}'s {1} leaves a decent gash flesh of {0}'s " + head.name + "!";
+        head.stabInjuries[2] = "The point of {2}'s {1} jabs into {0}'s " + head.name + ", the neck is pulled with the force";
+        head.stabInjuries[3] = "The point of {2}'s {1} slams into the " + head.name + " and cracks {0}'s skull!";
+        head.stabInjuries[4] = "The blade of {2}'s {1} jams halfway into {0}'s skull!";
+        head.stabInjuries[5] = "The blade of {2}'s {1} pierces completely through {0}'s " + head.name + "!";
 
-        head.bluntInjuries[0] = "The force of the {1} leaves a light bruise on {0}'s " + head.name + "!";
-        head.bluntInjuries[1] = "The force of the {1} bruises {0}'s " + head.name + "!";
-        head.bluntInjuries[2] = "The force of the {1} heavily bruises {0}'s " + head.name + "!";
-        head.bluntInjuries[3] = "The force of the {1} gives {0} a serious concussion";
-        head.bluntInjuries[4] = "The force of the {1} cracks {0}'s skull!";
-        head.bluntInjuries[5] = "The force of the {1} completely caves in {0}'s " + head.name + "!";
+        head.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + head.name + "!";
+        head.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + head.name + "!";
+        head.bluntInjuries[2] = "The force of {2}'s {1} heavily bruises {0}'s " + head.name + "!";
+        head.bluntInjuries[3] = "The force of {2}'s {1} gives {0} a serious concussion";
+        head.bluntInjuries[4] = "The force of {2}'s {1} cracks {0}'s skull!";
+        head.bluntInjuries[5] = "The force of {2}'s {1} completely caves in {0}'s " + head.name + "!";
 
         return head;
     }
@@ -68,19 +68,19 @@ public class HumanoidBody : Body
 
         neck.bleedBonus = 2f;
 
-        neck.stabInjuries[0] = "The point of the {1} pokes into the flesh of {0}'s " + neck.name + "!";
-        neck.stabInjuries[1] = "The point of the {1} stabs into {0}'s " + neck.name + "!";
-        neck.stabInjuries[2] = "The point of the {1} stabs deeply into {0}'s " + neck.name + "";
-        neck.stabInjuries[3] = "The blade of the {1} pierces completely through {0}'s " + neck.name + "!";
-        neck.stabInjuries[4] = "The blade of the {1} pierces completely through {0}'s " + neck.name + "!";
-        neck.stabInjuries[5] = "The blade of the {1} pierces completely through {0}'s " + neck.name + "!";
+        neck.stabInjuries[0] = "The point of {2}'s {1} pokes into the flesh of {0}'s " + neck.name + "!";
+        neck.stabInjuries[1] = "The point of {2}'s {1} stabs into {0}'s " + neck.name + "!";
+        neck.stabInjuries[2] = "The point of {2}'s {1} stabs deeply into {0}'s " + neck.name + "";
+        neck.stabInjuries[3] = "The blade of {2}'s {1} pierces completely through {0}'s " + neck.name + "!";
+        neck.stabInjuries[4] = "The blade of {2}'s {1} pierces completely through {0}'s " + neck.name + "!";
+        neck.stabInjuries[5] = "The blade of {2}'s {1} pierces completely through {0}'s " + neck.name + "!";
 
-        neck.bluntInjuries[0] = "The force of the {1} bruises {0}'s " + neck.name + "!";
-        neck.bluntInjuries[1] = "The force of the {1} heavily bruises {0}'s " + neck.name + "!";
-        neck.bluntInjuries[2] = "The force of the {1} seriously bruises {0}'s " + neck.name + "!";
-        neck.bluntInjuries[3] = "The force of the {1} crushes the meat of {0}'s " + neck.name + "";
-        neck.bluntInjuries[4] = "The force of the {1} crumples part of {0}'s " + neck.name + "!";
-        neck.bluntInjuries[5] = "The force of the {1} completely crushes {0}'s " + neck.name + "!";
+        neck.bluntInjuries[0] = "The force of {2}'s {1} bruises {0}'s " + neck.name + "!";
+        neck.bluntInjuries[1] = "The force of {2}'s {1} heavily bruises {0}'s " + neck.name + "!";
+        neck.bluntInjuries[2] = "The force of {2}'s {1} seriously bruises {0}'s " + neck.name + "!";
+        neck.bluntInjuries[3] = "The force of {2}'s {1} crushes the meat of {0}'s " + neck.name + "";
+        neck.bluntInjuries[4] = "The force of {2}'s {1} crumples part of {0}'s " + neck.name + "!";
+        neck.bluntInjuries[5] = "The force of {2}'s {1} completely crushes {0}'s " + neck.name + "!";
 
         return neck;
     }
@@ -96,19 +96,19 @@ public class HumanoidBody : Body
         chest.cantBreathThreshold = 3;
         chest.suffocationThreshold = 4;
 
-        chest.bluntInjuries[0] = "The force of the {1} leaves a light bruise on {0}'s " + chest.name + "!";
-        chest.bluntInjuries[1] = "The force of the {1} bruises {0}'s " + chest.name + "!";
-        chest.bluntInjuries[2] = "The force of the {1} heavily bruises {0}'s " + chest.name + "!";
-        chest.bluntInjuries[3] = "The force of the {1} cracks the ribs of {0}'s " + chest.name + "";
-        chest.bluntInjuries[4] = "The force of the {1} shatters the ribs of {0}'s " + chest.name + "!";
-        chest.bluntInjuries[5] = "The force of the {1} completely caves in {0}'s " + chest.name + "!";
+        chest.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + chest.name + "!";
+        chest.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + chest.name + "!";
+        chest.bluntInjuries[2] = "The force of {2}'s {1} heavily bruises {0}'s " + chest.name + "!";
+        chest.bluntInjuries[3] = "The force of {2}'s {1} cracks the ribs of {0}'s " + chest.name + "";
+        chest.bluntInjuries[4] = "The force of {2}'s {1} shatters the ribs of {0}'s " + chest.name + "!";
+        chest.bluntInjuries[5] = "The force of {2}'s {1} completely caves in {0}'s " + chest.name + "!";
             
-        chest.stabInjuries[0] = "The point of the {1} pokes at the skin of {0}'s " + chest.name + "!";
-        chest.stabInjuries[1] = "The point of the {1} pokes into the flesh of {0}'s " + chest.name + "!";
-        chest.stabInjuries[2] = "The point of the {1} tears through the muscle of {0}'s " + chest.name + "";
-        chest.stabInjuries[3] = "The point of the {1} jams into the ribs {0}'s " + chest.name + "!";
-        chest.stabInjuries[4] = "The blade of the {1} cuts through the ribs of {0}'s " + chest.name + "!";
-        chest.stabInjuries[5] = "The blade of the {1} pierces completely through {0}'s " + chest.name + "!";
+        chest.stabInjuries[0] = "The point of {2}'s {1} pokes at the skin of {0}'s " + chest.name + "!";
+        chest.stabInjuries[1] = "The point of {2}'s {1} pokes into the flesh of {0}'s " + chest.name + "!";
+        chest.stabInjuries[2] = "The point of {2}'s {1} tears through the muscle of {0}'s " + chest.name + "";
+        chest.stabInjuries[3] = "The point of {2}'s {1} jams into the ribs {0}'s " + chest.name + "!";
+        chest.stabInjuries[4] = "The blade of {2}'s {1} cuts through the ribs of {0}'s " + chest.name + "!";
+        chest.stabInjuries[5] = "The blade of {2}'s {1} pierces completely through {0}'s " + chest.name + "!";
 
         return chest;
     }
@@ -123,19 +123,19 @@ public class HumanoidBody : Body
         abdomin.downedThreshold = 3;
         abdomin.cantBreathThreshold = 2;
 
-        abdomin.bluntInjuries[0] = "The force of the {1} leaves a light bruise on {0}'s " + abdomin.name + "!";
-        abdomin.bluntInjuries[1] = "The force of the {1} bruises {0}'s " + abdomin.name + "!";
-        abdomin.bluntInjuries[2] = "The force of the {1} heavily bruises {0}'s " + abdomin.name + "!";
-        abdomin.bluntInjuries[3] = "The force of the {1} bruises {0}'s guts";
-        abdomin.bluntInjuries[4] = "The force of the {1} against {0}'s " + abdomin.name + " causes serious internal bleeding!";
-        abdomin.bluntInjuries[5] = "The force of the {1} obliterates {0}'s innards!";
+        abdomin.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + abdomin.name + "!";
+        abdomin.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + abdomin.name + "!";
+        abdomin.bluntInjuries[2] = "The force of {2}'s {1} heavily bruises {0}'s " + abdomin.name + "!";
+        abdomin.bluntInjuries[3] = "The force of {2}'s {1} bruises {0}'s guts";
+        abdomin.bluntInjuries[4] = "The force of {2}'s {1} against {0}'s " + abdomin.name + " causes serious internal bleeding!";
+        abdomin.bluntInjuries[5] = "The force of {2}'s {1} obliterates {0}'s innards!";
 
-        abdomin.stabInjuries[0] = "The point of the {1} pokes at the skin of {0}'s " + abdomin.name + "!";
-        abdomin.stabInjuries[1] = "The point of the {1} pokes into the flesh of {0}'s " + abdomin.name + "!";
-        abdomin.stabInjuries[2] = "The point of the {1} tears through the muscle of {0}'s " + abdomin.name + "!";
-        abdomin.stabInjuries[3] = "The point of the {1} pokes {0} in the guts!";
-        abdomin.stabInjuries[4] = "The blade of the {1} cuts deep into {0}'s " + abdomin.name + "!";
-        abdomin.stabInjuries[5] = "The blade of the {1} pierces completely through {0}'s " + abdomin.name + "!";
+        abdomin.stabInjuries[0] = "The point of {2}'s {1} pokes at the skin of {0}'s " + abdomin.name + "!";
+        abdomin.stabInjuries[1] = "The point of {2}'s {1} pokes into the flesh of {0}'s " + abdomin.name + "!";
+        abdomin.stabInjuries[2] = "The point of {2}'s {1} tears through the muscle of {0}'s " + abdomin.name + "!";
+        abdomin.stabInjuries[3] = "The point of {2}'s {1} pokes {0} in the guts!";
+        abdomin.stabInjuries[4] = "The blade of {2}'s {1} cuts deep into {0}'s " + abdomin.name + "!";
+        abdomin.stabInjuries[5] = "The blade of {2}'s {1} pierces completely through {0}'s " + abdomin.name + "!";
         return abdomin;
     }
 
@@ -151,19 +151,19 @@ public class HumanoidBody : Body
         leftArm.vomitThreshold = 5;
         leftArm.downedThreshold = 3;
 
-        leftArm.bluntInjuries[0] = "The force of the {1} leaves a light bruise on {0}'s " + leftArm.name + "!";
-        leftArm.bluntInjuries[1] = "The force of the {1} bruises {0}'s " + leftArm.name + "!";
-        leftArm.bluntInjuries[2] = "The force of the {1} heavily bruises {0}'s " + leftArm.name + "!";
-        leftArm.bluntInjuries[3] = "The force of the {1} cracking a bone in {0}'s " + leftArm.name + "!";
-        leftArm.bluntInjuries[4] = "The force of the {1} crushes the bones of {0}'s " + leftArm.name + "!";
-        leftArm.bluntInjuries[5] = "The force of the {1} completely pulverizes {0}'s " + leftArm.name + "!";
+        leftArm.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + leftArm.name + "!";
+        leftArm.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + leftArm.name + "!";
+        leftArm.bluntInjuries[2] = "The force of {2}'s {1} heavily bruises {0}'s " + leftArm.name + "!";
+        leftArm.bluntInjuries[3] = "The force of {2}'s {1} cracking a bone in {0}'s " + leftArm.name + "!";
+        leftArm.bluntInjuries[4] = "The force of {2}'s {1} crushes the bones of {0}'s " + leftArm.name + "!";
+        leftArm.bluntInjuries[5] = "The force of {2}'s {1} completely pulverizes {0}'s " + leftArm.name + "!";
 
-        leftArm.stabInjuries[0] = "The {1} pokes at the skin of {0}'s " + leftArm.name + "!";
-        leftArm.stabInjuries[1] = "The {1} slices into flesh of {0}'s " + leftArm.name + "!";
-        leftArm.stabInjuries[2] = "The {1} stabs into {0}'s " + leftArm.name + "!";
-        leftArm.stabInjuries[3] = "The {1} stabs deep into {0}'s " + leftArm.name + "!";
-        leftArm.stabInjuries[4] = "The {1} seriously gores {0}'s " + leftArm.name + "!";
-        leftArm.stabInjuries[5] = "The blade of the {1} passes completely through {0}'s " + leftArm.name + "!";
+        leftArm.stabInjuries[0] = "{2}'s {1} pokes at the skin of {0}'s " + leftArm.name + "!";
+        leftArm.stabInjuries[1] = "{2}'s {1} slices into flesh of {0}'s " + leftArm.name + "!";
+        leftArm.stabInjuries[2] = "{2}'s {1} stabs into {0}'s " + leftArm.name + "!";
+        leftArm.stabInjuries[3] = "{2}'s {1} stabs deep into {0}'s " + leftArm.name + "!";
+        leftArm.stabInjuries[4] = "{2}'s {1} seriously gores {0}'s " + leftArm.name + "!";
+        leftArm.stabInjuries[5] = "The blade of {2}'s {1} passes completely through {0}'s " + leftArm.name + "!";
 
         return leftArm;
     }
@@ -180,19 +180,19 @@ public class HumanoidBody : Body
         rightArm.vomitThreshold = 5;
         rightArm.downedThreshold = 3;
 
-        rightArm.bluntInjuries[0] = "The force of the {1} leaves a light bruise on {0}'s " + rightArm.name + "!";
-        rightArm.bluntInjuries[1] = "The force of the {1} bruises {0}'s " + rightArm.name + "!";
-        rightArm.bluntInjuries[2] = "The force of the {1} heavily bruises {0}'s " + rightArm.name + "!";
-        rightArm.bluntInjuries[3] = "The force of the {1} cracking a bone in {0}'s " + rightArm.name + "!";
-        rightArm.bluntInjuries[4] = "The force of the {1} crushes the bones of {0}'s " + rightArm.name + "!";
-        rightArm.bluntInjuries[5] = "The force of the {1} completely pulverizes {0}'s " + rightArm.name + "!";
+        rightArm.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + rightArm.name + "!";
+        rightArm.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + rightArm.name + "!";
+        rightArm.bluntInjuries[2] = "The force of {2}'s {1} heavily bruises {0}'s " + rightArm.name + "!";
+        rightArm.bluntInjuries[3] = "The force of {2}'s {1} cracking a bone in {0}'s " + rightArm.name + "!";
+        rightArm.bluntInjuries[4] = "The force of {2}'s {1} crushes the bones of {0}'s " + rightArm.name + "!";
+        rightArm.bluntInjuries[5] = "The force of {2}'s {1} completely pulverizes {0}'s " + rightArm.name + "!";
 
-        rightArm.stabInjuries[0] = "The {1} pokes at the skin of {0}'s " + rightArm.name + "!";
-        rightArm.stabInjuries[1] = "The {1} slices into flesh of {0}'s " + rightArm.name + "!";
-        rightArm.stabInjuries[2] = "The {1} stabs into {0}'s " + rightArm.name + "!";
-        rightArm.stabInjuries[3] = "The {1} stabs deep into {0}'s " + rightArm.name + "!";
-        rightArm.stabInjuries[4] = "The {1} seriously gores {0}'s " + rightArm.name + "!";
-        rightArm.stabInjuries[5] = "The blade of the {1} passes completely through {0}'s " + rightArm.name + "!";
+        rightArm.stabInjuries[0] = "{2}'s {1} pokes at the skin of {0}'s " + rightArm.name + "!";
+        rightArm.stabInjuries[1] = "{2}'s {1} slices into flesh of {0}'s " + rightArm.name + "!";
+        rightArm.stabInjuries[2] = "{2}'s {1} stabs into {0}'s " + rightArm.name + "!";
+        rightArm.stabInjuries[3] = "{2}'s {1} stabs deep into {0}'s " + rightArm.name + "!";
+        rightArm.stabInjuries[4] = "{2}'s {1} seriously gores {0}'s " + rightArm.name + "!";
+        rightArm.stabInjuries[5] = "The blade of {2}'s {1} passes completely through {0}'s " + rightArm.name + "!";
 
         return rightArm;
     }
@@ -209,19 +209,19 @@ public class HumanoidBody : Body
         leftHand.downedThreshold = 4;
         leftHand.attack2 = true;
 
-        leftHand.bluntInjuries[0] = "The force of the {1} leaves a light bruise on {0}'s " + leftHand.name + "!";
-        leftHand.bluntInjuries[1] = "The force of the {1} bruises {0}'s " + leftHand.name + "!";
-        leftHand.bluntInjuries[2] = "The force of the {1} heavily bruises {0}'s " + leftHand.name + "!";
-        leftHand.bluntInjuries[3] = "The force of the {1} cracks the bones in {0}'s " + leftHand.name + "!";
-        leftHand.bluntInjuries[4] = "The force of the {1} crushes the bones of {0}'s " + leftHand.name + "!";
-        leftHand.bluntInjuries[5] = "The force of the {1} completely obliterates {0}'s " + leftHand.name + "!";
+        leftHand.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + leftHand.name + "!";
+        leftHand.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + leftHand.name + "!";
+        leftHand.bluntInjuries[2] = "The force of {2}'s {1} heavily bruises {0}'s " + leftHand.name + "!";
+        leftHand.bluntInjuries[3] = "The force of {2}'s {1} cracks the bones in {0}'s " + leftHand.name + "!";
+        leftHand.bluntInjuries[4] = "The force of {2}'s {1} crushes the bones of {0}'s " + leftHand.name + "!";
+        leftHand.bluntInjuries[5] = "The force of {2}'s {1} completely obliterates {0}'s " + leftHand.name + "!";
 
-        leftHand.stabInjuries[0] = "The {1} pokes at the skin of {0}'s " + leftHand.name + "!";
-        leftHand.stabInjuries[1] = "The {1} slices at the skin of {0}'s " + leftHand.name + "!";
-        leftHand.stabInjuries[2] = "The {1} stabs into {0}'s " + leftHand.name + "!";
-        leftHand.stabInjuries[3] = "The {1} stabs completely through {0}'s " + leftHand.name + "!";
-        leftHand.stabInjuries[4] = "The {1} fractures the bones in {0}'s " + leftHand.name + "!";
-        leftHand.stabInjuries[5] = "The {1} completely mangles {0}'s " + leftHand.name + "!";
+        leftHand.stabInjuries[0] = "{2}'s {1} pokes at the skin of {0}'s " + leftHand.name + "!";
+        leftHand.stabInjuries[1] = "{2}'s {1} slices at the skin of {0}'s " + leftHand.name + "!";
+        leftHand.stabInjuries[2] = "{2}'s {1} stabs into {0}'s " + leftHand.name + "!";
+        leftHand.stabInjuries[3] = "{2}'s {1} stabs completely through {0}'s " + leftHand.name + "!";
+        leftHand.stabInjuries[4] = "{2}'s {1} fractures the bones in {0}'s " + leftHand.name + "!";
+        leftHand.stabInjuries[5] = "{2}'s {1} completely mangles {0}'s " + leftHand.name + "!";
 
         return leftHand;
     }
@@ -238,19 +238,19 @@ public class HumanoidBody : Body
         rightHand.downedThreshold = 4;
         rightHand.attack1 = true;
 
-        rightHand.bluntInjuries[0] = "The force of the {1} leaves a light bruise on {0}'s " + rightHand.name + "!";
-        rightHand.bluntInjuries[1] = "The force of the {1} bruises {0}'s " + rightHand.name + "!";
-        rightHand.bluntInjuries[2] = "The force of the {1} heavily bruises {0}'s " + rightHand.name + "!";
-        rightHand.bluntInjuries[3] = "The force of the {1} cracks the bones in {0}'s " + rightHand.name + "!";
-        rightHand.bluntInjuries[4] = "The force of the {1} crushes the bones of {0}'s " + rightHand.name + "!";
-        rightHand.bluntInjuries[5] = "The force of the {1} completely obliterates {0}'s " + rightHand.name + "!";
+        rightHand.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + rightHand.name + "!";
+        rightHand.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + rightHand.name + "!";
+        rightHand.bluntInjuries[2] = "The force of {2}'s {1} heavily bruises {0}'s " + rightHand.name + "!";
+        rightHand.bluntInjuries[3] = "The force of {2}'s {1} cracks the bones in {0}'s " + rightHand.name + "!";
+        rightHand.bluntInjuries[4] = "The force of {2}'s {1} crushes the bones of {0}'s " + rightHand.name + "!";
+        rightHand.bluntInjuries[5] = "The force of {2}'s {1} completely obliterates {0}'s " + rightHand.name + "!";
 
-        rightHand.stabInjuries[0] = "The {1} pokes at the skin of {0}'s " + rightHand.name + "!";
-        rightHand.stabInjuries[1] = "The {1} slices at the skin of {0}'s " + rightHand.name + "!";
-        rightHand.stabInjuries[2] = "The {1} stabs into {0}'s " + rightHand.name + "!";
-        rightHand.stabInjuries[3] = "The {1} stabs completely through {0}'s " + rightHand.name + "!";
-        rightHand.stabInjuries[4] = "The {1} fractures the bones in {0}'s " + rightHand.name + "!";
-        rightHand.stabInjuries[5] = "The {1} completely mangles {0}'s " + rightHand.name + "!";
+        rightHand.stabInjuries[0] = "{2}'s {1} pokes at the skin of {0}'s " + rightHand.name + "!";
+        rightHand.stabInjuries[1] = "{2}'s {1} slices at the skin of {0}'s " + rightHand.name + "!";
+        rightHand.stabInjuries[2] = "{2}'s {1} stabs into {0}'s " + rightHand.name + "!";
+        rightHand.stabInjuries[3] = "{2}'s {1} stabs completely through {0}'s " + rightHand.name + "!";
+        rightHand.stabInjuries[4] = "{2}'s {1} fractures the bones in {0}'s " + rightHand.name + "!";
+        rightHand.stabInjuries[5] = "{2}'s {1} completely mangles {0}'s " + rightHand.name + "!";
 
         return rightHand;
     }
@@ -265,19 +265,19 @@ public class HumanoidBody : Body
         leftLeg.vomitThreshold = 4;
         leftLeg.downedThreshold = 3;
 
-        leftLeg.bluntInjuries[0] = "The force of the {1} leaves a light bruise on {0}'s " + leftLeg.name + "!";
-        leftLeg.bluntInjuries[1] = "The force of the {1} bruises {0}'s " + leftLeg.name + "!";
-        leftLeg.bluntInjuries[2] = "The force of the {1} heavily bruises {0}'s " + leftLeg.name + "!";
-        leftLeg.bluntInjuries[3] = "The force of the {1} cracking a bone in {0}'s " + leftLeg.name + "!";
-        leftLeg.bluntInjuries[4] = "The force of the {1} crushes the bones of {0}'s " + leftLeg.name + "!";
-        leftLeg.bluntInjuries[5] = "The force of the {1} completely pulverizes {0}'s " + leftLeg.name + "!";
+        leftLeg.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + leftLeg.name + "!";
+        leftLeg.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + leftLeg.name + "!";
+        leftLeg.bluntInjuries[2] = "The force of {2}'s {1} heavily bruises {0}'s " + leftLeg.name + "!";
+        leftLeg.bluntInjuries[3] = "The force of {2}'s {1} cracking a bone in {0}'s " + leftLeg.name + "!";
+        leftLeg.bluntInjuries[4] = "The force of {2}'s {1} crushes the bones of {0}'s " + leftLeg.name + "!";
+        leftLeg.bluntInjuries[5] = "The force of {2}'s {1} completely pulverizes {0}'s " + leftLeg.name + "!";
 
-        leftLeg.stabInjuries[0] = "The {1} pokes at the skin of {0}'s " + leftLeg.name + "!";
-        leftLeg.stabInjuries[1] = "The {1} slices into flesh of {0}'s " + leftLeg.name + "!";
-        leftLeg.stabInjuries[2] = "The {1} stabs into {0}'s " + leftLeg.name + "!";
-        leftLeg.stabInjuries[3] = "The {1} stabs deep into {0}'s " + leftLeg.name + "!";
-        leftLeg.stabInjuries[4] = "The {1} seriously gores {0}'s " + leftLeg.name + "!";
-        leftLeg.stabInjuries[5] = "The blade of the {1} passes completely through {0}'s " + leftLeg.name + "!";
+        leftLeg.stabInjuries[0] = "{2}'s {1} pokes at the skin of {0}'s " + leftLeg.name + "!";
+        leftLeg.stabInjuries[1] = "{2}'s {1} slices into flesh of {0}'s " + leftLeg.name + "!";
+        leftLeg.stabInjuries[2] = "{2}'s {1} stabs into {0}'s " + leftLeg.name + "!";
+        leftLeg.stabInjuries[3] = "{2}'s {1} stabs deep into {0}'s " + leftLeg.name + "!";
+        leftLeg.stabInjuries[4] = "{2}'s {1} seriously gores {0}'s " + leftLeg.name + "!";
+        leftLeg.stabInjuries[5] = "The blade of {2}'s {1} passes completely through {0}'s " + leftLeg.name + "!";
 
         return leftLeg;
     }
@@ -292,19 +292,19 @@ public class HumanoidBody : Body
         rightLeg.vomitThreshold = 4;
         rightLeg.downedThreshold = 3;
 
-        rightLeg.bluntInjuries[0] = "The force of the {1} leaves a light bruise on {0}'s " + rightLeg.name + "!";
-        rightLeg.bluntInjuries[1] = "The force of the {1} bruises {0}'s " + rightLeg.name + "!";
-        rightLeg.bluntInjuries[2] = "The force of the {1} heavily bruises {0}'s " + rightLeg.name + "!";
-        rightLeg.bluntInjuries[3] = "The force of the {1} cracking a bone in {0}'s " + rightLeg.name + "!";
-        rightLeg.bluntInjuries[4] = "The force of the {1} crushes the bones of {0}'s " + rightLeg.name + "!";
-        rightLeg.bluntInjuries[5] = "The force of the {1} completely pulverizes {0}'s " + rightLeg.name + "!";
+        rightLeg.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + rightLeg.name + "!";
+        rightLeg.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + rightLeg.name + "!";
+        rightLeg.bluntInjuries[2] = "The force of {2}'s {1} heavily bruises {0}'s " + rightLeg.name + "!";
+        rightLeg.bluntInjuries[3] = "The force of {2}'s {1} cracking a bone in {0}'s " + rightLeg.name + "!";
+        rightLeg.bluntInjuries[4] = "The force of {2}'s {1} crushes the bones of {0}'s " + rightLeg.name + "!";
+        rightLeg.bluntInjuries[5] = "The force of {2}'s {1} completely pulverizes {0}'s " + rightLeg.name + "!";
 
-        rightLeg.stabInjuries[0] = "The {1} pokes at the skin of {0}'s " + rightLeg.name + "!";
-        rightLeg.stabInjuries[1] = "The {1} slices into flesh of {0}'s " + rightLeg.name + "!";
-        rightLeg.stabInjuries[2] = "The {1} stabs into {0}'s " + rightLeg.name + "!";
-        rightLeg.stabInjuries[3] = "The {1} stabs deep into {0}'s " + rightLeg.name + "!";
-        rightLeg.stabInjuries[4] = "The {1} seriously gores {0}'s " + rightLeg.name + "!";
-        rightLeg.stabInjuries[5] = "The blade of the {1} passes completely through {0}'s " + rightLeg.name + "!";
+        rightLeg.stabInjuries[0] = "{2}'s {1} pokes at the skin of {0}'s " + rightLeg.name + "!";
+        rightLeg.stabInjuries[1] = "{2}'s {1} slices into flesh of {0}'s " + rightLeg.name + "!";
+        rightLeg.stabInjuries[2] = "{2}'s {1} stabs into {0}'s " + rightLeg.name + "!";
+        rightLeg.stabInjuries[3] = "{2}'s {1} stabs deep into {0}'s " + rightLeg.name + "!";
+        rightLeg.stabInjuries[4] = "{2}'s {1} seriously gores {0}'s " + rightLeg.name + "!";
+        rightLeg.stabInjuries[5] = "The blade of {2}'s {1} passes completely through {0}'s " + rightLeg.name + "!";
 
         return rightLeg;
     }
@@ -319,19 +319,19 @@ public class HumanoidBody : Body
         leftFoot.vomitThreshold = 5;
         leftFoot.downedThreshold = 3;
 
-        leftFoot.bluntInjuries[0] = "The force of the {1} leaves a light bruise on {0}'s " + leftFoot.name + "!";
-        leftFoot.bluntInjuries[1] = "The force of the {1} bruises {0}'s " + leftFoot.name + "!";
-        leftFoot.bluntInjuries[2] = "The force of the {1} heavily bruises {0}'s " + leftFoot.name + "!";
-        leftFoot.bluntInjuries[3] = "The force of the {1} cracks the bones in {0}'s " + leftFoot.name + "!";
-        leftFoot.bluntInjuries[4] = "The force of the {1} crushes the bones of {0}'s " + leftFoot.name + "!";
-        leftFoot.bluntInjuries[5] = "The force of the {1} completely obliterates {0}'s " + leftFoot.name + "!";
+        leftFoot.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + leftFoot.name + "!";
+        leftFoot.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + leftFoot.name + "!";
+        leftFoot.bluntInjuries[2] = "The force of {2}'s {1} heavily bruises {0}'s " + leftFoot.name + "!";
+        leftFoot.bluntInjuries[3] = "The force of {2}'s {1} cracks the bones in {0}'s " + leftFoot.name + "!";
+        leftFoot.bluntInjuries[4] = "The force of {2}'s {1} crushes the bones of {0}'s " + leftFoot.name + "!";
+        leftFoot.bluntInjuries[5] = "The force of {2}'s {1} completely obliterates {0}'s " + leftFoot.name + "!";
 
-        leftFoot.stabInjuries[0] = "The {1} pokes at the skin of {0}'s " + leftFoot.name + "!";
-        leftFoot.stabInjuries[1] = "The {1} slices at the skin of {0}'s " + leftFoot.name + "!";
-        leftFoot.stabInjuries[2] = "The {1} stabs into {0}'s " + leftFoot.name + "!";
-        leftFoot.stabInjuries[3] = "The {1} stabs completely through {0}'s " + leftFoot.name + "!";
-        leftFoot.stabInjuries[4] = "The {1} fractures the bones in {0}'s " + leftFoot.name + " penetrates through";
-        leftFoot.stabInjuries[5] = "The {1} completely mangles {0}'s " + leftFoot.name + "!";
+        leftFoot.stabInjuries[0] = "{2}'s {1} pokes at the skin of {0}'s " + leftFoot.name + "!";
+        leftFoot.stabInjuries[1] = "{2}'s {1} slices at the skin of {0}'s " + leftFoot.name + "!";
+        leftFoot.stabInjuries[2] = "{2}'s {1} stabs into {0}'s " + leftFoot.name + "!";
+        leftFoot.stabInjuries[3] = "{2}'s {1} stabs completely through {0}'s " + leftFoot.name + "!";
+        leftFoot.stabInjuries[4] = "{2}'s {1} fractures the bones in {0}'s " + leftFoot.name + " penetrates through";
+        leftFoot.stabInjuries[5] = "{2}'s {1} completely mangles {0}'s " + leftFoot.name + "!";
 
         return leftFoot;
     }
@@ -345,19 +345,19 @@ public class HumanoidBody : Body
         rightFoot.vomitThreshold = 5;
         rightFoot.downedThreshold = 3;
 
-        rightFoot.bluntInjuries[0] = "The force of the {1} leaves a light bruise on {0}'s " + rightFoot.name + "!";
-        rightFoot.bluntInjuries[1] = "The force of the {1} bruises {0}'s " + rightFoot.name + "!";
-        rightFoot.bluntInjuries[2] = "The force of the {1} heavily bruises {0}'s " + rightFoot.name + "!";
-        rightFoot.bluntInjuries[3] = "The force of the {1} cracks the bones in {0}'s " + rightFoot.name + "!";
-        rightFoot.bluntInjuries[4] = "The force of the {1} crushes the bones of {0}'s " + rightFoot.name + "!";
-        rightFoot.bluntInjuries[5] = "The force of the {1} completely obliterates {0}'s " + rightFoot.name + "!";
+        rightFoot.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + rightFoot.name + "!";
+        rightFoot.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + rightFoot.name + "!";
+        rightFoot.bluntInjuries[2] = "The force of {2}'s {1} heavily bruises {0}'s " + rightFoot.name + "!";
+        rightFoot.bluntInjuries[3] = "The force of {2}'s {1} cracks the bones in {0}'s " + rightFoot.name + "!";
+        rightFoot.bluntInjuries[4] = "The force of {2}'s {1} crushes the bones of {0}'s " + rightFoot.name + "!";
+        rightFoot.bluntInjuries[5] = "The force of {2}'s {1} completely obliterates {0}'s " + rightFoot.name + "!";
 
-        rightFoot.stabInjuries[0] = "The {1} pokes at the skin of {0}'s " + rightFoot.name + "!";
-        rightFoot.stabInjuries[1] = "The {1} slices at the skin of {0}'s " + rightFoot.name + "!";
-        rightFoot.stabInjuries[2] = "The {1} stabs into {0}'s " + rightFoot.name + "!";
-        rightFoot.stabInjuries[3] = "The {1} stabs completely through {0}'s " + rightFoot.name + "!";
-        rightFoot.stabInjuries[4] = "The {1} fractures the bones in {0}'s " + rightFoot.name + " penetrates through";
-        rightFoot.stabInjuries[5] = "The {1} completely mangles {0}'s " + rightFoot.name + "!";
+        rightFoot.stabInjuries[0] = "{2}'s {1} pokes at the skin of {0}'s " + rightFoot.name + "!";
+        rightFoot.stabInjuries[1] = "{2}'s {1} slices at the skin of {0}'s " + rightFoot.name + "!";
+        rightFoot.stabInjuries[2] = "{2}'s {1} stabs into {0}'s " + rightFoot.name + "!";
+        rightFoot.stabInjuries[3] = "{2}'s {1} stabs completely through {0}'s " + rightFoot.name + "!";
+        rightFoot.stabInjuries[4] = "{2}'s {1} fractures the bones in {0}'s " + rightFoot.name + " penetrates through";
+        rightFoot.stabInjuries[5] = "{2}'s {1} completely mangles {0}'s " + rightFoot.name + "!";
 
         return rightFoot;
     }
