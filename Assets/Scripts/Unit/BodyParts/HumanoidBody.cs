@@ -53,6 +53,20 @@ public class HumanoidBody : Body
         head.bluntInjuries[4] = "The force of {2}'s {1} cracks {0}'s skull!";
         head.bluntInjuries[5] = "The force of {2}'s {1} completely caves in {0}'s " + head.name + "!";
 
+        head.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + head.name + "!";
+        head.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + head.name + "!";
+        head.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + head.name + ", the neck is pulled with the force!";
+        head.clawInjuries[3] = "{2}'s {1} scrapes across {0}'s skull, leaving flesh dangling!";
+        head.clawInjuries[4] = "The {2}'s {1} swipes half the flesh off {0}'s skull!";
+        head.clawInjuries[5] = "The {2}'s {1} rips apart {0}'s " + head.name + "!";
+
+        head.biteInjuries[0] = "The {2} nips at {0}'s " + head.name + "!";
+        head.biteInjuries[1] = "The {2} bites down on {0}'s " + head.name + "!";
+        head.biteInjuries[2] = "The {2} buries it's teeth into {0}'s " + head.name + "!";
+        head.biteInjuries[3] = "The {2} bites down on the of flesh from {0}'s " + head.name + " and shakes!!";
+        head.biteInjuries[4] = "The {2} rips off a chunk of flesh from {0's} " + head.name + "! with it's teeth!";
+        head.biteInjuries[5] = "The {2} crushes {0}'s " + head.name + " with their jaws!";
+
         return head;
     }
 
@@ -82,6 +96,20 @@ public class HumanoidBody : Body
         neck.bluntInjuries[4] = "The force of {2}'s {1} crumples part of {0}'s " + neck.name + "!";
         neck.bluntInjuries[5] = "The force of {2}'s {1} completely crushes {0}'s " + neck.name + "!";
 
+        neck.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + neck.name + "!";
+        neck.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + neck.name + "!";
+        neck.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + neck.name + "!";
+        neck.clawInjuries[3] = "{2}'s {1} slashes into {0}'s throat!";
+        neck.clawInjuries[4] = "The {2}'s {1} rips a chunk off of {0}'s neck!";
+        neck.clawInjuries[5] = "The {2}'s {1} rips apart {0}'s " + neck.name + "!";
+
+        neck.biteInjuries[0] = "The {2} nips at {0}'s " + neck.name + "!";
+        neck.biteInjuries[1] = "The {2} bites down into {0}'s " + neck.name + "!";
+        neck.biteInjuries[2] = "The {2} buries it's teeth into {0}'s " + neck.name + "!";
+        neck.biteInjuries[3] = "The {2} bites down on the of flesh from {0}'s " + neck.name + " and shakes!!";
+        neck.biteInjuries[4] = "The {2} rips a chunk of flesh from {0's} " + neck.name + "! with it's teeth!";
+        neck.biteInjuries[5] = "The {2} crushes {0}'s " + neck.name + " with their jaws!";
+
         return neck;
     }
 
@@ -110,6 +138,20 @@ public class HumanoidBody : Body
         chest.stabInjuries[4] = "The blade of {2}'s {1} cuts through the ribs of {0}'s " + chest.name + "!";
         chest.stabInjuries[5] = "The blade of {2}'s {1} pierces completely through {0}'s " + chest.name + "!";
 
+        chest.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + chest.name + "!";
+        chest.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + chest.name + "!";
+        chest.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + chest.name + " and scrapes across the ribs!";
+        chest.clawInjuries[3] = "The {2}'s {1} hacks deep into {0}'s " + chest.name + ", cracking the ribs with the force!";
+        chest.clawInjuries[4] = "The {2}'s {1} digs deep into {0}'s " + chest.name + " and tears off a large hunk of flesh!";
+        chest.clawInjuries[5] = "The {2}'s {1} rips {0}'s " + chest.name + " wide open!";
+
+        chest.biteInjuries[0] = "The {2} nips at {0}'s " + chest.name + "!";
+        chest.biteInjuries[1] = "The {2} bites down into {0}'s " + chest.name + "!";
+        chest.biteInjuries[2] = "The {2} bites down hard on the of flesh of{0}'s " + chest.name + "!";
+        chest.biteInjuries[3] = "The {2} buries it's teeth into the muscle of {0}'s " + chest.name + " and shakes!!"; 
+        chest.biteInjuries[4] = "The {2} tears a chunk of flesh from {0's} " + chest.name + "! with it's teeth!";
+        chest.biteInjuries[5] = "The {2} rips open {0}'s " + chest.name + " with their jaws!";
+
         return chest;
     }
 
@@ -136,6 +178,21 @@ public class HumanoidBody : Body
         abdomin.stabInjuries[3] = "The point of {2}'s {1} pokes {0} in the guts!";
         abdomin.stabInjuries[4] = "The blade of {2}'s {1} cuts deep into {0}'s " + abdomin.name + "!";
         abdomin.stabInjuries[5] = "The blade of {2}'s {1} pierces completely through {0}'s " + abdomin.name + "!";
+
+        abdomin.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + abdomin.name + "!";
+        abdomin.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + abdomin.name + "!";
+        abdomin.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + abdomin.name + " and scrapes across the ribs!";
+        abdomin.clawInjuries[3] = "The {2}'s {1} hacks deep into {0}'s " + abdomin.name + ", slashing the innards!";
+        abdomin.clawInjuries[4] = "The {2}'s {1} digs deep into {0}'s " + abdomin.name + " scooping at the guts!";
+        abdomin.clawInjuries[5] = "The {2}'s {1} rips {0}'s " + abdomin.name + " wide open, spilling the innards onto the ground!";
+
+        abdomin.biteInjuries[0] = "The {2} nips at {0}'s " + abdomin.name + "!";
+        abdomin.biteInjuries[1] = "The {2} bites down into the skin of {0}'s " + abdomin.name + "!";
+        abdomin.biteInjuries[2] = "The {2} bites down hard on the of flesh of{0}'s " + abdomin.name + "!";
+        abdomin.biteInjuries[3] = "The {2} buries it's teeth into the muscle of {0}'s " + abdomin.name + " and shakes!";
+        abdomin.biteInjuries[4] = "The {2} tears a chunk of meat from {0's} " + abdomin.name + "! with it's teeth!";
+        abdomin.biteInjuries[5] = "The {2}'s teeth gnaw their way through the flesh and into the innards!";
+
         return abdomin;
     }
 
@@ -164,6 +221,20 @@ public class HumanoidBody : Body
         leftArm.stabInjuries[3] = "{2}'s {1} stabs deep into {0}'s " + leftArm.name + "!";
         leftArm.stabInjuries[4] = "{2}'s {1} seriously gores {0}'s " + leftArm.name + "!";
         leftArm.stabInjuries[5] = "The blade of {2}'s {1} passes completely through {0}'s " + leftArm.name + "!";
+
+        leftArm.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + leftArm.name + "!";
+        leftArm.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + leftArm.name + "!";
+        leftArm.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + leftArm.name + " and scratches the bone!";
+        leftArm.clawInjuries[3] = "The {2}'s {1} hacks deep into {0}'s " + leftArm.name + ", cutting away the muscle!";
+        leftArm.clawInjuries[4] = "The {2}'s {1} tears a chunk of flesh off of {0}'s " + leftArm.name + "!";
+        leftArm.clawInjuries[5] = "The {2}'s {1} strips the meat from the bones of {0}'s " + leftArm.name + "!";
+
+        leftArm.biteInjuries[0] = "The {2} nips at {0}'s " + leftArm.name + "!";
+        leftArm.biteInjuries[1] = "The {2} bites down into the skin of {0}'s " + leftArm.name + "!";
+        leftArm.biteInjuries[2] = "The {2} bites down hard on the of flesh of{0}'s " + leftArm.name + "!";
+        leftArm.biteInjuries[3] = "The {2} tears a chunk of meat from {0's} " + leftArm.name + "! with it's teeth!";
+        leftArm.biteInjuries[4] = "The {2}'s jaws grip the bones of {0}'s " + leftArm.name + " and shakes out of it's socket!";
+        leftArm.biteInjuries[5] = "The {2}'s jaws tear {0}'s " + leftArm.name + " completely off!";
 
         return leftArm;
     }
@@ -194,6 +265,20 @@ public class HumanoidBody : Body
         rightArm.stabInjuries[4] = "{2}'s {1} seriously gores {0}'s " + rightArm.name + "!";
         rightArm.stabInjuries[5] = "The blade of {2}'s {1} passes completely through {0}'s " + rightArm.name + "!";
 
+        rightArm.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + rightArm.name + "!";
+        rightArm.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + rightArm.name + "!";
+        rightArm.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + rightArm.name + " and scratches the bone!";
+        rightArm.clawInjuries[3] = "The {2}'s {1} hacks deep into {0}'s " + rightArm.name + ", cutting away the muscle!";
+        rightArm.clawInjuries[4] = "The {2}'s {1} tears a chunk of flesh off of {0}'s " + rightArm.name + "!";
+        rightArm.clawInjuries[5] = "The {2}'s {1} strips the meat from the bones of {0}'s " + rightArm.name + "!";
+
+        rightArm.biteInjuries[0] = "The {2} nips at {0}'s " + rightArm.name + "!";
+        rightArm.biteInjuries[1] = "The {2} bites down into the skin of {0}'s " + rightArm.name + "!";
+        rightArm.biteInjuries[2] = "The {2} bites down hard on the of flesh of{0}'s " + rightArm.name + "!";
+        rightArm.biteInjuries[3] = "The {2} tears a chunk of meat from {0's} " + rightArm.name + "! with it's teeth!";
+        rightArm.biteInjuries[4] = "The {2}'s jaws grip the bones of {0}'s " + rightArm.name + " and shakes out of it's socket!";
+        rightArm.biteInjuries[5] = "The {2}'s jaws tear {0}'s " + rightArm.name + " completely off!";
+
         return rightArm;
     }
 
@@ -222,6 +307,20 @@ public class HumanoidBody : Body
         leftHand.stabInjuries[3] = "{2}'s {1} stabs completely through {0}'s " + leftHand.name + "!";
         leftHand.stabInjuries[4] = "{2}'s {1} fractures the bones in {0}'s " + leftHand.name + "!";
         leftHand.stabInjuries[5] = "{2}'s {1} completely mangles {0}'s " + leftHand.name + "!";
+
+        leftHand.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + leftHand.name + "!";
+        leftHand.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + leftHand.name + "!";
+        leftHand.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + leftHand.name + " and scrapes the bones!";
+        leftHand.clawInjuries[3] = "The {2}'s {1} hacks deep into {0}'s " + leftHand.name + ", fracturing the bones!";
+        leftHand.clawInjuries[4] = "The {2}'s {1} tears a chunk of {0}'s " + leftHand.name + " almost completely off!";
+        leftHand.clawInjuries[5] = "The {2}'s {1} completely mangles {0}'s " + leftHand.name + "!";
+
+        leftHand.biteInjuries[0] = "The {2} nips at {0}'s " + leftHand.name + "!";
+        leftHand.biteInjuries[1] = "The {2} bites down into the skin of {0}'s " + leftHand.name + "!";
+        leftHand.biteInjuries[2] = "The {2} bites down hard into {0}'s " + leftHand.name + "!";
+        leftHand.biteInjuries[3] = "The {2}'s bites deep into {0's} " + leftHand.name + " and shakes!";
+        leftHand.biteInjuries[4] = "The {2}'s jaws rip off a part of " + leftHand.name + "!";
+        leftHand.biteInjuries[5] = "The {2}'s jaws tear {0}'s " + leftHand.name + " completely off!";
 
         return leftHand;
     }
@@ -252,6 +351,20 @@ public class HumanoidBody : Body
         rightHand.stabInjuries[4] = "{2}'s {1} fractures the bones in {0}'s " + rightHand.name + "!";
         rightHand.stabInjuries[5] = "{2}'s {1} completely mangles {0}'s " + rightHand.name + "!";
 
+        rightHand.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + rightHand.name + "!";
+        rightHand.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + rightHand.name + "!";
+        rightHand.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + rightHand.name + " and scrapes the bones!";
+        rightHand.clawInjuries[3] = "The {2}'s {1} hacks deep into {0}'s " + rightHand.name + ", fracturing the bones!";
+        rightHand.clawInjuries[4] = "The {2}'s {1} tears a chunk of {0}'s " + rightHand.name + " almost completely off!";
+        rightHand.clawInjuries[5] = "The {2}'s {1} completely mangles {0}'s " + rightHand.name + "!";
+
+        rightHand.biteInjuries[0] = "The {2} nips at {0}'s " + rightHand.name + "!";
+        rightHand.biteInjuries[1] = "The {2} bites down into the skin of {0}'s " + rightHand.name + "!";
+        rightHand.biteInjuries[2] = "The {2} bites down hard into {0}'s " + rightHand.name + "!";
+        rightHand.biteInjuries[3] = "The {2}'s bites deep into {0's} " + rightHand.name + " and shakes!";
+        rightHand.biteInjuries[4] = "The {2}'s jaws rip off a part of " + rightHand.name + "!";
+        rightHand.biteInjuries[5] = "The {2}'s jaws tear {0}'s " + rightHand.name + " completely off!";
+
         return rightHand;
     }
 
@@ -278,6 +391,20 @@ public class HumanoidBody : Body
         leftLeg.stabInjuries[3] = "{2}'s {1} stabs deep into {0}'s " + leftLeg.name + "!";
         leftLeg.stabInjuries[4] = "{2}'s {1} seriously gores {0}'s " + leftLeg.name + "!";
         leftLeg.stabInjuries[5] = "The blade of {2}'s {1} passes completely through {0}'s " + leftLeg.name + "!";
+
+        leftLeg.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + leftLeg.name + "!";
+        leftLeg.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + leftLeg.name + "!";
+        leftLeg.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + leftLeg.name + " and scratches the bone!";
+        leftLeg.clawInjuries[3] = "The {2}'s {1} hacks deep into {0}'s " + leftLeg.name + ", cutting away the muscle!";
+        leftLeg.clawInjuries[4] = "The {2}'s {1} tears a chunk of flesh off of {0}'s " + leftLeg.name + "!";
+        leftLeg.clawInjuries[5] = "The {2}'s {1} strips the meat from the bones of {0}'s " + leftLeg.name + "!";
+
+        leftLeg.biteInjuries[0] = "The {2} nips at {0}'s " + leftLeg.name + "!";
+        leftLeg.biteInjuries[1] = "The {2} bites down into the skin of {0}'s " + leftLeg.name + "!";
+        leftLeg.biteInjuries[2] = "The {2} bites down hard on the of flesh of {0}'s " + leftLeg.name + "!";
+        leftLeg.biteInjuries[3] = "The {2} tears a chunk of meat from {0's} " + leftLeg.name + "! with it's teeth!";
+        leftLeg.biteInjuries[4] = "The {2}'s jaws grip the bones of {0}'s " + leftLeg.name + " and shake out of it's socket!";
+        leftLeg.biteInjuries[5] = "The {2}'s jaws tear {0}'s " + leftLeg.name + " completely off!";
 
         return leftLeg;
     }
@@ -306,6 +433,20 @@ public class HumanoidBody : Body
         rightLeg.stabInjuries[4] = "{2}'s {1} seriously gores {0}'s " + rightLeg.name + "!";
         rightLeg.stabInjuries[5] = "The blade of {2}'s {1} passes completely through {0}'s " + rightLeg.name + "!";
 
+        rightLeg.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + rightLeg.name + "!";
+        rightLeg.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + rightLeg.name + "!";
+        rightLeg.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + rightLeg.name + " and scratches the bone!";
+        rightLeg.clawInjuries[3] = "The {2}'s {1} hacks deep into {0}'s " + rightLeg.name + ", cutting away the muscle!";
+        rightLeg.clawInjuries[4] = "The {2}'s {1} tears a chunk of flesh off of {0}'s " + rightLeg.name + "!";
+        rightLeg.clawInjuries[5] = "The {2}'s {1} strips the meat from the bones of {0}'s " + rightLeg.name + "!";
+
+        rightLeg.biteInjuries[0] = "The {2} nips at {0}'s " + rightLeg.name + "!";
+        rightLeg.biteInjuries[1] = "The {2} bites down into the skin of {0}'s " + rightLeg.name + "!";
+        rightLeg.biteInjuries[2] = "The {2} bites down hard on the of flesh of {0}'s " + rightLeg.name + "!";
+        rightLeg.biteInjuries[3] = "The {2} tears a chunk of meat from {0's} " + rightLeg.name + "! with it's teeth!";
+        rightLeg.biteInjuries[4] = "The {2}'s jaws grip the bones of {0}'s " + rightLeg.name + " and shake out of it's socket!";
+        rightLeg.biteInjuries[5] = "The {2}'s jaws tear {0}'s " + rightLeg.name + " completely off!";
+
         return rightLeg;
     }
 
@@ -333,6 +474,20 @@ public class HumanoidBody : Body
         leftFoot.stabInjuries[4] = "{2}'s {1} fractures the bones in {0}'s " + leftFoot.name + " penetrates through";
         leftFoot.stabInjuries[5] = "{2}'s {1} completely mangles {0}'s " + leftFoot.name + "!";
 
+        leftFoot.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + leftFoot.name + "!";
+        leftFoot.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + leftFoot.name + "!";
+        leftFoot.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + leftFoot.name + " and scrapes the bones!";
+        leftFoot.clawInjuries[3] = "The {2}'s {1} hacks deep into {0}'s " + leftFoot.name + ", fracturing the bones!";
+        leftFoot.clawInjuries[4] = "The {2}'s {1} tears a chunk of {0}'s " + leftFoot.name + " almost completely off!";
+        leftFoot.clawInjuries[5] = "The {2}'s {1} completely mangles {0}'s " + leftFoot.name + "!";
+
+        leftFoot.biteInjuries[0] = "The {2} nips at {0}'s " + leftFoot.name + "!";
+        leftFoot.biteInjuries[1] = "The {2} bites down into the skin of {0}'s " + leftFoot.name + "!";
+        leftFoot.biteInjuries[2] = "The {2} bites down hard into {0}'s " + leftFoot.name + "!";
+        leftFoot.biteInjuries[3] = "The {2}'s bites deep into {0's} " + leftFoot.name + " and shakes!";
+        leftFoot.biteInjuries[4] = "The {2}'s jaws rip off a part of " + leftFoot.name + "!";
+        leftFoot.biteInjuries[5] = "The {2}'s jaws tear {0}'s " + leftFoot.name + " completely off!";
+
         return leftFoot;
     }
 
@@ -358,6 +513,20 @@ public class HumanoidBody : Body
         rightFoot.stabInjuries[3] = "{2}'s {1} stabs completely through {0}'s " + rightFoot.name + "!";
         rightFoot.stabInjuries[4] = "{2}'s {1} fractures the bones in {0}'s " + rightFoot.name + " penetrates through";
         rightFoot.stabInjuries[5] = "{2}'s {1} completely mangles {0}'s " + rightFoot.name + "!";
+
+        rightFoot.clawInjuries[0] = "The {2}'s {1} scratches the skin of {0}'s " + rightFoot.name + "!";
+        rightFoot.clawInjuries[1] = "The {2}'s {1} slashes the flesh of {0}'s " + rightFoot.name + "!";
+        rightFoot.clawInjuries[2] = "The {2}'s {1} cuts into {0}'s " + rightFoot.name + " and scrapes the bones!";
+        rightFoot.clawInjuries[3] = "The {2}'s {1} hacks deep into {0}'s " + rightFoot.name + ", fracturing the bones!";
+        rightFoot.clawInjuries[4] = "The {2}'s {1} tears a chunk of {0}'s " + rightFoot.name + " almost completely off!";
+        rightFoot.clawInjuries[5] = "The {2}'s {1} completely mangles {0}'s " + rightFoot.name + "!";
+
+        rightFoot.biteInjuries[0] = "The {2} nips at {0}'s " + rightFoot.name + "!";
+        rightFoot.biteInjuries[1] = "The {2} bites down into the skin of {0}'s " + rightFoot.name + "!";
+        rightFoot.biteInjuries[2] = "The {2} bites down hard into {0}'s " + rightFoot.name + "!";
+        rightFoot.biteInjuries[3] = "The {2}'s bites deep into {0's} " + rightFoot.name + " and shakes!";
+        rightFoot.biteInjuries[4] = "The {2}'s jaws rip off a part of " + rightFoot.name + "!";
+        rightFoot.biteInjuries[5] = "The {2}'s jaws tear {0}'s " + rightFoot.name + " completely off!";
 
         return rightFoot;
     }

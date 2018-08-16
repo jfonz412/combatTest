@@ -313,7 +313,7 @@ public class MasterItemList : MonoBehaviour {
         item.name = "fist";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
-        //item.myEquipSlot = ANY
+        //item.myEquipSlot = ANY (both hands)
         item.myMaterial = ItemMaterial.Material.Bone;
         item.weight = 1f;
         item.stackable = false;
@@ -386,14 +386,14 @@ public class MasterItemList : MonoBehaviour {
         return item;
     }
 
-    public static Item Claw()
+    public static Item MainClaw()
     {
         Item item = new Item();
 
         item.name = "claw";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
-        //item.myEquipSlot = ANY
+        item.myEquipSlot = Item.EquipmentSlot.MainHand;
         item.myMaterial = ItemMaterial.Material.Bone;
         item.weight = 1f;
         item.stackable = false;
@@ -402,17 +402,17 @@ public class MasterItemList : MonoBehaviour {
         item.myAttackType = Item.AttackType.Claw; 
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
-        item.myWeaponSkill = Item.WeaponSkill.NA;
+        item.myWeaponSkill = Item.WeaponSkill.Claws;
         return item;
     }
-    public static Item Teeth()
+    public static Item MainTeeth()
     {
         Item item = new Item();
 
         item.name = "teeth";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
-        //item.myEquipSlot = ANY
+        item.myEquipSlot = Item.EquipmentSlot.MainHand;
         item.myMaterial = ItemMaterial.Material.Bone;
         item.weight = 1f;
         item.stackable = false;
@@ -421,8 +421,46 @@ public class MasterItemList : MonoBehaviour {
         item.myAttackType = Item.AttackType.Bite;
         item.myUseEffect = ItemEffects.ItemEffect.Equip;
         item.myToolType = Item.ToolType.NA;
-        item.myWeaponSkill = Item.WeaponSkill.NA;
+        item.myWeaponSkill = Item.WeaponSkill.Biting;
         return item;
     }
 
+    public static Item OffClaw()
+    {
+        Item item = new Item();
+
+        item.name = "claw";
+        item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
+        //item.icon = "NO ICON"
+        item.myEquipSlot = Item.EquipmentSlot.OffHand;
+        item.myMaterial = ItemMaterial.Material.Bone;
+        item.weight = 1f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myAttackType = Item.AttackType.Claw;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        item.myWeaponSkill = Item.WeaponSkill.Claws;
+        return item;
+    }
+    public static Item OffTeeth()
+    {
+        Item item = new Item();
+
+        item.name = "teeth";
+        item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
+        //item.icon = "NO ICON"
+        item.myEquipSlot = Item.EquipmentSlot.OffHand;
+        item.myMaterial = ItemMaterial.Material.Bone;
+        item.weight = 1f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myAttackType = Item.AttackType.Bite;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        item.myWeaponSkill = Item.WeaponSkill.Biting;
+        return item;
+    }
 }

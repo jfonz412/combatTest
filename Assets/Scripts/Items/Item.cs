@@ -65,7 +65,8 @@ public class Item {
     //condition
     //penetration?
 
-    public enum WeaponSkill { Dagger, Spear, Axe, Pick, Hands, Offhand, Misc, NA }; //each of these is tied to a combat skill and used to see if weildable
+    //weapon skills are combined with strength to determine unit's effectiveness of the weapon
+    public enum WeaponSkill { Dagger, Spear, Axe, Pick, Hands, Claws, Biting, Offhand, Misc, NA }; //each of these is tied to a combat skill and used to see if weildable
     public enum AttackType { Hack, Stab, Projectile, BluntImpact, Punch, Claw, Bite, NA }; //used to determine injury
     public enum EquipmentSlot { Head, Chest, Hands, Legs, MainHand, OffHand, Feet, NA } //used to determin slot in equipment manager
     public enum ToolType { Pick, Axe, NA };

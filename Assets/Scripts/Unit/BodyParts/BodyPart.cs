@@ -283,6 +283,14 @@ public class BodyPart : MonoBehaviour {
         {
             return hackInjuries[severity];
         }
+        else if (attackType == Item.AttackType.Bite)
+        {
+            return biteInjuries[severity];
+        }
+        else if (attackType == Item.AttackType.Claw)
+        {
+            return clawInjuries[severity];
+        }
         else
         {
             Debug.LogError("Attack type not found!");

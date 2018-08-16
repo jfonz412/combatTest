@@ -5,6 +5,7 @@
         base.InstantiateDefaultEquipment();
         defaultArmor = new Item[] { MasterItemList.ThichFurSkin() };
 
-        defaultWeapon = new Item[] { MasterItemList.IronDagger() };
+        defaultWeapon = new Item[] { MasterItemList.MainClaw(),
+                                     MasterItemList.OffTeeth() };
     }
 }

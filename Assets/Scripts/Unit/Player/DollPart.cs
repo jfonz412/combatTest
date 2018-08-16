@@ -101,7 +101,8 @@ public class DollPart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         injuryStrings[Item.AttackType.BluntImpact] = bluntImpact;
         injuryStrings[Item.AttackType.Stab] = stabbed;
-
+        injuryStrings[Item.AttackType.Bite] = bitten;
+        injuryStrings[Item.AttackType.Claw] = clawed;
     }
 
     private string[] stabbed = new string[]
@@ -123,5 +124,25 @@ public class DollPart : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         "crushed",
         "pulverized"
     };
-#endregion
+
+    private string[] clawed = new string[]
+{
+        "scratched",
+        "slashed",
+        "gouged",
+        "flesh hanging",
+        "partially stripped",
+        "completely shredded"
+};
+
+    private string[] bitten = new string[]
+    {
+        "nipped",
+        "bitten",
+        "chomped",
+        "lacerated",
+        "badly mangled",
+        "torn apart"
+    };
+    #endregion
 }

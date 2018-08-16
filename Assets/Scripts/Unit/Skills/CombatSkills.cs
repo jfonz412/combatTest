@@ -28,6 +28,8 @@ public class CombatSkills : MonoBehaviour {
             { Item.WeaponSkill.Offhand, 0 },
             { Item.WeaponSkill.Pick, 0 },
             { Item.WeaponSkill.Spear, 0 },
+            {Item.WeaponSkill.Claws, 0 },
+            {Item.WeaponSkill.Biting, 0 },
             { Item.WeaponSkill.Misc, 0 }
         };
 
@@ -39,6 +41,8 @@ public class CombatSkills : MonoBehaviour {
             { Item.WeaponSkill.Offhand, 0f },
             { Item.WeaponSkill.Pick, 0f },
             { Item.WeaponSkill.Spear, 0f },
+            {Item.WeaponSkill.Claws, 0f },
+            {Item.WeaponSkill.Biting, 0f },
             { Item.WeaponSkill.Misc, 0 }
         };
 
@@ -146,7 +150,9 @@ public class CombatSkills : MonoBehaviour {
 
         float blockMod = 0f;
 
-        if(!body.PartTooInjured(blockingParts))
+        if (body == null)
+            Start();
+        if (!body.PartTooInjured(blockingParts))
             blockMod = blockingParts[0].MyWeapon().hardnessValue;
 
         a.block = mySkillLevels[CombatSkill.Block] + blockMod;
