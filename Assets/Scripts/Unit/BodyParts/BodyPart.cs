@@ -153,6 +153,8 @@ public class BodyPart : MonoBehaviour {
             }
             string unitName = gameObject.name;
             line = string.Format(GetInjuryString(damageInfo.damageType, severity), unitName, damageInfo.weaponName, damageInfo.attackerName);
+            ReportFilter.AddToFilterList(gameObject.name);
+            ReportFilter.AddToFilterList(damageInfo.attackerName);
             BattleReport.AddToBattleReport(line);
             StatusChecks(severity);
             Bleed(damageInfo);
@@ -160,6 +162,8 @@ public class BodyPart : MonoBehaviour {
         else
         {
             line = recievedAttack.attackerName + " 's " + recievedAttack.weapon.name + " does no damage to " + gameObject.name + "'s " + name;
+            ReportFilter.AddToFilterList(gameObject.name);
+            ReportFilter.AddToFilterList(damageInfo.attackerName);
             BattleReport.AddToBattleReport(line);
         }
     }

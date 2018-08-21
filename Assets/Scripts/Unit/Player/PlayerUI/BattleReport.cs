@@ -1,16 +1,20 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BattleReport : MonoBehaviour {
     [SerializeField]
     private GameObject reportObject;
+    [SerializeField]
+    private GameObject reportFilter;
     private static ScrollRect scrollRect;
     private static Text reportText;
-    private static string savedText = "";
-    private static int lineCount;
-    private static string newlines = System.Environment.NewLine + System.Environment.NewLine;
-    private Brain playerBrain;
 
+    private static List<string> unfilteredReport = new List<string>();
+    private static List<string> filterOptions = new List<string>();
+    private static string newlines = System.Environment.NewLine + System.Environment.NewLine;
+
+    private Brain playerBrain;
     private Brain.State[] activationImparingStates = new Brain.State[]
     {
         Brain.State.Shopping,
@@ -24,22 +28,15 @@ public class BattleReport : MonoBehaviour {
         playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().playerBrain;
         reportText = transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
         scrollRect = transform.GetChild(0).GetChild(0).GetComponent<ScrollRect>();
-        reportText.text = savedText;
-    }
-
-    void Update()
-    {
-        ToggleBattleReport(); //make this a UI button to open report and we can get this out of Update(), which is causing an error when player (player's brain)
-        //hasn't loaded yet
+        LoadReport(unfilteredReport); //do I need this?
     }
 
     public static void AddToBattleReport(string line)
     {
         reportText.text += line + newlines;
-        savedText = reportText.text;
-        lineCount++;
+        unfilteredReport.Add(line);
 
-        if(lineCount >= 7 && scrollRect.verticalNormalizedPosition > 0)
+        if (unfilteredReport.Count >= 7 && scrollRect.verticalNormalizedPosition > 0)
         {
             scrollRect.verticalNormalizedPosition -= .05f;
         }
@@ -48,6 +45,50 @@ public class BattleReport : MonoBehaviour {
             Debug.Log("Removing first line");
             RemoveFirstLine();
         }
+    }
+
+    public static void FilterReport(string text)
+    {
+        Debug.Log("Filtering report on " + text);
+        
+        //clear the unfiltered report from the screen
+        reportText.text = "";
+
+        //search each line of unfilteredReport for this text
+        //copy those elements into a filteredReport
+        for (int i = 0; i < unfilteredReport.Count; i++)
+        {
+            if (unfilteredReport[i].Contains(text))
+                reportText.text += unfilteredReport[i] + newlines;
+        }
+    }
+
+    public void UnfilterReport()
+    {
+        Debug.Log("unfiltering report");
+        //clear the filtered report from the screen
+        reportText.text = "";
+
+        //load unfiltered report
+        for (int i = 0; i < unfilteredReport.Count; i++)
+        {
+            reportText.text += unfilteredReport[i] + newlines;
+        }
+    }
+
+    private void LoadReport(List<string> report)
+    {
+        reportText.text = "";
+        for (int i = 0; i < report.Count; i++)
+        {
+            reportText.text += report[i];
+        }
+    }
+
+    void Update()
+    {
+        ToggleBattleReport(); //make this a UI button to open report and we can get this out of Update(), which is causing an error when player (player's brain)
+        //hasn't loaded yet
     }
 
     private static void RemoveFirstLine()
@@ -60,7 +101,7 @@ public class BattleReport : MonoBehaviour {
         index = reportText.text.IndexOf(System.Environment.NewLine);
         reportText.text = reportText.text.Substring(index + System.Environment.NewLine.Length);
 
-        lineCount--;
+        unfilteredReport.RemoveAt(unfilteredReport.Count);
     }
 
     private void ToggleBattleReport()
@@ -73,6 +114,7 @@ public class BattleReport : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.R))
         {
             reportObject.SetActive(!reportObject.activeSelf);
+            reportFilter.SetActive(!reportFilter.activeSelf);
             Pause(reportObject.activeSelf);
         }
     }
@@ -93,9 +135,8 @@ public class BattleReport : MonoBehaviour {
 
     public void ClearBattleReport()
     {
-        savedText = "";
+        unfilteredReport = new List<string>(); //leaving garbage behind?
         reportText.text = "";
         scrollRect.verticalNormalizedPosition = 1;
-        lineCount = 0;
     }
 }
