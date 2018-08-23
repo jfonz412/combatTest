@@ -121,8 +121,7 @@ public class Harvestable : Interactable {
 
     private bool UsingProperTool()
     {
-        Item unitWeapon = new Item();//player.GetComponent<HumanoidRightHand>().MyWeapon();
-        Debug.LogError("Don't panic, you just need to fix this");
+        Item unitWeapon = player.GetComponent<BodyPartController>().attack1Parts[0].MyWeapon();
         bool usingProperTool;
 
         if (unitWeapon == null)

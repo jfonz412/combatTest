@@ -10,8 +10,8 @@ public class BattleReport : MonoBehaviour {
     private static ScrollRect scrollRect;
     private static Text reportText;
 
+    //lists seem to trim the newlines
     private static List<string> unfilteredReport = new List<string>();
-    private static List<string> filterOptions = new List<string>();
     private static string newlines = System.Environment.NewLine + System.Environment.NewLine;
 
     private Brain playerBrain;
@@ -28,10 +28,10 @@ public class BattleReport : MonoBehaviour {
         playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().playerBrain;
         reportText = transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
         scrollRect = transform.GetChild(0).GetChild(0).GetComponent<ScrollRect>();
-        LoadReport(unfilteredReport); //do I need this?
+        LoadReport(unfilteredReport); //allows report to be loaded between scenes
     }
 
-    public static void AddToBattleReport(string line)
+    public static void AddToBattleReport(string line, string[] filters = null)
     {
         reportText.text += line + newlines;
         unfilteredReport.Add(line);
@@ -44,6 +44,15 @@ public class BattleReport : MonoBehaviour {
         {
             Debug.Log("Removing first line");
             RemoveFirstLine();
+        }
+
+        //add filters
+        if(filters != null)
+        {
+            for (int i = 0; i < filters.Length; i++)
+            {
+                ReportFilter.AddToFilterList(filters[i]);
+            }
         }
     }
 
@@ -81,7 +90,7 @@ public class BattleReport : MonoBehaviour {
         reportText.text = "";
         for (int i = 0; i < report.Count; i++)
         {
-            reportText.text += report[i];
+            reportText.text += report[i] + newlines;
         }
     }
 
@@ -138,5 +147,7 @@ public class BattleReport : MonoBehaviour {
         unfilteredReport = new List<string>(); //leaving garbage behind?
         reportText.text = "";
         scrollRect.verticalNormalizedPosition = 1;
+
+        ReportFilter.ClearFilters();
     }
 }

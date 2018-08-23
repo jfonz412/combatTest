@@ -153,9 +153,8 @@ public class BodyPart : MonoBehaviour {
             }
             string unitName = gameObject.name;
             line = string.Format(GetInjuryString(damageInfo.damageType, severity), unitName, damageInfo.weaponName, damageInfo.attackerName);
-            ReportFilter.AddToFilterList(gameObject.name);
-            ReportFilter.AddToFilterList(damageInfo.attackerName);
-            BattleReport.AddToBattleReport(line);
+            string[] filters = new string[] { gameObject.name, damageInfo.attackerName };
+            BattleReport.AddToBattleReport(line, filters);
             StatusChecks(severity);
             Bleed(damageInfo);
         }
