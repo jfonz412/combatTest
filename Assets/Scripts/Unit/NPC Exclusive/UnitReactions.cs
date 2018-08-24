@@ -131,7 +131,7 @@ public class UnitReactions : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, attacker.transform.position) < 3f) //runaway radius hardcoded
             {
-                PathfindingManager.RequestPath(transform.position, GetPosition(attacker), unitController.OnPathFound);
+                PathfindingManager.RequestPath(new PathRequest(transform.position, GetPosition(attacker), unitController.OnPathFound));
                 yield return new WaitForSeconds(3f); //might want to play with this?
             }
             else

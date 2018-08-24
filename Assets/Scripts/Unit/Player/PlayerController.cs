@@ -194,7 +194,7 @@ public class PlayerController : MonoBehaviour {
     private void MoveHere(Vector3 location)
     {
         StopPreviousInteraction();
-        PathfindingManager.RequestPath(transform.position, location, unitController.OnPathFound);
+        PathfindingManager.RequestPath(new PathRequest(transform.position, location, unitController.OnPathFound));
     }
     #endregion
 
@@ -222,7 +222,7 @@ public class PlayerController : MonoBehaviour {
         {
             if (!c.IsTouching(interactable.GetComponent<Collider2D>())) //Vector3.Distance(transform.position, interactable.transform.position) > interactable.radius
             { 
-                PathfindingManager.RequestPath(transform.position, interactable.transform.position, unitController.OnPathFound);
+                PathfindingManager.RequestPath(new PathRequest(transform.position, interactable.transform.position, unitController.OnPathFound));
                 yield return new WaitForSeconds(.2f); //might be able to extend this here? no need to be as precise?
             }
             else

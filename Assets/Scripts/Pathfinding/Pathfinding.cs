@@ -4,26 +4,18 @@ using System.Collections.Generic;
 using System;
 
 public class Pathfinding : MonoBehaviour {
-	//public Transform seeker, target;
-	
-	PathfindingManager requestManager;
 	Grid grid;
 	
 	void Awake(){
-		requestManager = GetComponent<PathfindingManager>();
 		grid = GetComponent<Grid>();
 	}
-	
-	public void StartFindPath(Vector3 startPos, Vector3 targetPos){
-		StartCoroutine(FindPath(startPos, targetPos));
-	}
 
-	IEnumerator FindPath(Vector3 startPos, Vector3 endPos){
+	public void FindPath(PathRequest request, Action<PathResult> callback){
 		Vector3[] waypoints = new Vector3[0]; // why is this set to 0?
 		bool pathSuccess = false;
 	
-		Node startNode = grid.NodeAtWorldPosition(startPos);
-		Node endNode = grid.NodeAtWorldPosition(endPos);
+		Node startNode = grid.NodeAtWorldPosition(request.pathStart);
+		Node endNode = grid.NodeAtWorldPosition(request.pathEnd);
 		
 		if(startNode.walkable && endNode.walkable){
 		
@@ -63,12 +55,12 @@ public class Pathfinding : MonoBehaviour {
 				}
 			}
 		}
-		yield return null;
+
 		if(pathSuccess){
 			
 			waypoints = RetracePath(startNode, endNode); 
 		}
-		requestManager.FinishedProcessingPath(waypoints, pathSuccess); //this is where the finished path leaves Pathfinding.cs
+        callback(new PathResult(waypoints, pathSuccess, request.callback));
 	}
 	
 	Vector3[] RetracePath(Node startNode, Node endNode){

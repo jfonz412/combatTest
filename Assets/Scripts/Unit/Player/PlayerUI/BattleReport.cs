@@ -110,7 +110,7 @@ public class BattleReport : MonoBehaviour {
         index = reportText.text.IndexOf(System.Environment.NewLine);
         reportText.text = reportText.text.Substring(index + System.Environment.NewLine.Length);
 
-        unfilteredReport.RemoveAt(unfilteredReport.Count);
+        unfilteredReport.RemoveAt(0);
     }
 
     private void ToggleBattleReport()

@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class Unit : MonoBehaviour {
+    //base A* pathfinding script
+    /*
 	public Transform target;
 	float speed = .1f;
 	Vector3[] path;
@@ -48,4 +50,5 @@ public class Unit : MonoBehaviour {
 			}
 		}
 	}
+    */
 }

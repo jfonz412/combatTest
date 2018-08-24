@@ -90,7 +90,7 @@ public class AttackController : MonoBehaviour {
             { 
                 lastKnownTarget = targetTransform;
                 
-                PathfindingManager.RequestPath(transform.position, lastKnownTarget.position, unit.OnPathFound);
+                PathfindingManager.RequestPath(new PathRequest(transform.position, lastKnownTarget.position, unit.OnPathFound));
                 yield return new WaitForSeconds(.1f);
             }
             else if(!Impaired() && !attackTimer.coolingDown)
