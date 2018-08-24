@@ -251,16 +251,15 @@ public class BodyPart : MonoBehaviour {
 
     private void StatusChecks(int severity)
     {
-        //check for status effects in each part
-    }
-
-    private void SetInjuryStrings()
-    {
-
-    }
-    private void AssignPartStats()
-    {
-        //assigns all thresholds, stats, ect
+        if(!myBrain.ActiveState(Brain.State.Unconscious) && !myBrain.ActiveState(Brain.State.Dead))
+        {
+            RockedCheck(severity);
+            DownedCheck(severity);
+            VomitCheck(severity);
+            KnockoutCheck(severity);
+        }
+        //because we can still mess up the breathing when unconscious
+        CantBreathCheck(severity);
     }
 
     private void Bleed(DamageInfo info)

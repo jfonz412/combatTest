@@ -36,7 +36,7 @@ public class HumanoidBody : Body
         head.knockoutThreshold = 3;
         head.vomitThreshold = 3;
         head.rockedThreshold = 2;
-        head.downedThreshold = 3;
+        head.downedThreshold = 2;
         head.isVitalPart = true;
 
         head.stabInjuries[0] = "The point of {2}'s {1} pokes at the skin of {0}'s " + head.name + "!";
@@ -77,8 +77,8 @@ public class HumanoidBody : Body
         neck.name = "neck";
         neck.functioningLimit = 5;
         neck.downedThreshold = 3;
-        neck.cantBreathThreshold = 3;
-        neck.suffocationThreshold = 4;
+        neck.cantBreathThreshold = 2;
+        neck.suffocationThreshold = 3;
 
         neck.bleedBonus = 2f;
 
@@ -376,7 +376,7 @@ public class HumanoidBody : Body
         leftLeg.name = "left leg";
         leftLeg.functioningLimit = 4;
         leftLeg.vomitThreshold = 4;
-        leftLeg.downedThreshold = 3;
+        leftLeg.downedThreshold = 2;
 
         leftLeg.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + leftLeg.name + "!";
         leftLeg.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + leftLeg.name + "!";
@@ -417,7 +417,7 @@ public class HumanoidBody : Body
         rightLeg.name = "right leg";
         rightLeg.functioningLimit = 4;
         rightLeg.vomitThreshold = 4;
-        rightLeg.downedThreshold = 3;
+        rightLeg.downedThreshold = 2;
 
         rightLeg.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + rightLeg.name + "!";
         rightLeg.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + rightLeg.name + "!";
@@ -458,7 +458,7 @@ public class HumanoidBody : Body
         leftFoot.name = "left foot";
         leftFoot.functioningLimit = 4;
         leftFoot.vomitThreshold = 5;
-        leftFoot.downedThreshold = 3;
+        leftFoot.downedThreshold = 2;
 
         leftFoot.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + leftFoot.name + "!";
         leftFoot.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + leftFoot.name + "!";
@@ -498,7 +498,7 @@ public class HumanoidBody : Body
         rightFoot.name = "right foot";
         rightFoot.functioningLimit = 4;
         rightFoot.vomitThreshold = 5;
-        rightFoot.downedThreshold = 3;
+        rightFoot.downedThreshold = 2;
 
         rightFoot.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + rightFoot.name + "!";
         rightFoot.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + rightFoot.name + "!";
