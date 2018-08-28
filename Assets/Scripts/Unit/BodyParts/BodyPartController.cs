@@ -112,7 +112,8 @@ public class BodyPartController : MonoBehaviour {
 
     public virtual void RecieveAttack(AttackInfo recievedAttack, Transform myAttacker)
     {
-        unitReactions.ReactToAttackAgainstSelf(myAttacker);
+        unitReactions.IAmUnderAttack(myAttacker, transform); 
+
         if (Hit())
         {
             BodyPart bodyPart = GetRandomPart();

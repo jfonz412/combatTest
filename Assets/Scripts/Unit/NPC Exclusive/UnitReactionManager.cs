@@ -2,17 +2,11 @@
 using UnityEngine;
 
 public class UnitReactionManager : MonoBehaviour {
-
     [SerializeField]
     private List<UnitReactions> units;
 
-    void Update()
-    {
-        CheckForRadiusConflicts();
-    }
-
     //this is called by a unit when it is attacked (UnitReactions.ReactToAttackAgainstSelf())
-    public void AlertEveryoneInRange(int factionID, Transform attacker)
+    public void AlertEveryoneInRange(Transform attacker, Transform victim)
     {
         Vector3 location = attacker.position;
 
@@ -21,19 +15,21 @@ public class UnitReactionManager : MonoBehaviour {
         {
             UnitReactions unit = units[i];
 
+            //skip if unit is dead
             if (unit.isDead || unit == null)
             {
-                units.RemoveAt(i); //added, may or may not work
+                units.RemoveAt(i);
                 continue;
             }
 
             if (Vector3.Distance(unit.transform.position, location) < unit.reactionRadius)
             {
-                unit.ReactToAttackAgainstOther(factionID, attacker);
+                unit.ReactToViolence(attacker, victim);
             }
         }
     }
 
+    /* move this out of unit reaction manager
     private void CheckForRadiusConflicts()
     {
         for(int n = 0; n < units.Count; n++)
@@ -50,8 +46,8 @@ public class UnitReactionManager : MonoBehaviour {
                 }
             }
         }
-
     }
+    */
 
     public void AddUnitToReactionManager(UnitReactions unit)
     {

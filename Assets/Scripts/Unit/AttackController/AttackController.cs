@@ -22,7 +22,7 @@ public class AttackController : MonoBehaviour {
     private List<BodyPart> attack1Parts, attack2Parts;
 
     private Brain.State[] impairingStates = new Brain.State[]
-{
+    {
         Brain.State.Downed,
         Brain.State.Rocked,
         Brain.State.Shock,
@@ -32,7 +32,15 @@ public class AttackController : MonoBehaviour {
         Brain.State.BattleReportOpen,
         Brain.State.Dead,
         Brain.State.Suffocating
-};
+    };
+
+    private Brain.State[] neutralized = new Brain.State[]
+    {
+        Brain.State.Unconscious,
+        Brain.State.Shock,
+        Brain.State.Dead,
+        Brain.State.Suffocating
+    };
 
     private float myAttackStat;
 
@@ -81,7 +89,7 @@ public class AttackController : MonoBehaviour {
        
         anim.FaceDirection(transform.position, targetTransform.position);
 
-        while (!opponent.isDead) // or unconscious or in shock?
+        while (!opponent.ActiveStates(neutralized))
         {
             //eventually this will be a function that will check if ranged or melee, then decide if in range or not
             inRange = c.IsTouching(targetTransform.GetComponent<Collider2D>()); //this would just be for melee
@@ -96,12 +104,6 @@ public class AttackController : MonoBehaviour {
             else if(!Impaired() && !attackTimer.coolingDown)
             {
                 Attack(targetTransform);
-                /*
-                while(attackTimer.Timer() > 0f)
-                {
-                    yield return null;
-                }
-                */
             }
             yield return null;
         }

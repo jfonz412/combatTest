@@ -290,7 +290,7 @@ public class HumanoidBody : Body
         leftHand.weaponSlot = Item.EquipmentSlot.OffHand;
         leftHand.name = "left hand";
         leftHand.functioningLimit = 4;
-        leftHand.vomitThreshold = 5;
+        leftHand.vomitThreshold = 4;
         leftHand.downedThreshold = 4;
         leftHand.attack2 = true;
 
@@ -333,7 +333,7 @@ public class HumanoidBody : Body
         rightHand.weaponSlot = Item.EquipmentSlot.MainHand;
         rightHand.name = "right hand";
         rightHand.functioningLimit = 4;
-        rightHand.vomitThreshold = 5;
+        rightHand.vomitThreshold = 4;
         rightHand.downedThreshold = 4;
         rightHand.attack1 = true;
 
@@ -457,7 +457,7 @@ public class HumanoidBody : Body
         leftFoot.armorSlot = Item.EquipmentSlot.Feet; //put this before callback is assigned in base class
         leftFoot.name = "left foot";
         leftFoot.functioningLimit = 4;
-        leftFoot.vomitThreshold = 5;
+        leftFoot.vomitThreshold = 4;
         leftFoot.downedThreshold = 2;
 
         leftFoot.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + leftFoot.name + "!";
@@ -497,7 +497,7 @@ public class HumanoidBody : Body
         rightFoot.armorSlot = Item.EquipmentSlot.Feet; //put this before callback is assigned in base class
         rightFoot.name = "right foot";
         rightFoot.functioningLimit = 4;
-        rightFoot.vomitThreshold = 5;
+        rightFoot.vomitThreshold = 4;
         rightFoot.downedThreshold = 2;
 
         rightFoot.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + rightFoot.name + "!";

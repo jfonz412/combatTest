@@ -12,7 +12,7 @@ public class Brain : MonoBehaviour {
     private UnitReactions myReactions; //will eventually change this to UnitPersonality and UnitAffiliations or UnitRelationships and later UnitRoutine or something
     private Death myDeathController;
 
-    public bool isDead { get { return currentStates[State.Dead]; } set { ToggleState(State.Dead, value); } }
+    public bool isDead { get { return currentStates[State.Dead]; } set { ToggleState(State.Dead, value); } } 
 
     public enum State
     {
