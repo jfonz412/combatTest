@@ -25,15 +25,15 @@ public class UnitReactions : MonoBehaviour
 
     [HideInInspector]
     public bool isDead { get { return myBrain.isDead; } } //provides a shortcut for manager
-    private bool runningAway = false;
 
     //prevent units from reacting to same attacker/target with each hit
-    private Transform currentAttacker;
+    //private Transform currentAttacker;
     // prevent AlertEveryoneInRange from triggering for everyone in vicinity with every hit
     private Transform currentVictim; 
 
     [Range(0f,100f)]
     public float courage;
+    //group courage bonus
 
     private void Start()
     {
@@ -46,37 +46,74 @@ public class UnitReactions : MonoBehaviour
         rm.AddUnitToReactionManager(this);
     }
 
-    /* disabling vicinity reactions for now 
-    public void ReactToUnitInRaidius(UnitReactions unit)
+    public void CheckSurroundings()
     {
-        for(int i = 0; i < myEnemyFactions.Length; i++)
+        if (myBrain.ActiveStates(engagedStates))
+            return; //return if already engaged and reacting to a unit
+
+        Collider2D[] unitsInVicinity = Physics2D.OverlapCircleAll(transform.position, reactionRadius, 1);
+        //Debug.LogError(LayerMask.GetMask(new string[] { "Default" }));
+        for (int n = 0; n < unitsInVicinity.Length; n++)
         {
-            if (unit.faction == myEnemyFactions[i])
-            {
-                //Debug.Log("Enemy in radius!"); //NEEDS REFACTORING*******
-                ReactToViolence(unit.transform);
-                return;
-            }
+            if (CheckThreatLevel(unitsInVicinity[n].transform)) //if something triggers a reaction, exit out of this method
+                return;            
         }
     }
-    */
+
+    private bool CheckThreatLevel(Transform unit)
+    {
+        //figure out my relationship with the unit
+        //Debug.LogError("Unit is " + unit.name);
+        Factions unitFaction = unit.GetComponent<UnitReactions>().myFaction;
+        int unitRelationship = 0;
+
+        //dock unit if they are in an enemy faction
+        for (int i = 0; i < myEnemyFactions.Length; i++)
+        {
+            if (unitFaction == myEnemyFactions[i])
+                unitRelationship -= 10;
+        }
+
+        //add points if unit is in an allied faction
+        for (int i = 0; i < myFriendlyFactions.Length; i++)
+        {
+            if (unitFaction == myFriendlyFactions[i])
+                unitRelationship += 10;
+        }
+
+        //this should cause this unit to choose the party they are more allied with while ignoring neutral fights
+        if (unitRelationship < 0) //&& i like the victim enough)
+        {
+            //flee if we are not couragous enough
+            if (courage <= Random.Range(0, 100))
+            {
+                Debug.Log(gameObject.name + " is fleeing!");
+                Flee(unit);
+            }
+            else
+            {
+                Debug.Log(gameObject.name + " is fightng!");
+                Fight(unit);
+            }
+            return true; 
+        }
+        return false; //not a threat
+    }
 
     public void IAmUnderAttack(Transform attacker, Transform victim)
     {
         rm.AlertEveryoneInRange(attacker, victim); //issue here, see currentTarget
 
-        if (attacker == currentAttacker || doNotReact)
+        if (doNotReact || myBrain.ActiveStates(engagedStates))
         {
             return;
         }
         else if(courage >= Random.Range(0, 100))
         {
-            currentAttacker = attacker;
             Fight(attacker);
         }
         else
         {
-            currentAttacker = attacker;
             Flee(attacker);
         }
     }
@@ -84,7 +121,7 @@ public class UnitReactions : MonoBehaviour
     public void ReactToViolence(Transform attacker, Transform victim)
     {
         //if we have already reacted to this person being attacked  ..or we are already fighting or fleeing, don't react
-        if (victim == currentVictim || doNotReact || myBrain.ActiveStates(engagedStates))
+        if (doNotReact || myBrain.ActiveStates(engagedStates))
             return;
 
         //flee if we are not couragous enough
@@ -148,11 +185,7 @@ public class UnitReactions : MonoBehaviour
 
     private void Flee(Transform attacker)
     {
-        if (!runningAway) //if not already running away
-        {
-            runningAway = true;
-            StartCoroutine(RunFromAttacker(attacker));
-        }           
+        StartCoroutine(RunFromAttacker(attacker));       
     }
 
     #endregion
@@ -172,12 +205,10 @@ public class UnitReactions : MonoBehaviour
             }
             else
             {
-                runningAway = false;
-                break;
+                myBrain.ToggleState(Brain.State.Fleeing, false);
+                yield break;
             }
         }
-        myBrain.ToggleState(Brain.State.Fleeing, false);
-        yield break;
     }
 
     private Vector3 GetPosition(Transform attacker)
