@@ -33,7 +33,7 @@ public class UnitReactions : MonoBehaviour
 
     [Range(0f,100f)]
     public float courage;
-    //group courage bonus
+    //private float groupCourage; //will be used to buff or debuff courage when unit's side has more or less alies than the other
 
     private void Start()
     {
@@ -87,12 +87,12 @@ public class UnitReactions : MonoBehaviour
             //flee if we are not couragous enough
             if (courage <= Random.Range(0, 100))
             {
-                Debug.Log(gameObject.name + " is fleeing!");
+                //Debug.Log(gameObject.name + " is fleeing!");
                 Flee(unit);
             }
             else
             {
-                Debug.Log(gameObject.name + " is fightng!");
+                //Debug.Log(gameObject.name + " is fightng!");
                 Fight(unit);
             }
             return true; 

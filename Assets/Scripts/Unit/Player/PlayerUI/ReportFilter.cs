@@ -51,7 +51,10 @@ public class ReportFilter : MonoBehaviour {
 
     private void LoadFilters()
     {
-        for(int i = 0; i < reportFilters.Count; i++)
+        //clear buttons
+        buttons = new List<GameObject>();
+
+        for (int i = 0; i < reportFilters.Count; i++)
         {
             AddButtonForOption(reportFilters[i]);
         }        
