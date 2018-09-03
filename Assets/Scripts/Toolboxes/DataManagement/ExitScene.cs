@@ -14,6 +14,8 @@ public class ExitScene : MonoBehaviour
         DataManager dm = app.GetDataManager();
         dm.SaveCurrentScene();
         player = ScriptToolbox.GetInstance().GetPlayerManager().player.transform;
+
+        LevelManager.sceneExits.Add(this);
     }
 
     private void OnTriggerEnter2D(Collider2D col)

@@ -214,7 +214,7 @@ public class BodyPart : MonoBehaviour {
         damageInfo.severityLevel = severityLevel;
         if(severityLevel >= 0)
         {
-            FloatingTextController.CreateFloatingText("Hit", transform, color);
+            //FloatingTextController.CreateFloatingText("Hit", transform, color);
             anim.TakeDamage(color);
         }
         return damageInfo;
@@ -247,7 +247,7 @@ public class BodyPart : MonoBehaviour {
 
     #endregion
 
-#region methods
+#region private methods
 
     private void StatusChecks(int severity)
     {
@@ -314,7 +314,7 @@ public class BodyPart : MonoBehaviour {
                 int duration = severity * multiplier;
 
                 myBrain.TriggerTemporaryState(Brain.State.Unconscious, duration);
-                anim.KnockedOut();
+                anim.KnockedOut();//ANIM MUST COME AFTER STATE IS TRIGGERED
                 string line = "<color=blue>" + gameObject.name + " has been knocked unconscious by the attack!</color>";
                 BattleReport.AddToBattleReport(line);
             }
@@ -328,7 +328,7 @@ public class BodyPart : MonoBehaviour {
             if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.Rocked, severity);
-                anim.Rocked();
+                anim.Rocked();//ANIM MUST COME AFTER STATE IS TRIGGERED
                 string line = "<color=blue>" + gameObject.name + " was rocked by the attack!</color>";
                 BattleReport.AddToBattleReport(line);
             }
@@ -342,7 +342,7 @@ public class BodyPart : MonoBehaviour {
             if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.Downed, severity);
-                anim.FallOver();
+                anim.FallOver();//ANIM MUST COME AFTER STATE IS TRIGGERED
                 string line = "<color=blue>" + gameObject.name + " is knocked to the ground!</color>";
                 BattleReport.AddToBattleReport(line);
             }
@@ -362,7 +362,7 @@ public class BodyPart : MonoBehaviour {
             if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.CantBreathe, severity);
-                anim.CantBreath();
+                anim.CantBreath();//ANIM MUST COME AFTER STATE IS TRIGGERED
                 string line = "<color=blue>" + gameObject.name + " is struggling to breathe!</color>";
                 BattleReport.AddToBattleReport(line);
             }
@@ -376,7 +376,7 @@ public class BodyPart : MonoBehaviour {
             if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
                 myBrain.TriggerTemporaryState(Brain.State.Vomitting, severity);
-                anim.Vomit(); //ANIM MUST COME AFTER STATE IS FLIPPED
+                anim.Vomit(); //ANIM MUST COME AFTER STATE IS TRIGGERED
                 string line = "<color=blue>The injury causes " + gameObject.name + " to vomit!</color>";
                 BattleReport.AddToBattleReport(line);
             }

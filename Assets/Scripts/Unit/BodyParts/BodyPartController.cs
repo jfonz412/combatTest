@@ -135,8 +135,8 @@ public class BodyPartController : MonoBehaviour {
 
         if (Random.Range(0, 100) <= attackReaction.dodge)
         {
-            string line = "<color=blue>" + gameObject.name + " parried the attack!</color>";
-            FloatingTextController.CreateFloatingText("Parry", transform, Color.blue);
+            string line = "<color=blue>" + gameObject.name + " dodged the attack!</color>";
+            FloatingTextController.CreateFloatingText("Dodge", transform, Color.blue);
             anim.Dodge();
             mySkills.ExperienceGain(CombatSkills.CombatSkill.Dodge, 50f);
             ReportFilter.AddToFilterList(gameObject.name);
@@ -159,7 +159,7 @@ public class BodyPartController : MonoBehaviour {
             FloatingTextController.CreateFloatingText("Parry", transform, Color.blue);
             anim.Parry();
             mySkills.ExperienceGain(CombatSkills.CombatSkill.Parry, 50f);
-            GetComponent<AttackTimer>().ResetAttackTimer(0f);
+            GetComponent<AttackTimer>().ResetAttackTimer(0f); //allow unit to retaliate immediately
             ReportFilter.AddToFilterList(gameObject.name);
             BattleReport.AddToBattleReport(line);
             return false;

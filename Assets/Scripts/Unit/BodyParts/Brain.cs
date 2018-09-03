@@ -30,6 +30,7 @@ public class Brain : MonoBehaviour {
         Neutral,
         Fighting,
         Fleeing,
+        Routed, // "left" the area
         Dead,
 
         Shopping,
@@ -129,6 +130,7 @@ public class Brain : MonoBehaviour {
             { State.Dead, false },
             { State.Fighting, false },
             { State.Fleeing, false },
+            { State.Routed, false },
             { State.Neutral, false },
 
             { State.Paused, false },

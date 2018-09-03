@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 //the base script for all of our unity personalities
 public class UnitReactions : MonoBehaviour
@@ -194,24 +195,41 @@ public class UnitReactions : MonoBehaviour
 
     private IEnumerator RunFromAttacker(Transform attacker)
     {
-        //PathfindingManager.RequestPath(transform.position, GetPosition(attacker), unitController.OnPathFound); //makes for a quick initial reaction
+        Vector3 closestExit = GetClosestExit();
+
         myBrain.ToggleState(Brain.State.Fleeing, true);
-        while (attacker && !isDead)
+        float z = transform.position.z;
+        Vector3 safelyOutOfRange = new Vector3(100f, 100f, z);
+
+        PathfindingManager.RequestPath(new PathRequest(transform.position, closestExit, unitController.OnPathFound));
+        while(Vector3.Distance(transform.position, closestExit) > 0.5f)
         {
-            if (Vector3.Distance(transform.position, attacker.transform.position) < 3f) //runaway radius hardcoded
-            {
-                PathfindingManager.RequestPath(new PathRequest(transform.position, GetPosition(attacker), unitController.OnPathFound));
-                yield return new WaitForSeconds(3f); //might want to play with this?
-            }
-            else
-            {
-                myBrain.ToggleState(Brain.State.Fleeing, false);
-                yield break;
-            }
+            yield return null;
         }
+        transform.position = safelyOutOfRange;
+        myBrain.ToggleState(Brain.State.Routed, true); //so the enemy stops chasing
+        myBrain.ToggleState(Brain.State.Fleeing, false); //got away safely, stop fleeing
+      
     }
 
-    private Vector3 GetPosition(Transform attacker)
+    private Vector3 GetClosestExit()
+    {
+        List<ExitScene> exits = LevelManager.sceneExits;
+        Vector3 closestExit = exits[0].transform.position; //hardcode to first ext and compare to other exit options
+
+        for (int i = 0; i < exits.Count; i++)
+        {
+            Vector3 exitPos = exits[i].transform.position;
+            if (Vector3.Distance(transform.position, exitPos) < Vector3.Distance(transform.position, closestExit))
+            {
+                closestExit = exitPos;
+            }
+        }
+
+        return closestExit;
+    }
+
+    private Vector3 GetPositionOppositeOf(Transform attacker)
     {
         Node node;
         int attempts = 0;
@@ -240,6 +258,19 @@ public class UnitReactions : MonoBehaviour
         return node.worldPos;     
     }
 
+
+    private Node RandomNode()
+    {
+        float x = transform.position.x;
+        float y = transform.position.y;
+        float z = transform.position.z;
+
+        Vector3 position = new Vector3(x + Random.Range(-5.0f, 5.0f), y + Random.Range(-5.0f, 5.0f), z);
+        Node node = Grid.instance.NodeAtWorldPosition(position);
+
+        return node;
+    }
+
     //gets node opposite of attacker to run to
     private Node NodeOppositeAttacker(Transform attacker)
     {
@@ -255,17 +286,6 @@ public class UnitReactions : MonoBehaviour
         return node;
     }
 
-    private Node RandomNode()
-    {
-        float x = transform.position.x;
-        float y = transform.position.y;
-        float z = transform.position.z;
-
-        Vector3 position = new Vector3(x + Random.Range(-5.0f, 5.0f), y + Random.Range(-5.0f, 5.0f), z);
-        Node node = Grid.instance.NodeAtWorldPosition(position);
-
-        return node;
-    }
 
     #endregion
 

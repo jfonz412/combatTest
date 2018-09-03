@@ -39,7 +39,9 @@ public class AttackController : MonoBehaviour {
         Brain.State.Unconscious,
         Brain.State.Shock,
         Brain.State.Dead,
-        Brain.State.Suffocating
+        Brain.State.Suffocating,
+        Brain.State.Fleeing, //MAY WANT TO REMOVE BUT FOR NOW WILL FORCE PRIORITIZATION OF MORE AGRESSIVE ENEMIES
+        Brain.State.Routed
     };
 
     private float myAttackStat;
