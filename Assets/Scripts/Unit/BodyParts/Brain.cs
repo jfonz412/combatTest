@@ -2,16 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-    THIS SCRIPT WILL BE USED TO PULL THE VARIOUS COMPONENTS AND SYSTEMS UNDER SPECIFIC STATES
-    BRAINSTATES WILL CONTROL MOVEMENT, ATTACKING, AI AND MORE
-*/
 public class Brain : MonoBehaviour {
-    private UnitController myMovement;
-    private AttackController myCombat;
-    private UnitReactions myReactions; //will eventually change this to UnitPersonality and UnitAffiliations or UnitRelationships and later UnitRoutine or something
-    private Death myDeathController;
-
     public bool isDead { get { return currentStates[State.Dead]; } set { ToggleState(State.Dead, value); } } 
 
     public enum State
@@ -46,10 +37,7 @@ public class Brain : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        myCombat = GetComponent<AttackController>();
-        myMovement = GetComponent<UnitController>();
-        myReactions = GetComponent<UnitReactions>();
-        myDeathController = GetComponent<Death>();
+
         ResetStates();
     }
 
@@ -71,7 +59,7 @@ public class Brain : MonoBehaviour {
     {
         ResetStates();
         currentStates[State.Dead] = true;
-        myDeathController.Die();
+        GetComponent<Death>().Die();
     }
 
     public bool ActiveState(State state)

@@ -91,7 +91,7 @@ public class AttackController : MonoBehaviour {
        
         anim.FaceDirection(transform.position, targetTransform.position);
 
-        while (!opponent.ActiveStates(neutralized))
+        while (!opponent.ActiveStates(neutralized) && !myBrain.ActiveState(Brain.State.Fleeing))
         {
             //eventually this will be a function that will check if ranged or melee, then decide if in range or not
             inRange = c.IsTouching(targetTransform.GetComponent<Collider2D>()); //this would just be for melee
@@ -192,7 +192,7 @@ public class AttackController : MonoBehaviour {
     }
 
     private void EngageNewEnemy(Transform targetTransform)
-    {     
+    {
         targetBody = lastKnownTarget.GetComponent<BodyPartController>();
         engagingEntity = MoveToEngagement(targetTransform);
 
@@ -200,14 +200,5 @@ public class AttackController : MonoBehaviour {
     }
 
     #endregion
-
-    /*
-    //Player callback for weapon swaps (called from EquipmentManager)
-    private void SwapWeapons(Equipment oldItem, Equipment newItem)
-    {
-        mainHand = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.MainHand);
-        offHand  = (Weapon)equipmentManager.EquipmentFromSlot(EquipmentSlot.OffHand);
-    }
-    */
 }
 

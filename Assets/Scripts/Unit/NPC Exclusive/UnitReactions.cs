@@ -89,7 +89,7 @@ public class UnitReactions : MonoBehaviour
             if (courage <= Random.Range(0, 100))
             {
                 //Debug.Log(gameObject.name + " is fleeing!");
-                Flee(unit);
+                Flee();
             }
             else
             {
@@ -115,7 +115,7 @@ public class UnitReactions : MonoBehaviour
         }
         else
         {
-            Flee(attacker);
+            Flee();
         }
     }
 
@@ -129,7 +129,7 @@ public class UnitReactions : MonoBehaviour
         if (courage < Random.Range(0, 100))
         {
             currentVictim = victim;
-            Flee(attacker);
+            Flee();
         }
         else
         {
@@ -173,6 +173,14 @@ public class UnitReactions : MonoBehaviour
         }
     }
 
+    public void CourageCheck()
+    {
+        if (courage <= Random.Range(0, 100))
+        {
+            Flee();
+        }
+    }
+
     #region Possible Reactions
 
     private void Fight(Transform attacker)
@@ -184,19 +192,18 @@ public class UnitReactions : MonoBehaviour
         }
     }
 
-    private void Flee(Transform attacker)
+    private void Flee()
     {
-        StartCoroutine(RunFromAttacker(attacker));       
+        StartCoroutine(RunToNearestExit());       
     }
 
     #endregion
 
     #region Reaction Helper methods
 
-    private IEnumerator RunFromAttacker(Transform attacker)
+    private IEnumerator RunToNearestExit()
     {
         Vector3 closestExit = GetClosestExit();
-
         myBrain.ToggleState(Brain.State.Fleeing, true);
         float z = transform.position.z;
         Vector3 safelyOutOfRange = new Vector3(100f, 100f, z);
@@ -257,7 +264,6 @@ public class UnitReactions : MonoBehaviour
 
         return node.worldPos;     
     }
-
 
     private Node RandomNode()
     {

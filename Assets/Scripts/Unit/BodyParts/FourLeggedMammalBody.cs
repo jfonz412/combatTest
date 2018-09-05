@@ -36,6 +36,7 @@ public class FourLeggedMammalBody : Body {
         head.vomitThreshold = 3;
         head.rockedThreshold = 2;
         head.downedThreshold = 2;
+        head.fearLimit = 3;
         head.isVitalPart = true;
 
         head.stabInjuries[0] = "The point of {2}'s {1} pokes at the skin of {0}'s " + head.name + "!";
@@ -78,6 +79,7 @@ public class FourLeggedMammalBody : Body {
         neck.downedThreshold = 3;
         neck.cantBreathThreshold = 2;
         neck.suffocationThreshold = 3;
+        neck.fearLimit = 3;
 
         neck.bleedBonus = 2f;
 
@@ -122,6 +124,7 @@ public class FourLeggedMammalBody : Body {
         chest.downedThreshold = 3;
         chest.cantBreathThreshold = 3;
         chest.suffocationThreshold = 4;
+        chest.fearLimit = 3;
 
         chest.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + chest.name + "!";
         chest.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + chest.name + "!";
@@ -163,6 +166,7 @@ public class FourLeggedMammalBody : Body {
         abdomin.vomitThreshold = 3;
         abdomin.downedThreshold = 3;
         abdomin.cantBreathThreshold = 2;
+        abdomin.fearLimit = 3;
 
         abdomin.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + abdomin.name + "!";
         abdomin.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + abdomin.name + "!";
@@ -206,6 +210,7 @@ public class FourLeggedMammalBody : Body {
         FrontLeftLeg.functioningLimit = 4;
         FrontLeftLeg.vomitThreshold = 4;
         FrontLeftLeg.downedThreshold = 2;
+        FrontLeftLeg.fearLimit = 4;
 
         FrontLeftLeg.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + FrontLeftLeg.name + "!";
         FrontLeftLeg.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + FrontLeftLeg.name + "!";
@@ -249,6 +254,7 @@ public class FourLeggedMammalBody : Body {
         FrontRightLeg.functioningLimit = 4;
         FrontRightLeg.vomitThreshold = 4;
         FrontRightLeg.downedThreshold = 2;
+        FrontRightLeg.fearLimit = 4;
 
         FrontRightLeg.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + FrontRightLeg.name + "!";
         FrontRightLeg.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + FrontRightLeg.name + "!";
@@ -291,6 +297,7 @@ public class FourLeggedMammalBody : Body {
         FrontLeftPaw.functioningLimit = 4;
         FrontLeftPaw.vomitThreshold = 4;
         FrontLeftPaw.vomitThreshold = 3;
+        FrontLeftPaw.fearLimit = 4;
         FrontLeftPaw.attack2 = true;
 
         FrontLeftPaw.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + FrontLeftPaw.name + "!";
@@ -333,6 +340,7 @@ public class FourLeggedMammalBody : Body {
         FrontRightPaw.functioningLimit = 4;
         FrontRightPaw.vomitThreshold = 4;
         FrontRightPaw.vomitThreshold = 3;
+        FrontRightPaw.fearLimit = 4;
         FrontRightPaw.attack1 = true;
 
         FrontRightPaw.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + FrontRightPaw.name + "!";
@@ -375,6 +383,7 @@ public class FourLeggedMammalBody : Body {
         backLeftLeg.functioningLimit = 4;
         backLeftLeg.vomitThreshold = 4;
         backLeftLeg.downedThreshold = 2;
+        backLeftLeg.fearLimit = 4;
 
         backLeftLeg.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + backLeftLeg.name + "!";
         backLeftLeg.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + backLeftLeg.name + "!";
@@ -416,6 +425,7 @@ public class FourLeggedMammalBody : Body {
         backRightLeg.functioningLimit = 4;
         backRightLeg.vomitThreshold = 4;
         backRightLeg.downedThreshold = 2;
+        backRightLeg.fearLimit = 4;
 
         backRightLeg.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + backRightLeg.name + "!";
         backRightLeg.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + backRightLeg.name + "!";
@@ -457,6 +467,7 @@ public class FourLeggedMammalBody : Body {
         BackLeftPaw.functioningLimit = 4;
         BackLeftPaw.vomitThreshold = 4;
         BackLeftPaw.downedThreshold = 3;
+        BackLeftPaw.fearLimit = 4;
 
         BackLeftPaw.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + BackLeftPaw.name + "!";
         BackLeftPaw.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + BackLeftPaw.name + "!";
@@ -498,6 +509,7 @@ public class FourLeggedMammalBody : Body {
         BackRightPaw.functioningLimit = 4;
         BackRightPaw.vomitThreshold = 4;
         BackRightPaw.downedThreshold = 3;
+        BackRightPaw.fearLimit = 4;
 
         BackRightPaw.bluntInjuries[0] = "The force of {2}'s {1} leaves a light bruise on {0}'s " + BackRightPaw.name + "!";
         BackRightPaw.bluntInjuries[1] = "The force of {2}'s {1} bruises {0}'s " + BackRightPaw.name + "!";

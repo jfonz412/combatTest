@@ -112,7 +112,18 @@ public class BodyPartController : MonoBehaviour {
 
     public virtual void RecieveAttack(AttackInfo recievedAttack, Transform myAttacker)
     {
-        unitReactions.IAmUnderAttack(myAttacker, transform); 
+        if(unitReactions == null)
+        {
+            GetComponent<UnitStateMachine>().currentThreat = myAttacker;
+            GetComponent<UnitStateMachine>().ChangeState(UnitStateMachine.UnitState.FightOrFlight); //should be figting or fleeing in one state       
+            //GetComponent<UnitTraits>().ReactToThreat(myAttacker);
+        }
+        else
+        {
+            unitReactions.IAmUnderAttack(myAttacker, transform);
+        }
+        Debug.LogWarning("The above is bad code^");
+        
 
         if (Hit())
         {

@@ -3,13 +3,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour {
-    public static List<ExitScene> sceneExits;
+    public static List<ExitScene> sceneExits; // = new List<ExitScene>();
 
     private void Start()
     {
-        //clear list from last scene
-        sceneExits = null;
         sceneExits = new List<ExitScene>();
+
+        ExitScene[] exits = FindObjectsOfType<ExitScene>();
+        for (int i = 0; i < exits.Length; i++)
+        {
+            sceneExits.Add(exits[i]);
+        }
     }
 	public void LoadScene(string scene) //LoadSceneMidGame
     {

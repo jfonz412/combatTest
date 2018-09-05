@@ -12,6 +12,7 @@ public class BodyPart : MonoBehaviour {
     private BodyPartController myBody;
     private CombatSkills myCombatSkills;
     private UnitAnimController anim;
+    private UnitReactions ai;
 
     public string[] stabInjuries = new string[6];
     public string[] hackInjuries = new string[6];
@@ -20,17 +21,15 @@ public class BodyPart : MonoBehaviour {
     public string[] clawInjuries = new string[6];
     public string[] projectileInjuries = new string[6];
 
-
-
     //used to determine if this bodypart is needed to attack
     public bool attack1 = false;
     public bool attack2 = false;
 
     public Item.EquipmentSlot weaponSlot = Item.EquipmentSlot.NA;
     public Item.EquipmentSlot armorSlot = Item.EquipmentSlot.NA;
+
     [SerializeField]
     private Item myWeapon, myArmor; 
-
 
     public delegate void OnEquipmentChanged(Item oldItem, Item newItem);
     public OnEquipmentChanged onEquipmentChanged;
@@ -45,6 +44,7 @@ public class BodyPart : MonoBehaviour {
     public int cantBreathThreshold = 6;
     public int suffocationThreshold = 6;
     public int functioningLimit = 6;
+    public int fearLimit = 6;
 
     //if true and this part is damaged beyond it's functioningLimit, unit will be mortally wounded
     public bool isVitalPart = false;
@@ -58,6 +58,7 @@ public class BodyPart : MonoBehaviour {
         myBody = GetComponent<BodyPartController>();
         myCombatSkills = GetComponent<CombatSkills>();
         anim = GetComponent<UnitAnimController>();
+        ai = GetComponent<UnitReactions>();
 
         if (dollPart != null)
         {
@@ -124,7 +125,7 @@ public class BodyPart : MonoBehaviour {
     //if this bodypart is checked for a weapon and doesn't have one it needs to tell AttackInfo something about what it's attacking with
     private Item Unarmed()
     {
-        Debug.LogWarning("Equipping hardcoded fist");
+        Debug.LogWarning("Equipping new hardcoded fist with each hit this is terrible!");
         return MasterItemList.Fist();
     }
     #endregion
@@ -165,8 +166,7 @@ public class BodyPart : MonoBehaviour {
             ReportFilter.AddToFilterList(damageInfo.attackerName);
             BattleReport.AddToBattleReport(line);
         }
-    }
-        
+    }      
 
     private DamageInfo DetermineSeverityLevel(AttackInfo receivedAttack)
     {
@@ -253,6 +253,7 @@ public class BodyPart : MonoBehaviour {
     {
         if(!myBrain.ActiveState(Brain.State.Unconscious) && !myBrain.ActiveState(Brain.State.Dead))
         {
+            FearCheck(severity);
             RockedCheck(severity);
             DownedCheck(severity);
             VomitCheck(severity);
@@ -303,6 +304,14 @@ public class BodyPart : MonoBehaviour {
     #endregion
 
 #region Status Checks
+    private void FearCheck(int severity)
+    {
+        if(severity >= fearLimit)
+        {
+            ai.CourageCheck();
+        }
+    }
+
     private void KnockoutCheck(int severity)
     {
         int multiplier = 10; // * severityLevel to get time knocked out
