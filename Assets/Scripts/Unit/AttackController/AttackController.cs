@@ -44,8 +44,6 @@ public class AttackController : MonoBehaviour {
         Brain.State.Routed
     };
 
-    private float myAttackStat;
-
     private void Start()
     {
         mySkills = GetComponent<CombatSkills>();
@@ -96,7 +94,7 @@ public class AttackController : MonoBehaviour {
             //eventually this will be a function that will check if ranged or melee, then decide if in range or not
             inRange = c.IsTouching(targetTransform.GetComponent<Collider2D>()); //this would just be for melee
             //else in range will a raycast of some sort to check for obstabcles
-            if (!inRange) // NOT WORKING PROPERLY WITH CHASE DURING COOLDOWN CHANGE
+            if (!inRange) 
             { 
                 lastKnownTarget = targetTransform;
                 

@@ -13,6 +13,7 @@ public class BodyPart : MonoBehaviour {
     private CombatSkills myCombatSkills;
     private UnitAnimController anim;
     private UnitReactions ai;
+    private UnitStateMachine stateMachine;
 
     public string[] stabInjuries = new string[6];
     public string[] hackInjuries = new string[6];
@@ -54,11 +55,13 @@ public class BodyPart : MonoBehaviour {
 
     private void Start()
     {
+        //might not want these in bodyparts because they're going to get called in every single body part in the game!
         myBrain = GetComponent<Brain>();
         myBody = GetComponent<BodyPartController>();
         myCombatSkills = GetComponent<CombatSkills>();
         anim = GetComponent<UnitAnimController>();
         ai = GetComponent<UnitReactions>();
+        stateMachine = GetComponent<UnitStateMachine>();
 
         if (dollPart != null)
         {
@@ -72,14 +75,14 @@ public class BodyPart : MonoBehaviour {
 #region My Weapon and Armor
     public Item MyWeapon()
     {
+        Debug.Log("Weapon is " + myWeapon);
         if(myWeapon == null)
         {
-            return Unarmed();
+            Debug.Log("setting unarmed weapon");
+            SetUnarmedWeapon();
         }
-        else
-        {
-            return myWeapon;
-        }
+
+        return myWeapon;
     }
 
     public float MyArmor() 
@@ -123,10 +126,9 @@ public class BodyPart : MonoBehaviour {
     }
 
     //if this bodypart is checked for a weapon and doesn't have one it needs to tell AttackInfo something about what it's attacking with
-    private Item Unarmed()
+    private void SetUnarmedWeapon() //make override so we can set other default weapons? //need to figure out how to make it so i can overwrite this without a child class
     {
-        Debug.LogWarning("Equipping new hardcoded fist with each hit this is terrible!");
-        return MasterItemList.Fist();
+        myWeapon = MasterItemList.Fist(); 
     }
     #endregion
 
@@ -152,8 +154,16 @@ public class BodyPart : MonoBehaviour {
                 //Debug.Log(gameObject.name + " is logging for " + damageInfo.damageType + " damage!");
                 log = dollPart.LogInjury(severity, damageInfo.damageType);
             }
+
             string unitName = gameObject.name;
-            line = string.Format(GetInjuryString(damageInfo.damageType, severity), unitName, damageInfo.weaponName, damageInfo.attackerName);
+            string injuryString = GetInjuryString(damageInfo.damageType, severity);
+
+            if(injuryString == null)
+            {
+                Debug.LogError("injury string is null for " + damageInfo.damageType.ToString() + " severity " + severity);
+            }
+            
+            line = string.Format(injuryString, unitName, damageInfo.weaponName, damageInfo.attackerName);
             string[] filters = new string[] { gameObject.name, damageInfo.attackerName };
             BattleReport.AddToBattleReport(line, filters);
             StatusChecks(severity);
@@ -253,7 +263,6 @@ public class BodyPart : MonoBehaviour {
     {
         if(!myBrain.ActiveState(Brain.State.Unconscious) && !myBrain.ActiveState(Brain.State.Dead))
         {
-            FearCheck(severity);
             RockedCheck(severity);
             DownedCheck(severity);
             VomitCheck(severity);
@@ -303,15 +312,7 @@ public class BodyPart : MonoBehaviour {
 
     #endregion
 
-#region Status Checks
-    private void FearCheck(int severity)
-    {
-        if(severity >= fearLimit)
-        {
-            ai.CourageCheck();
-        }
-    }
-
+    #region Status Checks
     private void KnockoutCheck(int severity)
     {
         int multiplier = 10; // * severityLevel to get time knocked out
@@ -321,9 +322,8 @@ public class BodyPart : MonoBehaviour {
             if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
                 int duration = severity * multiplier;
-
-                myBrain.TriggerTemporaryState(Brain.State.Unconscious, duration);
-                anim.KnockedOut();//ANIM MUST COME AFTER STATE IS TRIGGERED
+                myBody.unconscious = true;
+                stateMachine.TriggerTemporaryState(IncapacitatedState.TemporaryState.Unconscious, duration);
                 string line = "<color=blue>" + gameObject.name + " has been knocked unconscious by the attack!</color>";
                 BattleReport.AddToBattleReport(line);
             }
@@ -336,8 +336,7 @@ public class BodyPart : MonoBehaviour {
         {
             if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
-                myBrain.TriggerTemporaryState(Brain.State.Rocked, severity);
-                anim.Rocked();//ANIM MUST COME AFTER STATE IS TRIGGERED
+                stateMachine.TriggerTemporaryState(IncapacitatedState.TemporaryState.Dazed, severity + 1);
                 string line = "<color=blue>" + gameObject.name + " was rocked by the attack!</color>";
                 BattleReport.AddToBattleReport(line);
             }
@@ -350,8 +349,7 @@ public class BodyPart : MonoBehaviour {
         {
             if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
-                myBrain.TriggerTemporaryState(Brain.State.Downed, severity);
-                anim.FallOver();//ANIM MUST COME AFTER STATE IS TRIGGERED
+                stateMachine.TriggerTemporaryState(IncapacitatedState.TemporaryState.Downed, severity + 1);
                 string line = "<color=blue>" + gameObject.name + " is knocked to the ground!</color>";
                 BattleReport.AddToBattleReport(line);
             }
@@ -360,22 +358,25 @@ public class BodyPart : MonoBehaviour {
 
     private void CantBreathCheck(int severity)
     {
+
         if (severity >= cantBreathThreshold)
         {
-            if (severity >= suffocationThreshold) //if the injury was bad enough
+            if (severity >= suffocationThreshold && !myBody.suffocating) //if the injury was bad enough and not already suffocating
             {
-                myBody.Suffocate(this); //tell bodyPartController and return
-                return;
+                myBody.suffocating = true;
+                stateMachine.TriggerTemporaryState(IncapacitatedState.TemporaryState.Suffocating, 30f);
+                string line = "<color=red>" + gameObject.name + " is suffocating!</color>";
+                BattleReport.AddToBattleReport(line);
             }
 
             if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
-                myBrain.TriggerTemporaryState(Brain.State.CantBreathe, severity);
-                anim.CantBreath();//ANIM MUST COME AFTER STATE IS TRIGGERED
+                stateMachine.TriggerTemporaryState(IncapacitatedState.TemporaryState.CantBreathe, severity + 1);
                 string line = "<color=blue>" + gameObject.name + " is struggling to breathe!</color>";
                 BattleReport.AddToBattleReport(line);
             }
         }
+        
     }
 
     private void VomitCheck(int severity)
@@ -384,8 +385,7 @@ public class BodyPart : MonoBehaviour {
         {
             if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
-                myBrain.TriggerTemporaryState(Brain.State.Vomitting, severity);
-                anim.Vomit(); //ANIM MUST COME AFTER STATE IS TRIGGERED
+                stateMachine.TriggerTemporaryState(IncapacitatedState.TemporaryState.Vomitting, severity + 1);
                 string line = "<color=blue>The injury causes " + gameObject.name + " to vomit!</color>";
                 BattleReport.AddToBattleReport(line);
             }
@@ -393,7 +393,7 @@ public class BodyPart : MonoBehaviour {
     }
     #endregion
 
-#region Public Methods
+    #region Public Methods
     public bool IsTooInjured()
     {
         if (currentSeverityLevel >= functioningLimit)

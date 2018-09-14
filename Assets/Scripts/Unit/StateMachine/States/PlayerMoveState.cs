@@ -1,98 +1,67 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerMoveState : State {
+    private IEnumerator movingToInteraction;
+    UnitController uc;
+    UnitStateMachine.ClickInfo clickInfo;
+    public GameObject clickMarker;
 
-    //[SerializeField]
-    //private GameObject clickMarker;
-    private UnitStateMachine.ClickInfo clickInfo = new UnitStateMachine.ClickInfo();
-    private UnitController unitController;
-    private UnitStateMachine stateMachine;
-
-    private IEnumerator movingToInteraction = null;
-
-    private void Start ()
+    protected override void Init()
     {
-        FloatingTextController.Initialize(); //just needs to be initialized somewhere
-        unitController = GetComponent<UnitController>();
-        stateMachine = GetComponent<UnitStateMachine>();
-    }
-
-    #region Move Player
-    private void Update () {
-        MovePlayer();
-    }
-
-    private void MovePlayer(){
-        if (!EventSystem.current.IsPointerOverGameObject()) //check if mouse is over UI element
+        base.Init();
+        canTransitionInto = new UnitStateMachine.UnitState[]
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                clickInfo.mousePos = GetMouseClickPosition();
-                clickInfo.clickType = "leftClick";
-                stateMachine.clickInfo = clickInfo;
-                stateMachine.RequestChangeState(UnitStateMachine.UnitState.PlayerMoveState);
-            }
-            else if (Input.GetMouseButtonDown(1))
-            {
-                clickInfo.mousePos = GetMouseClickPosition();
-                clickInfo.clickType = "rightClick";
-                stateMachine.clickInfo = clickInfo;
-                stateMachine.RequestChangeState(UnitStateMachine.UnitState.PlayerMoveState); 
-            }
-        }
-	}
-
-    private Vector3 GetMouseClickPosition()
-    {
-        Vector3 mouseClickPos;
-        mouseClickPos = (Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        mouseClickPos.z = 0f; //make sure this stays the same
-        return mouseClickPos;
+            UnitStateMachine.UnitState.Idle,
+            UnitStateMachine.UnitState.Incapacitated,
+            UnitStateMachine.UnitState.PlayerMoveState,
+            //UnitStateMachine.UnitState.FightOrFlight, //we don't want the player to automatically react to attacks
+            UnitStateMachine.UnitState.Fight,
+            UnitStateMachine.UnitState.Flight,
+            UnitStateMachine.UnitState.Dead
+        };
     }
-    #endregion
 
-    /*
-     * 
-     * 
+    protected override void OnStateEnter()
+    {
+        base.OnStateEnter();
+        uc = stateMachine.unitController;
+        clickInfo = stateMachine.clickInfo;
+        ProcessClick();
+    }
+
     #region Process Clicks
 
-        
-    private void ProcessClick(int mouseButton)
+    private void ProcessClick()
     {
         ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus();
-        
-        Vector3 mouseClickPos = GetMouseClickPosition(); //send to state machine
 
-        if (mouseButton == 0)
+        if (clickInfo.clickType == "leftClick")
         {
-            ProcessLeftClick(mouseClickPos);
-            stateMachine.RequestChangeState(UnitStateMachine.UnitState.PlayerMoveState); //request change state 
+            ProcessLeftClick();
         }
         else
         {
-            ProcessRightClick(mouseClickPos); //need to eventually sent to state machine?  
+            ProcessRightClick();
         }
-        
+
     }
 
-
-    private void ProcessLeftClick(Vector3 mouseClickPos)
+    private void ProcessLeftClick()
     {
-        RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
+        RaycastHit2D hit = Physics2D.Raycast(clickInfo.mousePos, Vector2.zero); //Vector2.zero == (0,0)
 
-        CheckForCollider(hit, mouseClickPos); //will move to Pos if collider not found
-        Instantiate(clickMarker, mouseClickPos, Quaternion.identity);
+        CheckForCollider(hit, clickInfo.mousePos); //will move to Pos if collider not found
+        Instantiate(clickMarker, clickInfo.mousePos, Quaternion.identity);
     }
 
-    private void ProcessRightClick(Vector3 mouseClickPos) //Brings up interaction options menu
+    private void ProcessRightClick() //Brings up interaction options menu
     {
-        RaycastHit2D hit = Physics2D.Raycast(mouseClickPos, Vector2.zero); //Vector2.zero == (0,0)
-        List<Collider2D> interactablesFound = CheckForUnits(mouseClickPos);
+        RaycastHit2D hit = Physics2D.Raycast(clickInfo.mousePos, Vector2.zero); //Vector2.zero == (0,0)
+        List<Collider2D> interactablesFound = CheckForUnits(clickInfo.mousePos);
 
-        if(interactablesFound.Count <= 1)
+        if (interactablesFound.Count <= 1)
         {
             Collider2D collider = hit.collider;
             if (collider)
@@ -148,7 +117,7 @@ public class PlayerController : MonoBehaviour {
         List<Collider2D> interactables = new List<Collider2D>();
         //Debug.Log("Checking for interactables");
         RaycastHit2D[] hits = Physics2D.RaycastAll(mouseClickPos, Vector2.zero);
-        
+
         for (int i = 0; i < hits.Length; i++)
         {
             Collider2D col = hits[i].collider;
@@ -172,7 +141,7 @@ public class PlayerController : MonoBehaviour {
         if (interactable)
         {
             interactable.OpenInteractionMenu();
-        }     
+        }
     }
 
     #endregion
@@ -183,7 +152,7 @@ public class PlayerController : MonoBehaviour {
     private void MoveHere(Vector3 location)
     {
         StopMovingToPrevInteraction();
-        PathfindingManager.RequestPath(new PathRequest(transform.position, location, unitController.OnPathFound));
+        PathfindingManager.RequestPath(new PathRequest(transform.position, location, uc.OnPathFound));
     }
 
     //this will be called from the button in the dropdown interaction menu, so it must be public
@@ -201,24 +170,24 @@ public class PlayerController : MonoBehaviour {
 
         while (interactable)
         {
-            if (!c.IsTouching(interactable.GetComponent<Collider2D>())) 
-            { 
-                PathfindingManager.RequestPath(new PathRequest(transform.position, interactable.transform.position, unitController.OnPathFound));
+            if (!c.IsTouching(interactable.GetComponent<Collider2D>()))
+            {
+                PathfindingManager.RequestPath(new PathRequest(transform.position, interactable.transform.position, uc.OnPathFound));
                 yield return new WaitForSeconds(.2f); //might be able to extend this here? no need to be as precise?
             }
             else
             {
-                unitController.StopMoving();
+                uc.StopMoving();
                 break;
             }
         }
 
         //if the interactable is still there when we get there
-        if(interactable != null)
+        if (interactable != null)
         {
             interactable.Interaction(interaction);
         }
-        
+
         yield break;
     }
 
@@ -231,5 +200,4 @@ public class PlayerController : MonoBehaviour {
         }
     }
     #endregion
-    */
 }

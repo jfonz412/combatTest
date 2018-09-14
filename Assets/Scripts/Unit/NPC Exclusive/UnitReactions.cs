@@ -49,7 +49,7 @@ public class UnitReactions : MonoBehaviour
 
     public void CheckSurroundings()
     {
-        if (myBrain.ActiveStates(engagedStates))
+        if (doNotReact || myBrain.ActiveStates(engagedStates))
             return; //return if already engaged and reacting to a unit
 
         Collider2D[] unitsInVicinity = Physics2D.OverlapCircleAll(transform.position, reactionRadius, 1);

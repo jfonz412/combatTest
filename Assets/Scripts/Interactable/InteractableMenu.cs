@@ -7,7 +7,7 @@ public class InteractableMenu : MonoBehaviour {
     public Text[] interactionOptions = new Text[4]; //actual text items
 
     Interactable currentInteractable;
-    PlayerController player;
+    PlayerMoveState player;
 
 #region Singleton 
 
@@ -24,7 +24,7 @@ public class InteractableMenu : MonoBehaviour {
 
     void Start()
     {
-        player = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<PlayerController>();
+        player = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<PlayerMoveState>();
     }
 
     public void PopulateOptions(Interactable interactable)

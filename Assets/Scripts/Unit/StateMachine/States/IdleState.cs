@@ -23,7 +23,9 @@ public class IdleState : State {
         base.Init();
         canTransitionInto = new UnitStateMachine.UnitState[]
         {
-            UnitStateMachine.UnitState.FightOrFlight
+            UnitStateMachine.UnitState.FightOrFlight,
+            UnitStateMachine.UnitState.Incapacitated,
+            UnitStateMachine.UnitState.PlayerMoveState,
         };
     }
 

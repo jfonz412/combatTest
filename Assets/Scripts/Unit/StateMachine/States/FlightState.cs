@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class FlightState : State
 {
+    IEnumerator flee;
 
     protected override void Init()
     {
         base.Init();
         canTransitionInto = new UnitStateMachine.UnitState[]
         {
-            UnitStateMachine.UnitState.Idle
+            UnitStateMachine.UnitState.Idle,
+            UnitStateMachine.UnitState.Incapacitated,
             //UnitStateMachine.UnitState.FightOrFlight
         };
     }
@@ -18,12 +20,15 @@ public class FlightState : State
     protected override void OnStateEnter()
     {
         base.OnStateEnter();
-        StartCoroutine(Flee());
+        flee = Flee();
+        StartCoroutine(flee);
     }
 
     protected override void OnStateExit()
     {
         base.OnStateExit();
+        StopCoroutine(flee); 
+        stateMachine.unitController.StopMoving();
     }
 
     #region Flight
@@ -39,6 +44,7 @@ public class FlightState : State
             yield return null;
         }
         transform.position = safelyOutOfRange;
+        stateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
     }
 
     private Vector3 GetClosestExit()

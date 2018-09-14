@@ -60,11 +60,10 @@ public class NPCInteraction : Interactable
 
     void TriggerAttack()
     {
-        AttackController playerAttackController = player.GetComponent<AttackController>();
-        if (playerAttackController.lastKnownTarget != transform)
-        {
-            playerAttackController.EngageTarget(true, transform);
-        }
+        Debug.Log("Player is attacking " + gameObject.name);
+        UnitStateMachine u = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<UnitStateMachine>();
+        u.currentThreat = transform;
+        u.RequestChangeState(UnitStateMachine.UnitState.Fight);
     }
 
     void TriggerTrade()
