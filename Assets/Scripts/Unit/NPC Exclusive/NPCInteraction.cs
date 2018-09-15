@@ -28,19 +28,19 @@ public class NPCInteraction : Interactable
         switch (interaction)
         {
             case "Attack":
-                if (myState.AbleToInteract(interaction))
+                //if (myState.AbleToInteract(interaction))
                     TriggerAttack();
                 break;
             case "Talk":
-                if (myState.AbleToInteract(interaction))
+                //if (myState.AbleToInteract(interaction))
                     TriggerDialogue();
                 break;
             case "Trade":
-                if (myState.AbleToInteract(interaction))
+                //if (myState.AbleToInteract(interaction))
                     TriggerTrade();
                 break;
             case "Inspect":
-                if (myState.AbleToInteract(interaction))
+                //if (myState.AbleToInteract(interaction))
                     InspectObject();
                 break;
             default:

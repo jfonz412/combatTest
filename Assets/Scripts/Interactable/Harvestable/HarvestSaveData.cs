@@ -37,7 +37,7 @@ public class HarvestSaveData : DataController {
         }
         else
         {
-            Debug.LogWarning(gameObject.name + " save data not found!");
+            //Debug.LogWarning(gameObject.name + " save data not found!");
             return;
         }
 

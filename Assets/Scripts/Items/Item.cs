@@ -71,10 +71,10 @@ public class Item {
     public enum EquipmentSlot { Head, Chest, Hands, Legs, MainHand, OffHand, Feet, NA } //used to determin slot in equipment manager
     public enum ToolType { Pick, Axe, NA };
 
-    public ToolType myToolType;
-    public AttackType myAttackType;
-    public EquipmentSlot myEquipSlot;
-    public WeaponSkill myWeaponSkill;
+    public ToolType myToolType = ToolType.NA;
+    public AttackType myAttackType = AttackType.NA;
+    public EquipmentSlot myEquipSlot = EquipmentSlot.NA;
+    public WeaponSkill myWeaponSkill = WeaponSkill.NA;
 
     public void Init()
     {

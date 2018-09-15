@@ -36,6 +36,7 @@ public class DeadState : State {
 
     public void DieAnim()
     {
+        //Debug.LogError("Animating death");
         Color color = Color.grey;
         color.a = color.a * 0.75f;
         stateMachine.spriteRend.color = color;

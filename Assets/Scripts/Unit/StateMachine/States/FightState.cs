@@ -31,6 +31,7 @@ public class FightState : State
     protected override void OnStateExit()
     {
         base.OnStateExit();
+        stateMachine.currentThreat = null; 
         StopCoroutine(engaging);
         stateMachine.unitController.StopMoving();
     }

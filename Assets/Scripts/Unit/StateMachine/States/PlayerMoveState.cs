@@ -158,6 +158,7 @@ public class PlayerMoveState : State {
     {
         StopMovingToPrevInteraction();
         PathfindingManager.RequestPath(new PathRequest(transform.position, location, uc.OnPathFound));
+        stateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle); 
     }
 
     public void InteractWithInteractable(string chosenInteraction, Interactable interactable)

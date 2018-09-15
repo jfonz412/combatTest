@@ -50,6 +50,7 @@ public class IncapacitatedState : State {
     protected override void OnStateExit()
     {
         base.OnStateExit();
+        StopAllCoroutines();
         waiting = null;
     }
 
@@ -106,7 +107,7 @@ public class IncapacitatedState : State {
     {
         BodyPartController b = stateMachine.bodyController;
 
-        if (knockedOut)
+        if (knockedOut) //if we were knocked out by this attack, put them down and set unconscious = true
         {
             b.unconscious = true;
 
@@ -124,7 +125,8 @@ public class IncapacitatedState : State {
 
             b.unconscious = false;
         }
-        else if (!b.unconscious) //otherwise if not already unconscious
+        //otherwise if unit knockdown is triggered (but not knockedOut), see if I'm not already down or unconscious
+        else if (!b.unconscious) 
         {
             Animator a = stateMachine.anim;
             coroutineCount++;

@@ -76,10 +76,8 @@ public class BodyPart : MonoBehaviour {
 #region My Weapon and Armor
     public Item MyWeapon()
     {
-        Debug.Log("Weapon is " + myWeapon);
         if(myWeapon == null)
         {
-            Debug.LogError("setting unarmed weapon for " + gameObject.name);
             SetUnarmedWeapon();
         }
 
