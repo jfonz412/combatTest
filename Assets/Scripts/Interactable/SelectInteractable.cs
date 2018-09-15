@@ -29,7 +29,7 @@ public class SelectInteractable : MonoBehaviour {
 
     static void PassCollider(Collider2D col)
     {
-        PlayerMoveState player = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<PlayerMoveState>();
+        PlayerController player = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<PlayerController>();
         player.CheckForInteractableMenu(col);
         Destroy(currentMenu);
     }

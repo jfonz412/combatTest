@@ -23,9 +23,11 @@ public class UnitStateMachine : MonoBehaviour {
     {
         public string clickType;
         public Vector3 mousePos;
+        public string interaction;
+        public Interactable interactable;
     }
 
-    public ClickInfo clickInfo;
+    public ClickInfo clickInfo; //player controller will make one of these and send it here
 
     public enum UnitState
     {

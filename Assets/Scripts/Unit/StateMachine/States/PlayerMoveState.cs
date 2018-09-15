@@ -49,7 +49,7 @@ public class PlayerMoveState : State {
         }
         else
         {
-            ProcessRightClick();
+            InteractWithInteractable(clickInfo.interaction, clickInfo.interactable);
         }
     }
 
@@ -61,27 +61,7 @@ public class PlayerMoveState : State {
         Instantiate(clickMarker, clickInfo.mousePos, Quaternion.identity);
     }
 
-    private void ProcessRightClick() //Brings up interaction options menu
-    {
-        RaycastHit2D hit = Physics2D.Raycast(clickInfo.mousePos, Vector2.zero); //Vector2.zero == (0,0)
-        List<Collider2D> interactablesFound = CheckForUnits(clickInfo.mousePos);
-
-        if (interactablesFound.Count <= 1)
-        {
-            Collider2D collider = hit.collider;
-            if (collider)
-            {
-                CheckForInteractableMenu(collider);
-            }
-        }
-        else
-        {
-            SelectInteractable.SpawnMenu(interactablesFound);
-        }
-
-    }
     #endregion
-
 
     #region Click Helpers
 
@@ -115,42 +95,7 @@ public class PlayerMoveState : State {
         }
     }
 
-    // RIGHT CLICK HELPERS
-
-    private List<Collider2D> CheckForUnits(Vector3 mouseClickPos)
-    {
-        List<Collider2D> interactables = new List<Collider2D>();
-        //Debug.Log("Checking for interactables");
-        RaycastHit2D[] hits = Physics2D.RaycastAll(mouseClickPos, Vector2.zero);
-
-        for (int i = 0; i < hits.Length; i++)
-        {
-            Collider2D col = hits[i].collider;
-            if (col != null)
-            {
-                interactables.Add(col);
-            }
-        }
-
-        return interactables;
-    }
-
-
-    //made public to expose to Unit Menu buttons, which will pass the collider into this method 
-    public void CheckForInteractableMenu(Collider2D collider)
-    {
-        Interactable interactable;
-
-        interactable = collider.GetComponent<Interactable>();
-
-        if (interactable)
-        {
-            interactable.OpenInteractionMenu();
-        }
-    }
-
     #endregion
-
 
     #region Movement helpers
 
@@ -161,7 +106,7 @@ public class PlayerMoveState : State {
         stateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle); 
     }
 
-    public void InteractWithInteractable(string chosenInteraction, Interactable interactable)
+    private void InteractWithInteractable(string chosenInteraction, Interactable interactable)
     {
         StopMovingToPrevInteraction();
         movingToInteraction = MoveToInteraction(interactable, chosenInteraction);
@@ -171,7 +116,7 @@ public class PlayerMoveState : State {
     private IEnumerator MoveToInteraction(Interactable interactable, string interaction)
     {
         Collider2D c = GetComponent<Collider2D>();
-        Debug.LogWarning("Moving to interaction");
+        Debug.LogWarning("Moving to interaction " + interactable.ToString());
         while (interactable)
         {
             if (!c.IsTouching(interactable.GetComponent<Collider2D>()))
