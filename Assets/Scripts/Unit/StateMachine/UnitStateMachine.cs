@@ -88,6 +88,7 @@ public class UnitStateMachine : MonoBehaviour {
         {
             states[currentState].ToggleState(false);
             currentState = state;
+            Debug.Log(gameObject.name + " " + states[currentState].ToString());
             states[currentState].ToggleState(true);    
         }         
     }

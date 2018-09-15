@@ -31,6 +31,12 @@ public class PlayerMoveState : State {
         ProcessClick();
     }
 
+    protected override void OnStateExit()
+    {
+        base.OnStateExit();
+        StopAllCoroutines();
+    }
+
     #region Process Clicks
 
     private void ProcessClick()
@@ -45,12 +51,11 @@ public class PlayerMoveState : State {
         {
             ProcessRightClick();
         }
-
     }
 
     private void ProcessLeftClick()
     {
-        RaycastHit2D hit = Physics2D.Raycast(clickInfo.mousePos, Vector2.zero); //Vector2.zero == (0,0)
+        RaycastHit2D hit = Physics2D.Raycast(clickInfo.mousePos, Vector2.zero);
 
         CheckForCollider(hit, clickInfo.mousePos); //will move to Pos if collider not found
         Instantiate(clickMarker, clickInfo.mousePos, Quaternion.identity);
@@ -84,7 +89,7 @@ public class PlayerMoveState : State {
     private void CheckForCollider(RaycastHit2D hit, Vector3 location)
     {
         Collider2D collider = hit.collider;
-        if (collider)
+        if (collider) //if collider is found
         {
             CheckCollider(collider, location);
         }
@@ -155,7 +160,6 @@ public class PlayerMoveState : State {
         PathfindingManager.RequestPath(new PathRequest(transform.position, location, uc.OnPathFound));
     }
 
-    //this will be called from the button in the dropdown interaction menu, so it must be public
     public void InteractWithInteractable(string chosenInteraction, Interactable interactable)
     {
         StopMovingToPrevInteraction();
@@ -166,8 +170,7 @@ public class PlayerMoveState : State {
     private IEnumerator MoveToInteraction(Interactable interactable, string interaction)
     {
         Collider2D c = GetComponent<Collider2D>();
-        stateMachine.RequestChangeState(UnitStateMachine.UnitState.PlayerMoveState); //request change state
-
+        Debug.LogWarning("Moving to interaction");
         while (interactable)
         {
             if (!c.IsTouching(interactable.GetComponent<Collider2D>()))

@@ -68,6 +68,7 @@ public class BodyPart : MonoBehaviour {
             dollPart.Initialize(PackagePartInfo());
         }
 
+        MyWeapon(); //run this to make sure we hve unarmed weapon
         //Debug.Log("assigning parts for " + this);
         //Debug.Log("my armortype is " + armorType);
     }
@@ -78,7 +79,7 @@ public class BodyPart : MonoBehaviour {
         Debug.Log("Weapon is " + myWeapon);
         if(myWeapon == null)
         {
-            Debug.Log("setting unarmed weapon");
+            Debug.LogError("setting unarmed weapon for " + gameObject.name);
             SetUnarmedWeapon();
         }
 
@@ -128,7 +129,10 @@ public class BodyPart : MonoBehaviour {
     //if this bodypart is checked for a weapon and doesn't have one it needs to tell AttackInfo something about what it's attacking with
     private void SetUnarmedWeapon() //make override so we can set other default weapons? //need to figure out how to make it so i can overwrite this without a child class
     {
-        myWeapon = MasterItemList.Fist(); 
+        if(attack1)
+            myWeapon = MasterItemList.MainFist(); 
+        else
+            myWeapon = MasterItemList.OffFist();
     }
     #endregion
 
@@ -402,6 +406,7 @@ public class BodyPart : MonoBehaviour {
         }
         return false;
     }
+
     public int SeverityLevel()
     {
         return currentSeverityLevel;

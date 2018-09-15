@@ -306,14 +306,34 @@ public class MasterItemList : MonoBehaviour {
     /*
      * Subpart items are the different elements a BodyPart to equip for offense or defense
      */
-    public static Item Fist()
+    public static Item MainFist()
     {
         Item item = new Item();
 
         item.name = "fist";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
-        //item.myEquipSlot = ANY (both hands)
+        item.myEquipSlot = Item.EquipmentSlot.MainHand;
+        item.myMaterial = ItemMaterial.Material.Bone;
+        item.weight = 1f;
+        item.stackable = false;
+        item.quantity = 1;
+        item.maxQuantity = 1;
+        item.myAttackType = Item.AttackType.BluntImpact;
+        item.myUseEffect = ItemEffects.ItemEffect.Equip;
+        item.myToolType = Item.ToolType.NA;
+        item.myWeaponSkill = Item.WeaponSkill.Hands;
+        return item;
+    }
+
+    public static Item OffFist()
+    {
+        Item item = new Item();
+
+        item.name = "fist";
+        item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
+        //item.icon = "NO ICON"
+        item.myEquipSlot = Item.EquipmentSlot.OffHand;
         item.myMaterial = ItemMaterial.Material.Bone;
         item.weight = 1f;
         item.stackable = false;
