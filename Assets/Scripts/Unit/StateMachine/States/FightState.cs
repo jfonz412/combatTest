@@ -16,7 +16,7 @@ public class FightState : State
         {
             UnitStateMachine.UnitState.Idle,
             UnitStateMachine.UnitState.Incapacitated,
-            UnitStateMachine.UnitState.PlayerMoveState
+            UnitStateMachine.UnitState.PlayerMove
         };
     }
 

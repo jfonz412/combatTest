@@ -7,19 +7,11 @@ public class InventoryToggle : MonoBehaviour {
     public GameObject infoPanelUI;
     public GameObject healthPanel;
     public SkillPanel skillPanel;
-
-    private Brain playerBrain;
-
-    private Brain.State[] invalidStates = new Brain.State[]
-    {
-        //Brain.State.Dead,
-        Brain.State.Talking
-        //Brain.State.Paused
-    };
+    private UnitStateMachine psm;
 
     private void Start()
     {
-        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().playerBrain;
+        psm = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<UnitStateMachine>();
     }
 
     private void Update()
@@ -31,27 +23,16 @@ public class InventoryToggle : MonoBehaviour {
     {
         if (Input.GetButtonDown("Inventory"))
         {
-            inventoryUI.SetActive(!inventoryUI.activeSelf);
-            ToggleWindows(inventoryUI.activeSelf);
-            
+            if (inventoryUI.activeSelf) //if already active go to idle
+            {
+                psm.RequestChangeState(UnitStateMachine.UnitState.Idle);
+            }
+            else
+            {
+                psm.RequestChangeState(UnitStateMachine.UnitState.InvOpen);
+            }
             ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus();
         }
-
-        CheckForValidPlayerState();
-    }
-
-    private void CheckForValidPlayerState()
-    {
-        if (playerBrain.ActiveStates(invalidStates))
-        {
-            CloseInventory();
-        }
-        /*
-        if (playerBrain.ActiveState(Brain.State.Shopping))
-        {
-            OpenInventory();
-        }
-        */
     }
 
     public void OpenInventory()

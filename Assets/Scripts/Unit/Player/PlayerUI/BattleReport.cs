@@ -14,18 +14,8 @@ public class BattleReport : MonoBehaviour {
     private static List<string> unfilteredReport = new List<string>();
     private static string newlines = System.Environment.NewLine + System.Environment.NewLine;
 
-    private Brain playerBrain;
-    private Brain.State[] activationImparingStates = new Brain.State[]
-    {
-        Brain.State.Shopping,
-        Brain.State.Talking,
-        Brain.State.Paused,
-        Brain.State.Prompted
-    };
-
     void Start ()
     {
-        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().playerBrain;
         reportText = transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
         scrollRect = transform.GetChild(0).GetChild(0).GetComponent<ScrollRect>();
         LoadReport(unfilteredReport); //allows report to be loaded between scenes
@@ -115,11 +105,6 @@ public class BattleReport : MonoBehaviour {
 
     private void ToggleBattleReport()
     {
-        if (playerBrain.ActiveStates(activationImparingStates))
-        {
-            return;
-        }
-
         if (Input.GetKeyDown(KeyCode.R))
         {
             reportObject.SetActive(!reportObject.activeSelf);
@@ -130,6 +115,8 @@ public class BattleReport : MonoBehaviour {
 
     private void Pause(bool paused)
     {
+        //call battle report state, then pause
+        /*
         if (paused)
         {
             playerBrain.ToggleState(Brain.State.BattleReportOpen, true);
@@ -140,6 +127,7 @@ public class BattleReport : MonoBehaviour {
             playerBrain.ToggleState(Brain.State.BattleReportOpen, false);
             Time.timeScale = 1;
         }
+        */
     }
 
     public void ClearBattleReport()

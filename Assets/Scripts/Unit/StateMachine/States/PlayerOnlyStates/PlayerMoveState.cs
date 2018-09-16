@@ -14,9 +14,12 @@ public class PlayerMoveState : State {
         canTransitionInto = new UnitStateMachine.UnitState[]
         {
             UnitStateMachine.UnitState.Idle,
+            UnitStateMachine.UnitState.Talking,
             UnitStateMachine.UnitState.Incapacitated,
-            UnitStateMachine.UnitState.PlayerMoveState,
+            UnitStateMachine.UnitState.InvOpen,
+            UnitStateMachine.UnitState.PlayerMove,
             //UnitStateMachine.UnitState.FightOrFlight, //we don't want the player to automatically react to attacks
+            UnitStateMachine.UnitState.Paused,
             UnitStateMachine.UnitState.Fight,
             UnitStateMachine.UnitState.Flight,
             UnitStateMachine.UnitState.Dead

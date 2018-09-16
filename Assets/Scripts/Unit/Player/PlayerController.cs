@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour {
                 clickInfo.mousePos = GetMouseClickPosition();
                 clickInfo.clickType = "leftClick";
                 stateMachine.clickInfo = clickInfo;
-                stateMachine.RequestChangeState(UnitStateMachine.UnitState.PlayerMoveState);
+                stateMachine.RequestChangeState(UnitStateMachine.UnitState.PlayerMove);
             }
             else if (Input.GetMouseButtonDown(1))
             {
@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour {
         clickInfo.interaction = chosenInteraction;
         clickInfo.interactable = interactable;
         stateMachine.clickInfo = clickInfo;
-        stateMachine.RequestChangeState(UnitStateMachine.UnitState.PlayerMoveState);
+        stateMachine.RequestChangeState(UnitStateMachine.UnitState.PlayerMove);
     }
 
     #endregion

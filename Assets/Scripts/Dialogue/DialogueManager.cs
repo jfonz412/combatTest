@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class DialogueManager : MonoBehaviour {
 
     public Animator dialogueWindow;
-    private Brain playerBrain;
 
     public Text nameText;
     public Text dialogueText;
@@ -16,18 +15,13 @@ public class DialogueManager : MonoBehaviour {
 
     Queue<string> sentences;
 
-
     // Use this for initialization
     void Start () {
         sentences = new Queue<string>();
-        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Brain>();
 	}
 
     public void StartDialogue(Dialogue dialogue)
     {
-        //player.incapacitated = true; //disable player until dialogue has ended
-        playerBrain.ToggleState(Brain.State.Talking, true);
-
         isOpen = true;
         dialogueWindow.SetBool("isOpen", isOpen);
 
@@ -47,7 +41,7 @@ public class DialogueManager : MonoBehaviour {
     {
         if(sentences.Count == 0)
         {
-            EndDialogue();
+            ExitDialogueState();
             return;
         }
 
@@ -66,10 +60,14 @@ public class DialogueManager : MonoBehaviour {
         }
     }
 
-    public void EndDialogue()
+    public void ExitDialogueState()
     {
-        playerBrain.ToggleState(Brain.State.Talking, false);
+        ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
+        //otherUnit.RequestChangeState(UnitStateMachine.UnitState.Idle);
+    }
 
+    public void CloseDialogueWindow()
+    {
         isOpen = false;
         dialogueWindow.SetBool("isOpen", isOpen);
     }

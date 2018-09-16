@@ -4,18 +4,9 @@ public class PauseController : MonoBehaviour {
     public GameObject pauseMenu;
     private Brain playerBrain;
 
-    private Brain.State stateBeforePause;
-
-    Brain.State[] invalidPauseStates = new Brain.State[]
-    {
-        Brain.State.Talking,
-        Brain.State.Shopping,
-        Brain.State.Prompted
-    };
-
     private void Start()
     {
-        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().playerBrain;
+        //playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().playerBrain;
     }
 
     private void Update ()
@@ -29,14 +20,14 @@ public class PauseController : MonoBehaviour {
 
     private bool CanPause()
     {
-        if (!playerBrain.ActiveStates(invalidPauseStates)) //if any of these are active return false
-        {
+        //if (!playerBrain.ActiveStates(invalidPauseStates)) //if any of these are active return false
+        //{
             return true;
-        }
-        else
-        {
-            return false;
-        }
+        //}
+        //else
+        //{
+            //return false;
+        //}
     }
 
     private void TogglePause()

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 //the base script for all of our unity personalities
 public class UnitReactions : MonoBehaviour
 {
+    /*
     private UnitReactionManager rm;
     private AttackController attackController;
     private NPCInteractionStates npcState;
@@ -300,4 +301,5 @@ public class UnitReactions : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, reactionRadius);
     }
+    */
 }

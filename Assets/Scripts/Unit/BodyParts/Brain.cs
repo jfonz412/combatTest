@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Brain : MonoBehaviour {
+    
     public bool isDead { get { return currentStates[State.Dead]; } set { ToggleState(State.Dead, value); } } 
 
     public enum State
@@ -53,13 +54,6 @@ public class Brain : MonoBehaviour {
     public void TriggerTemporaryState(State state, int severityTimer)
     {
         StartCoroutine(TimedState(state, severityTimer));
-    }
-
-    public void Die()
-    {
-        ResetStates();
-        currentStates[State.Dead] = true;
-        GetComponent<Death>().Die();
     }
 
     public bool ActiveState(State state)
@@ -128,4 +122,5 @@ public class Brain : MonoBehaviour {
             { State.Talking, false }
         };
     }
+    
 }

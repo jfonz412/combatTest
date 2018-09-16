@@ -46,9 +46,10 @@ public class UnitStateMachine : MonoBehaviour {
         Paused,
         BattleReportOpen,
 
-        PlayerMoveState
+        PlayerMove,
+        InvOpen
     };
-    private Dictionary<UnitState, State> states = new Dictionary<UnitState, State>();
+    protected Dictionary<UnitState, State> states = new Dictionary<UnitState, State>();
 
     public UnitState currentState = UnitState.Idle;
 
@@ -57,7 +58,6 @@ public class UnitStateMachine : MonoBehaviour {
         unitTraits = GetComponent<UnitTraits>();
         unitRelationships = GetComponent<UnitRelationships>();
         unitController = GetComponent<UnitController>();
-        //attackController = GetComponent<AttackController>();
         unitAnim = GetComponent<UnitAnimController>();
         anim = GetComponent<Animator>();
         attackTimer = GetComponent<AttackTimer>();
@@ -73,15 +73,17 @@ public class UnitStateMachine : MonoBehaviour {
         states[currentState].ToggleState(true);
     }
 
-    private void LoadStates()
+    protected virtual void LoadStates()
     {
         states.Add(UnitState.FightOrFlight, GetComponent<FightOrFlight>());
         states.Add(UnitState.Fight, GetComponent<FightState>());
         states.Add(UnitState.Flight, GetComponent<FlightState>());
         states.Add(UnitState.Idle, GetComponent<IdleState>());
         states.Add(UnitState.Incapacitated, GetComponent<IncapacitatedState>());
+        states.Add(UnitState.PlayerMove, GetComponent<PlayerMoveState>());
         states.Add(UnitState.Dead, GetComponent<DeadState>());
-        states.Add(UnitState.PlayerMoveState, GetComponent<PlayerMoveState>());
+        states.Add(UnitState.Paused, GetComponent<PausedState>());
+        states.Add(UnitState.InvOpen, GetComponent<InvOpenState>());
     }
 
     public virtual void RequestChangeState(UnitState state)

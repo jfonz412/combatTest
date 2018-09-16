@@ -15,7 +15,7 @@ public class UnitReactionManager : MonoBehaviour {
     {
         for (int n = 0; n < units.Count; n++)
         {
-            units[n].CheckSurroundings();
+            //units[n].CheckSurroundings();
         }
     }
 
@@ -29,18 +29,19 @@ public class UnitReactionManager : MonoBehaviour {
     {
         UnitReactions unit = units[i];
 
-        //skip if unit is dead
-        if (unit.isDead || unit == null)
-        {
-            units.RemoveAt(i);
-            continue;
-        }
+            /*skip if unit is dead
+            if (unit.isDead || unit == null)
+            {
+                units.RemoveAt(i);
+                continue;
+            }
 
-        if (Vector3.Distance(unit.transform.position, location) < unit.reactionRadius)
-        {
-            unit.ReactToViolence(attacker, victim);
+            if (Vector3.Distance(unit.transform.position, location) < unit.reactionRadius)
+            {
+                unit.ReactToViolence(attacker, victim);
+            }
+            */
         }
     }
-}
 
 }

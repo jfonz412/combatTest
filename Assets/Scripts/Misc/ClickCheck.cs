@@ -6,21 +6,11 @@ public class ClickCheck : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 {
     private InventorySlot slot;
     private CloseOpenWindows windowCloser;
-    private Brain playerBrain;
-
-    Brain.State[] invalidStates = new Brain.State[]
-    {
-        Brain.State.Talking,
-        Brain.State.Dead,
-        Brain.State.Prompted
-        //paused?
-    };
 
     private void Start()
     {
         slot = GetComponentInParent<InventorySlot>();
         windowCloser = ScriptToolbox.GetInstance().GetWindowCloser();
-        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Brain>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -36,11 +26,6 @@ public class ClickCheck : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public void OnPointerClick(PointerEventData pointerEventData)
     {
-        if (InvalidState())
-        {
-            return;
-        }
-
         windowCloser.DestroyPopupMenus();
 
         if (pointerEventData.button == PointerEventData.InputButton.Right)
@@ -52,10 +37,5 @@ public class ClickCheck : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         {
             slot.SlotLeftClicked();
         }
-    }
-
-    bool InvalidState()
-    {
-        return playerBrain.ActiveStates(invalidStates);
     }
 }

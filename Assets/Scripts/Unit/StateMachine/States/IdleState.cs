@@ -25,7 +25,10 @@ public class IdleState : State {
         {
             UnitStateMachine.UnitState.FightOrFlight,
             UnitStateMachine.UnitState.Incapacitated,
-            UnitStateMachine.UnitState.PlayerMoveState,
+            UnitStateMachine.UnitState.PlayerMove,
+            UnitStateMachine.UnitState.InvOpen,
+            UnitStateMachine.UnitState.Paused,
+            UnitStateMachine.UnitState.Talking
         };
     }
 

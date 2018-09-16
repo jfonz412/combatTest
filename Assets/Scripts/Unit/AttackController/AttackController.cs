@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackController : MonoBehaviour {
-
+    /*
     [HideInInspector]
     public Transform lastKnownTarget = null;
 
@@ -79,7 +79,7 @@ public class AttackController : MonoBehaviour {
         }
     }
 
-    /****************** PRIVATE FUNCTIONS **************************/
+
     private IEnumerator MoveToEngagement(Transform targetTransform)
     {
         bool inRange;
@@ -198,5 +198,6 @@ public class AttackController : MonoBehaviour {
     }
 
     #endregion
+    */
 }
 

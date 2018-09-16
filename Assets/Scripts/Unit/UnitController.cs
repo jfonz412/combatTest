@@ -14,18 +14,6 @@ public class UnitController : MonoBehaviour
 
     private float currentMoveSpeed;
 
-    private Brain.State[] impairingStates = new Brain.State[] 
-    {
-        Brain.State.Downed,
-        Brain.State.Rocked,
-        Brain.State.Shock,
-        Brain.State.Unconscious,
-        Brain.State.Vomitting,
-        Brain.State.Dead,
-        Brain.State.CantBreathe,
-        Brain.State.Suffocating
-    };
-
     void Start()
     {
         anim = GetComponent<UnitAnimController>();
@@ -43,7 +31,7 @@ public class UnitController : MonoBehaviour
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
-        if (pathSuccessful && !Impaired())
+        if (pathSuccessful)
         {
             currentMoveSpeed = skills.GetCurrentMoveSpeed();
             //Debug.Log("movespeed is " + currentMoveSpeed);
@@ -72,7 +60,7 @@ public class UnitController : MonoBehaviour
         anim.FaceDirection(transform.position, currentWaypoint);
         anim.Walking(true);
 
-        while (true && !Impaired()) //expensive but it might take care of all movement stoppage
+        while (true) //expensive but it might take care of all movement stoppage
         {
             if (transform.position == currentWaypoint)
             {
@@ -151,17 +139,7 @@ public class UnitController : MonoBehaviour
         sp.sortingOrder = (int)Mathf.RoundToInt(-transform.position.y * 1000);
     }
 
-    private bool Impaired()
-    {
-        if (myBrain.ActiveStates(impairingStates))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+
 
     /*
     public void OnDrawGizmos()

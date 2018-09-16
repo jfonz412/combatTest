@@ -8,11 +8,11 @@ public class InventorySlot : MonoBehaviour
     public Image icon;
     protected Item item;
 
-    private Brain playerBrain;
+    private UnitStateMachine psm;
 
     private void Start()
     {
-        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Brain>();
+        psm = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<UnitStateMachine>();
     }
 
     public Item Item()
@@ -44,7 +44,6 @@ public class InventorySlot : MonoBehaviour
         icon.enabled = false;
     }
 
-
     public virtual void SlotHoverOver()
     {
         InvSlotClick.instance.InventorySlotHoverOver(item);
@@ -52,25 +51,25 @@ public class InventorySlot : MonoBehaviour
 
     public virtual void SlotRightClicked()
     {
-        if (playerBrain.ActiveState(Brain.State.Shopping))
-        {
-            InvSlotClick.instance.RightClickedToSell(item);
-        }
-        else
+        if (psm.currentState == UnitStateMachine.UnitState.InvOpen)
         {
             InvSlotClick.instance.InventorySlotRightClicked(item);
+        }
+        else if (psm.currentState == UnitStateMachine.UnitState.Shopping)
+        {
+            InvSlotClick.instance.RightClickedToSell(item);
         }
     }
 
     public virtual void SlotLeftClicked()
     {
-        if(playerBrain.ActiveState(Brain.State.Shopping))
-        {
-            InvSlotClick.instance.LeftClickedToSell(this);
-        }
-        else
+        if (psm.currentState == UnitStateMachine.UnitState.InvOpen)
         {
             InvSlotClick.instance.InventorySlotLeftClicked(this);
+        }
+        else if (psm.currentState == UnitStateMachine.UnitState.Shopping)
+        {
+            InvSlotClick.instance.LeftClickedToSell(this);
         }
 
     }
