@@ -22,15 +22,17 @@ public class LoadShop : MonoBehaviour {
 
     public void LoadShopInventory()
     {
-        shopInventory = EconomyManager.GetInstance().GetMarketInventory().GetInventory(gameObject.name).ToList();
+        shopInventory = EconomyManager.GetInstance().GetMarketInventory().GetInventory(gameObject.name).ToList(); //get this unit's inventory
         InventoryManager.GetInstance().GetShopInventory().LoadShopInventory(shopInventory, this); //load inventory window with this
         InventoryManager.GetInstance().GetShopDialogue().LoadShopDialogue(shopDialogue); //get shop dialog window
     }
 
-    public void UpdateInventory(List<Item> items) //WHERE IS THIS CALLED? FROM SHOPINVENTORY.CS I think
+    //called after shop is exited to update inventory after transaction
+    public void UpdateInventory(List<Item> items)
     {
         shopInventory = new List<Item>(items); //save over old shop
         EconomyManager.GetInstance().GetMarketInventory().UpdateShop(gameObject.name, items);
+        GetComponent<UnitStateMachine>().RequestChangeState(UnitStateMachine.UnitState.Idle);
     }
 
     public Item[] GetCurrentInventory()

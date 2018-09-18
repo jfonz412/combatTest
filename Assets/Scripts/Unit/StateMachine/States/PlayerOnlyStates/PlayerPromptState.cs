@@ -1,16 +1,16 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-//NOT CURRENTLY USED
-public class PausedState : State {
+public class PlayerPromptState : State
+{
+    private bool waitingForInput;
 
     protected override void Init()
     {
         base.Init();
         canTransitionInto = new UnitStateMachine.UnitState[]
         {
-            UnitStateMachine.UnitState.Idle
+            UnitStateMachine.UnitState.Shopping
         };
     }
 
@@ -18,11 +18,23 @@ public class PausedState : State {
     {
         base.OnStateEnter();
         Time.timeScale = 0;
+        waitingForInput = true;
+        StartCoroutine(WaitForInput());
     }
 
     protected override void OnStateExit()
     {
         base.OnStateExit();
         Time.timeScale = 1;
+        waitingForInput = false;
+        StopAllCoroutines(); //just in case
+    }
+
+    private IEnumerator WaitForInput()
+    {
+        while (waitingForInput)
+        {
+            yield return null;
+        }
     }
 }

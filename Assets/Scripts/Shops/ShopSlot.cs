@@ -10,11 +10,13 @@ public class ShopSlot : InventorySlot
 
     public override void SlotRightClicked()
     {
-        InventoryManager.GetInstance().GetShopSlotClick().ShopSlotRightClicked(item); 
+        if(psm.currentState == UnitStateMachine.UnitState.Shopping)
+            InventoryManager.GetInstance().GetShopSlotClick().ShopSlotRightClicked(item); 
     }
 
     public override void SlotLeftClicked()
     {
-        InventoryManager.GetInstance().GetShopSlotClick().ShopSlotLeftClicked(this);
+        if (psm.currentState == UnitStateMachine.UnitState.Shopping)
+            InventoryManager.GetInstance().GetShopSlotClick().ShopSlotLeftClicked(this);
     }
 }

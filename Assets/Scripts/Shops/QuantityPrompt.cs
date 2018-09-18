@@ -10,44 +10,20 @@ public class QuantityPrompt : MonoBehaviour {
     [HideInInspector]
     public int enteredAmount = 0;
 
-    private Brain playerBrain;
+    private PlayerStateMachine psm;
 
     IEnumerator waitForInput;
 
     private void Start()
     {
-        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Brain>();
+        psm = ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine;
     }
 
     public void TriggerPrompt()
     {
-        waitForInput = WaitForInput();
-        StartCoroutine(waitForInput);
-    }
-
-    private IEnumerator WaitForInput()
-    {
-        PromptState(true);
-        while (waitingForInput && playerBrain.ActiveState(Brain.State.Prompted))
-        {
-            yield return null;
-        }
-        PromptState(false);
-    }
-
-    private void PromptState(bool prompting)
-    {
-        if (prompting)
-        {
-            playerBrain.ToggleState(Brain.State.Prompted, true);
-            promptWindow.SetActive(true);
-            waitingForInput = true;
-        }
-        else
-        {
-            playerBrain.ToggleState(Brain.State.Prompted, false); 
-            promptWindow.SetActive(false);
-        }
+        psm.prompted = true; //prevents shop screen from closing when we exit shopping state
+        psm.RequestChangeState(UnitStateMachine.UnitState.Prompted);
+        promptWindow.SetActive(true);
     }
 
     public int GetQuantity()
@@ -59,18 +35,22 @@ public class QuantityPrompt : MonoBehaviour {
 
     public void OKButtonPressed(Text input) //Text input?
     {
-        waitingForInput = false;
-
         //if int not passed in we just return 0
-        if(!int.TryParse(input.text, out enteredAmount)) 
+        if (!int.TryParse(input.text, out enteredAmount)) 
         {
             enteredAmount = 0;
         }
+
+        psm.prompted = false;
+        psm.RequestChangeState(UnitStateMachine.UnitState.Shopping);
+        promptWindow.SetActive(false);
     }
 
     public void CancelButtonPressed()
     {
-        waitingForInput = false;
+        psm.prompted = false;
+        psm.RequestChangeState(UnitStateMachine.UnitState.Shopping);
+        promptWindow.SetActive(false);
         enteredAmount = 0;
     }
 }

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTalkState : State
+public class NPCShopState : State
 {
-
     protected override void Init()
     {
         base.Init();
@@ -12,7 +11,7 @@ public class PlayerTalkState : State
         {
             UnitStateMachine.UnitState.Idle,
             UnitStateMachine.UnitState.Incapacitated,
-            //UnitStateMachine.UnitState.FightOrFlight,
+            UnitStateMachine.UnitState.FightOrFlight,
             UnitStateMachine.UnitState.Dead
         };
     }
@@ -24,7 +23,8 @@ public class PlayerTalkState : State
 
     protected override void OnStateExit()
     {
-        base.OnStateExit(); 
-        ScriptToolbox.GetInstance().GetDialogueManager().CloseDialogueWindow();
+        base.OnStateExit();
+        ShopInventoryUI.instance.HardShopExit();
     }
 }
+

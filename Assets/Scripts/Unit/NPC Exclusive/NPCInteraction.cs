@@ -10,6 +10,7 @@ public class NPCInteraction : Interactable
     {
         myInteractions = new string[] { "Attack", "Talk", "Trade", "Inspect" };
         myShop = GetComponent<LoadShop>();
+        dialog.unit = GetComponent<UnitStateMachine>();
     }
 
     public override void Interaction(string interaction)
@@ -70,6 +71,11 @@ public class NPCInteraction : Interactable
         {
             ShopInventoryUI.instance.ShopUIToggle(true, name);
             myShop.LoadShopInventory();
+ 
+            PlayerStateMachine psm = ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine;
+            UnitStateMachine u = GetComponent<UnitStateMachine>();
+            psm.RequestChangeState(UnitStateMachine.UnitState.Shopping);
+            u.RequestChangeState(UnitStateMachine.UnitState.Shopping);
         }
         else
         {

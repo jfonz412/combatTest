@@ -8,9 +8,9 @@ public class InventorySlot : MonoBehaviour
     public Image icon;
     protected Item item;
 
-    private UnitStateMachine psm;
+    protected UnitStateMachine psm;
 
-    private void Start()
+    protected void Start()
     {
         psm = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<UnitStateMachine>();
     }

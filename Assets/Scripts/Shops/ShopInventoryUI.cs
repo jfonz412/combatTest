@@ -11,7 +11,7 @@ public class ShopInventoryUI : MonoBehaviour {
     private ShopInventory shop;
     private ShopSlot[] slots;
 
-    private Brain playerBrain;
+    private PlayerStateMachine psm;
 
     #region Singleton
 
@@ -33,9 +33,15 @@ public class ShopInventoryUI : MonoBehaviour {
         shop = InventoryManager.GetInstance().GetShopInventory();
         shop.onInventoryChanged += UpdateUI;
         slots = itemsParent.GetComponentsInChildren<ShopSlot>();
-        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Brain>();
+        psm = ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine;
 
         AssignSlotNums();
+    }
+
+    //wrapper for button
+    public void ExitShop()
+    {
+        ShopUIToggle(false);
     }
 
     public void ShopUIToggle(bool active, string NPCname = null)
@@ -48,22 +54,28 @@ public class ShopInventoryUI : MonoBehaviour {
 
         if (!active)
         {
-            playerBrain.ToggleState(Brain.State.Neutral, false);
-            playerBrain.ToggleState(Brain.State.Shopping, false);
-            shop.ClearShopInventory();
+            shop.ClearShopInventory();  //shopOwner's state is changed in here
+            InventoryManager.GetInstance().GetInventoryToggle().CloseInventory();
+            psm.RequestChangeState(UnitStateMachine.UnitState.Idle);
         }
         else
         {
-            playerBrain.ToggleState(Brain.State.Neutral, true);
-            playerBrain.ToggleState(Brain.State.Shopping, true);
             ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus(); 
         }
     }
 
-    //for button
-    public void ExitShop()
+    //for units to call in their own exit states if knocked out of shopping, no state changes called to avoid infinite loops
+    public void HardShopExit()
     {
-        ShopUIToggle(false);
+        //this method will always be called even after pressing the exit button because each unit's OnStateExit calls this
+        //the if statement prevents it from going any further
+        if (shopUI.activeSelf)
+        {
+            shopUI.SetActive(false);
+            shopDialogue.SetActive(false);
+            InventoryManager.GetInstance().GetInventoryToggle().CloseInventory();
+            shop.ClearShopInventory();
+        }
     }
 
     //this method loads the UI slots with items from ShopInventory, called from ShopInventory delgate

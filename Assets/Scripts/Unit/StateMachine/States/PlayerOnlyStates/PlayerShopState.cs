@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTalkState : State
+public class PlayerShopState : State
 {
+    PlayerStateMachine psm;
 
     protected override void Init()
     {
@@ -13,6 +14,7 @@ public class PlayerTalkState : State
             UnitStateMachine.UnitState.Idle,
             UnitStateMachine.UnitState.Incapacitated,
             //UnitStateMachine.UnitState.FightOrFlight,
+            UnitStateMachine.UnitState.Prompted,
             UnitStateMachine.UnitState.Dead
         };
     }
@@ -20,11 +22,16 @@ public class PlayerTalkState : State
     protected override void OnStateEnter()
     {
         base.OnStateEnter();
+        psm = (PlayerStateMachine)stateMachine;
+        InventoryManager.GetInstance().GetInventoryToggle().OpenInventory();
     }
 
     protected override void OnStateExit()
     {
-        base.OnStateExit(); 
-        ScriptToolbox.GetInstance().GetDialogueManager().CloseDialogueWindow();
+        base.OnStateExit();
+
+        //do not knock out of shop screen if player is being prompted
+        if(!psm.prompted)
+            ShopInventoryUI.instance.HardShopExit();
     }
 }

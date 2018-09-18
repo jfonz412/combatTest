@@ -251,7 +251,7 @@ public class MasterItemList : MonoBehaviour {
         item.myMaterial = ItemMaterial.Material.NA;
         item.weight = 5f;
         item.stackable = true;
-        item.quantity = 1;
+        item.quantity = 2;
         item.maxQuantity = 3;
         item.myWeaponSkill = Item.WeaponSkill.NA;
         item.myAttackType = Item.AttackType.NA;

@@ -9,5 +9,6 @@ public class NPCStateMachine : UnitStateMachine
         base.LoadStates();
         //override this state with player talking state
         states.Add(UnitState.Talking, GetComponent<NPCTalkState>());
+        states.Add(UnitState.Shopping, GetComponent<NPCShopState>());
     }
 }

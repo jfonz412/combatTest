@@ -28,7 +28,8 @@ public class IdleState : State {
             UnitStateMachine.UnitState.PlayerMove,
             UnitStateMachine.UnitState.InvOpen,
             UnitStateMachine.UnitState.Paused,
-            UnitStateMachine.UnitState.Talking
+            UnitStateMachine.UnitState.Talking,
+            UnitStateMachine.UnitState.Shopping
         };
     }
 

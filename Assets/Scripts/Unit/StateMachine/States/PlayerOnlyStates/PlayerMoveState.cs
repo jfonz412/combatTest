@@ -22,7 +22,8 @@ public class PlayerMoveState : State {
             UnitStateMachine.UnitState.Paused,
             UnitStateMachine.UnitState.Fight,
             UnitStateMachine.UnitState.Flight,
-            UnitStateMachine.UnitState.Dead
+            UnitStateMachine.UnitState.Dead,
+            UnitStateMachine.UnitState.Shopping
         };
     }
 

@@ -9,6 +9,7 @@ public class DialogueManager : MonoBehaviour {
 
     public Text nameText;
     public Text dialogueText;
+    public UnitStateMachine unitTalking;
 
     [HideInInspector]
     public bool isOpen = false;
@@ -26,6 +27,7 @@ public class DialogueManager : MonoBehaviour {
         dialogueWindow.SetBool("isOpen", isOpen);
 
         nameText.text = dialogue.name;
+        unitTalking = dialogue.unit;
 
         sentences.Clear(); //clear que of any old sentences
 
@@ -60,10 +62,10 @@ public class DialogueManager : MonoBehaviour {
         }
     }
 
-    public void ExitDialogueState()
+    public void ExitDialogueState() //maybe put optional UnitState param here to immediatly put unit in specific state?
     {
         ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
-        //otherUnit.RequestChangeState(UnitStateMachine.UnitState.Idle);
+        unitTalking.RequestChangeState(UnitStateMachine.UnitState.Idle);
     }
 
     public void CloseDialogueWindow()
