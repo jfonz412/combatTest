@@ -8,18 +8,17 @@ public class SlotClickHelpers : MonoBehaviour {
     private Inventory inv;
     private ShopInventory shop;
     private QuantityPrompt qntyPrompt;
-    private Brain playerBrain;
+    private PlayerStateMachine psm;
 
     void Start()
     {
         playerWallet = ScriptToolbox.GetInstance().GetPlayerWallet();
-        playerBrain = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<Brain>();
         inv = InventoryManager.GetInstance().GetInventory();
         shop = InventoryManager.GetInstance().GetShopInventory();
         shopDialogue = InventoryManager.GetInstance().GetShopDialogue();
         qntyPrompt = InventoryManager.GetInstance().GetQuantityPrompt();
+        psm = ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine;
     }
-
 
     #region EquipSlot
     //HELPERS
@@ -136,7 +135,7 @@ public class SlotClickHelpers : MonoBehaviour {
         if (item.quantity > 1)
         {
             qntyPrompt.TriggerPrompt();
-            while (qntyPrompt.waitingForInput && playerBrain.ActiveState(Brain.State.Prompted))
+            while (psm.currentState == UnitStateMachine.UnitState.Prompted)
             {
                 yield return null;
             }
@@ -188,7 +187,7 @@ public class SlotClickHelpers : MonoBehaviour {
         if (item.quantity > 1)
         {
             qntyPrompt.TriggerPrompt();
-            while (qntyPrompt.waitingForInput && playerBrain.ActiveState(Brain.State.Prompted))
+            while (psm.currentState == UnitStateMachine.UnitState.Prompted)
             {
                 yield return null;
             }

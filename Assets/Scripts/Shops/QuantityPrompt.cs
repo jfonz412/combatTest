@@ -6,8 +6,6 @@ public class QuantityPrompt : MonoBehaviour {
 
     public GameObject promptWindow;
     [HideInInspector]
-    public bool waitingForInput = false;
-    [HideInInspector]
     public int enteredAmount = 0;
 
     private PlayerStateMachine psm;
