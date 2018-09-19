@@ -115,19 +115,14 @@ public class BattleReport : MonoBehaviour {
 
     private void Pause(bool paused)
     {
-        //call battle report state, then pause
-        /*
         if (paused)
         {
-            playerBrain.ToggleState(Brain.State.BattleReportOpen, true);
             Time.timeScale = 0;
         }
         else
         {
-            playerBrain.ToggleState(Brain.State.BattleReportOpen, false);
             Time.timeScale = 1;
         }
-        */
     }
 
     public void ClearBattleReport()

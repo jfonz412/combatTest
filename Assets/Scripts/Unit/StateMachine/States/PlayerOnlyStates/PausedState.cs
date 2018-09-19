@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//NOT CURRENTLY USED
+/******NOT CURRENTLY USED*********/
 public class PausedState : State {
 
     protected override void Init()

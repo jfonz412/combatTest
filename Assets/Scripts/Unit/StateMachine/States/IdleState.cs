@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class IdleState : State {
     IEnumerator wandering;
+    public bool wander;
 
     protected override void OnStateEnter()
     {
@@ -36,14 +37,27 @@ public class IdleState : State {
     #region Wander
     private IEnumerator Wander()
     {
-        //float z = transform.position.z;
-        //Vector3 safelyOutOfRange = new Vector3(100f, 100f, z);      
-        while (true)
+        if (wander)
         {
-            //PathfindingManager.RequestPath(new PathRequest(transform.position, closestExit, stateMachine.unitController.OnPathFound));
-            Debug.Log(gameObject + " is wandering");
-            yield return new WaitForSeconds(3f);
+            if (stateMachine == null)
+                stateMachine = GetComponent<UnitStateMachine>();
+
+            while (true)
+            {
+                PathfindingManager.RequestPath(new PathRequest(transform.position, RandomWanderSpot(), stateMachine.unitController.OnPathFound));
+                Debug.Log(gameObject + " is wandering");
+                yield return new WaitForSeconds(3f);
+            }
         }
+    }
+
+    private Vector3 RandomWanderSpot()
+    {
+        float x = transform.position.x;
+        float y = transform.position.y;
+        float z = transform.position.z;
+
+        return new Vector3(x + Random.Range(-1.0f, 1.0f), y + Random.Range(-1.0f, 1.0f), z);
     }
     #endregion
 }

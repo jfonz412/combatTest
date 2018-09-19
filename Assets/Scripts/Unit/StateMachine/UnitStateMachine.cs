@@ -14,7 +14,7 @@ public class UnitStateMachine : MonoBehaviour {
     public AttackTimer attackTimer;
     public CombatSkills combatSkills;
     public SpriteRenderer spriteRend;
-    public bool doNotReact = false; 
+    public bool doNotReact = false;
     public List<BodyPart> attack1Parts, attack2Parts;
     public Transform currentThreat;
 
