@@ -14,7 +14,7 @@ public class UnitStateMachine : MonoBehaviour {
     public AttackTimer attackTimer;
     public CombatSkills combatSkills;
     public SpriteRenderer spriteRend;
-    public bool doNotReact = false;
+
     public List<BodyPart> attack1Parts, attack2Parts;
     public Transform currentThreat;
 
@@ -64,6 +64,7 @@ public class UnitStateMachine : MonoBehaviour {
         bodyController = GetComponent<BodyPartController>();
         combatSkills = GetComponent<CombatSkills>();
         spriteRend = transform.GetChild(0).GetComponent<SpriteRenderer>();
+
         LoadStates();
 
         attack1Parts = bodyController.attack1Parts; //main 
@@ -88,13 +89,15 @@ public class UnitStateMachine : MonoBehaviour {
 
     public virtual void RequestChangeState(UnitState state)
     {
+        //Debug.LogError("Requested change state to " + state.ToString());
         if (ValidTransitionState(state))
         {
             states[currentState].ToggleState(false);
             currentState = state;
-            Debug.Log(gameObject.name + " " + states[currentState].ToString());
+            //Debug.LogError(state.ToString() + " is a valid transition state");
             states[currentState].ToggleState(true);    
-        }         
+        }
+        //Debug.LogError(state.ToString() + " is NOT a valid transition state for " + currentState.ToString());
     }
 
     public void TriggerTemporaryState(IncapacitatedState.TemporaryState tempState, float duration)
@@ -115,7 +118,7 @@ public class UnitStateMachine : MonoBehaviour {
         UnitState[] validTransitionStates = states[currentState].canTransitionInto; //states the current state can transition to
         for (int i = 0; i < validTransitionStates.Length; i++)
         {
-            //Debug.Log(gameObject.name + " " + state.ToString() + "and " + validTransitionStates[i]);
+            Debug.Log(gameObject.name + " " + state.ToString() + "and " + validTransitionStates[i]);
             if (state == validTransitionStates[i])
             {
                 return true;

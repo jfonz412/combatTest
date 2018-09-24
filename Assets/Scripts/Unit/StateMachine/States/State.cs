@@ -7,7 +7,7 @@ public class State : MonoBehaviour
     public UnitStateMachine.UnitState[] canTransitionInto; //what this state can transition INTO
     protected UnitStateMachine stateMachine;
 
-    protected void Start()
+    protected void Awake()
     {
         stateMachine = GetComponent<UnitStateMachine>(); //will hold all the other gameObject components for us
         Init();

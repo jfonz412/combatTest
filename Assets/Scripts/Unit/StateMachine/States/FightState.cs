@@ -40,6 +40,7 @@ public class FightState : State
 #region Fight
     private IEnumerator Engage(Transform _targetTransform)
     {
+        //Debug.LogError(gameObject.name + " is engaging " + _targetTransform.name);
         bool inRange;
         targetTransform = _targetTransform;
         targetBody = targetTransform.GetComponent<BodyPartController>();
@@ -69,7 +70,7 @@ public class FightState : State
             }
             yield return null;
         }
-        
+        stateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
         yield break;
     }
 

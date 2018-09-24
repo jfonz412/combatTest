@@ -7,7 +7,6 @@ public class FightOrFlight : State
     protected override void OnStateEnter()
     {
         base.OnStateEnter();
-
         if (stateMachine.unitTraits.courage <= Random.Range(0, 100)) //also check who's around to determine any other threats
         {
             stateMachine.RequestChangeState(UnitStateMachine.UnitState.Flight);

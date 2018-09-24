@@ -14,11 +14,11 @@ public class ItemPickup : Interactable {
         //optional quantity setting, will be 0 if not manually set
         if(myQuantity > 0)
         {
-            Debug.Log("Setting item quantity to " + myQuantity);
+            //Debug.Log("Setting item quantity to " + myQuantity);
             if(myQuantity <= item.maxQuantity)
                 item.quantity = (int)myQuantity;
         }
-        Debug.Log("now my quantity is " + item.quantity);
+        //Debug.Log("now my quantity is " + item.quantity);
     }
 
     public override void Interaction(string interaction)

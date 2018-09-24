@@ -47,7 +47,7 @@ public class DollPartController : MonoBehaviour {
         for(int i = 0; i < bodyParts.Count; i++)
         {
             bodyParts[i].dollPart = dollParts[bodyParts[i].name];
-            Debug.Log("assigning " + bodyParts[i].name);
+            //Debug.Log("assigning " + bodyParts[i].name);
         }
     }
 }

@@ -7,8 +7,7 @@ public class UnitAnimController : MonoBehaviour {
     Animator anim;
     public bool faceRightAtStart;
 
-    // Use this for initialization
-    void Start ()
+    void Awake ()
     {
         anim = GetComponent<Animator>();
         spriteRend = transform.GetChild(0).GetComponent<SpriteRenderer>();
@@ -16,7 +15,6 @@ public class UnitAnimController : MonoBehaviour {
         {
             FaceDirection(transform.position, new Vector2(99999f,0f));
         }
-        //LoadSavedStatuses()?
 	}
 
     //by default we are facing all units (arbitrarily) to the left
