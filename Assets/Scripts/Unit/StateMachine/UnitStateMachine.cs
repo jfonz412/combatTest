@@ -14,7 +14,7 @@ public class UnitStateMachine : MonoBehaviour {
     public AttackTimer attackTimer;
     public CombatSkills combatSkills;
     public SpriteRenderer spriteRend;
-
+    public Transform player;
     public List<BodyPart> attack1Parts, attack2Parts;
     public Transform currentThreat;
 
@@ -64,6 +64,7 @@ public class UnitStateMachine : MonoBehaviour {
         bodyController = GetComponent<BodyPartController>();
         combatSkills = GetComponent<CombatSkills>();
         spriteRend = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        player = ScriptToolbox.GetInstance().GetPlayerManager().player.transform;
 
         LoadStates();
 

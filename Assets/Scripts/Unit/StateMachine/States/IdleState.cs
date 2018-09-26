@@ -10,7 +10,7 @@ public class IdleState : State {
     IEnumerator scanning;
     public bool wander;
     public float wanderRadiusMax = 1f;
-    public float reactionRadius = 5f;
+    public float reactionRadius = 10f;
     public bool doNotReact = false;
 
     protected override void OnStateEnter()
@@ -125,10 +125,18 @@ public class IdleState : State {
             if (!unit.GetComponent<BodyPartController>().Incapacitated())
             {
                 stateMachine.currentThreat = unit; //set threat in case we decide to fight
+                AlertOthers();
                 return true;
             }
         }
         return false; //not a threat
+    }
+
+    private void AlertOthers()
+    {
+        //check who is in the vicinity
+        //alert all friends
+        //this will simulate "sound" once we move from circle radius' to cones (proper stealth)
     }
     #endregion
 

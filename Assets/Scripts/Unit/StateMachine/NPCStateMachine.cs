@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NPCStateMachine : UnitStateMachine
 {
+    public Dialogue dialogue;
+
     protected override void LoadStates()
     {
         base.LoadStates();

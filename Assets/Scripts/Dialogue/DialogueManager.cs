@@ -27,7 +27,6 @@ public class DialogueManager : MonoBehaviour {
         dialogueWindow.SetBool("isOpen", isOpen);
 
         nameText.text = dialogue.name;
-        unitTalking = dialogue.unit;
 
         sentences.Clear(); //clear que of any old sentences
 
