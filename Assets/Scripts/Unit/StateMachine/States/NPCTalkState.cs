@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class NPCTalkState : State {
+﻿public class NPCTalkState : State {
     NPCStateMachine npc;
 
     protected override void Init()

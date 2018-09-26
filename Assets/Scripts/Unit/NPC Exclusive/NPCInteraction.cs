@@ -63,12 +63,7 @@ public class NPCInteraction : Interactable
     {
         if(myShop != null)
         {
-            ShopInventoryUI.instance.ShopUIToggle(true, name);
-            myShop.LoadShopInventory();
- 
-            PlayerStateMachine psm = ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine;
             UnitStateMachine u = GetComponent<UnitStateMachine>();
-            psm.RequestChangeState(UnitStateMachine.UnitState.Shopping);
             u.RequestChangeState(UnitStateMachine.UnitState.Shopping);
         }
         else

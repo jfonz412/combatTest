@@ -53,7 +53,7 @@ public class UnitStateMachine : MonoBehaviour {
 
     public UnitState currentState = UnitState.Idle;
 
-    protected void Start()
+    protected virtual void Start()
     {
         unitTraits = GetComponent<UnitTraits>();
         unitRelationships = GetComponent<UnitRelationships>();

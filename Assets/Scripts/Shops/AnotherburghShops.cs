@@ -23,5 +23,13 @@ public class AnotherburghShops : MarketInventory
                 MasterItemList.Log(),
                 MasterItemList.Log()
             });
+        townShops.Add(
+            "TestB (1)",
+            new Item[]
+            {
+                MasterItemList.Log(),
+                MasterItemList.Log(),
+                MasterItemList.Log()
+            });
     }
 }

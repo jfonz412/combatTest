@@ -1,11 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class NPCStateMachine : UnitStateMachine
+﻿public class NPCStateMachine : UnitStateMachine
 {
     public Dialogue dialogue;
+    public LoadShop myShop;
 
+    protected override void Start()
+    {
+        base.Start();
+        myShop = GetComponent<LoadShop>();
+    }
     protected override void LoadStates()
     {
         base.LoadStates();
