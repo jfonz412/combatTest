@@ -13,7 +13,7 @@ public class PlayerShopState : State
         {
             UnitStateMachine.UnitState.Idle,
             UnitStateMachine.UnitState.Incapacitated,
-            //UnitStateMachine.UnitState.FightOrFlight,
+            UnitStateMachine.UnitState.FightOrFlight, //in case we are attacked
             UnitStateMachine.UnitState.Prompted,
             UnitStateMachine.UnitState.Dead
         };
@@ -32,6 +32,6 @@ public class PlayerShopState : State
 
         //do not knock out of shop screen if player is being prompted
         if(!psm.prompted)
-            ShopInventoryUI.instance.HardShopExit();
+            ShopInventoryUI.instance.HardShopExit(true);
     }
 }

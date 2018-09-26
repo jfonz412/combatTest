@@ -7,24 +7,18 @@ public class AnotherburghShops : MarketInventory
     protected override void InstantiateItems()
     {
         townShops.Add(
-            "TestB",
+            "Townie",
             new Item[]
             {
                 MasterItemList.IronChest(),
                 MasterItemList.ClothShirt(),
-                MasterItemList.ClothShirt(),
-                MasterItemList.ClothShirt(),
-                MasterItemList.HealthPotion(),
-                MasterItemList.HealthPotion(),
                 MasterItemList.IronDagger(),
                 MasterItemList.WoodenShield(),
-                MasterItemList.IronShield(),
-                MasterItemList.Log(),
-                MasterItemList.Log(),
-                MasterItemList.Log()
+                MasterItemList.HealthPotion(),
+                MasterItemList.HealthPotion(),
             });
         townShops.Add(
-            "TestB (1)",
+            "Barbarian",
             new Item[]
             {
                 MasterItemList.Log(),

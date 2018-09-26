@@ -6,8 +6,7 @@ public class IdleState : State {
     UnitRelationships r;
     UnitTraits t;
 
-    IEnumerator wandering;
-    IEnumerator scanning;
+
     public bool wander;
     public float wanderRadiusMax = 1f;
     public float reactionRadius = 10f;
@@ -19,12 +18,10 @@ public class IdleState : State {
 
         if (wander)
         {
-            wandering = Wander();
-            StartCoroutine(wandering);
+            StartCoroutine(Wander());
         }
         if (!doNotReact)
         {
-            scanning = ScanArea();
             StartCoroutine(ScanArea());
         }
     }
@@ -32,10 +29,7 @@ public class IdleState : State {
     protected override void OnStateExit()
     {
         base.OnStateEnter();
-        if(wander)
-            StopCoroutine(wandering);
-        if (!doNotReact)
-            StopCoroutine(scanning);
+        StopAllCoroutines();
     }
 
     protected override void Init()
@@ -67,7 +61,6 @@ public class IdleState : State {
         {
             if (EnemyDetected())
             {
-                //Debug.LogError("Enemy detected!");
                 stateMachine.RequestChangeState(UnitStateMachine.UnitState.FightOrFlight);
                 break;
             }
