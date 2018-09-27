@@ -30,7 +30,7 @@
     protected override void OnStateExit()
     {
         base.OnStateExit();
-        ShopInventoryUI.instance.HardShopExit();
+        ShopInventoryUI.instance.UnitExitingShopState();
     }
 }
 

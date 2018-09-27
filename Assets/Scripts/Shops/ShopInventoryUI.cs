@@ -64,11 +64,11 @@ public class ShopInventoryUI : MonoBehaviour {
         }
     }
 
-    //for units to call in their own exit states if knocked out of shopping, no state changes called to avoid infinite loops
-    public void HardShopExit(bool playerRequestedExit = false)
+    //for units to call in their own exit states if knocked out of shopping
+    public void UnitExitingShopState(bool unitIsPlayer = false)
     {
         //this method will always be called even after pressing the exit button because each unit's OnStateExit calls this
-        //the if statement prevents it from going any further
+        //the if statement prevents it from going any further if the shop is already inactive
         if (shopUI.activeSelf)
         {
             shopUI.SetActive(false);
@@ -77,7 +77,7 @@ public class ShopInventoryUI : MonoBehaviour {
             shop.ClearShopInventory();
         }
 
-        if (!playerRequestedExit)
+        if (!unitIsPlayer)
         {
             PlayerStateMachine psm = ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine;
             psm.RequestChangeState(UnitStateMachine.UnitState.Idle);

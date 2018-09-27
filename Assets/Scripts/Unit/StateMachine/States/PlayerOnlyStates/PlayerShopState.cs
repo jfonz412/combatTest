@@ -32,6 +32,6 @@ public class PlayerShopState : State
 
         //do not knock out of shop screen if player is being prompted
         if(!psm.prompted)
-            ShopInventoryUI.instance.HardShopExit(true);
+            ShopInventoryUI.instance.UnitExitingShopState(true); //unit is player
     }
 }

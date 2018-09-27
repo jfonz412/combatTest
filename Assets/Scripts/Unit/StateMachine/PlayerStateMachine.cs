@@ -1,5 +1,6 @@
 ﻿public class PlayerStateMachine : UnitStateMachine {
-    public bool prompted = false;
+    //used to block state changes, keep these type of bools to a minimum 
+    public bool prompted = false; 
     protected override void LoadStates()
     {
         base.LoadStates();

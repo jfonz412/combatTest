@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PlayerTalkState : State
+﻿public class PlayerTalkState : State
 {
 
     protected override void Init()
@@ -12,7 +8,7 @@ public class PlayerTalkState : State
         {
             UnitStateMachine.UnitState.Idle,
             UnitStateMachine.UnitState.Incapacitated,
-            //UnitStateMachine.UnitState.FightOrFlight,
+            UnitStateMachine.UnitState.FightOrFlight,
             UnitStateMachine.UnitState.Dead
         };
     }
@@ -25,6 +21,6 @@ public class PlayerTalkState : State
     protected override void OnStateExit()
     {
         base.OnStateExit(); 
-        ScriptToolbox.GetInstance().GetDialogueManager().CloseDialogueWindow();
+        ScriptToolbox.GetInstance().GetDialogueManager().UnitExitingDialogueState(true);
     }
 }

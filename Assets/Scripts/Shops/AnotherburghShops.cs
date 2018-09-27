@@ -16,6 +16,9 @@ public class AnotherburghShops : MarketInventory
                 MasterItemList.WoodenShield(),
                 MasterItemList.HealthPotion(),
                 MasterItemList.HealthPotion(),
+                MasterItemList.Log(),
+                MasterItemList.Log(),
+                MasterItemList.Log()
             });
         townShops.Add(
             "Barbarian",

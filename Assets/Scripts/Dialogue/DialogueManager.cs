@@ -27,6 +27,7 @@ public class DialogueManager : MonoBehaviour {
         dialogueWindow.SetBool("isOpen", isOpen);
 
         nameText.text = dialogue.name;
+        unitTalking = dialogue.unit;
 
         sentences.Clear(); //clear que of any old sentences
 
@@ -42,7 +43,7 @@ public class DialogueManager : MonoBehaviour {
     {
         if(sentences.Count == 0)
         {
-            ExitDialogueState();
+            SoftDialogueExit();
             return;
         }
 
@@ -61,10 +62,27 @@ public class DialogueManager : MonoBehaviour {
         }
     }
 
-    public void ExitDialogueState() //maybe put optional UnitState param here to immediatly put unit in specific state?
+    //dialogue ended via continue button
+    private void SoftDialogueExit() 
     {
-        ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
         unitTalking.RequestChangeState(UnitStateMachine.UnitState.Idle);
+        ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
+        CloseDialogueWindow();
+    }
+
+    public void UnitExitingDialogueState(bool playerRequestedExit = false)
+    {
+        if (isOpen)
+        {
+            CloseDialogueWindow();
+            unitTalking.RequestChangeState(UnitStateMachine.UnitState.Idle);
+        }
+
+        //if the player requested the change, put the other unit into the Idle state
+        if (!playerRequestedExit)
+        {
+            ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
+        }
     }
 
     public void CloseDialogueWindow()

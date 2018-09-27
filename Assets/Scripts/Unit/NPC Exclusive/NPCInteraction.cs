@@ -2,8 +2,6 @@
 
 public class NPCInteraction : Interactable
 {
-    public Dialogue dialog; //contains fields for name and text
-
     private LoadShop myShop;
 
     void Start()

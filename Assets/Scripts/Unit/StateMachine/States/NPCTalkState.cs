@@ -27,6 +27,6 @@
     protected override void OnStateExit()
     {
         base.OnStateExit();
-        ScriptToolbox.GetInstance().GetDialogueManager().CloseDialogueWindow();
+        ScriptToolbox.GetInstance().GetDialogueManager().UnitExitingDialogueState();
     }
 }

@@ -7,6 +7,7 @@
     {
         base.Start();
         myShop = GetComponent<LoadShop>();
+        dialogue.unit = this;
     }
     protected override void LoadStates()
     {
