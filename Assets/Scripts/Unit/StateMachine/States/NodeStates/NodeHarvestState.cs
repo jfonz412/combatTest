@@ -11,7 +11,8 @@ public class NodeHarvestState : State
         base.Init();
         canTransitionInto = new StateMachine.States[]
         {
-            StateMachine.States.Dead
+            StateMachine.States.Dead,
+            StateMachine.States.Idle
         };
     }
 
@@ -32,17 +33,25 @@ public class NodeHarvestState : State
         PlayerStateMachine psm = ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine;
         string shake = "Shake";
 
-        while (psm.currentState == StateMachine.States.Harvesting && harvestTimer > 0)
+        //while player is harvesting, count down timer
+        while (psm.currentState == StateMachine.States.Harvesting)
         {
             stateMachine.anim.SetTrigger(shake); //something here is null
             yield return new WaitForSeconds(1f);
             harvestTimer -= 1;
-            Debug.Log("Harvest timer is " + harvestTimer);
+
+            if(harvestTimer == 0) //if timer hits 0, die and send player to idle, exit coroutine
+            {
+                stateMachine.anim.ResetTrigger(shake);
+                stateMachine.RequestChangeState(StateMachine.States.Dead);
+                psm.RequestChangeState(StateMachine.States.Idle);
+                yield return null;
+            }
         }
 
+        //if while loop is ended by player changing states, go back to idle because player was interrupted
         stateMachine.anim.ResetTrigger(shake);
-        psm.RequestChangeState(StateMachine.States.Idle);
-        stateMachine.RequestChangeState(StateMachine.States.Dead);
+        stateMachine.RequestChangeState(StateMachine.States.Idle);
         yield break;
     }
 }

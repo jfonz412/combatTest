@@ -5,7 +5,7 @@
         //base.LoadStates();
         //only need states relevant to the node
         states.Add(States.Harvesting, GetComponent<NodeHarvestState>());
-        states.Add(States.Idle, GetComponent<IdleState>());
+        states.Add(States.Idle, GetComponent<NodeIdleState>());
         states.Add(States.Dead, GetComponent<NodeHarvestedState>());
     }
 }

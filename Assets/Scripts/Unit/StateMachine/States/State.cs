@@ -7,7 +7,7 @@ public class State : MonoBehaviour
 
     protected void Awake()
     {
-        stateMachine = GetComponent<UnitStateMachine>(); //will hold all the other gameObject components for us
+        stateMachine = GetComponent<StateMachine>(); //will hold all the other gameObject components for us
         Init();
     }
 

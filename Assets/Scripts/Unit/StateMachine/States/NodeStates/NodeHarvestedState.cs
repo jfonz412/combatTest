@@ -10,7 +10,8 @@ public class NodeHarvestedState : State {
 
     protected override void OnStateEnter()
     {
-        base.OnStateEnter();    
+        base.OnStateEnter();
+        DropAndDestroy();
     }
 
     protected override void OnStateExit()

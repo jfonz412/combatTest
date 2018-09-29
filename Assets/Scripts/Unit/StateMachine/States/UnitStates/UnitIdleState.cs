@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : State {
+public class UnitIdleState : State
+{
     //race cases causing me to ensure these are here before corotunie kicks off
     UnitStateMachine usm;
     UnitRelationships r;
@@ -52,9 +53,9 @@ public class IdleState : State {
         };
     }
 
-    private IEnumerator ScanArea ()
+    private IEnumerator ScanArea()
     {
-        while(usm.unitRelationships == null || usm.unitTraits == null)
+        while (usm.unitRelationships == null || usm.unitTraits == null)
         {
             yield return new WaitForSeconds(2f);
         }
@@ -88,7 +89,7 @@ public class IdleState : State {
                 return true;
             }
         }
-        return false; 
+        return false;
     }
 
     private bool CheckThreatLevel(Transform unit)
@@ -118,7 +119,7 @@ public class IdleState : State {
 
         Debug.Log(gameObject.name + "'s relationship with " + unit.name + " is " + unitRelationship);
         //this should cause this unit to choose the party they are more allied with while ignoring neutral fights
-        if (unitRelationship < 0) 
+        if (unitRelationship < 0)
         {
             if (!unit.GetComponent<BodyPartController>().Incapacitated())
             {
@@ -150,7 +151,7 @@ public class IdleState : State {
             PathfindingManager.RequestPath(new PathRequest(transform.position, lastPos, usm.unitController.OnPathFound));
             yield return new WaitForSeconds(Random.Range(3.0f, 7.0f));
         }
-        
+
     }
 
     private Vector3 RandomWanderSpot()

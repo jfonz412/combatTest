@@ -32,7 +32,7 @@ public class UnitStateMachine : StateMachine {
         states.Add(States.FightOrFlight, GetComponent<FightOrFlight>());
         states.Add(States.Fight, GetComponent<FightState>());
         states.Add(States.Flight, GetComponent<FlightState>());
-        states.Add(States.Idle, GetComponent<IdleState>());
+        states.Add(States.Idle, GetComponent<UnitIdleState>());
         states.Add(States.Incapacitated, GetComponent<IncapacitatedState>());
         states.Add(States.PlayerMove, GetComponent<PlayerMoveState>());
         states.Add(States.Dead, GetComponent<DeadState>());

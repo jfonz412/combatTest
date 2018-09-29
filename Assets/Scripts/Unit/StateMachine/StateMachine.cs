@@ -75,13 +75,14 @@ public class StateMachine : MonoBehaviour {
         States[] validTransitionStates = states[currentState].canTransitionInto; //states the current state can transition to
         for (int i = 0; i < validTransitionStates.Length; i++)
         {
-            Debug.Log(gameObject.name + " " + state.ToString() + "and " + validTransitionStates[i]);
+            //Debug.Log(gameObject.name + " " + state.ToString() + "and " + validTransitionStates[i]);
             if (state == validTransitionStates[i])
             {
                 return true;
             }
             //Debug.Log(gameObject.name + " " + state.ToString() + "and " + validTransitionStates[i]); 
         }
+        Debug.Log(state.ToString() + " cannot transistion from " + currentState.ToString());
         return false;
     }
 }
