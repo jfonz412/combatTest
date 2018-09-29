@@ -16,7 +16,7 @@ public class FlightState : State
         {
             StateMachine.States.Idle,
             StateMachine.States.Incapacitated,
-            //StateMachine.States.FightOrFlight
+            StateMachine.States.Routed
         };
     }
 
@@ -39,15 +39,13 @@ public class FlightState : State
     {
         Vector3 closestExit = GetClosestExit();
         float z = transform.position.z;
-        Vector3 safelyOutOfRange = new Vector3(100f, 100f, z);
 
         PathfindingManager.RequestPath(new PathRequest(transform.position, closestExit, usm.unitController.OnPathFound));
         while (Vector3.Distance(transform.position, closestExit) > 0.5f)
         {
             yield return null;
         }
-        transform.position = safelyOutOfRange;
-        usm.RequestChangeState(StateMachine.States.Idle);
+        usm.RequestChangeState(StateMachine.States.Routed);
     }
 
     private Vector3 GetClosestExit()

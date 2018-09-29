@@ -38,6 +38,7 @@ public class UnitStateMachine : StateMachine {
         states.Add(States.Dead, GetComponent<DeadState>());
         states.Add(States.Paused, GetComponent<PausedState>());
         states.Add(States.InvOpen, GetComponent<InvOpenState>());
+        states.Add(States.Routed, GetComponent<UnitRoutedState>());
     }
 
     protected override void SetDefaultState()
