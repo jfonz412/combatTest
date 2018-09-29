@@ -7,9 +7,9 @@ public class PlayerController : MonoBehaviour {
 
     //[SerializeField]
     //private GameObject clickMarker;
-    private UnitStateMachine.ClickInfo clickInfo = new UnitStateMachine.ClickInfo();
+    private PlayerStateMachine.ClickInfo clickInfo = new PlayerStateMachine.ClickInfo();
     private UnitController unitController;
-    private UnitStateMachine stateMachine;
+    private PlayerStateMachine stateMachine;
 
     private IEnumerator movingToInteraction = null;
 
@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour {
     {
         FloatingTextController.Initialize(); //just needs to be initialized somewhere
         unitController = GetComponent<UnitController>();
-        stateMachine = GetComponent<UnitStateMachine>();
+        stateMachine = GetComponent<PlayerStateMachine>();
     }
 
     private void Update()
@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour {
                 clickInfo.mousePos = GetMouseClickPosition();
                 clickInfo.clickType = "leftClick";
                 stateMachine.clickInfo = clickInfo;
-                stateMachine.RequestChangeState(UnitStateMachine.UnitState.PlayerMove);
+                stateMachine.RequestChangeState(StateMachine.States.PlayerMove);
             }
             else if (Input.GetMouseButtonDown(1))
             {
@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour {
         clickInfo.interaction = chosenInteraction;
         clickInfo.interactable = interactable;
         stateMachine.clickInfo = clickInfo;
-        stateMachine.RequestChangeState(UnitStateMachine.UnitState.PlayerMove);
+        stateMachine.RequestChangeState(StateMachine.States.PlayerMove);
     }
 
     #endregion

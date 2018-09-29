@@ -51,11 +51,11 @@ public class InventorySlot : MonoBehaviour
 
     public virtual void SlotRightClicked()
     {
-        if (psm.currentState == UnitStateMachine.UnitState.InvOpen)
+        if (psm.currentState == StateMachine.States.InvOpen)
         {
             InvSlotClick.instance.InventorySlotRightClicked(item);
         }
-        else if (psm.currentState == UnitStateMachine.UnitState.Shopping)
+        else if (psm.currentState == StateMachine.States.Shopping)
         {
             InvSlotClick.instance.RightClickedToSell(item);
         }
@@ -63,11 +63,11 @@ public class InventorySlot : MonoBehaviour
 
     public virtual void SlotLeftClicked()
     {
-        if (psm.currentState == UnitStateMachine.UnitState.InvOpen)
+        if (psm.currentState == StateMachine.States.InvOpen)
         {
             InvSlotClick.instance.InventorySlotLeftClicked(this);
         }
-        else if (psm.currentState == UnitStateMachine.UnitState.Shopping)
+        else if (psm.currentState == StateMachine.States.Shopping)
         {
             InvSlotClick.instance.LeftClickedToSell(this);
         }

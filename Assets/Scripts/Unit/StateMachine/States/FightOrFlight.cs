@@ -1,19 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FightOrFlight : State
 {
     protected override void OnStateEnter()
     {
         base.OnStateEnter();
-        if (stateMachine.unitTraits.courage <= Random.Range(0, 100)) //also check who's around to determine any other threats
+
+        UnitStateMachine usm = (UnitStateMachine)stateMachine;
+        if (usm.unitTraits.courage <= Random.Range(0, 100)) //also check who's around to determine any other threats
         {
-            stateMachine.RequestChangeState(UnitStateMachine.UnitState.Flight);
+            stateMachine.RequestChangeState(StateMachine.States.Flight);
         }
         else
         {
-            stateMachine.RequestChangeState(UnitStateMachine.UnitState.Fight);
+            stateMachine.RequestChangeState(StateMachine.States.Fight);
         }
 
     }
@@ -21,12 +21,12 @@ public class FightOrFlight : State
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.Idle,
-            UnitStateMachine.UnitState.Fight,
-            UnitStateMachine.UnitState.Flight,
-            UnitStateMachine.UnitState.Incapacitated
+            StateMachine.States.Idle,
+            StateMachine.States.Fight,
+            StateMachine.States.Flight,
+            StateMachine.States.Incapacitated
         };
     }
 }

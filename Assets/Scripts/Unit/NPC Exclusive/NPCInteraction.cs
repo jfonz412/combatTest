@@ -46,7 +46,7 @@ public class NPCInteraction : Interactable
     void TriggerDialogue()
     {
         UnitStateMachine u = GetComponent<UnitStateMachine>();
-        u.RequestChangeState(UnitStateMachine.UnitState.Talking);
+        u.RequestChangeState(StateMachine.States.Talking);
     }
 
     void TriggerAttack()
@@ -54,7 +54,7 @@ public class NPCInteraction : Interactable
         Debug.Log("Player is attacking " + gameObject.name);
         UnitStateMachine u = ScriptToolbox.GetInstance().GetPlayerManager().player.GetComponent<UnitStateMachine>();
         u.currentThreat = transform;
-        u.RequestChangeState(UnitStateMachine.UnitState.Fight);
+        u.RequestChangeState(StateMachine.States.Fight);
     }
 
     void TriggerTrade()
@@ -62,7 +62,7 @@ public class NPCInteraction : Interactable
         if(myShop != null)
         {
             UnitStateMachine u = GetComponent<UnitStateMachine>();
-            u.RequestChangeState(UnitStateMachine.UnitState.Shopping);
+            u.RequestChangeState(StateMachine.States.Shopping);
         }
         else
         {

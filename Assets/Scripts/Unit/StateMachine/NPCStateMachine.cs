@@ -3,9 +3,9 @@
     public Dialogue dialogue;
     public LoadShop myShop;
 
-    protected override void Start()
+    protected override void LoadComponents()
     {
-        base.Start();
+        base.LoadComponents();
         myShop = GetComponent<LoadShop>();
         dialogue.unit = this;
     }
@@ -13,7 +13,7 @@
     {
         base.LoadStates();
         //override this state with player talking state
-        states.Add(UnitState.Talking, GetComponent<NPCTalkState>());
-        states.Add(UnitState.Shopping, GetComponent<NPCShopState>());
+        states.Add(States.Talking, GetComponent<NPCTalkState>());
+        states.Add(States.Shopping, GetComponent<NPCShopState>());
     }
 }

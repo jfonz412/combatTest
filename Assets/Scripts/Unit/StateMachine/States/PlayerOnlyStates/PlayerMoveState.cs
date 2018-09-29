@@ -5,33 +5,35 @@ using UnityEngine;
 public class PlayerMoveState : State {
     private IEnumerator movingToInteraction;
     UnitController uc;
-    UnitStateMachine.ClickInfo clickInfo;
+    PlayerStateMachine.ClickInfo clickInfo;
     public GameObject clickMarker;
 
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.Idle,
-            UnitStateMachine.UnitState.Talking,
-            UnitStateMachine.UnitState.Incapacitated,
-            UnitStateMachine.UnitState.InvOpen,
-            UnitStateMachine.UnitState.PlayerMove,
-            //UnitStateMachine.UnitState.FightOrFlight, //we don't want the player to automatically react to attacks
-            UnitStateMachine.UnitState.Paused,
-            UnitStateMachine.UnitState.Fight,
-            UnitStateMachine.UnitState.Flight,
-            UnitStateMachine.UnitState.Dead,
-            UnitStateMachine.UnitState.Shopping
+            StateMachine.States.Idle,
+            StateMachine.States.Talking,
+            StateMachine.States.Incapacitated,
+            StateMachine.States.InvOpen,
+            StateMachine.States.PlayerMove,
+            //StateMachine.States.FightOrFlight, //we don't want the player to automatically react to attacks
+            StateMachine.States.Paused,
+            StateMachine.States.Fight,
+            StateMachine.States.Flight,
+            StateMachine.States.Dead,
+            StateMachine.States.Shopping,
+            StateMachine.States.Harvesting
         };
     }
 
     protected override void OnStateEnter()
     {
         base.OnStateEnter();
-        uc = stateMachine.unitController;
-        clickInfo = stateMachine.clickInfo;
+        PlayerStateMachine psm = (PlayerStateMachine)stateMachine;
+        uc = psm.unitController;
+        clickInfo = psm.clickInfo;
         ProcessClick();
     }
 
@@ -107,7 +109,7 @@ public class PlayerMoveState : State {
     {
         StopMovingToPrevInteraction();
         PathfindingManager.RequestPath(new PathRequest(transform.position, location, uc.OnPathFound));
-        stateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle); 
+        stateMachine.RequestChangeState(StateMachine.States.Idle); 
     }
 
     private void InteractWithInteractable(string chosenInteraction, Interactable interactable)

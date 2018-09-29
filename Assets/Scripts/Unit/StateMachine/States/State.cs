@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class State : MonoBehaviour
 {
-    public UnitStateMachine.UnitState[] canTransitionInto; //what this state can transition INTO
-    protected UnitStateMachine stateMachine;
+    public StateMachine.States[] canTransitionInto; //what this state can transition INTO
+    protected StateMachine stateMachine;
 
     protected void Awake()
     {

@@ -48,13 +48,13 @@ public class EquipSlot : InventorySlot {
 
     public override void SlotRightClicked()
     {
-        if (psm.currentState == UnitStateMachine.UnitState.InvOpen)
+        if (psm.currentState == StateMachine.States.InvOpen)
             InventoryManager.GetInstance().GetEquipSlotClick().EquipSlotRightClicked(this);
     }
 
     public override void SlotLeftClicked()
     {
-        if (psm.currentState == UnitStateMachine.UnitState.InvOpen)
+        if (psm.currentState == StateMachine.States.InvOpen)
             InventoryManager.GetInstance().GetEquipSlotClick().EquipSlotLeftClicked(this);
     }
 }

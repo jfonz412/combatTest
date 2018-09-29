@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class FlightState : State
 {
+    UnitStateMachine usm;
     IEnumerator flee;
 
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        usm = (UnitStateMachine)stateMachine;
+
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.Idle,
-            UnitStateMachine.UnitState.Incapacitated,
-            //UnitStateMachine.UnitState.FightOrFlight
+            StateMachine.States.Idle,
+            StateMachine.States.Incapacitated,
+            //StateMachine.States.FightOrFlight
         };
     }
 
@@ -28,7 +31,7 @@ public class FlightState : State
     {
         base.OnStateExit();
         StopCoroutine(flee); 
-        stateMachine.unitController.StopMoving();
+        usm.unitController.StopMoving();
     }
 
     #region Flight
@@ -38,13 +41,13 @@ public class FlightState : State
         float z = transform.position.z;
         Vector3 safelyOutOfRange = new Vector3(100f, 100f, z);
 
-        PathfindingManager.RequestPath(new PathRequest(transform.position, closestExit, stateMachine.unitController.OnPathFound));
+        PathfindingManager.RequestPath(new PathRequest(transform.position, closestExit, usm.unitController.OnPathFound));
         while (Vector3.Distance(transform.position, closestExit) > 0.5f)
         {
             yield return null;
         }
         transform.position = safelyOutOfRange;
-        stateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
+        usm.RequestChangeState(StateMachine.States.Idle);
     }
 
     private Vector3 GetClosestExit()

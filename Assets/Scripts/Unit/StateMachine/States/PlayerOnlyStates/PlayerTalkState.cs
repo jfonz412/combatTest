@@ -4,12 +4,12 @@
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.Idle,
-            UnitStateMachine.UnitState.Incapacitated,
-            UnitStateMachine.UnitState.FightOrFlight,
-            UnitStateMachine.UnitState.Dead
+            StateMachine.States.Idle,
+            StateMachine.States.Incapacitated,
+            StateMachine.States.FightOrFlight,
+            StateMachine.States.Dead
         };
     }
 

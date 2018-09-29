@@ -56,7 +56,7 @@ public class ShopInventoryUI : MonoBehaviour {
         {
             shop.ClearShopInventory();  //shopOwner's state is changed in here
             InventoryManager.GetInstance().GetInventoryToggle().CloseInventory();
-            psm.RequestChangeState(UnitStateMachine.UnitState.Idle);
+            psm.RequestChangeState(StateMachine.States.Idle);
         }
         else
         {
@@ -80,7 +80,7 @@ public class ShopInventoryUI : MonoBehaviour {
         if (!unitIsPlayer)
         {
             PlayerStateMachine psm = ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine;
-            psm.RequestChangeState(UnitStateMachine.UnitState.Idle);
+            psm.RequestChangeState(StateMachine.States.Idle);
         }
     }
 

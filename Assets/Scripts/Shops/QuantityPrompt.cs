@@ -20,7 +20,7 @@ public class QuantityPrompt : MonoBehaviour {
     public void TriggerPrompt()
     {
         psm.prompted = true; //prevents shop screen from closing when we exit shopping state
-        psm.RequestChangeState(UnitStateMachine.UnitState.Prompted);
+        psm.RequestChangeState(StateMachine.States.Prompted);
         promptWindow.SetActive(true);
     }
 
@@ -40,14 +40,14 @@ public class QuantityPrompt : MonoBehaviour {
         }
 
         psm.prompted = false;
-        psm.RequestChangeState(UnitStateMachine.UnitState.Shopping);
+        psm.RequestChangeState(StateMachine.States.Shopping);
         promptWindow.SetActive(false);
     }
 
     public void CancelButtonPressed()
     {
         psm.prompted = false;
-        psm.RequestChangeState(UnitStateMachine.UnitState.Shopping);
+        psm.RequestChangeState(StateMachine.States.Shopping);
         promptWindow.SetActive(false);
         enteredAmount = 0;
     }

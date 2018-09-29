@@ -65,8 +65,8 @@ public class DialogueManager : MonoBehaviour {
     //dialogue ended via continue button
     private void SoftDialogueExit() 
     {
-        unitTalking.RequestChangeState(UnitStateMachine.UnitState.Idle);
-        ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
+        unitTalking.RequestChangeState(StateMachine.States.Idle);
+        ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine.RequestChangeState(StateMachine.States.Idle);
         CloseDialogueWindow();
     }
 
@@ -75,13 +75,13 @@ public class DialogueManager : MonoBehaviour {
         if (isOpen)
         {
             CloseDialogueWindow();
-            unitTalking.RequestChangeState(UnitStateMachine.UnitState.Idle);
+            unitTalking.RequestChangeState(StateMachine.States.Idle);
         }
 
         //if the player requested the change, put the other unit into the Idle state
         if (!playerRequestedExit)
         {
-            ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
+            ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine.RequestChangeState(StateMachine.States.Idle);
         }
     }
 

@@ -8,10 +8,10 @@ public class DeadState : State {
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        canTransitionInto = new StateMachine.States[]
         {
-            //UnitStateMachine.UnitState.FightOrFlight, //will need this eventually for insta-deaths
-            //UnitStateMachine.UnitState.Incapacitated
+            //StateMachine.States.FightOrFlight, //will need this eventually for insta-deaths
+            //StateMachine.States.Incapacitated
         };
     }
 

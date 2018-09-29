@@ -32,7 +32,7 @@ public class LoadShop : MonoBehaviour {
     {
         shopInventory = new List<Item>(items); //save over old shop
         EconomyManager.GetInstance().GetMarketInventory().UpdateShop(gameObject.name, items);
-        GetComponent<UnitStateMachine>().RequestChangeState(UnitStateMachine.UnitState.Idle);
+        GetComponent<UnitStateMachine>().RequestChangeState(StateMachine.States.Idle);
     }
 
     public Item[] GetCurrentInventory()

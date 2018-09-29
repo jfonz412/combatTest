@@ -8,9 +8,9 @@ public class PlayerPromptState : State
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.Shopping
+            StateMachine.States.Shopping
         };
     }
 

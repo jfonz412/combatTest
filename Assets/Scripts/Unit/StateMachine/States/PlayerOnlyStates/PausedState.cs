@@ -8,9 +8,9 @@ public class PausedState : State {
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.Idle
+            StateMachine.States.Idle
         };
     }
 

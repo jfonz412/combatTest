@@ -111,12 +111,12 @@ public class BodyPartController : MonoBehaviour {
     public virtual void RecieveAttack(AttackInfo recievedAttack, Transform myAttacker)
     {
         //don't keep reacting to the same attack
-        if (stateMachine.currentState != UnitStateMachine.UnitState.Fight  || 
-            stateMachine.currentState != UnitStateMachine.UnitState.Flight || 
-            stateMachine.currentState != UnitStateMachine.UnitState.FightOrFlight)
+        if (stateMachine.currentState != StateMachine.States.Fight  || 
+            stateMachine.currentState != StateMachine.States.Flight || 
+            stateMachine.currentState != StateMachine.States.FightOrFlight)
         {
             stateMachine.currentThreat = myAttacker;
-            stateMachine.RequestChangeState(UnitStateMachine.UnitState.FightOrFlight);
+            stateMachine.RequestChangeState(StateMachine.States.FightOrFlight);
         }
             
         if (Hit())
@@ -127,7 +127,7 @@ public class BodyPartController : MonoBehaviour {
 
         if (PartTooInjured(vitalParts))
         {
-            stateMachine.RequestChangeState(UnitStateMachine.UnitState.Dead);
+            stateMachine.RequestChangeState(StateMachine.States.Dead);
             string line = "<color=red>" + gameObject.name + " has been mortally wounded!</color>";
             BattleReport.AddToBattleReport(line);
         }

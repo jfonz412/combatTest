@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class IdleState : State {
+    //race cases causing me to ensure these are here before corotunie kicks off
+    UnitStateMachine usm;
     UnitRelationships r;
     UnitTraits t;
 
@@ -15,6 +17,7 @@ public class IdleState : State {
     protected override void OnStateEnter()
     {
         base.OnStateEnter();
+        usm = (UnitStateMachine)stateMachine;
 
         if (wander)
         {
@@ -32,36 +35,38 @@ public class IdleState : State {
         StopAllCoroutines();
     }
 
+    //should split this class up to shorten this array
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.FightOrFlight,
-            UnitStateMachine.UnitState.Incapacitated,
-            UnitStateMachine.UnitState.PlayerMove,
-            UnitStateMachine.UnitState.InvOpen,
-            UnitStateMachine.UnitState.Paused,
-            UnitStateMachine.UnitState.Talking,
-            UnitStateMachine.UnitState.Shopping
+            StateMachine.States.FightOrFlight,
+            StateMachine.States.Incapacitated,
+            StateMachine.States.PlayerMove,
+            StateMachine.States.InvOpen,
+            StateMachine.States.Paused,
+            StateMachine.States.Talking,
+            StateMachine.States.Shopping,
+            StateMachine.States.Harvesting
         };
     }
 
     private IEnumerator ScanArea ()
     {
-        while(stateMachine.unitRelationships == null || stateMachine.unitTraits == null)
+        while(usm.unitRelationships == null || usm.unitTraits == null)
         {
             yield return new WaitForSeconds(2f);
         }
 
-        r = stateMachine.unitRelationships;
-        t = stateMachine.unitTraits;
+        r = usm.unitRelationships;
+        t = usm.unitTraits;
 
         while (true)
         {
             if (EnemyDetected())
             {
-                stateMachine.RequestChangeState(UnitStateMachine.UnitState.FightOrFlight);
+                stateMachine.RequestChangeState(StateMachine.States.FightOrFlight);
                 break;
             }
             yield return new WaitForSeconds(2f);
@@ -117,7 +122,7 @@ public class IdleState : State {
         {
             if (!unit.GetComponent<BodyPartController>().Incapacitated())
             {
-                stateMachine.currentThreat = unit; //set threat in case we decide to fight
+                usm.currentThreat = unit; //set threat in case we decide to fight
                 AlertOthers();
                 return true;
             }
@@ -139,10 +144,10 @@ public class IdleState : State {
         while (true)
         {
             Vector3 lastPos = transform.position;
-            PathfindingManager.RequestPath(new PathRequest(transform.position, RandomWanderSpot(), stateMachine.unitController.OnPathFound));
+            PathfindingManager.RequestPath(new PathRequest(transform.position, RandomWanderSpot(), usm.unitController.OnPathFound));
             //Debug.Log(gameObject + " is wandering");
             yield return new WaitForSeconds(Random.Range(3.0f, 7.0f));
-            PathfindingManager.RequestPath(new PathRequest(transform.position, lastPos, stateMachine.unitController.OnPathFound));
+            PathfindingManager.RequestPath(new PathRequest(transform.position, lastPos, usm.unitController.OnPathFound));
             yield return new WaitForSeconds(Random.Range(3.0f, 7.0f));
         }
         

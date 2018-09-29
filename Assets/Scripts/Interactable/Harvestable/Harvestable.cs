@@ -2,16 +2,8 @@
 using System.Collections;
 
 public class Harvestable : Interactable {
-    private Animator anim;
-
-    [SerializeField]
-    private float timeToHarvest = 5f;
-    [SerializeField]
-    private GameObject itemDrop;
     [SerializeField]
     private Sprite harvestedSprite;
-    //[SerializeField]
-    //private float dropChance;
 
     private enum HarvestType { Mine, Chop };
     [SerializeField]
@@ -33,8 +25,6 @@ public class Harvestable : Interactable {
 
     void Start () {
         myInteractions = new string[] { harvestType.ToString(), "Inspect", "--", "--" };
-        anim = GetComponent<Animator>();
-        //timeToHarvest = timeToHarvest * toolBonus;
     }
 
     public override void Interaction(string interaction)
@@ -64,59 +54,11 @@ public class Harvestable : Interactable {
     {
         if (UsingProperTool() && !harvested)
         {
-            //Debug.Log("Harvesting " + gameObject);
-            IEnumerator harvest = HarvestNode();
-            StartCoroutine(harvest);
+            //not saving these in Start theoretically reduces time to load on start when a scene has many nodes
+            ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine.RequestChangeState(StateMachine.States.Harvesting);
+            GetComponent<NodeStateMachine>().RequestChangeState(StateMachine.States.Harvesting);
+            Debug.Log("Starting harvest!");
         }
-    }
-    
-    private IEnumerator HarvestNode()
-    {
-        Animator playerAnim = player.GetComponent<Animator>();
-        Collider2D nodeCol = GetComponent<Collider2D>();
-        Collider2D playerCol = player.GetComponent<Collider2D>(); //eventually will allow other units to harvest
-        string shake = "Shake";
-        string harvest = "Harvest";
-        
-        float timePassed = 0;
-
-        while (timePassed < timeToHarvest)
-        {   
-            if (!playerCol.IsTouching(nodeCol))
-            {
-                //Debug.Log("Player walked away from harvestable node");
-                playerAnim.ResetTrigger(harvest);
-                anim.ResetTrigger(shake);
-                yield break;
-            }
-
-            //Debug.Log("triggering player shake");
-            playerAnim.SetTrigger(harvest);
-
-            yield return new WaitForSeconds(1f);
-            
-            timePassed++;
-            //Debug.Log("Harvesting...(" + timePassed + ")");
-
-            anim.SetTrigger(shake);
-
-        }
-        //Debug.Log("Done harvesting");
-
-        playerAnim.ResetTrigger(harvest);
-        anim.ResetTrigger(shake);
-        DropAndDestroy();
-        yield break;
-    }
-
-    private void DropAndDestroy()
-    {
-        if (itemDrop != null)
-        {
-            Instantiate(itemDrop, transform.position, Quaternion.identity);
-        }
-
-        isHarvested = true;
     }
 
     private bool UsingProperTool()
@@ -128,7 +70,7 @@ public class Harvestable : Interactable {
         {
             usingProperTool = false;
         }
-        else if(unitWeapon.myToolType == requiredTool)
+        else if (unitWeapon.myToolType == requiredTool)
         {
             usingProperTool = true;
         }
@@ -146,4 +88,53 @@ public class Harvestable : Interactable {
         sp.sprite = harvestedSprite;
     }
 
+
+    //private IEnumerator HarvestNode()
+    //{
+    //    Animator playerAnim = player.GetComponent<Animator>();
+    //    Collider2D nodeCol = GetComponent<Collider2D>();
+    //    Collider2D playerCol = player.GetComponent<Collider2D>(); //eventually will allow other units to harvest
+    //    string shake = "Shake";
+    //    string harvest = "Harvest";
+
+    //    float timePassed = 0;
+
+    //    while (timePassed < timeToHarvest)
+    //    {   
+    //        if (!playerCol.IsTouching(nodeCol))
+    //        {
+    //            //Debug.Log("Player walked away from harvestable node");
+    //            playerAnim.ResetTrigger(harvest);
+    //            anim.ResetTrigger(shake);
+    //            yield break;
+    //        }
+
+    //        //Debug.Log("triggering player shake");
+    //        playerAnim.SetTrigger(harvest);
+
+    //        yield return new WaitForSeconds(1f);
+
+    //        timePassed++;
+    //        //Debug.Log("Harvesting...(" + timePassed + ")");
+
+    //        anim.SetTrigger(shake);
+
+    //    }
+    //    //Debug.Log("Done harvesting");
+
+    //    playerAnim.ResetTrigger(harvest);
+    //    anim.ResetTrigger(shake);
+    //    DropAndDestroy();
+    //    yield break;
+    //}
+
+    //private void DropAndDestroy()
+    //{
+    //    if (itemDrop != null)
+    //    {
+    //        Instantiate(itemDrop, transform.position, Quaternion.identity);
+    //    }
+
+    //    isHarvested = true;
+    //}
 }

@@ -13,8 +13,8 @@ public class Interactable : MonoBehaviour {
 
     public float radius = 1f; //same as melee standard in weapon script
 
-
-    public virtual void Interaction(string interaction)
+    //can eventually take in more info about the unit interacting if we want to open this up to NPCs
+    public virtual void Interaction(string interaction) 
     {
         //cache the player, or is it better to just get the singleton's reference when I need it?
         player = ScriptToolbox.GetInstance().GetPlayerManager().player.transform;

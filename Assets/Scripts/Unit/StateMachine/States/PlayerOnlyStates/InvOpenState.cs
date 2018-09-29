@@ -6,12 +6,12 @@ public class InvOpenState : State {
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.Idle,
+            StateMachine.States.Idle,
             //this is in case we are attacked while inventory is open
-            UnitStateMachine.UnitState.Incapacitated,
-            UnitStateMachine.UnitState.Dead
+            StateMachine.States.Incapacitated,
+            StateMachine.States.Dead
         };
     }
 

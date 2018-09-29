@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class IncapacitatedState : State {
     public enum TemporaryState { InShock, CantBreathe, Suffocating, Vomitting, Dazed, Downed, Unconscious }
-
+    UnitStateMachine usm;
     IEnumerator waiting;
     int coroutineCount = 0;
     bool currentlyFlashing = false;
@@ -13,11 +13,13 @@ public class IncapacitatedState : State {
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        usm = (UnitStateMachine)stateMachine;
+
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.Dead,
-            UnitStateMachine.UnitState.Incapacitated, //need to be able to call this state again if we get status'd again
-            UnitStateMachine.UnitState.Idle //if we leave incapacitated state we go back to idle and wait if someone hits us again, in 
+            StateMachine.States.Dead,
+            StateMachine.States.Incapacitated, //need to be able to call this state again if we get status'd again
+            StateMachine.States.Idle //if we leave incapacitated state we go back to idle and wait if someone hits us again, in 
             //which case we will enter fight or flight and do another courage check. not a perfect solution if we want the unit to run away as 
             //soon as they can but it's something
         };
@@ -44,7 +46,7 @@ public class IncapacitatedState : State {
         }
         Debug.Log("exiting incapacitated state");
         
-        stateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
+        stateMachine.RequestChangeState(StateMachine.States.Idle);
     }
 
     protected override void OnStateExit()
@@ -105,7 +107,7 @@ public class IncapacitatedState : State {
 
     private IEnumerator Downed(float duration, bool knockedOut = false)
     {
-        BodyPartController b = stateMachine.bodyController;
+        BodyPartController b = usm.bodyController;
 
         if (knockedOut) //if we were knocked out by this attack, put them down and set unconscious = true
         {
@@ -178,7 +180,7 @@ public class IncapacitatedState : State {
         float bloodNeeded = 600; //half of 1200 which I've set as a hardcoded default blood volume for all units
         coroutineCount++;
 
-        while (stateMachine.bodyController.totalBlood < bloodNeeded)
+        while (usm.bodyController.totalBlood < bloodNeeded)
         {
             deathTimer -= Time.deltaTime;
             Debug.Log(deathTimer);
@@ -219,7 +221,7 @@ public class IncapacitatedState : State {
 
     public void Die()
     {
-        stateMachine.RequestChangeState(UnitStateMachine.UnitState.Dead);
+        stateMachine.RequestChangeState(StateMachine.States.Dead);
     }
 
     #endregion

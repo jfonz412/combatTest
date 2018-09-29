@@ -25,11 +25,11 @@ public class InventoryToggle : MonoBehaviour {
         {
             if (inventoryUI.activeSelf) //if already active go to idle
             {
-                psm.RequestChangeState(UnitStateMachine.UnitState.Idle);
+                psm.RequestChangeState(StateMachine.States.Idle);
             }
             else
             {
-                psm.RequestChangeState(UnitStateMachine.UnitState.InvOpen);
+                psm.RequestChangeState(StateMachine.States.InvOpen);
             }
             ScriptToolbox.GetInstance().GetWindowCloser().DestroyPopupMenus();
         }

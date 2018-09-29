@@ -3,12 +3,12 @@
 
     protected override void Init()
     {
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.Idle,
-            UnitStateMachine.UnitState.Incapacitated,
-            UnitStateMachine.UnitState.FightOrFlight,
-            UnitStateMachine.UnitState.Dead
+            StateMachine.States.Idle,
+            StateMachine.States.Incapacitated,
+            StateMachine.States.FightOrFlight,
+            StateMachine.States.Dead
         };
         npc = (NPCStateMachine)stateMachine;
     }
@@ -18,7 +18,7 @@
         base.OnStateEnter();
         //if we are able to enter this state, put the player their too because they requested it
         PlayerStateMachine psm = ScriptToolbox.GetInstance().GetPlayerManager().playerStateMachine;
-        psm.RequestChangeState(UnitStateMachine.UnitState.Talking);
+        psm.RequestChangeState(StateMachine.States.Talking);
 
         npc.unitAnim.FaceDirection(transform.position, npc.player.position);
         ScriptToolbox.GetInstance().GetDialogueManager().StartDialogue(npc.dialogue);

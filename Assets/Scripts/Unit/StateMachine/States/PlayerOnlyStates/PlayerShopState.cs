@@ -9,13 +9,13 @@ public class PlayerShopState : State
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.Idle,
-            UnitStateMachine.UnitState.Incapacitated,
-            UnitStateMachine.UnitState.FightOrFlight, //in case we are attacked
-            UnitStateMachine.UnitState.Prompted,
-            UnitStateMachine.UnitState.Dead
+            StateMachine.States.Idle,
+            StateMachine.States.Incapacitated,
+            StateMachine.States.FightOrFlight, //in case we are attacked
+            StateMachine.States.Prompted,
+            StateMachine.States.Dead
         };
     }
 

@@ -8,32 +8,34 @@ public class FightState : State
     BodyPartController targetBody;
     Transform targetTransform;
     List<BodyPart> attack1Parts, attack2Parts;
+    UnitStateMachine usm;
 
     protected override void Init()
     {
         base.Init();
-        canTransitionInto = new UnitStateMachine.UnitState[]
+        canTransitionInto = new StateMachine.States[]
         {
-            UnitStateMachine.UnitState.Idle,
-            UnitStateMachine.UnitState.Incapacitated,
-            UnitStateMachine.UnitState.PlayerMove
+            StateMachine.States.Idle,
+            StateMachine.States.Incapacitated,
+            StateMachine.States.PlayerMove
         };
     }
 
     protected override void OnStateEnter()
     {
         base.OnStateEnter();
-        
-        engaging = Engage(stateMachine.currentThreat);
+        usm = (UnitStateMachine)stateMachine;
+
+        engaging = Engage(usm.currentThreat);
         StartCoroutine(engaging);
     }
 
     protected override void OnStateExit()
     {
         base.OnStateExit();
-        stateMachine.currentThreat = null; 
+        usm.currentThreat = null; 
         StopCoroutine(engaging);
-        stateMachine.unitController.StopMoving();
+        usm.unitController.StopMoving();
     }
 
 
@@ -44,14 +46,14 @@ public class FightState : State
         bool inRange;
         targetTransform = _targetTransform;
         targetBody = targetTransform.GetComponent<BodyPartController>();
-        attack1Parts = stateMachine.attack1Parts;
-        attack2Parts = stateMachine.attack2Parts;
+        attack1Parts = usm.attack1Parts;
+        attack2Parts = usm.attack2Parts;
 
-        UnitController uc = stateMachine.unitController;
+        UnitController uc = usm.unitController;
         BodyPartController opponent = targetTransform.GetComponent<BodyPartController>();
         Collider2D col = GetComponent<Collider2D>();
 
-        stateMachine.unitAnim.FaceDirection(transform.position, targetTransform.position);
+        usm.unitAnim.FaceDirection(transform.position, targetTransform.position);
         
         while (!opponent.Incapacitated())
         {
@@ -64,13 +66,13 @@ public class FightState : State
                 PathfindingManager.RequestPath(new PathRequest(transform.position, targetTransform.position, uc.OnPathFound));
                 yield return new WaitForSeconds(.1f);
             }
-            else if (!stateMachine.attackTimer.coolingDown)
+            else if (!usm.attackTimer.coolingDown)
             {
                 Attack();
             }
             yield return null;
         }
-        stateMachine.RequestChangeState(UnitStateMachine.UnitState.Idle);
+        usm.RequestChangeState(StateMachine.States.Idle);
         yield break;
     }
 
@@ -78,9 +80,9 @@ public class FightState : State
     {
 
         AttackInfo myAttack;
-        AttackTimer attackTimer = stateMachine.attackTimer;
-        BodyPartController myBody = stateMachine.bodyController;
-        CombatSkills mySkills = stateMachine.combatSkills;
+        AttackTimer attackTimer = usm.attackTimer;
+        BodyPartController myBody = usm.bodyController;
+        CombatSkills mySkills = usm.combatSkills;
 
         if (Random.Range(0, 100) <= 75)
         {
@@ -124,12 +126,12 @@ public class FightState : State
 
     private void AttackAnimation()
     {
-        stateMachine.unitController.StopMoving();
+        usm.unitController.StopMoving();
 
         if (targetTransform != null)
-            stateMachine.unitAnim.FaceDirection(transform.position, targetTransform.position);
+            usm.unitAnim.FaceDirection(transform.position, targetTransform.position);
 
-        stateMachine.unitAnim.Attack(); 
+        usm.unitAnim.Attack(); 
     }
     #endregion
 }
