@@ -7,7 +7,7 @@ public class DemoburghShops : MarketInventory {
 	protected override void InstantiateItems()
     {
         townShops.Add(
-            "Old Armsman",
+            "NPC",
             new Item[]
             {
                 MasterItemList.IronChest(),
