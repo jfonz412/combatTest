@@ -13,7 +13,7 @@ public class Item {
         myUseEffect = _item.myUseEffect;
 
         icon = _item.icon;
-        mySlotNum = _item.mySlotNum; //allows the to be null
+        mySlotNum = _item.mySlotNum; 
 
         name = _item.name;
         myDescription = _item.myDescription;
@@ -55,6 +55,8 @@ public class Item {
     public int quantity = 1;
     public int maxQuantity = 99;
     public bool stackable;
+
+    public bool isNakedItem = false;
 
     public float weight;
     public float hardnessValue;

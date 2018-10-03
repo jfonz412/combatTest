@@ -430,8 +430,10 @@ public class BodyPart : MonoBehaviour {
     {
         PartInfo info = new PartInfo();
         info.severityLevel = currentSeverityLevel;
-        info.myArmor = myArmor;
-        info.myWeapon = myWeapon;
+        if(myArmor != null && !myArmor.isNakedItem)
+            info.myArmor = myArmor;
+        if (myWeapon != null && !myWeapon.isNakedItem)
+            info.myWeapon = myWeapon;
         info.injuryLog = injuryLog;
         info.name = name;
         return info;

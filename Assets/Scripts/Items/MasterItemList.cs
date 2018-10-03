@@ -310,6 +310,7 @@ public class MasterItemList : MonoBehaviour {
     {
         Item item = new Item();
 
+        item.isNakedItem = true;
         item.name = "fist";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
@@ -330,6 +331,7 @@ public class MasterItemList : MonoBehaviour {
     {
         Item item = new Item();
 
+        item.isNakedItem = true;
         item.name = "fist";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
@@ -349,7 +351,7 @@ public class MasterItemList : MonoBehaviour {
     public static Item BareFlesh()
     {
         Item item = new Item();
-
+        item.isNakedItem = true;
         item.name = "bare flesh";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
@@ -369,7 +371,7 @@ public class MasterItemList : MonoBehaviour {
     public static Item FurSkin()
     {
         Item item = new Item();
-
+        item.isNakedItem = true;
         item.name = "fur skin";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
@@ -389,7 +391,7 @@ public class MasterItemList : MonoBehaviour {
     public static Item ThichFurSkin()
     {
         Item item = new Item();
-
+        item.isNakedItem = true;
         item.name = "thich fur skin";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
@@ -409,7 +411,7 @@ public class MasterItemList : MonoBehaviour {
     public static Item MainClaw()
     {
         Item item = new Item();
-
+        item.isNakedItem = true;
         item.name = "claw";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
@@ -428,7 +430,7 @@ public class MasterItemList : MonoBehaviour {
     public static Item MainTeeth()
     {
         Item item = new Item();
-
+        item.isNakedItem = true;
         item.name = "teeth";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
@@ -448,7 +450,7 @@ public class MasterItemList : MonoBehaviour {
     public static Item OffClaw()
     {
         Item item = new Item();
-
+        item.isNakedItem = true;
         item.name = "claw";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"
@@ -467,7 +469,7 @@ public class MasterItemList : MonoBehaviour {
     public static Item OffTeeth()
     {
         Item item = new Item();
-
+        item.isNakedItem = true;
         item.name = "teeth";
         item.myDescription = "SUBPART ITEM, SHOULD NOT BE IN INVENTORY";
         //item.icon = "NO ICON"

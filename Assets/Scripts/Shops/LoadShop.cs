@@ -22,6 +22,7 @@ public class LoadShop : MonoBehaviour {
 
     public void LoadShopInventory()
     {
+        Debug.Log("Loading inventory for " + gameObject.name);
         shopInventory = EconomyManager.GetInstance().GetMarketInventory().GetInventory(gameObject.name).ToList(); //get this unit's inventory
         InventoryManager.GetInstance().GetShopInventory().LoadShopInventory(shopInventory, this); //load inventory window with this
         InventoryManager.GetInstance().GetShopDialogue().LoadShopDialogue(shopDialogue); //get shop dialog window

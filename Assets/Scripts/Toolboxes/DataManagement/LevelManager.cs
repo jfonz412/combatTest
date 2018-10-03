@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour {
     public static List<ExitScene> sceneExits; // = new List<ExitScene>();
 
-    private void Start()
+    private void Awake()
     {
         sceneExits = new List<ExitScene>();
 

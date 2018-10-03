@@ -20,12 +20,8 @@ public class EquipUI : MonoBehaviour {
         { Item.EquipmentSlot.Feet, null }
     };
 
-    private void Start()
+    private void Awake() //this needs to happen before player's equipment is loaded
     {
-        /*
-        equipmentManager = ScriptToolbox.GetInstance().GetPlayerManager().player.transform.GetComponent<EquipmentManager>();
-        equipmentManager.onEquipmentChanged += UpdateUI;
-        */
         slots = equipParent.GetComponentsInChildren<EquipSlot>();
         AssignSlotNums();
     }

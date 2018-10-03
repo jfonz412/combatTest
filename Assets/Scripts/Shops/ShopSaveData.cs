@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ShopSaveData : DataController {
     MarketInventory shops;
-
-    private string fileName = "/ShopData.dat"; //MAKE THIS DYNAMIC, GIVE DEMOSHOP A BASE SCRIPT THIS SCRIPT CAN GRAB
+    //MAKE THIS DYNAMIC, GIVE DEMOSHOP A BASE SCRIPT THIS SCRIPT CAN GRAB (old comment, below may work better)
+    private string fileName; 
 
     protected override void GatherComponents()
     {
         base.GatherComponents();
+        fileName = "/" + SceneManager.GetActiveScene().name + "_ShopData.dat";
         shops = GetComponent<MarketInventory>();
     }
 
