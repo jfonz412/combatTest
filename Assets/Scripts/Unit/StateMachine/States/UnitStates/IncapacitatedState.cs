@@ -9,7 +9,8 @@ public class IncapacitatedState : State {
     IEnumerator waiting;
     int coroutineCount = 0;
     bool currentlyFlashing = false;
-# region Main Methods
+
+    # region Main Methods
     protected override void Init()
     {
         base.Init();
@@ -75,7 +76,7 @@ public class IncapacitatedState : State {
                 break;
             case TemporaryState.CantBreathe:
                 StartCoroutine(Flash(Color.blue, duration));
-                Debug.Log(gameObject + " CANTBREATHE");
+                Debug.Log(gameObject + " CANTBREATHE(" + duration +")");
                 break;
             case TemporaryState.Vomitting:
                 StartCoroutine(Flash(Color.green, duration));
@@ -147,32 +148,32 @@ public class IncapacitatedState : State {
 
     IEnumerator Flash(Color color, float duration)
     {
-        //if (!currentlyFlashing)
-        //{
-            SpriteRenderer s = stateMachine.spriteRend;
-            coroutineCount++;
-            //currentlyFlashing = true;
-            while (duration > 0)
+        SpriteRenderer s = stateMachine.spriteRend;
+        coroutineCount++;
+        //Debug.Log("entering flash: " + Time.time);
+        while (duration > 0)
+        {
+            while (color.a > 0.5 && duration > 0)
             {
-                while (color.a > 0.5)
-                {
-                    color.a -= 0.1f;
-                    s.color = color;
-                    yield return new WaitForSeconds(0.1f);
-                }
-                while (color.a < 1)
-                {
-                    color.a += 0.1f;
-                    s.color = color;
-                    yield return new WaitForSeconds(0.1f);
-                }
-                duration -= Time.deltaTime;
+                color.a -= 0.1f;
+                s.color = color;
+                yield return new WaitForSeconds(0.1f);
+                duration -= 0.1f;
+                //Debug.Log("flash duration1: " + duration);
             }
-
-            s.color = Color.white; //may overwrite other colors?
-            //currentlyFlashing = false;
-            coroutineCount--;
-        //}
+            while (color.a < 1 && duration > 0)
+            {
+                color.a += 0.1f;
+                s.color = color;
+                yield return new WaitForSeconds(0.1f);
+                duration -= 0.1f;
+                //Debug.Log("flash duration2: " + duration);
+            }
+        
+        }
+        //Debug.Log("exiting flash: " + Time.time);
+        s.color = Color.white;
+        coroutineCount--;
     }
 
     private IEnumerator Shock(float deathTimer)
@@ -200,23 +201,18 @@ public class IncapacitatedState : State {
 
     private IEnumerator Suffocating(float deathTimer)
     {
-        coroutineCount++;
-        while (true) //part.SeverityLevel() >= part.SuffocationThreshold() //will need to give BodyPartController a BodyPart suffocatedPart;
+        coroutineCount++;       //(while part is still damaged)
+        while (deathTimer > 0) //part.SeverityLevel() >= part.SuffocationThreshold() //will need to give BodyPartController a BodyPart suffocatedPart;
         {
             deathTimer -= Time.deltaTime;
-            Debug.Log(deathTimer);
-            if (deathTimer <= 0)
-            {
-                string line = "<color=red>" + gameObject.name + " has suffocated to death!" + "</color>";
-                BattleReport.AddToBattleReport(line);
-                Die();
-                //Debug.LogError("dying of suffocation");
-                yield break;
-            }
             yield return null;
         }
-        //coroutineCount--; // never going to escape the while loop in this case
-        //yield break;
+        string line = "<color=red>" + gameObject.name + " has suffocated to death!" + "</color>";
+        BattleReport.AddToBattleReport(line);
+        Die();
+
+        coroutineCount--; // never going to escape the while loop in this case
+        yield break;
     }
 
     public void Die()

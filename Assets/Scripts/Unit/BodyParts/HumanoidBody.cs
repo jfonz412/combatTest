@@ -78,7 +78,7 @@ public class HumanoidBody : Body
         neck.name = "neck";
         neck.functioningLimit = 5;
         neck.downedThreshold = 3;
-        neck.cantBreathThreshold = 2;
+        neck.cantBreathThreshold = 1;
         neck.suffocationThreshold = 3;
         neck.fearLimit = 3;
 

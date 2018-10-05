@@ -366,16 +366,17 @@ public class BodyPart : MonoBehaviour {
             if (severity >= suffocationThreshold && !myBody.suffocating) //if the injury was bad enough and not already suffocating
             {
                 myBody.suffocating = true;
-                stateMachine.TriggerTemporaryState(IncapacitatedState.TemporaryState.Suffocating, 30f);
                 string line = "<color=red>" + gameObject.name + " is suffocating!</color>";
                 BattleReport.AddToBattleReport(line);
+                stateMachine.TriggerTemporaryState(IncapacitatedState.TemporaryState.Suffocating, 30f);
+                return; //don't do cantBreath check
             }
 
             if (UnityEngine.Random.Range(0, 100) > myCombatSkills.statusResistance / (severity + 1))
             {
-                stateMachine.TriggerTemporaryState(IncapacitatedState.TemporaryState.CantBreathe, severity + 1);
                 string line = "<color=blue>" + gameObject.name + " is struggling to breathe!</color>";
                 BattleReport.AddToBattleReport(line);
+                stateMachine.TriggerTemporaryState(IncapacitatedState.TemporaryState.CantBreathe, severity + 1);
             }
         }
         

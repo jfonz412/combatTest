@@ -187,11 +187,13 @@ public class BodyPartController : MonoBehaviour {
             //prevents severed/obliterated part from being attacked
             if (bodyParts[n].SeverityLevel() < 5)
             {
-                return bodyParts[n];
+                //return bodyParts[n];
+                Debug.LogWarning("hardcoded neck!");
+                return bodyParts[1];
             }
             else if (infiniteLoopStopper >= 100)
             {
-                Debug.LogError("Can't find bodypart after 100 tries");
+                Debug.LogError("Can't find any bodypart after 100 tries");
                 break;
             }
             infiniteLoopStopper++;
